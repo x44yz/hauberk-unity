@@ -1,2 +1,1 @@
 # bolt
-a racing game
