@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerBase
+public abstract class ControllerBase
 {
 	protected Car _car = null;
 
-	public ControllerBase(Car* car)
+	public ControllerBase(Car car)
 	{
 		_car = car;
 	}
