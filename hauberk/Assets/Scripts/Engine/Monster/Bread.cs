@@ -28,85 +28,85 @@ class BreedRef {
 
 /// A single kind of [Monster] in the game.
 class Breed {
-  final Pronoun pronoun;
+  public Pronoun pronoun;
   string get name => Log.singular(_name);
 
   /// Untyped so the engine isn't coupled to how monsters appear.
-  final Object appearance;
+  public Object appearance;
 
   /// The breeds's depth.
   ///
   /// Higher depth breeds are found later in the game.
-  final int depth;
+  public int depth;
 
-  final List<Attack> attacks;
-  final List<Move> moves;
+  public List<Attack> attacks;
+  public List<Move> moves;
 
-  final int maxHealth;
+  public int maxHealth;
 
   /// How well the monster can navigate the stage to reach its target.
   ///
   /// Used to determine maximum pathfinding distance.
-  final int tracking;
+  public int tracking;
 
   /// How many tiles away the monster can see the hero.
-  final int vision;
+  public int vision;
 
   /// How many tiles away (as sound flows) the monster can hear the hero.
-  final int hearing;
+  public int hearing;
 
   /// Percent chance of choosing a non-optimal direction when walking.
-  final int meander;
+  public int meander;
 
   /// The breed's speed, relative to normal. Ranges from `-6` (slowest) to `6`
   /// (fastest) where `0` is normal speed.
-  final int speed;
+  public int speed;
 
   /// The [Item]s this monster may drop when killed.
-  final Drop drop;
+  public Drop drop;
 
-  final SpawnLocation location;
+  public SpawnLocation location;
 
-  final Motility motility;
+  public Motility motility;
 
-  final BreedFlags flags;
+  public BreedFlags flags;
 
   /// Base chance for this breed to dodge an attack.
-  final int dodge;
+  public int dodge;
 
   /// How much light the monster emanates.
-  final int emanationLevel;
+  public int emanationLevel;
 
   /// Additional defenses this breed has.
-  final List<Defense> defenses = [];
+  public List<Defense> defenses = [];
 
   /// The minimum number of this breed that are spawned when it is placed in
   /// the dungeon.
-  final int countMin;
+  public int countMin;
 
   /// The minimum number of this breed that are spawned when it is placed in
   /// the dungeon.
-  final int countMax;
+  public int countMax;
 
   /// Additional monsters that should be spawned when this one is spawned.
-  final Spawn? minions;
+  public Spawn? minions;
 
   /// The name of the breed. If the breed's name has irregular pluralization
   /// like "bunn[y|ies]", this will be the original unparsed string.
-  final string _name;
+  public string _name;
 
   /// If this breed should stain some of the nearby floor tiles when spawned,
   /// this is the type is should stain them with. Otherwise `null`.
-  final TileType? stain;
+  public TileType? stain;
 
   /// The groups that the breed is a part of.
   ///
   /// Used to determine which kinds of slaying affect which monsters. For
   /// display purposes in the lore screen, the last group in the list should
   /// be noun-like while the others are adjectives, like `["undead", "bug"]`.
-  final List<string> groups = [];
+  public List<string> groups = [];
 
-  final string description;
+  public string description;
 
   Breed(this._name, this.pronoun, this.appearance, this.attacks, this.moves,
       this.drop, this.location, this.motility,
@@ -251,12 +251,12 @@ abstract class Spawn {
 }
 
 class BreedFlags {
-  final bool berzerk;
-  final bool cowardly;
-  final bool fearless;
-  final bool immobile;
-  final bool protective;
-  final bool unique;
+  public bool berzerk;
+  public bool cowardly;
+  public bool fearless;
+  public bool immobile;
+  public bool protective;
+  public bool unique;
 
   BreedFlags(
       {required this.berzerk,
