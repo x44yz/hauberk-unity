@@ -114,33 +114,35 @@ class Strength : StatBase
 
   int maxFury {
     get {
-        if (value <= 10) return lerpInt(value, 1, 10, 40, 100);
-        return lerpInt(value, 10, 60, 100, 200);
+        if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
+        return MathUtils.lerpInt(value, 10, 60, 100, 200);
     }
   }
 
-  double tossRangeScale => {
-    if (value <= 20) return lerpDouble(value, 1, 20, 0.1, 1.0);
-    if (value <= 30) return lerpDouble(value, 20, 30, 1.0, 1.5);
-    if (value <= 40) return lerpDouble(value, 30, 40, 1.5, 1.8);
-    if (value <= 50) return lerpDouble(value, 40, 50, 1.8, 2.0);
-    return lerpDouble(value, 50, 60, 2.0, 2.1);
+  double tossRangeScale {
+    get {
+      if (value <= 20) return MathUtils.lerpDouble(value, 1, 20, 0.1, 1.0);
+      if (value <= 30) return MathUtils.lerpDouble(value, 20, 30, 1.0, 1.5);
+      if (value <= 40) return MathUtils.lerpDouble(value, 30, 40, 1.5, 1.8);
+      if (value <= 50) return MathUtils.lerpDouble(value, 40, 50, 1.8, 2.0);
+      return MathUtils.lerpDouble(value, 50, 60, 2.0, 2.1);
+    }
   }
 
   /// Calculates the melee damage scaling factor based on the hero's strength
   /// relative to the weapon's [heft].
-  double heftScale(int heft) => {
-    var relative = (value - heft).clamp(-20, 50);
+  double heftScale(int heft) {
+    var relative = Mathf.Clamp(value - heft, -20, 50);
 
     if (relative < -10) {
-      return lerpDouble(relative, -20, -10, 0.05, 0.3);
+      return MathUtils.lerpDouble(relative, -20, -10, 0.05, 0.3);
     } else if (relative < 0) {
       // Note that there is an immediate step down to 0.8 at -1.
-      return lerpDouble(relative, -10, -1, 0.3, 0.8);
+      return MathUtils.lerpDouble(relative, -10, -1, 0.3, 0.8);
     } else if (relative < 30) {
-      return lerpDouble(relative, 0, 30, 1.0, 2.0);
+      return MathUtils.lerpDouble(relative, 0, 30, 1.0, 2.0);
     } else {
-      return lerpDouble(relative, 30, 50, 2.0, 3.0);
+      return MathUtils.lerpDouble(relative, 30, 50, 2.0, 3.0);
     }
   }
 }
@@ -154,16 +156,20 @@ class Agility : StatBase {
 
   // TODO: Subtract encumbrance.
 
-  int dodgeBonus => {
-    if (value <= 10) return lerpInt(value, 1, 10, -50, 0);
-    if (value <= 30) return lerpInt(value, 10, 30, 0, 20);
-    return lerpInt(value, 30, 60, 20, 60);
+  int dodgeBonus {
+    get {
+      if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -50, 0);
+      if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);
+      return MathUtils.lerpInt(value, 30, 60, 20, 60);
+    }
   }
 
-  int strikeBonus => {
-    if (value <= 10) return lerpInt(value, 1, 10, -30, 0);
-    if (value <= 30) return lerpInt(value, 10, 30, 0, 20);
-    return lerpInt(value, 30, 60, 20, 50);
+  int strikeBonus {
+    get {
+      if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -30, 0);
+      if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);
+      return MathUtils.lerpInt(value, 30, 60, 20, 50);
+    }
   }
 }
 
@@ -175,7 +181,7 @@ class Fortitude : StatBase {
 
   string _loseAdjective => "sickly";
 
-  int maxHealth => (math.pow(value, 1.4) + 1.23 * value + 18).toInt();
+  int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
 }
 
 class Intellect : StatBase {
@@ -186,13 +192,15 @@ class Intellect : StatBase {
   string _loseAdjective => "stupid";
 
   int maxFocus {
-    if (value <= 10) return lerpInt(value, 1, 10, 40, 100);
-    return lerpInt(value, 10, 60, 100, 200);
+    get {
+      if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
+      return MathUtils.lerpInt(value, 10, 60, 100, 200);
+    }
   }
 
   double spellFocusScale(int complexity) {
-    var relative = value - complexity.clamp(0, 50);
-    return lerpDouble(relative, 0, 50, 1.0, 0.2);
+    var relative = value - Mathf.Clamp(complexity, 0, 50);
+    return MathUtils.lerpDouble(relative, 0, 50, 1.0, 0.2);
   }
 }
 
@@ -205,14 +213,18 @@ class Will : StatBase {
 
   /// Scales how much focus is lost when taking damage.
   double damageFocusScale {
-    if (value <= 10) return lerpDouble(value, 1, 10, 800, 400);
-    return lerpDouble(value, 10, 60, 400, 80);
+    get {
+      if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 800, 400);
+      return MathUtils.lerpDouble(value, 10, 60, 400, 80);
+    }
   }
 
   /// Scales how much fury is lost when regenerating focus.
   double restFuryScale {
-    if (value <= 10) return lerpDouble(value, 1, 10, 4.0, 1.0);
-    return lerpDouble(value, 10, 60, 1.0, 0.2);
+    get {
+      if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 4.0, 1.0);
+      return MathUtils.lerpDouble(value, 10, 60, 1.0, 0.2);
+    }
   }
 }
 
