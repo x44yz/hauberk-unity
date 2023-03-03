@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract class Action 
+public abstract class Action 
 {
   Actor _actor;
 

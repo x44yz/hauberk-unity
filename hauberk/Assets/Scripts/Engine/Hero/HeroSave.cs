@@ -50,11 +50,11 @@ class HeroSave
     Lore lore => _lore;
     Lore _lore;
 
-    public strength = Strength();
-    public agility = Agility();
-    public fortitude = Fortitude();
-    public intellect = Intellect();
-    public will = Will();
+    public Strength strength = new Strength();
+    public Agility agility = new Agility();
+    public Fortitude fortitude = new Fortitude();
+    public Intellect intellect = new Intellect();
+    public Will will = new Will();
 
     int emanationLevel {
         get {
@@ -109,9 +109,9 @@ class HeroSave
 
     // TODO: Rename.
     HeroSave.load(
-        this.name,
-        this.race,
-        this.heroClass,
+        string name,
+        Race race,
+        HeroClass heroClass,
         this._inventory,
         this._equipment,
         this._home,
@@ -121,8 +121,23 @@ class HeroSave
         this.skills,
         this._lore,
         this.gold,
-        this.maxDepth) {
-    _bindStats();
+        this.maxDepth) 
+    {
+        this.name = name;
+        this.race = race;
+        this.heroClass = heroClass;
+        this._inventory = _inventory;
+        this._equipment = _equipment;
+        this._home = _home;
+        this._crucible = _crucible;
+        this.shops = shops;
+        this.experience = experience;
+        this.skills = skills;
+        this._lore = _lore;
+        this.gold = gold;
+        this.maxDepth = maxDepth;
+
+        _bindStats();
     }
 
     /// Move data from [hero] into this object. This should be called when the
@@ -171,7 +186,7 @@ class HeroSave
     }
 
     /// Gets the total modifiers to [stat] provided by all equipment.
-    int statBonus(Stat stat) {
+    public int statBonus(Stat stat) {
         var bonus = 0;
 
         // Let equipment modify it.
@@ -183,7 +198,8 @@ class HeroSave
         return bonus;
     }
 
-    void _bindStats() {
+    void _bindStats()
+    {
         strength.bindHero(this);
         agility.bindHero(this);
         fortitude.bindHero(this);

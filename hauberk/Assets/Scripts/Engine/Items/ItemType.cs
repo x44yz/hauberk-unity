@@ -33,7 +33,7 @@ class Toss {
 }
 
 /// A kind of [Item]. Each item will have a type that describes the item.
-class ItemType {
+public class ItemType {
     /// The pattern string used to generate quantified names for items of this
     /// type: `Scroll[s] of Disappearing`, etc.
     public string quantifiableName;

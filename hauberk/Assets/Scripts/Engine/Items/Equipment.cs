@@ -4,33 +4,39 @@ using UnityEngine;
 
 /// The collection of wielded [Item]s held by the hero. Unlike [Inventory], the
 /// [Equipment] holds each item in a categorized slot.
-class Equipment extends IterableBase<Item> with ItemCollection {
-  ItemLocation get location => ItemLocation.equipment;
+class Equipment : IList<Item> {
+  ItemLocation location => ItemLocation.equipment;
 
-  public List<String> slotTypes;
-  public List<Item?> slots;
+  public List<string> slotTypes;
+  public List<Item> slots;
 
   Equipment()
-      : slotTypes = const [
-          'hand',
-          'hand',
-          'ring',
-          'necklace',
-          'body',
-          'cloak',
-          'helm',
-          'gloves',
-          'boots'
-        ],
-        slots = List<Item?>.filled(9, null);
+  {
+    slotTypes = new List<string>(){
+      "hand",
+      "hand",
+      "ring",
+      "necklace",
+      "body",
+      "cloak",
+      "helm",
+      "gloves",
+      "boots"
+    };
+    slots = new List<Item>(9);
+    for (int i = 0; i < slots.Capacity; ++i)
+      slots.Add(null);
+  }
 
   /// Gets the currently-equipped weapons, if any.
   Iterable<Item> get weapons =>
       slots.whereType<Item>().where((item) => item.type.weaponType != null);
 
   /// Gets the number of equipped items. Ignores empty slots.
-  int get length {
-    return slots.fold(0, (count, item) => count + ((item == null) ? 0 : 1));
+  int length {
+    get {
+      return slots.fold(0, (count, item) => count + ((item == null) ? 0 : 1));
+    }
   }
 
   /// Gets the equipped item at the given index. Ignores empty slots.
@@ -80,9 +86,10 @@ class Equipment extends IterableBase<Item> with ItemCollection {
   AddItemResult tryAdd(Item item) {
     // Should not be able to equip stackable items. If we want to make, say,
     // knives stackable, we'll have to add support for splitting stacks here.
-    assert(item.count == 1);
+    DartUtil.assert(item.count == 1);
 
-    for (var i = 0; i < slotTypes.length; i++) {
+    for (var i = 0; i < slotTypes.length; i++) 
+    {
       if (slotTypes[i] == item.equipSlot && slots[i] == null) {
         slots[i] = item;
         return AddItemResult(item.count, 0);

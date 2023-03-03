@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// A thing that can be picked up.
-class Item implements Comparable<Item>, Noun 
+public class Item  // Comparable<Item>, Noun 
 {
     public ItemType type;
 
-    public Affix? prefix;
-    public Affix? suffix;
+    public Affix prefix;
+    public Affix suffix;
 
-    Item(this.type, this._count, [this.prefix, this.suffix]);
+    public Item(ItemType type, int _count, Affix prefix, Affix suffix)
+    {
+        this.type = type;
+        this._count = _count;
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
 
     Object appearance => type.appearance;
 

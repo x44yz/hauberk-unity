@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using num = System.Double;
 
 public class Element
 {
@@ -24,11 +25,11 @@ public class Element
 
     /// Creates a side-effect action to perform when an [Attack] of this element
     /// hits an actor for `damage` or `null` if this element has no side effect.
-    public Action<int> attackAction;
+    public Func<Action, int> attackAction;
 
     /// Creates a side-effect action to perform when an area attack of this
     /// element hits a tile or `null` if this element has no effect.
-    public Action<Vec, Hit, num, int> floorAction;
+    public Func<Action, Vec, Hit, num, int> floorAction;
 
     Element(string name, string abbreviation, double experience)
     {

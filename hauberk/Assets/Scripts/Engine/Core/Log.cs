@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,41 +69,43 @@ class Log {
     return lines;
   }
 
-  static const _maxMessages = 20;
+  public const int _maxMessages = 20;
 
-  final messages = <Message>[];
+  public List<Message> messages = new List<Message>();
 
-  void message(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void message(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.message, message, noun1, noun2, noun3);
   }
 
-  void error(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.error, message, noun1, noun2, noun3);
   }
 
-  void quest(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void quest(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.quest, message, noun1, noun2, noun3);
   }
 
-  void gain(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.gain, message, noun1, noun2, noun3);
   }
 
-  void help(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void help(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.help, message, noun1, noun2, noun3);
   }
 
-  void cheat(string message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void cheat(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.cheat, message, noun1, noun2, noun3);
   }
 
   void add(LogType type, string message,
-      [Noun? noun1, Noun? noun2, Noun? noun3]) {
+      Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
+  {
     message = _format(message, noun1, noun2, noun3);
 
     // See if it's a repeat of the last message.
-    if (messages.isNotEmpty) {
-      var last = messages.last;
+    if (messages.Count > 0)
+    {
+      var last = messages[messages.Count - 1];
       if (last.text == message) {
         // It is, so just repeat the count.
         last.count++;
@@ -111,8 +114,8 @@ class Log {
     }
 
     // It's a new message.
-    messages.add(Message(type, message));
-    if (messages.length > _maxMessages) messages.removeAt(0);
+    messages.Add(new Message(type, message));
+    if (messages.Count > _maxMessages) messages.RemoveAt(0);
   }
 
   /// The same message can apply to a variety of subjects and objects, and it
@@ -174,20 +177,21 @@ class Log {
   ///
   /// Finally, the first letter in the result will be capitalized to properly
   /// sentence case it.
-  string _format(string text, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  string _format(string text, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     var result = text;
 
-    var nouns = [noun1, noun2, noun3];
-    for (var i = 1; i <= 3; i++) {
+    var nouns = new List<Noun>(){noun1, noun2, noun3};
+    for (var i = 1; i <= nouns.Count; i++) {
       var noun = nouns[i - 1];
 
       if (noun != null) {
-        result = result.replaceAll('{$i}', noun.nounText);
+        result = result.Replace($"{{{i}}}", noun.nounText);
 
         // Handle pronouns.
-        result = result.replaceAll('{$i he}', noun.pronoun.subjective);
-        result = result.replaceAll('{$i him}', noun.pronoun.objective);
-        result = result.replaceAll('{$i his}', noun.pronoun.possessive);
+        result = result.Replace($"{{{i} he}}", noun.pronoun.subjective);
+        result = result.Replace($"{{{i} him}}", noun.pronoun.objective);
+        result = result.Replace($"{{{i} his}}", noun.pronoun.possessive);
       }
     }
 
@@ -197,7 +201,7 @@ class Log {
     }
 
     // Sentence case it by capitalizing the first letter.
-    return '${result[0].toUpperCase()}${result.substring(1)}';
+    return $"{Char.ToUpper(result[0])}{result.Substring(1)}";
   }
 
   /// Parses a string and chooses one of two grammatical categories.
@@ -262,29 +266,37 @@ class Log {
   }
 }
 
-class Noun {
-  final string nounText;
+public class Noun {
+  public string nounText;
 
-  Pronoun get pronoun => Pronoun.it;
+  public Pronoun pronoun => Pronoun.it;
 
-  Noun(this.nounText);
+  public Noun(string nounText)
+  {
+    this.nounText = nounText;
+  }
 
-  string toString() => nounText;
+  public string toString() => nounText;
 }
 
-class Pronoun {
+public class Pronoun {
   // See http://en.wikipedia.org/wiki/English_personal_pronouns.
-  static const you = Pronoun('you', 'you', 'your');
-  static const she = Pronoun('she', 'her', 'her');
-  static const he = Pronoun('he', 'him', 'his');
-  static const it = Pronoun('it', 'it', 'its');
-  static const they = Pronoun('they', 'them', 'their');
+  public static Pronoun you = new Pronoun("you", "you", "your");
+  public static Pronoun she = new Pronoun("she", "her", "her");
+  public static Pronoun he = new Pronoun("he", "him", "his");
+  public static Pronoun it = new Pronoun("it", "it", "its");
+  public static Pronoun they = new Pronoun("they", "them", "their");
 
-  final string subjective;
-  final string objective;
-  final string possessive;
+  public string subjective;
+  public string objective;
+  public string possessive;
 
-  const Pronoun(this.subjective, this.objective, this.possessive);
+  public Pronoun(string subjective, string objective, string possessive)
+  {
+    this.subjective = subjective;
+    this.objective = objective;
+    this.possessive = possessive;
+  }
 }
 
 enum LogType {
@@ -309,11 +321,15 @@ enum LogType {
 
 /// A single log entry.
 class Message {
-  final LogType type;
-  final string text;
+  public LogType type;
+  public string text;
 
   /// The number of times this message has been repeated.
-  int count = 1;
+  public int count = 1;
 
-  Message(this.type, this.text);
+  public Message(LogType type, string text)
+  {
+    this.type = type;
+    this.text = text;
+  }
 }

@@ -81,12 +81,14 @@ abstract class StatBase : Property<int>
 
   int _statOffset => 0;
 
-  void bindHero(HeroSave hero) {
+  public void bindHero(HeroSave hero)
+  {
     _hero = hero;
     _value = _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
   }
 
-  void refresh(Game game) {
+  void refresh(Game game)
+  {
     var newValue =
         _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
     update(newValue, (previous) {

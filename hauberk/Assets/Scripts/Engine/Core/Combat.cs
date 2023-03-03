@@ -21,7 +21,7 @@ num getArmorMultiplier(int armor) {
 class Attack {
   /// The thing performing the attack. If `null`, then the attacker will be
   /// used.
-  public Noun? noun;
+  public Noun noun;
 
   /// A verb string describing the attack: "hits", "fries", etc.
   public string verb;
@@ -40,21 +40,21 @@ class Attack {
       : range = range ?? 0,
         element = element ?? Element.none;
 
-  bool get isRanged => range > 0;
+  bool isRanged => range > 0;
 
-  Hit createHit() => Hit._(this);
+  Hit createHit() => new Hit(this);
 
   string toString() {
-    var result = damage.toString();
-    if (element != Element.none) result = "$element $result";
-    if (range > 0) result += "@$range";
+    var result = damage.ToString();
+    if (element != Element.none) result = $"{element} {result}";
+    if (range > 0) result += $"@{range}";
     return result;
   }
 }
 
 enum HitType { melee, ranged, toss }
 
-class Hit {
+public class Hit {
   public Attack _attack;
 
   int _strikeBonus = 0;
@@ -65,30 +65,39 @@ class Hit {
 
   Element _brand = Element.none;
 
-  int get range {
-    if (_attack.range == 0) return 0;
+  int range {
+    get {
+      if (_attack.range == 0) return 0;
 
-    return math.max(1, (_attack.range * _rangeScale).round());
+      return Mathf.Max(1, (_attack.range * _rangeScale).round());
+    }
   }
 
   double _rangeScale = 1.0;
 
-  Element get element {
-    if (_brand != Element.none) return _brand;
-    return _attack.element;
+  Element element {
+    get {
+      if (_brand != Element.none) return _brand;
+      return _attack.element;
+    }
   }
 
-  double get averageDamage => _attack.damage * _damageScale + _damageBonus;
+  double averageDamage => _attack.damage * _damageScale + _damageBonus;
 
   // TODO: This is just used for the game screen weapon display. Show the
   // bonuses and stuff more explicitly there and get rid of this.
   /// The average amount of damage this hit causes, with two decimal points of
   /// precision.
-  string get damageString {
-    return ((averageDamage * 100).toInt() / 100).toString();
+  string damageString {
+    get {
+      return ((int)(averageDamage * 100) / 100).ToString();
+    }
   }
 
-  Hit._(this._attack);
+  Hit(Attack _attack)
+  {
+    this._attack = _attack;
+  }
 
   void addStrike(int bonus) {
     _strikeBonus += bonus;
@@ -120,9 +129,8 @@ class Hit {
   ///
   /// Returns the amount of damage done if the attack connected or `null` if
   /// it missed.
-  int perform(Action action, Actor? attacker, Actor defender, {bool? canMiss}) {
-    canMiss ??= true;
-
+  int perform(Action action, Actor attacker, Actor defender, bool canMiss = true) 
+  {
     // If the attack itself doesn't have a noun ("the arrow hits"), use the
     // attacker ("the wolf bites").
     var attackNoun = (_attack.noun ?? attacker)!;
@@ -208,6 +216,10 @@ class Defense {
   public int amount;
   public string message;
 
-  Defense(this.amount, this.message);
+  Defense(int amount, string message)
+  {
+    this.amount = amount;
+    this.message = message;
+  }
 }
 

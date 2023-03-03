@@ -32,7 +32,12 @@ class BucketQueue<T> where T : class
     _bucket = Mathf.Min(_bucket, cost);
 
     // Grow the bucket array if needed.
-    if (_buckets.Capacity <= cost + 1) _buckets.Capacity = cost + 1;
+    if (_buckets.Count <= cost + 1)
+    {
+      var off = cost + 1 - _buckets.Count;
+      for (int i = 0; i < off; ++i)
+        _buckets.Add(null);
+    }
 
     // Find the bucket, or create it if needed.
     var bucket = _buckets[cost];
@@ -48,13 +53,13 @@ class BucketQueue<T> where T : class
   /// empty.
   T removeNext() {
     // Advance past any empty buckets.
-    while (_bucket < _buckets.Capacity && 
+    while (_bucket < _buckets.Count && 
         (_buckets[_bucket] == null || _buckets[_bucket].Count == 0)) {
       _bucket++;
     }
 
     // If we ran out of buckets, the queue is empty.
-    if (_bucket >= _buckets.Capacity) return null;
+    if (_bucket >= _buckets.Count) return null;
 
     return _buckets[_bucket].Dequeue();
   }
