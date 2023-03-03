@@ -258,26 +258,32 @@ class BreedFlags {
   public bool protective;
   public bool unique;
 
-  BreedFlags(
-      {required this.berzerk,
-      required this.cowardly,
-      required this.fearless,
-      required this.immobile,
-      required this.protective,
-      required this.unique});
+  BreedFlags(bool berzerk, bool cowardly, bool fearless, 
+            bool immobile, bool protective, bool unique)
+  {
+    this.berzerk = berzerk;
+    this.cowardly = cowardly;
+    this.fearless = fearless;
+    this.immobile = immobile;
+    this.protective = protective;
+    this.unique = unique;
+  }
 
   /// The way this set of flags affects the experience gained when killing a
   /// monster.
-  double get experienceScale {
-    var scale = 1.0;
+  double experienceScale {
+    get {
+      var scale = 1.0;
 
-    if (berzerk) scale *= 1.1;
-    if (cowardly) scale *= 0.9;
-    if (fearless) scale *= 1.05;
-    if (immobile) scale *= 0.7;
-    if (protective) scale *= 1.1;
+      if (berzerk) scale *= 1.1;
+      if (cowardly) scale *= 0.9;
+      if (fearless) scale *= 1.05;
+      if (immobile) scale *= 0.7;
+      if (protective) scale *= 1.1;
 
-    return scale;
+      return scale;
+    }
+
   }
 
   factory BreedFlags.fromSet(Set<string> names) {
@@ -299,13 +305,13 @@ class BreedFlags {
   }
 
   string toString() {
-    return [
-      if (berzerk) "berzerk",
-      if (cowardly) "cowardly",
-      if (fearless) "fearless",
-      if (immobile) "immobile",
-      if (protective) "protective",
-      if (unique) "unique",
-    ].join(" ");
+      return [
+        if (berzerk) "berzerk",
+        if (cowardly) "cowardly",
+        if (fearless) "fearless",
+        if (immobile) "immobile",
+        if (protective) "protective",
+        if (unique) "unique",
+      ].join(" ");
   }
 }

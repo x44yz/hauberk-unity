@@ -57,45 +57,54 @@ class HeroSave
     public will = Will();
 
     int emanationLevel {
-    var level = 0;
-
-    // Add the emanation of all equipment.
-    for (var item in equipment) {
-        level += item.emanationLevel;
-    }
-
-    return level;
+        get {
+            var level = 0;
+            // Add the emanation of all equipment.
+            foreach (var item in equipment) {
+                level += item.emanationLevel;
+            }
+            return level;
+        }
     }
 
     int armor {
-    var total = 0;
-    for (var item in equipment) {
-        total += item.armor;
-    }
+        get {
+            var total = 0;
+            foreach (var item in equipment) {
+                total += item.armor;
+            }
 
-    for (var skill in skills.acquired) {
-        total = skill.modifyArmor(this, skills.level(skill), total);
-    }
+            foreach (var skill in skills.acquired) {
+                total = skill.modifyArmor(this, skills.level(skill), total);
+            }
 
-    return total;
+            return total;
+        }
     }
 
     /// The total weight of all equipment.
     int weight {
-    var total = 0;
-    for (var item in equipment) {
-        total += item.weight;
+        get {
+            var total = 0;
+            foreach (var item in equipment) {
+                total += item.weight;
+            }
+
+            return total;
+        }
     }
 
-    return total;
-    }
+    HeroSave(string name, Race race, HeroClass heroClass)
+    {
+        this.name = name;
+        this.race = race;
+        this.heroClass = heroClass;
+        race = race.rollStats();
+        shops = {};
+        skills = SkillSet();
+        _lore = Lore();
 
-    HeroSave(this.name, Race race, this.heroClass)
-        : race = race.rollStats(),
-        shops = {},
-        skills = SkillSet(),
-        _lore = Lore() {
-    _bindStats();
+        _bindStats();
     }
 
     // TODO: Rename.
@@ -120,13 +129,13 @@ class HeroSave
     /// [Hero] has successfully completed a stage and his changes need to be
     /// "saved".
     void takeFrom(Hero hero) {
-    _inventory = hero.inventory;
-    _equipment = hero.equipment;
-    experience = hero.experience;
-    gold = hero.gold;
-    skills = hero.skills;
-    _lore = hero.lore;
-    maxDepth = hero.save.maxDepth;
+        _inventory = hero.inventory;
+        _equipment = hero.equipment;
+        experience = hero.experience;
+        gold = hero.gold;
+        skills = hero.skills;
+        _lore = hero.lore;
+        maxDepth = hero.save.maxDepth;
     }
 
     HeroSave clone() => HeroSave.load(
@@ -149,37 +158,37 @@ class HeroSave
 
     /// Gets the total permament resistance provided by all equipment.
     int equipmentResistance(Element element) {
-    // TODO: If class or race can affect this, add it in.
-    var resistance = 0;
+        // TODO: If class or race can affect this, add it in.
+        var resistance = 0;
 
-    for (var item in equipment) {
-        resistance += item.resistance(element);
-    }
+        foreach (var item in equipment) {
+            resistance += item.resistance(element);
+        }
 
-    // TODO: Unify this with onDefend().
+        // TODO: Unify this with onDefend().
 
-    return resistance;
+        return resistance;
     }
 
     /// Gets the total modifiers to [stat] provided by all equipment.
     int statBonus(Stat stat) {
-    var bonus = 0;
+        var bonus = 0;
 
-    // Let equipment modify it.
-    for (var item in equipment) {
-        if (item.prefix != null) bonus += item.prefix!.statBonus(stat);
-        if (item.suffix != null) bonus += item.suffix!.statBonus(stat);
-    }
+        // Let equipment modify it.
+        for (var item in equipment) {
+            if (item.prefix != null) bonus += item.prefix!.statBonus(stat);
+            if (item.suffix != null) bonus += item.suffix!.statBonus(stat);
+        }
 
-    return bonus;
+        return bonus;
     }
 
     void _bindStats() {
-    strength.bindHero(this);
-    agility.bindHero(this);
-    fortitude.bindHero(this);
-    intellect.bindHero(this);
-    will.bindHero(this);
+        strength.bindHero(this);
+        agility.bindHero(this);
+        fortitude.bindHero(this);
+        intellect.bindHero(this);
+        will.bindHero(this);
     }
 }
 

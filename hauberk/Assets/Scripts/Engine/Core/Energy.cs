@@ -42,7 +42,7 @@ class Energy {
 
     /// Spends a turn's worth of energy.
     void spend() {
-        DartUtil.assert(energy >= actionCost);
+        DartUtils.assert(energy >= actionCost);
         energy -= actionCost;
     }
 }
