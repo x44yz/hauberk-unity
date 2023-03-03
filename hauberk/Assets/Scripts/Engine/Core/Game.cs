@@ -9,16 +9,16 @@ class Game
   public Content content;
 
   public HeroSave _save;
-  public log = Log();
+  public Log log = new Log();
 
-  public _actions = Queue<Action>();
-  public _reactions = <Action>[];
+  public Queue<Action> _actions = new Queue<Action>();
+  public List<Action> _reactions = new List<Action>();
 
   /// The events that have occurred since the last call to [update()].
-  public _events = <Event>[];
+  public List<Event> _events = new List<Event>();
 
   /// The energy that tracks when the substances are ready to update.
-  public _substanceEnergy = Energy();
+  public Energy _substanceEnergy = new Energy();
 
   /// Substances work like a cellular automata. A normal cellular automata
   /// updates all cells simultaneously using double buffering. That wouldn't
@@ -29,7 +29,7 @@ class Game
   /// To handle that, we instead update substance cells one at a time. To avoid
   /// visible skew and artifacts from updating sequentially through the dungeon,
   /// we shuffle the cells and update them in random order. This is that order.
-  public List<Vec> _substanceUpdateOrder = [];
+  public List<Vec> _substanceUpdateOrder = new List<Vec>();
 
   /// While the game is processing substance tiles, this is the index of the
   /// current tile's position in [_substanceUpdateOrder]. Otherwise, this is
@@ -38,7 +38,7 @@ class Game
 
   public int depth;
 
-  Stage get stage => _stage;
+  Stage stage => _stage;
   Stage _stage;
   Hero hero;
 
@@ -164,16 +164,16 @@ class Game
   }
 
   void addEvent(EventType type,
-      {Actor? actor,
-      Element? element,
-      Object? other,
-      Vec? pos,
-      Direction? dir}) {
+      Actor actor,
+      Element element,
+      object other,
+      Vec pos,
+      Direction dir) {
     _events.add(Event(type, actor, element ?? Element.none, pos, dir, other));
   }
 
   GameResult makeResult(bool madeProgress) {
-    var result = GameResult(madeProgress);
+    var result = new GameResult(madeProgress);
     result.events.addAll(_events);
     _events.clear();
     return result;
@@ -254,7 +254,7 @@ abstract class Content {
 /// the UI what happened during that update and what it needs to do.
 class GameResult {
   /// The "interesting" events that occurred in this update.
-  public events = <Event>[];
+  public List<Event> events = new List<Event>();
 
   /// Whether or not any game state has changed. If this is `false`, then no
   /// game processing has occurred (i.e. the game is stuck waiting for user
@@ -263,9 +263,12 @@ class GameResult {
 
   /// Returns `true` if the game state has progressed to the point that a change
   /// should be shown to the user.
-  bool get needsRefresh => madeProgress || events.isNotEmpty;
+  public bool needsRefresh => madeProgress || events.Count > 0;
 
-  GameResult(this.madeProgress);
+  public GameResult(bool madeProgress)
+  {
+    this.madeProgress = madeProgress;
+  }
 }
 
 /// Describes a single "interesting" thing that occurred during a call to
@@ -281,7 +284,16 @@ class Event {
   public Vec? pos;
   public Direction? dir;
 
-  Event(this.type, this.actor, this.element, this.pos, this.dir, this.other);
+  public Event(EventType type, Actor actor, Element element, Vec pos, 
+            Direction dir, object other)
+  {
+    this.type = type;
+    this.actor = actor;
+    this.element = element;
+    this.pos = pos;
+    this.dir = dir;
+    this.other = other;
+  }
 }
 
 // TODO: Move to content.
