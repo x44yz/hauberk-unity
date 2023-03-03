@@ -12,9 +12,9 @@ class Stage {
 
     int _currentActorIndex = 0;
 
-    int width => tiles.width;
+    public int width => tiles.width;
 
-    int height => tiles.height;
+    public int height => tiles.height;
 
     Rect bounds => tiles.bounds;
 

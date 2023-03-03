@@ -41,7 +41,7 @@ abstract class Actor
       ];
 
   Vec _pos;
-  Vec pos {
+  public Vec pos {
     get { return _pos; }
     set {
         if (value != _pos) {
@@ -162,7 +162,7 @@ abstract class Actor
     return action;
   }
 
-  Action onGetAction();
+  Action onGetAction() = 0;
 
   /// Create a new [Hit] for this [Actor] to attempt to hit [defender].
   ///
@@ -221,7 +221,7 @@ abstract class Actor
     return result;
   }
 
-  int onGetResistance(Element element);
+  int onGetResistance(Element element) = 0;
 
   /// Reduces the actor's health by [damage], and handles its death. Returns
   /// `true` if the actor died.
@@ -311,7 +311,8 @@ abstract class Actor
   }
 
   /// Logs [message] if the actor is visible to the hero.
-  public void log(string message, params object[] objs) {
+  public void log(string message, params object[] objs) 
+  {
     if (!game.hero.canPerceive(this)) return;
     game.log.message(message, noun1, noun2, noun3);
   }

@@ -21,20 +21,20 @@ num getArmorMultiplier(int armor) {
 class Attack {
   /// The thing performing the attack. If `null`, then the attacker will be
   /// used.
-  final Noun? noun;
+  public Noun? noun;
 
   /// A verb string describing the attack: "hits", "fries", etc.
-  final String verb;
+  public string verb;
 
-  final int damage;
+  public int damage;
 
   // TODO: Some kind of minimum range would be good to prevent players from
   // using bows at close range and to make bows a little less powerful. However,
   // doing that requires figuring out what happens if a monster is within the
   // minimum range and the hero fires *past* it.
-  final int range;
+  public int range;
 
-  final Element element;
+  public Element element;
 
   Attack(this.noun, this.verb, this.damage, [int? range, Element? element])
       : range = range ?? 0,
@@ -44,7 +44,7 @@ class Attack {
 
   Hit createHit() => Hit._(this);
 
-  String toString() {
+  string toString() {
     var result = damage.toString();
     if (element != Element.none) result = "$element $result";
     if (range > 0) result += "@$range";
@@ -55,7 +55,7 @@ class Attack {
 enum HitType { melee, ranged, toss }
 
 class Hit {
-  final Attack _attack;
+  public Attack _attack;
 
   int _strikeBonus = 0;
   double _strikeScale = 1.0;
@@ -84,7 +84,7 @@ class Hit {
   // bonuses and stuff more explicitly there and get rid of this.
   /// The average amount of damage this hit causes, with two decimal points of
   /// precision.
-  String get damageString {
+  string get damageString {
     return ((averageDamage * 100).toInt() / 100).toString();
   }
 
@@ -205,8 +205,8 @@ class Hit {
 /// TODO: Flags for which kinds of attacks (melee, ranged, magic) the dodge
 /// can apply to?
 class Defense {
-  final int amount;
-  final String message;
+  public int amount;
+  public string message;
 
   Defense(this.amount, this.message);
 }

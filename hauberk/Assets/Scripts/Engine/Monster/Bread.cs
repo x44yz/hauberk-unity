@@ -29,7 +29,7 @@ class BreedRef {
 /// A single kind of [Monster] in the game.
 class Breed {
   public Pronoun pronoun;
-  string get name => Log.singular(_name);
+  public string name => Log.singular(_name);
 
   /// Untyped so the engine isn't coupled to how monsters appear.
   public Object appearance;
@@ -139,65 +139,67 @@ class Breed {
   ///
   /// The basic idea is that experience roughly correlates to how much damage
   /// the monster can dish out to the hero before it dies.
-  int get experience {
-    // The more health it has, the longer it can hurt the hero.
-    var exp = maxHealth.toDouble();
+  public int experience {
+    get {
+      // The more health it has, the longer it can hurt the hero.
+      var exp = maxHealth.toDouble();
 
-    // The more it can dodge, the longer it lives.
-    var totalDodge = dodge;
-    for (var defense in defenses) {
-      totalDodge += defense.amount;
+      // The more it can dodge, the longer it lives.
+      var totalDodge = dodge;
+      for (var defense in defenses) {
+        totalDodge += defense.amount;
+      }
+
+      exp *= 1.0 + totalDodge / 100.0;
+
+      // Faster monsters can hit the hero more often.
+      exp *= Energy.gains[Energy.normalSpeed + speed];
+
+      // Average the attacks, since they are selected randomly.
+      var attackTotal = 0.0;
+      for (var attack in attacks) {
+        // TODO: Take range into account?
+        attackTotal += attack.damage * attack.element.experience;
+      }
+
+      attackTotal /= attacks.length;
+
+      // Average the moves.
+      var moveTotal = 0.0;
+      var moveRateTotal = 0.0;
+      for (var move in moves) {
+        // Scale by the move rate. The less frequently a move can be performed,
+        // the less it affects experience.
+        moveTotal += move.experience / move.rate;
+        moveRateTotal += 1 / move.rate;
+      }
+
+      // Time spent using moves is not time spent attacking.
+      attackTotal *= 1.0 - moveRateTotal;
+
+      // Add in moves and attacks.
+      exp *= attackTotal + moveTotal;
+
+      // Take into account flags.
+      exp *= flags.experienceScale;
+
+      // TODO: Modify by motility?
+      // TODO: Modify by count?
+      // TODO: Modify by minions.
+
+      // Meandering monsters are worth less.
+      exp *= lerpDouble(meander, 0.0, 100.0, 1.0, 0.7);
+
+      // Scale it down arbitrarily to keep the numbers reasonable. This is tuned
+      // so that the weakest monsters can still have some variance in experience
+      // when rounded to an integer.
+      exp /= 40;
+
+      return exp.ceil();
     }
-
-    exp *= 1.0 + totalDodge / 100.0;
-
-    // Faster monsters can hit the hero more often.
-    exp *= Energy.gains[Energy.normalSpeed + speed];
-
-    // Average the attacks, since they are selected randomly.
-    var attackTotal = 0.0;
-    for (var attack in attacks) {
-      // TODO: Take range into account?
-      attackTotal += attack.damage * attack.element.experience;
-    }
-
-    attackTotal /= attacks.length;
-
-    // Average the moves.
-    var moveTotal = 0.0;
-    var moveRateTotal = 0.0;
-    for (var move in moves) {
-      // Scale by the move rate. The less frequently a move can be performed,
-      // the less it affects experience.
-      moveTotal += move.experience / move.rate;
-      moveRateTotal += 1 / move.rate;
-    }
-
-    // Time spent using moves is not time spent attacking.
-    attackTotal *= 1.0 - moveRateTotal;
-
-    // Add in moves and attacks.
-    exp *= attackTotal + moveTotal;
-
-    // Take into account flags.
-    exp *= flags.experienceScale;
-
-    // TODO: Modify by motility?
-    // TODO: Modify by count?
-    // TODO: Modify by minions.
-
-    // Meandering monsters are worth less.
-    exp *= lerpDouble(meander, 0.0, 100.0, 1.0, 0.7);
-
-    // Scale it down arbitrarily to keep the numbers reasonable. This is tuned
-    // so that the weakest monsters can still have some variance in experience
-    // when rounded to an integer.
-    exp /= 40;
-
-    return exp.ceil();
   }
 
-  Monster spawn(Game game, Vec pos, [Monster? parent]) {
+  Monster spawn(Game game, Vec pos, Monster parent = null) {
     var generation = 1;
     if (parent != null) generation = parent.generation + 1;
 

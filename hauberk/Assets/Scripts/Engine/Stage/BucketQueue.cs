@@ -19,19 +19,20 @@ using UnityEngine;
 ///
 /// * https://en.wikipedia.org/wiki/Bucket_queue
 /// * https://www.redblobgames.com/pathfinding/a-star/implementation.html#algorithm
-class BucketQueue<T> {
+class BucketQueue<T> where T : class
+{
   public List<Queue<T>> _buckets = new List<Queue<T>>();
   int _bucket = 0;
 
   void reset() {
-    _buckets.clear();
+    _buckets.Clear();
   }
 
   void add(T value, int cost) {
     _bucket = Mathf.Min(_bucket, cost);
 
     // Grow the bucket array if needed.
-    if (_buckets.Count <= cost + 1) _buckets.length = cost + 1;
+    if (_buckets.Capacity <= cost + 1) _buckets.Capacity = cost + 1;
 
     // Find the bucket, or create it if needed.
     var bucket = _buckets[cost];
@@ -40,20 +41,21 @@ class BucketQueue<T> {
       _buckets[cost] = bucket;
     }
 
-    bucket.add(value);
+    bucket.Enqueue(value);
   }
 
   /// Removes the best item from the queue or returns `null` if the queue is
   /// empty.
-  T? removeNext() {
+  T removeNext() {
     // Advance past any empty buckets.
-    while (_bucket < _buckets.length && (_buckets[_bucket]?.isEmpty ?? true)) {
+    while (_bucket < _buckets.Capacity && 
+        (_buckets[_bucket] == null || _buckets[_bucket].Count == 0)) {
       _bucket++;
     }
 
     // If we ran out of buckets, the queue is empty.
-    if (_bucket >= _buckets.length) return null;
+    if (_bucket >= _buckets.Capacity) return null;
 
-    return _buckets[_bucket]!.removeFirst();
+    return _buckets[_bucket].Dequeue();
   }
 }

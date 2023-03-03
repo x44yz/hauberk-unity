@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// A two-dimensional fixed-size array of elements of type [T].
 ///
@@ -10,37 +9,43 @@ using UnityEngine;
 ///
 /// Internally, the elements are stored in a single contiguous list in row-major
 /// order.
-class Array2D<T> extends IterableBase<T> {
+class Array2D<T> {
     /// The number of elements in a row of the array.
-    int get width => bounds.width;
+    public int width => bounds.width;
 
     /// The number of elements in a column of the array.
-    int get height => bounds.height;
+    public int height => bounds.height;
 
-    final List<T> _elements;
+    public List<T> _elements;
 
     /// Creates a new array with [width], [height] elements initialized to
     /// [value].
     Array2D(int width, int height, T value)
-        : bounds = Rect(0, 0, width, height),
-            _elements = List<T>.filled(width * height, value);
+    {
+        bounds = new Rect(0, 0, width, height);
+        _elements = new List<T>(width * height);
+        for (int i = 0; i < _elements.Capacity; ++i)
+            _elements.Add(value);
+    }
 
     /// Creates a new array with [width], [height] elements initialized to the
     /// result of calling [generator] on each element.
     Array2D.generated(int width, int height, T Function(Vec) generator)
-        : bounds = Rect(0, 0, width, height),
-            _elements = width * height > 0
+    {
+        bounds = Rect(0, 0, width, height),
+        _elements = width * height > 0
                 ? List<T>.filled(width * height, generator(Vec.zero))
-                : List<T>.empty() {
+                : List<T>.empty() 
+
         // Don't call generator() on the first cell twice.
         for (var x = 1; x < width; x++) {
-        set(x, 0, generator(Vec(x, 0)));
+            set(x, 0, generator(Vec(x, 0)));
         }
 
         for (var y = 1; y < height; y++) {
-        for (var x = 0; x < width; x++) {
-            set(x, y, generator(Vec(x, y)));
-        }
+            for (var x = 0; x < width; x++) {
+                set(x, y, generator(Vec(x, y)));
+            }
         }
     }
 
@@ -48,18 +53,18 @@ class Array2D<T> extends IterableBase<T> {
     T operator [](Vec pos) => get(pos.x, pos.y);
 
     /// Sets the element at [pos].
-    void operator []=(Vec pos, T value) => set(pos.x, pos.y, value);
+    public static void operator []=(Vec pos, T value) => set(pos.x, pos.y, value);
 
     /// A [Rect] whose bounds cover the full range of valid element indexes.
-    final Rect bounds;
+    public Rect bounds;
     // Store the bounds rect instead of simply the width and height because this
     // is accessed very frequently and avoids allocating a new Rect each time.
 
     /// The size of the array.
-    Vec get size => bounds.size;
+    Vec size => bounds.size;
 
     /// Gets the element in the array at [x], [y].
-    T get(int x, int y) {
+    public T get(int x, int y) {
         _checkBounds(x, y);
         return _elements[y * width + x];
     }
