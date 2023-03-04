@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-typedef TossItemUse = Action Function(Vec pos);
-typedef AddItem = void Function(Item item);
+using TossItemUse = System.Func<Vec, Action>;
+using AddItem = System.Action<Item>;
 
 abstract class Drop {
-    void dropItem(int depth, AddItem addItem);
+    public abstract void dropItem(int depth, AddItem addItem);
 }
 
-class ItemUse {
+public class ItemUse {
     public string description;
-    public Action Function() createAction;
+    public System.Func<Action> createAction;
 
-    ItemUse(this.description, this.createAction);
+    public ItemUse(string description, System.Func<Action> createAction)
+    {
+        this.description = description;
+        this.createAction = createAction;
+    }
 }
 
 /// Tracks information about a tossable [ItemType].
@@ -29,7 +32,12 @@ class Toss {
     /// if it just falls to the ground.
     public TossItemUse? use;
 
-    Toss(this.breakage, this.attack, this.use);
+    public Toss(int breakage, Attack attack, TossItemUse use)
+    {
+        this.breakage = breakage;
+        this.attack = attack;
+        this.use = use;
+    }
 }
 
 /// A kind of [Item]. Each item will have a type that describes the item.
@@ -43,7 +51,7 @@ public class ItemType {
     /// This is used to identify the item type in drops, affixes, etc.
     string name => Log.singular(quantifiableName);
 
-    public Object appearance;
+    public object appearance;
 
     /// The item types's depth.
     ///
@@ -110,32 +118,48 @@ public class ItemType {
     public int fuel;
 
     /// The [Skill]s discovered when picking up an item of this type.
-    public List<Skill> skills = [];
+    public List<Skill> skills = new List<Skill>();
 
     ItemType(
-        this.quantifiableName,
-        this.appearance,
-        this.depth,
-        this.sortIndex,
-        this.equipSlot,
-        this.weaponType,
-        this.use,
-        this.attack,
-        this.toss,
-        this.defense,
-        this.armor,
-        this.price,
-        this.maxStack,
-        {this.weight = 0,
-        this.heft = 1,
-        int? emanation,
-        int? fuel,
-        bool? treasure,
-        bool? twoHanded})
-        : emanationLevel = emanation ?? 0,
-        fuel = fuel ?? 0,
-        isTreasure = treasure ?? false,
+        string quantifiableName,
+        object appearance,
+        int depth,
+        int sortIndex,
+        string equipSlot,
+        string weaponType,
+        ItemUse use,
+        Attack attack,
+        Toss toss,
+        Defense defense,
+        int armor,
+        int price,
+        int maxStack,
+        int weight = 0,
+        int heft = 1,
+        int? emanation = null,
+        int? fuel = null,
+        bool? treasure = null,
+        bool? twoHanded = null)
+    {
+        this.quantifiableName = quantifiableName;
+        this.appearance = appearance;
+        this.depth = depth;
+        this.sortIndex = sortIndex;
+        this.equipSlot = equipSlot;
+        this.weaponType = weaponType;
+        this.use = use;
+        this.attack = attack;
+        this.toss = toss;
+        this.defense = defense;
+        this.armor = armor;
+        this.price = price;
+        this.maxStack = maxStack;
+
+        emanationLevel = emanation ?? 0;
+        fuel = fuel ?? 0;
+        isTreasure = treasure ?? false;
         isTwoHanded = twoHanded ?? false;
+    }
 
     string toString() => name;
 }

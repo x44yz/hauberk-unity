@@ -67,7 +67,7 @@ public class HeroSave
         }
     }
 
-    int armor {
+    public int armor {
         get {
             var total = 0;
             foreach (var item in equipment) {

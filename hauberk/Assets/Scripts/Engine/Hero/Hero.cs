@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The main player-controlled [Actor]. The player's avatar in the game world.
-class Hero : Actor {
+public class Hero : Actor {
   /// The highest level the hero can reach.
-  static const maxLevel = 50;
+  public const int maxLevel = 50;
 
   public HeroSave save;
 
@@ -34,7 +34,7 @@ class Hero : Actor {
        _stomach = Mathf.Clamp(value, 0, Option.heroMaxStomach);
     }
   }
-  int _stomach = Option.heroMaxStomach ~/ 2;
+  int _stomach = Option.heroMaxStomach / 2;
 
   /// How calm and centered the hero is. Mental skills like spells spend focus.
   int focus => _focus;
@@ -129,8 +129,8 @@ class Hero : Actor {
   }
 
   /// The hero's experience level.
-  int level => _level.value;
-  public _level = Property<int>();
+  public int level => _level.value;
+  public Property<int> _level = new Property<int>();
 
   int armor => save.armor;
 

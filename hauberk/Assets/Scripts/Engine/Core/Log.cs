@@ -11,7 +11,7 @@ public class Log {
   ///     singular("dog");           // "dog"
   ///     singular("dogg[y|ies]");   // "doggy"
   ///     singular("cockroach[es]"); // "cockroach"
-  static string singular(string text) => _categorize(text, isFirst: true);
+  public static string singular(string text) => _categorize(text, isFirst: true);
 
   /// Conjugates the verb pattern in [text] to agree with [pronoun].
   static string conjugate(string text, Pronoun pronoun) {
