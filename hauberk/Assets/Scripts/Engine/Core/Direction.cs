@@ -27,7 +27,7 @@ public class Direction : Vec {
     {
     }
 
-    Direction rotateLeft45 {
+    public Direction rotateLeft45 {
         get {
             if (this == none) return none;
             else if (this == n) return nw;
@@ -44,7 +44,7 @@ public class Direction : Vec {
         }
     }
 
-    Direction rotateRight45 {
+    public Direction rotateRight45 {
         get {
             if (this == none) return none;
             if (this == n) return ne;
@@ -61,7 +61,7 @@ public class Direction : Vec {
         }
     }
 
-    Direction rotateLeft90 {
+    public Direction rotateLeft90 {
         get {
             if (this == none) return none;
             else if (this == n) return w;
@@ -78,7 +78,7 @@ public class Direction : Vec {
         }
     }
 
-    Direction rotateRight90 {
+    public Direction rotateRight90 {
         get {
             if (this == none) return none;
             else if (this == n) return e;
@@ -95,7 +95,7 @@ public class Direction : Vec {
         }
     }
 
-    Direction rotate180 {
+    public Direction rotate180 {
         get {
             if (this == none) return none;
             else if (this == n) return s;
@@ -112,7 +112,7 @@ public class Direction : Vec {
         }
     }
 
-    string toString() {
+    public string toString() {
         if (this == none) return "none";
         else if (this == n) return "n";
         else if (this == ne) return "ne";

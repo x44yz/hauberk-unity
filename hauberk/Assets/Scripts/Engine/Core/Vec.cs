@@ -66,45 +66,47 @@ public class VecBase
     ///         /  '  |  '  \
     ///       sw -2.0   2.0  se
     ///               s
-    // Direction nearestDirection {
-    //     if (x == 0) {
-    //     if (y < 0) {
-    //         return Direction.n;
-    //     } else if (y == 0) {
-    //         return Direction.none;
-    //     } else {
-    //         return Direction.s;
-    //     }
-    //     }
+    Direction nearestDirection {
+        get {
+            if (x == 0) {
+                if (y < 0) {
+                    return Direction.n;
+                } else if (y == 0) {
+                    return Direction.none;
+                } else {
+                    return Direction.s;
+                }
+            }
 
-    //     var slope = y / x;
+            var slope = y / x;
 
-    //     if (x < 0) {
-    //     if (slope >= 2.0) {
-    //         return Direction.n;
-    //     } else if (slope >= 0.5) {
-    //         return Direction.nw;
-    //     } else if (slope >= -0.5) {
-    //         return Direction.w;
-    //     } else if (slope >= -2.0) {
-    //         return Direction.sw;
-    //     } else {
-    //         return Direction.s;
-    //     }
-    //     } else {
-    //     if (slope >= 2.0) {
-    //         return Direction.s;
-    //     } else if (slope >= 0.5) {
-    //         return Direction.se;
-    //     } else if (slope >= -0.5) {
-    //         return Direction.e;
-    //     } else if (slope >= -2.0) {
-    //         return Direction.ne;
-    //     } else {
-    //         return Direction.n;
-    //     }
-    //     }
-    // }
+            if (x < 0) {
+                if (slope >= 2.0) {
+                    return Direction.n;
+                } else if (slope >= 0.5) {
+                    return Direction.nw;
+                } else if (slope >= -0.5) {
+                    return Direction.w;
+                } else if (slope >= -2.0) {
+                    return Direction.sw;
+                } else {
+                    return Direction.s;
+                }
+            } else {
+                if (slope >= 2.0) {
+                    return Direction.s;
+                } else if (slope >= 0.5) {
+                    return Direction.se;
+                } else if (slope >= -0.5) {
+                    return Direction.e;
+                } else if (slope >= -2.0) {
+                    return Direction.ne;
+                } else {
+                    return Direction.n;
+                }
+            }
+        }
+    }
 
     /// The eight Vecs surrounding this one to the north, south, east, and west
     /// and points in between.
@@ -120,11 +122,11 @@ public class VecBase
     // List<Vec> intercardinalNeighbors =>
     //     [for (var direction in Direction.intercardinal) this + direction];
 
-    /// Scales this Vec by [other].
-    // Vec operator *(int other) => Vec(x * other, y * other);
+     /// Scales this Vec by [other].
+    public static Vec operator *(VecBase a, int other) => new Vec(a.x * other, a.y * other);
 
-    // /// Scales this Vec by [other].
-    // Vec operator ~/(int other) => Vec(x ~/ other, y ~/ other);
+    /// Scales this Vec by [other].
+    public static Vec operator /(VecBase a, int other) => new Vec(a.x / other, a.y / other);
 
     /// Adds [other] to this Vec.
     ///
@@ -132,15 +134,8 @@ public class VecBase
     ///  *  If [other] is an [int], adds that value to both coordinates.
     ///
     /// Any other type is an error.
-    // Vec operator +(Object other) {
-    //     if (other is VecBase) {
-    //     return Vec(x + other.x, y + other.y);
-    //     } else if (other is int) {
-    //     return Vec(x + other, y + other);
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static Vec operator +(VecBase a, VecBase other) => new Vec(a.x + other.x, a.y + other.y);
+    public static Vec operator +(VecBase a, int other) => new Vec(a.x + other, a.y + other);
 
     /// Substracts [other] from this Vec.
     ///
@@ -149,95 +144,60 @@ public class VecBase
     ///  *  If [other] is an [int], subtracts that value from both coordinates.
     ///
     /// Any other type is an error.
-    // Vec operator -(Object other) {
-    //     if (other is VecBase) {
-    //     return Vec(x - other.x, y - other.y);
-    //     } else if (other is int) {
-    //     return Vec(x - other, y - other);
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static Vec operator -(VecBase a, VecBase other) => new Vec(a.x - other.x, a.y - other.y);
+    public static Vec operator -(VecBase a, int other) => new Vec(a.x - other, a.y - other);
 
     /// Returns `true` if the magnitude of this vector is greater than [other].
-    // bool operator >(Object other) {
-    //     if (other is VecBase) {
-    //     return lengthSquared > other.lengthSquared;
-    //     } else if (other is num) {
-    //     return lengthSquared > other * other;
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static bool operator >(VecBase a, VecBase other) => a.lengthSquared > other.lengthSquared;
+    public static bool operator >(VecBase a, float other) => a.lengthSquared > other * other;
 
     /// Returns `true` if the magnitude of this vector is greater than or equal
     /// to [other].
-    // bool operator >=(Object other) {
-    //     if (other is VecBase) {
-    //     return lengthSquared >= other.lengthSquared;
-    //     } else if (other is num) {
-    //     return lengthSquared >= other * other;
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static bool operator >=(VecBase a, VecBase other) => a.lengthSquared >= other.lengthSquared;
+    public static bool operator >=(VecBase a, float other) => a.lengthSquared >= other * other;
 
     /// Returns `true` if the magnitude of this vector is less than [other].
-    // bool operator <(Object other) {
-    //     if (other is VecBase) {
-    //     return lengthSquared < other.lengthSquared;
-    //     } else if (other is num) {
-    //     return lengthSquared < other * other;
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static bool operator <(VecBase a, VecBase other) => a.lengthSquared < other.lengthSquared;
+    public static bool operator <(VecBase a, float other) => a.lengthSquared < other * other;
 
     /// Returns `true` if the magnitude of this vector is less than or equal to
     /// [other].
-    // bool operator <=(Object other) {
-    //     if (other is VecBase) {
-    //     return lengthSquared <= other.lengthSquared;
-    //     } else if (other is num) {
-    //     return lengthSquared <= other * other;
-    //     }
-
-    //     throw ArgumentError("Operand must be an int or VecBase.");
-    // }
+    public static bool operator <=(VecBase a, VecBase other) => a.lengthSquared <= other.lengthSquared;
+    public static bool operator <=(VecBase a, float other) => a.lengthSquared <= other * other;
 
     /// Returns `true` if [pos] is within a rectangle from (0,0) to this vector
     /// (half-inclusive).
-    // bool contains(Vec pos) {
-    //     var left = math.min(0, x);
-    //     if (pos.x < left) return false;
+    bool contains(Vec pos) {
+        var left = Mathf.Min(0, x);
+        if (pos.x < left) return false;
 
-    //     var right = math.max(0, x);
-    //     if (pos.x >= right) return false;
+        var right = Mathf.Max(0, x);
+        if (pos.x >= right) return false;
 
-    //     var top = math.min(0, y);
-    //     if (pos.y < top) return false;
+        var top = Mathf.Min(0, y);
+        if (pos.y < top) return false;
 
-    //     var bottom = math.max(0, y);
-    //     if (pos.y >= bottom) return false;
+        var bottom = Mathf.Max(0, y);
+        if (pos.y >= bottom) return false;
 
-    //     return true;
-    // }
+        return true;
+    }
 
     /// Returns a new [Vec] with the absolute value of the coordinates of this
     /// one.
-    // Vec abs() => Vec(x.abs(), y.abs());
+    Vec abs() => new Vec(Mathf.Abs(x), Mathf.Abs(y));
 
     /// Returns a new [Vec] whose coordinates are this one's translated by [x] and
     /// [y].
-    // Vec offset(int x, int y) => Vec(this.x + x, this.y + y);
+    Vec offset(int x, int y) => new Vec(this.x + x, this.y + y);
 
     /// Returns a new [Vec] whose coordinates are this one's but with the X
     /// coordinate translated by [x].
-    // Vec offsetX(int x) => Vec(this.x + x, y);
+    Vec offsetX(int x) => new Vec(this.x + x, y);
 
     /// Returns a new [Vec] whose coordinates are this one's but with the Y
     /// coordinate translated by [y].
-    // Vec offsetY(int y) => Vec(x, this.y + y);
+    Vec offsetY(int y) => new Vec(x, this.y + y);
 
     string toString() => $"{x}, {y}";
 }

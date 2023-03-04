@@ -116,14 +116,16 @@ class Hero : Actor {
   }
 
   // TODO: Hackish.
-  Object appearance => 'hero';
+  object appearance => "hero";
 
   bool needsInput {
-    if (_behavior != null && !_behavior!.canPerform(this)) {
-      waitForInput();
-    }
+    get {
+      if (_behavior != null && !_behavior!.canPerform(this)) {
+        waitForInput();
+      }
 
-    return _behavior == null;
+      return _behavior == null;
+    }
   }
 
   /// The hero's experience level.
@@ -337,7 +339,8 @@ class Hero : Actor {
   }
 
   /// Starts resting, if the hero has eaten and is able to regenerate.
-  bool rest() {
+  bool rest() 
+  {
     if (poison.isActive) {
       game.log
           .error("You cannot rest while poison courses through your veins!");
@@ -363,7 +366,8 @@ class Hero : Actor {
   }
 
   public void disturb() {
-    if (_behavior is! ActionBehavior) waitForInput();
+    if (_behavior is! ActionBehavior) 
+      waitForInput();
   }
 
   void seeMonster(Monster monster) {
