@@ -16,17 +16,17 @@ class ResourceSet<T> {
   Iterable<T> get all => _resources.values.map((resource) => resource.object);
 
   void add(T obj,
-      string name = null, int? depth, double? frequency, string tags = null)
+      string name = null, int? depth = null, double? frequency = null, string tags = null)
   {
     _add(obj, name, depth, depth, frequency, frequency, tags);
   }
 
   void addRanged(T obj,
       string name = null,
-      int? start,
-      int? end,
-      double? startFrequency,
-      double? endFrequency,
+      int? start = null,
+      int? end = null,
+      double? startFrequency = null,
+      double? endFrequency = null,
       string tags = null) {
     _add(obj, name, start, end, startFrequency, endFrequency, tags);
   }
@@ -80,14 +80,14 @@ class ResourceSet<T> {
   T find(string name) {
     var resource = _resources[name];
     if (resource == null) throw ArgumentError('Unknown resource "$name".');
-    return resource.object;
+    return resource.obj;
   }
 
   /// Returns the resource with [name], if any, or else `null`.
   T? tryFind(string name) {
     var resource = _resources[name];
-    if (resource == null) return null;
-    return resource.object;
+    if (resource == null) return default(T);
+    return resource.obj;
   }
 
   /// Returns whether the resource with [name] has [tagName] as one of its
@@ -109,7 +109,7 @@ class ResourceSet<T> {
     return resource._tags.map((tag) => tag.name);
   }
 
-  bool tagExists(string tagName) => _tags.containsKey(tagName);
+  bool tagExists(string tagName) => _tags.ContainsKey(tagName);
 
   /// Chooses a random resource in [tag] for [depth].
   ///
@@ -295,9 +295,13 @@ class _Resource<T> {
 
 class _Tag<T> {
   public string name;
-  public _Tag<T>? parent;
+  public _Tag<T> parent;
 
-  _Tag(this.name, this.parent);
+  _Tag(string name, _Tag<T> parent)
+  {
+    this.name = name;
+    this.parent = parent;
+  }
 
   /// Returns `true` if this tag is [tag] or one of this tag's parents is.
   bool contains(_Tag<T> tag) {
@@ -310,7 +314,7 @@ class _Tag<T> {
 
   string toString() {
     if (parent == null) return name;
-    return "$parent/$name";
+    return $"{parent}/{name}";
   }
 }
 

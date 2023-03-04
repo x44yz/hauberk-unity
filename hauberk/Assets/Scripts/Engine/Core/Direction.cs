@@ -29,155 +29,101 @@ public class Direction : Vec {
 
     Direction rotateLeft45 {
         get {
-            switch (this) {
-            case none:
-                return none;
-            case n:
-                return nw;
-            case ne:
-                return n;
-            case e:
-                return ne;
-            case se:
-                return e;
-            case s:
-                return se;
-            case sw:
-                return s;
-            case w:
-                return sw;
-            case nw:
-                return w;
-            }
-
-            throw "unreachable";
+            if (this == none) return none;
+            else if (this == n) return nw;
+            else if (this == ne) return n;
+            else if (this == e) return ne;
+            else if (this == se) return e;
+            else if (this == s) return se;
+            else if (this == sw) return s;
+            else if (this == w) return sw;
+            else if (this == nw) return w;
+            
+            Debug.LogError("unreachable > " + this);
+            return this;
         }
     }
 
     Direction rotateRight45 {
-        switch (this) {
-        case none:
-            return none;
-        case n:
-            return ne;
-        case ne:
-            return e;
-        case e:
-            return se;
-        case se:
-            return s;
-        case s:
-            return sw;
-        case sw:
-            return w;
-        case w:
-            return nw;
-        case nw:
-            return n;
-        }
+        get {
+            if (this == none) return none;
+            if (this == n) return ne;
+            if (this == ne) return e;
+            if (this == e) return se;
+            if (this == se) return s;
+            if (this == s) return sw;
+            if (this == sw) return w;
+            if (this == w) return nw;
+            if (this == nw) return n;
 
-        throw "unreachable";
+            Debug.LogError("unreachable > " + this);
+            return this;
+        }
     }
 
     Direction rotateLeft90 {
-        switch (this) {
-        case none:
-            return none;
-        case n:
-            return w;
-        case ne:
-            return nw;
-        case e:
-            return n;
-        case se:
-            return ne;
-        case s:
-            return e;
-        case sw:
-            return se;
-        case w:
-            return s;
-        case nw:
-            return sw;
-        }
+        get {
+            if (this == none) return none;
+            else if (this == n) return w;
+            else if (this == ne) return nw;
+            else if (this == e) return n;
+            else if (this == se) return ne;
+            else if (this == s) return e;
+            else if (this == sw) return se;
+            else if (this == w) return s;
+            else if (this == nw) return sw;
 
-        throw "unreachable";
+            Debug.LogError("unreachable > " + this);
+            return this;
+        }
     }
 
     Direction rotateRight90 {
-        switch (this) {
-        case none:
-            return none;
-        case n:
-            return e;
-        case ne:
-            return se;
-        case e:
-            return s;
-        case se:
-            return sw;
-        case s:
-            return w;
-        case sw:
-            return nw;
-        case w:
-            return n;
-        case nw:
-            return ne;
-        }
+        get {
+            if (this == none) return none;
+            else if (this == n) return e;
+            else if (this == ne) return se;
+            else if (this == e) return s;
+            else if (this == se) return sw;
+            else if (this == s) return w;
+            else if (this == sw) return nw;
+            else if (this == w) return n;
+            else if (this == nw) return ne;
 
-        throw "unreachable";
+            Debug.LogError("unreachable > " + this);
+            return this;
+        }
     }
 
     Direction rotate180 {
         get {
-            switch (this) {
-            case none:
-                return none;
-            case n:
-                return s;
-            case ne:
-                return sw;
-            case e:
-                return w;
-            case se:
-                return nw;
-            case s:
-                return n;
-            case sw:
-                return ne;
-            case w:
-                return e;
-            case nw:
-                return se;
-            }
+            if (this == none) return none;
+            else if (this == n) return s;
+            else if (this == ne) return sw;
+            else if (this == e) return w;
+            else if (this == se) return nw;
+            else if (this == s) return n;
+            else if (this == sw) return ne;
+            else if (this == w) return e;
+            else if (this == nw) return se;
 
-            throw "unreachable";
+            Debug.LogError("unreachable > " + this);
+            return this;
         }
     }
 
     string toString() {
-        switch (this) {
-        case none:
-            return "none";
-        case n:
-            return "n";
-        case ne:
-            return "ne";
-        case e:
-            return "e";
-        case se:
-            return "se";
-        case s:
-            return "s";
-        case sw:
-            return "sw";
-        case w:
-            return "w";
-        case nw:
-            return "nw";
-        }
+        if (this == none) return "none";
+        else if (this == n) return "n";
+        else if (this == ne) return "ne";
+        else if (this == e) return "e";
+        else if (this == se) return "se";
+        else if (this == s) return "s";
+        else if (this == sw) return "sw";
+        else if (this == w) return "w";
+        else if (this == nw) return "nw";
 
-        throw "unreachable";
+        Debug.LogError("unreachable > " + this);
+        return "unreachable";
     }
 }
