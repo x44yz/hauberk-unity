@@ -24,7 +24,7 @@ class BucketQueue<T> where T : class
   public List<Queue<T>> _buckets = new List<Queue<T>>();
   int _bucket = 0;
 
-  void reset() {
+  public void reset() {
     _buckets.Clear();
   }
 

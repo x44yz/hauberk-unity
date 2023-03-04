@@ -3,51 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 class ResourceSet<T> {
-  final Map<String, _Tag<T>> _tags = {};
-  final Map<String, _Resource<T>> _resources = {};
+  public Dictionary<string, _Tag<T>> _tags = new Dictionary<string, _Tag<T>>();
+  public Dictionary<string, _Resource<T>> _resources = new Dictionary<string, _Resource<T>>();
 
   // TODO: Evict old queries from the cache if it gets too large.
-  final Map<_QueryKey, _ResourceQuery<T>> _queries = {};
+  public Dictionary<_QueryKey, _ResourceQuery<T>> _queries = new Dictionary<_QueryKey, _ResourceQuery<T>>();
 
-  bool get isEmpty => _resources.isEmpty;
+  bool isEmpty => _resources.Count == 0;
 
-  bool get isNotEmpty => _resources.isNotEmpty;
+  bool isNotEmpty => _resources.Count != 0;
 
   Iterable<T> get all => _resources.values.map((resource) => resource.object);
 
-  void add(T object,
-      {String? name, int? depth, double? frequency, String? tags}) {
-    _add(object, name, depth, depth, frequency, frequency, tags);
+  void add(T obj,
+      string name = null, int? depth, double? frequency, string tags = null)
+  {
+    _add(obj, name, depth, depth, frequency, frequency, tags);
   }
 
-  void addRanged(T object,
-      {String? name,
+  void addRanged(T obj,
+      string name = null,
       int? start,
       int? end,
       double? startFrequency,
       double? endFrequency,
-      String? tags}) {
-    _add(object, name, start, end, startFrequency, endFrequency, tags);
+      string tags = null) {
+    _add(obj, name, start, end, startFrequency, endFrequency, tags);
   }
 
-  void _add(T object, String? name, int? startDepth, int? endDepth,
-      double? startFrequency, double? endFrequency, String? tags) {
-    name ??= _resources.length.toString();
+  void _add(T obj, string name, int? startDepth, int? endDepth,
+      double? startFrequency, double? endFrequency, string tags)
+  {
+    name ??= _resources.Count.ToString();
     startDepth ??= 1;
     endDepth ??= startDepth;
     startFrequency ??= 1.0;
     endFrequency ??= startFrequency;
 
-    if (_resources.containsKey(name)) {
+    if (_resources.ContainsKey(name)) {
       throw ArgumentError('Already have a resource named "$name".');
     }
 
     var resource =
-        _Resource(object, startDepth, endDepth, startFrequency, endFrequency);
+        new _Resource(obj, startDepth, endDepth, startFrequency, endFrequency);
     _resources[name] = resource;
 
     if (tags != null && tags != "") {
-      for (var tagName in tags.split(" ")) {
+      foreach (var tagName in tags.Split(' ')) {
         var tag = _tags[tagName];
         if (tag == null) throw ArgumentError('Unknown tag "$tagName".');
         resource._tags.add(tag);
@@ -58,7 +60,7 @@ class ResourceSet<T> {
   /// Given a string like "a/b/c d/e" defines tags for "a", "b", "c", "d", and
   /// "e" (if not already defined) and wires them up such that "c"'s parent is
   /// "b", "b"'s is "a", and "e"'s parent is "d".
-  void defineTags(String paths) {
+  void defineTags(string paths) {
     for (var path in paths.split(" ")) {
       _Tag<T>? parent;
       _Tag<T>? tag;
@@ -75,14 +77,14 @@ class ResourceSet<T> {
   }
 
   /// Returns the resource with [name].
-  T find(String name) {
+  T find(string name) {
     var resource = _resources[name];
     if (resource == null) throw ArgumentError('Unknown resource "$name".');
     return resource.object;
   }
 
   /// Returns the resource with [name], if any, or else `null`.
-  T? tryFind(String name) {
+  T? tryFind(string name) {
     var resource = _resources[name];
     if (resource == null) return null;
     return resource.object;
@@ -90,7 +92,7 @@ class ResourceSet<T> {
 
   /// Returns whether the resource with [name] has [tagName] as one of its
   /// immediate tags or one of their parents.
-  bool hasTag(String name, String tagName) {
+  bool hasTag(string name, string tagName) {
     var resource = _resources[name];
     if (resource == null) throw ArgumentError('Unknown resource "$name".');
 
@@ -101,13 +103,13 @@ class ResourceSet<T> {
   }
 
   /// Gets the names of the tags for the resource with [name].
-  Iterable<String> getTags(String name) {
+  Iterable<string> getTags(string name) {
     var resource = _resources[name];
     if (resource == null) throw ArgumentError('Unknown resource "$name".');
     return resource._tags.map((tag) => tag.name);
   }
 
-  bool tagExists(String tagName) => _tags.containsKey(tagName);
+  bool tagExists(string tagName) => _tags.containsKey(tagName);
 
   /// Chooses a random resource in [tag] for [depth].
   ///
@@ -126,7 +128,7 @@ class ResourceSet<T> {
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  T? tryChoose(int depth, {String? tag, bool? includeParents}) {
+  T? tryChoose(int depth, {string? tag, bool? includeParents}) {
     includeParents ??= true;
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
@@ -164,7 +166,7 @@ class ResourceSet<T> {
   /// For example, given tag path "equipment/weapon/sword", if [tags] is
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
-  T? tryChooseMatching(int depth, Iterable<String> tags) {
+  T? tryChooseMatching(int depth, Iterable<string> tags) {
     var tagObjects = tags.map((name) {
       var tag = _tags[name];
       if (tag == null) throw ArgumentError('Unknown tag "$name".');
@@ -184,7 +186,7 @@ class ResourceSet<T> {
   }
 
   T? _runQuery(
-      String name, int depth, double Function(_Resource<T> resource) scale) {
+      string name, int depth, double Function(_Resource<T> resource) scale) {
     // Reuse a cached query, if possible.
     var key = _QueryKey(name, depth);
     var query = _queries[key];
@@ -221,26 +223,34 @@ class ResourceSet<T> {
 }
 
 class _Resource<T> {
-  final T object;
-  final int startDepth;
-  final int endDepth;
+  public T obj;
+  public int startDepth;
+  public int endDepth;
 
-  final double startFrequency;
-  final double endFrequency;
+  public double startFrequency;
+  public double endFrequency;
 
-  final Set<_Tag<T>> _tags = {};
+  public Set<_Tag<T>> _tags = {};
 
-  _Resource(this.object, this.startDepth, this.endDepth, this.startFrequency,
-      this.endFrequency);
+  _Resource(T obj, int startDepth, int endDepth, double startFrequency,
+      double endFrequency)
+  {
+    this.obj = obj;
+    this.startDepth = startDepth;
+    this.endDepth = endDepth;
+    this.startFrequency = startFrequency;
+    this.endFrequency = endFrequency;
+  }
 
   /// The resource's frequency at [depth].
   ///
   /// Between the [startDepth] and [endDepth], this linearly interpolates
   /// between [startFrequency] and [endFrequency]. Outside of that range, it
   /// uses either the start or end.
-  double frequencyAtDepth(int depth) {
+  double frequencyAtDepth(int depth) 
+  {
     if (startDepth == endDepth) return startFrequency;
-    return lerpDouble(
+    return MathUtils.lerpDouble(
         depth, startDepth, endDepth, startFrequency, endFrequency);
   }
 
@@ -265,17 +275,17 @@ class _Resource<T> {
   double chanceAtDepth(int depth) {
     if (depth < startDepth) {
       var relative = startDepth - depth;
-      var deviation = 0.6 + depth * 0.2;
+      var deviation = 0.6f + depth * 0.2f;
 
-      return math.exp(-0.5 * relative * relative / (deviation * deviation));
+      return Mathf.Exp(-0.5f * relative * relative / (deviation * deviation));
     } else if (depth > endDepth) {
       var relative = depth - endDepth;
 
       // As you get deeper in the dungeon, the probability curve widens so that
       // you still find weaker stuff fairly frequently.
-      var deviation = 1.0 + depth * 0.1;
+      var deviation = 1.0f + depth * 0.1f;
 
-      return math.exp(-0.5 * relative * relative / (deviation * deviation));
+      return Mathf.Exp(-0.5f * relative * relative / (deviation * deviation));
     } else {
       // Within the resource's depth range.
       return 1.0;
@@ -284,8 +294,8 @@ class _Resource<T> {
 }
 
 class _Tag<T> {
-  final String name;
-  final _Tag<T>? parent;
+  public string name;
+  public _Tag<T>? parent;
 
   _Tag(this.name, this.parent);
 
@@ -298,7 +308,7 @@ class _Tag<T> {
     return false;
   }
 
-  String toString() {
+  string toString() {
     if (parent == null) return name;
     return "$parent/$name";
   }
@@ -306,19 +316,26 @@ class _Tag<T> {
 
 /// Uniquely identifies a query.
 class _QueryKey {
-  final String name;
-  final int depth;
+  public string name;
+  public int depth;
 
-  _QueryKey(this.name, this.depth);
-
-  int get hashCode => name.hashCode ^ depth.hashCode;
-
-  bool operator ==(Object other) {
-    var query = other as _QueryKey;
-    return name == query.name && depth == query.depth;
+  _QueryKey(string name, int depth)
+  {
+    this.name = name;
+    this.depth = depth;
   }
 
-  String toString() => "$name ($depth)";
+  int hashCode => name.GetHashCode() ^ depth.GetHashCode();
+
+  public static bool operator ==(_QueryKey a, object other) {
+    var query = other as _QueryKey;
+    return a.name == query.name && a.depth == query.depth;
+  }
+  public static bool operator !=(_QueryKey a, object other) { 
+    return !(a == other);
+  }
+
+  string toString() => $"{name} ({depth})";
 }
 
 /// A stored query that let us quickly choose a random weighted resource for
@@ -338,10 +355,10 @@ class _QueryKey {
 ///
 /// This caches that state.
 class _ResourceQuery<T> {
-  final int depth;
-  final List<_Resource<T>> resources;
-  final List<double> chances;
-  final double totalChance;
+  public int depth;
+  public List<_Resource<T>> resources;
+  public List<double> chances;
+  public double totalChance;
 
   _ResourceQuery(this.depth, this.resources, this.chances, this.totalChance);
 
@@ -370,7 +387,7 @@ class _ResourceQuery<T> {
 
   void dump(_QueryKey key) {
     print(key);
-    for (var i = 0; i < resources.length; i++) {
+    for (var i = 0; i < resources.Count; i++) {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =

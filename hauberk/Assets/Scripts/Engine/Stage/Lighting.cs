@@ -136,7 +136,7 @@ class Lighting {
 
         for (var y = 0; y < _stage.height; y++) {
         for (var x = 0; x < _stage.width; x++) {
-            var pos = Vec(x, y);
+            var pos = new Vec(x, y);
             var tile = _stage[pos];
 
             // Take the tile's light.
