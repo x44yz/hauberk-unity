@@ -25,11 +25,11 @@ public class Element
 
     /// Creates a side-effect action to perform when an [Attack] of this element
     /// hits an actor for `damage` or `null` if this element has no side effect.
-    public Func<Action, int> attackAction;
+    public Func<int, Action> attackAction;
 
     /// Creates a side-effect action to perform when an area attack of this
     /// element hits a tile or `null` if this element has no effect.
-    public Func<Action, Vec, Hit, num, int> floorAction;
+    public Func<Vec, Hit, num, int, Action> floorAction;
 
     Element(string name, string abbreviation, double experience)
     {

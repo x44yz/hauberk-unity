@@ -28,7 +28,7 @@ class BucketQueue<T> where T : class
     _buckets.Clear();
   }
 
-  void add(T value, int cost) {
+  public void add(T value, int cost) {
     _bucket = Mathf.Min(_bucket, cost);
 
     // Grow the bucket array if needed.
@@ -51,7 +51,7 @@ class BucketQueue<T> where T : class
 
   /// Removes the best item from the queue or returns `null` if the queue is
   /// empty.
-  T removeNext() {
+  public T removeNext() {
     // Advance past any empty buckets.
     while (_bucket < _buckets.Count && 
         (_buckets[_bucket] == null || _buckets[_bucket].Count == 0)) {

@@ -36,7 +36,7 @@ abstract class Condition
     }
 
     /// Processes one turn of the condition.
-    void update(Action action) {
+    public void update(Action action) {
         if (isActive) {
             _turnsRemaining--;
             if (isActive) {

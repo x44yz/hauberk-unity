@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The game's live play area.
-class Stage {
+public class Stage {
     public Game game;
 
     public List<Actor> _actors = new List<Actor>()
@@ -32,7 +32,7 @@ class Stage {
     /// doesn't step on other actors.
     public Array2D<Actor?> _actorsByTile;
 
-    Stage(int width, int height, Game game)
+    public Stage(int width, int height, Game game)
     {
         this.game = game;
 
@@ -70,7 +70,7 @@ class Stage {
         _actorsByTile[to] = actor;
     }
 
-    void removeActor(Actor actor) {
+    public void removeActor(Actor actor) {
         assert(_actorsByTile[actor.pos] == actor);
 
         var index = _actors.indexOf(actor);

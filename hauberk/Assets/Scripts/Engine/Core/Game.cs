@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// Root class for the game engine. All game state is contained within this.
-class Game
+public class Game
 {
   public Content content;
 
@@ -40,11 +40,15 @@ class Game
 
   public Stage stage => _stage;
   Stage _stage;
-  Hero hero;
+  public Hero hero;
 
-  Game(this.content, this._save, this.depth, {int? width, int? height}) {
+  Game(Content content, HeroSave _save, int depth, int width = 80, int height = 60)
+  {
+    this.content = content;
+    this._save = _save;
+    this.depth = depth;
     // TODO: Vary size?
-    _stage = Stage(width ?? 80, height ?? 60, this);
+    _stage = new Stage(width, height, this);
 
     _substanceUpdateOrder.addAll(_stage.bounds.inflate(-1));
     rng.shuffle(_substanceUpdateOrder);
@@ -64,7 +68,8 @@ class Game
     _stage.refreshView();
   }
 
-  GameResult update() {
+  GameResult update() 
+  {
     var madeProgress = false;
 
     while (true) {
@@ -169,7 +174,7 @@ class Game
       object other,
       Vec pos,
       Direction dir) {
-    _events.add(Event(type, actor, element ?? Element.none, pos, dir, other));
+    _events.add(new Event(type, actor, element ?? Element.none, pos, dir, other));
   }
 
   GameResult makeResult(bool madeProgress) {
@@ -217,7 +222,7 @@ class Game
 
 /// Defines the actual content for the game: the breeds, items, etc. that
 /// define the play experience.
-abstract class Content {
+public abstract class Content {
   // TODO: Temp. Figure out where dungeon generator lives.
   // TODO: Using a callback to set the hero position is kind of hokey.
   public abstract List<string> buildStage(
@@ -274,7 +279,7 @@ class GameResult {
 /// Describes a single "interesting" thing that occurred during a call to
 /// [Game.update()]. In general, events correspond to things that a UI is likely
 /// to want to display visually in some form.
-class Event {
+public class Event {
   public EventType type;
   // TODO: Having these all be nullable leads to a lot of "!" in effects.
   // Consider a better way to model this.

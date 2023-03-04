@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using num = System.Double;
+using num = System.Single;
 
 class Monster : Actor {
   public const float _maxAlertness = 1.0f;
@@ -18,7 +18,7 @@ class Monster : Actor {
       health = Mathf.Clamp(health, 0, value.maxHealth);
 
       // The new breed may have different moves.
-      _recharges.clear();
+      _recharges.Clear();
       _resetCharges();
     }
   }
@@ -73,7 +73,7 @@ class Monster : Actor {
 
   Object appearance => breed.appearance;
 
-  string nounText => $"the {breed.name}";
+  public string nounText => $"the {breed.name}";
 
   Pronoun pronoun => breed.pronoun;
 
@@ -115,7 +115,7 @@ class Monster : Actor {
     }
   }
 
-  void useMove(Move move) {
+  public void useMove(Move move) {
     // Add some randomness to the rate. Since monsters very eagerly prefer to
     // use moves, this ensures they don't use them too predictably.
     // TODO: Make rate and experience be double instead of num? If so, get rid
@@ -164,8 +164,8 @@ class Monster : Actor {
 
   Action onGetAction() {
     // Recharge moves.
-    for (var move in breed.moves) {
-      _recharges[move] = math.max(0.0, _recharges[move]! - 1.0);
+    foreach (var move in breed.moves) {
+      _recharges[move] = Mathf.Max(0.0f, _recharges[move]! - 1.0f);
     }
 
     // Use the monster's senses to update its mood.
@@ -179,7 +179,7 @@ class Monster : Actor {
     // TODO: The ratio here could be tuned by breeds where some have longer
     // memories than others.
     _alertness = _alertness * 0.75 + awareness * 0.2;
-    _alertness = _alertness.clamp(0.0, _maxAlertness);
+    _alertness = Mathf.Clamp(_alertness, 0.0f, _maxAlertness);
 
     _decayFear();
     _fear = _fear.clamp(0.0, _frightenThreshold);
@@ -316,7 +316,7 @@ class Monster : Actor {
   }
 
   MonsterState awaken() {
-    var state = AwakeState();
+    var state = new AwakeState();
     _changeState(state);
     return state;
   }
@@ -412,7 +412,7 @@ class Monster : Actor {
     // TODO: Is using the breed's motility correct? We probably don't want
     // drops going through doors.
     var items = game.stage.placeDrops(pos, breed.motility, breed.drop);
-    for (var item in items) {
+    foreach (var item in items) {
       log("{1} drop[s] {2}.", this, item);
     }
 
@@ -468,7 +468,7 @@ class Monster : Actor {
   /// Ensures the monster doesn't immediately unload everything on the hero
   /// when first spotted.
   void _resetCharges() {
-    for (var move in breed.moves) {
+    foreach (var move in breed.moves) {
       _recharges[move] = rng.float(move.rate / 2);
     }
   }

@@ -5,7 +5,7 @@ using UnityEngine;
 /// Energy is used to control the rate that actors move relative to other
 /// actors. Each game turn, every actor will accumulate energy based on their
 /// speed. When it reaches a threshold, that actor can take a turn.
-class Energy {
+public class Energy {
     public const int minSpeed = 0;
     public const int normalSpeed = 6;
     public const int maxSpeed = 12;

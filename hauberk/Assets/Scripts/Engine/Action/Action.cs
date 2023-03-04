@@ -56,7 +56,7 @@ public abstract class Action
     return onPerform();
   }
 
-  ActionResult onPerform();
+  public abstract ActionResult onPerform();
 
   /// Enqueue a secondary action that is a consequence of this one.
   ///
@@ -64,7 +64,7 @@ public abstract class Action
   /// will be performed in the current tick before the current action continues
   /// to process. Otherwise, it will be enqueued and run once the current action
   /// and any other enqueued actions are done.
-  void addAction(Action action, [Actor? actor]) {
+  public void addAction(Action action, Actor actor = null) {
     action._bind(actor ?? _actor!, _pos, _game);
     _game.addAction(action);
   }
@@ -123,16 +123,16 @@ public abstract class Action
   }
 }
 
-class ActionResult {
-  static const success = ActionResult(succeeded: true, done: true);
-  static const failure = ActionResult(succeeded: false, done: true);
-  static const notDone = ActionResult(succeeded: true, done: false);
+public class ActionResult {
+  public static ActionResult success = new ActionResult(succeeded: true, done: true);
+  public static ActionResult failure = new ActionResult(succeeded: false, done: true);
+  public static ActionResult notDone = new ActionResult(succeeded: true, done: false);
 
   /// An alternate [Action] that should be performed instead of the one that
   /// failed to perform and returned this. For example, when the [Hero] walks
   /// into a closed door, a WalkAction will fail (the door is closed) and
   /// return an alternate OpenDoorAction instead.
-  public Action? alternative;
+  public Action alternative = null;
 
   /// `true` if the [Action] was successful and energy should be consumed.
   public bool succeeded;
@@ -140,16 +140,23 @@ class ActionResult {
   /// `true` if the [Action] does not need any further processing.
   public bool done;
 
-  const ActionResult({required this.succeeded, required this.done})
-      : alternative = null;
+  ActionResult(bool succeeded, bool done)
+  {
+    this.succeeded = succeeded;
+    this.done = done;
+    this.alternative = null;
+  }
 
-  const ActionResult.alternate(this.alternative)
-      : succeeded = false,
-        done = true;
+  ActionResult(Action alternative)
+  {
+      this.alternative = alternative;
+      succeeded = false;
+      done = true;
+  }
 }
 
 /// Attempts to perform an action that spends focus.
-class FocusAction extends Action {
+class FocusAction : Action {
   /// The focus cost of the action.
   public int _focus;
 
@@ -167,7 +174,7 @@ class FocusAction extends Action {
 }
 
 /// Attempts to perform an action that spends fury.
-class FuryAction extends Action {
+class FuryAction : Action {
   /// The fury cost of the action.
   public int _fury;
 

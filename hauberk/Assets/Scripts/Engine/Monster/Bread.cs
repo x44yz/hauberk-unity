@@ -157,17 +157,17 @@ class Breed {
 
       // Average the attacks, since they are selected randomly.
       var attackTotal = 0.0;
-      for (var attack in attacks) {
+      foreach (var attack in attacks) {
         // TODO: Take range into account?
         attackTotal += attack.damage * attack.element.experience;
       }
 
-      attackTotal /= attacks.length;
+      attackTotal /= attacks.Count;
 
       // Average the moves.
       var moveTotal = 0.0;
       var moveRateTotal = 0.0;
-      for (var move in moves) {
+      foreach (var move in moves) {
         // Scale by the move rate. The less frequently a move can be performed,
         // the less it affects experience.
         moveTotal += move.experience / move.rate;

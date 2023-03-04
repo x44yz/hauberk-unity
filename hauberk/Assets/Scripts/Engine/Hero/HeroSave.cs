@@ -10,7 +10,7 @@ using UnityEngine;
 // a classic roguelike, it's weird that some hero state (hunger, log,
 // conditions) evaporates when the hero leaves and enters the dungeon. Need to
 // figure out what gets saved and what doesn't now.
-class HeroSave 
+public class HeroSave 
 {
     public string name;
     public RaceStats race;

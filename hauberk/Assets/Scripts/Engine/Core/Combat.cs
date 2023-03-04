@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using num = System.Double;
 
 /// Armor reduces damage by an inverse curve such that increasing armor has
 /// less and less effect. Damage is reduced to the following:
@@ -15,10 +16,10 @@ using UnityEngine;
 ///     ...   etc.
 num getArmorMultiplier(int armor) {
   // Damage is never increased.
-  return 1.0 / (1.0 + math.max(0, armor) / 40.0);
+  return 1.0 / (1.0 + Mathf.Max(0, armor) / 40.0);
 }
 
-class Attack {
+public class Attack {
   /// The thing performing the attack. If `null`, then the attacker will be
   /// used.
   public Noun noun;
@@ -36,9 +37,14 @@ class Attack {
 
   public Element element;
 
-  Attack(this.noun, this.verb, this.damage, [int? range, Element? element])
-      : range = range ?? 0,
-        element = element ?? Element.none;
+  Attack(Noun noun, string verb, int damage, int range = 0, Element element = default(Element))
+  {
+    this.noun = noun;
+    this.verb = verb;
+    this.damage = damage;
+    this.range = range;
+    this.element = element;
+  }
 
   bool isRanged => range > 0;
 
@@ -69,7 +75,7 @@ public class Hit {
     get {
       if (_attack.range == 0) return 0;
 
-      return Mathf.Max(1, (_attack.range * _rangeScale).round());
+      return Mathf.RoundToInt(Mathf.Max(1, (float)(_attack.range * _rangeScale)));
     }
   }
 
@@ -94,7 +100,7 @@ public class Hit {
     }
   }
 
-  Hit(Attack _attack)
+  public Hit(Attack _attack)
   {
     this._attack = _attack;
   }
@@ -136,7 +142,10 @@ public class Hit {
     var attackNoun = (_attack.noun ?? attacker)!;
 
     // Don't sleep through being attacked.
-    if (defender is Hero) defender.disturb();
+    if (defender is Hero)
+    {
+      (defender as Hero).disturb();
+    }
 
     // See if any defense blocks the attack.
     // TODO: Instead of a single "canMiss" flag, consider having each defense
@@ -166,7 +175,7 @@ public class Hit {
     if (damage == 0) {
       // Armor cancelled out all damage.
       // TODO: Should still affect monster alertness.
-      action.log('{1} do[es] no damage to {2}.', attackNoun, defender);
+      action.log("{1} do[es] no damage to {2}.", attackNoun, defender);
       return 0;
     }
 

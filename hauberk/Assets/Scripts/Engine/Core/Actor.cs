@@ -133,7 +133,7 @@ public abstract class Actor : Noun
   }
 
   /// The amount of protection against damage the actor has.
-  int armor;
+  public int armor;
 
   /// The amount of light emanating from this actor.
   ///
@@ -206,7 +206,7 @@ public abstract class Actor : Noun
   /// Every level of resist reduces the damage taken by an attack of that
   /// element by 1/(resistance + 1), so that 1 resist is half damange, 2 is
   /// third, etc.
-  int resistance(Element element) {
+  public int resistance(Element element) {
     // TODO: What about negative resists?
 
     // Get the base resist from the subclass.
@@ -225,7 +225,7 @@ public abstract class Actor : Noun
 
   /// Reduces the actor's health by [damage], and handles its death. Returns
   /// `true` if the actor died.
-  bool takeDamage(Action action, int damage, Noun attackNoun,
+  public bool takeDamage(Action action, int damage, Noun attackNoun,
       Actor attacker) {
     health -= damage;
     onTakeDamage(action, attacker, damage);
@@ -244,7 +244,7 @@ public abstract class Actor : Noun
   }
 
   /// Called when this actor has successfully hit [defender].
-  void onGiveDamage(Action action, Actor defender, int damage) {
+  public void onGiveDamage(Action action, Actor defender, int damage) {
     // Do nothing.
   }
 
@@ -303,7 +303,7 @@ public abstract class Actor : Noun
   void finishTurn(Action action) {
     energy.spend();
 
-    for (var condition in conditions) {
+    foreach (var condition in conditions) {
       condition.update(action);
     }
 

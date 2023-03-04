@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The message log.
-class Log {
+public class Log {
   /// Given a noun pattern, returns the unquantified singular form of it.
   /// Examples:
   ///

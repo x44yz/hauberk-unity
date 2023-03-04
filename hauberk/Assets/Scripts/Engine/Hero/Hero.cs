@@ -77,7 +77,7 @@ class Hero : Actor {
 
   Lore lore => save.lore;
 
-  int maxHealth => fortitude.maxHealth;
+  public int maxHealth => fortitude.maxHealth;
 
   Strength strength => save.strength;
 
@@ -362,7 +362,7 @@ class Hero : Actor {
     _behavior = RunBehavior(direction);
   }
 
-  void disturb() {
+  public void disturb() {
     if (_behavior is! ActionBehavior) waitForInput();
   }
 

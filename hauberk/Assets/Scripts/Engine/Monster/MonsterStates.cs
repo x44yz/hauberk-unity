@@ -57,7 +57,7 @@ using UnityEngine;
 abstract class MonsterState {
     public Monster _monster;
 
-    void bind(Monster monster) {
+    public void bind(Monster monster) {
         _monster = monster;
     }
 
