@@ -38,7 +38,7 @@ class Game
 
   public int depth;
 
-  Stage stage => _stage;
+  public Stage stage => _stage;
   Stage _stage;
   Hero hero;
 
@@ -220,34 +220,34 @@ class Game
 abstract class Content {
   // TODO: Temp. Figure out where dungeon generator lives.
   // TODO: Using a callback to set the hero position is kind of hokey.
-  Iterable<String> buildStage(
-      Lore lore, Stage stage, int depth, Function(Vec) placeHero);
+  public abstract List<string> buildStage(
+      Lore lore, Stage stage, int depth, Action<Vec> placeHero);
 
-  Affix? findAffix(String name);
+  public abstract Affix findAffix(string name);
 
-  Breed? tryFindBreed(String name);
+  public abstract Breed tryFindBreed(string name);
 
-  ItemType? tryFindItem(String name);
+  public abstract ItemType tryFindItem(string name);
 
-  Skill findSkill(String name);
+  public abstract Skill findSkill(string name);
 
-  Iterable<Breed> get breeds;
+  List<Breed> breeds;
 
-  List<HeroClass> get classes;
+  List<HeroClass> classes;
 
-  Iterable<Element> get elements;
+  public List<Element> elements;
 
-  Iterable<ItemType> get items;
+  List<ItemType> items;
 
-  List<Race> get races;
+  List<Race> races;
 
-  Iterable<Skill> get skills;
+  List<Skill> skills;
 
-  Map<String, Shop> get shops;
+  Dictionary<string, Shop> shops;
 
-  HeroSave createHero(String name, [Race race, HeroClass heroClass]);
+  public abstract HeroSave createHero(String name, Race race = null, HeroClass heroClass);
 
-  Action? updateSubstance(Stage stage, Vec pos);
+  public abstract Action updateSubstance(Stage stage, Vec pos);
 }
 
 /// Each call to [Game.update()] will return a [GameResult] object that tells
@@ -298,7 +298,7 @@ class Event {
 
 // TODO: Move to content.
 /// A kind of [Event] that has occurred.
-class EventType {
+public class EventType {
   public static EventType pause = new EventType("pause");
 
   /// One step of a bolt.

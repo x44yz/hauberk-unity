@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The main player-controlled [Actor]. The player's avatar in the game world.
-class Hero extends Actor {
+class Hero : Actor {
   /// The highest level the hero can reach.
   static const maxLevel = 50;
 
-  final HeroSave save;
+  public HeroSave save;
 
   /// Monsters the hero has already seen. Makes sure we don't double count them.
-  final Set<Monster> _seenMonsters = {};
+  public Set<Monster> _seenMonsters = {};
 
   Behavior? _behavior;
 
@@ -18,7 +18,7 @@ class Hero extends Actor {
   /// equipment, and stats.
   ///
   /// This list parallels the sequence returned by `equipment.weapons`.
-  final List<Property<double>> _heftScales = [Property(), Property()];
+  public List<Property<double>> _heftScales = [Property(), Property()];
 
   /// How full the hero is.
   ///
@@ -27,18 +27,22 @@ class Hero extends Actor {
   ///
   /// It starts half-full, presumably the hero had a nice meal before heading
   /// off to adventure.
-  int get stomach => _stomach;
-
-  set stomach(int value) => _stomach = value.clamp(0, Option.heroMaxStomach);
+  int stomach
+  {
+    get { return _stomach; }
+    set {
+       _stomach = Mathf.Clamp(value, 0, Option.heroMaxStomach);
+    }
+  }
   int _stomach = Option.heroMaxStomach ~/ 2;
 
   /// How calm and centered the hero is. Mental skills like spells spend focus.
-  int get focus => _focus;
+  int focus => _focus;
   int _focus = 0;
 
   /// How enraged the hero is. Physical skills like active disciplines spend
   /// fury.
-  int get fury => _fury;
+  int fury => _fury;
   int _fury = 0;
 
   /// The number of hero turns since they last took a hit that caused them to
@@ -46,47 +50,54 @@ class Hero extends Actor {
   int _turnsSinceLostFocus = 0;
 
   /// How much noise the Hero's last action made.
-  double get lastNoise => _lastNoise;
+  double lastNoise => _lastNoise;
   double _lastNoise = 0.0;
 
-  String get nounText => 'you';
+  string nounText => "you";
 
-  Pronoun get pronoun => Pronoun.you;
+  Pronoun pronoun => Pronoun.you;
 
-  Inventory get inventory => save.inventory;
+  Inventory inventory => save.inventory;
 
-  Equipment get equipment => save.equipment;
+  Equipment equipment => save.equipment;
 
-  int get experience => save.experience;
+  int experience
+  {
+    get { return save.experience; }
+    set { save.experience = value; }
+  }
 
-  set experience(int value) => save.experience = value;
+  SkillSet skills => save.skills;
 
-  SkillSet get skills => save.skills;
+  int gold
+  {
+    get { return save.gold; }
+    set { save.gold = value; }
+  }
 
-  int get gold => save.gold;
+  Lore lore => save.lore;
 
-  set gold(int value) => save.gold = value;
+  int maxHealth => fortitude.maxHealth;
 
-  Lore get lore => save.lore;
+  Strength strength => save.strength;
 
-  int get maxHealth => fortitude.maxHealth;
+  Agility agility => save.agility;
 
-  Strength get strength => save.strength;
+  Fortitude fortitude => save.fortitude;
 
-  Agility get agility => save.agility;
+  Intellect intellect => save.intellect;
 
-  Fortitude get fortitude => save.fortitude;
-
-  Intellect get intellect => save.intellect;
-
-  Will get will => save.will;
+  Will will => save.will;
 
   // TODO: Equipment and items that let the hero swim, fly, etc.
-  Motility get motility => Motility.doorAndWalk;
+  Motility motility => Motility.doorAndWalk;
 
-  int get emanationLevel => save.emanationLevel;
+  int emanationLevel => save.emanationLevel;
 
-  Hero(Game game, Vec pos, this.save) : super(game, pos.x, pos.y) {
+  Hero(Game game, Vec pos, HeroSave save) 
+    : base(game, pos.x, pos.y) 
+  {
+    this.save = save;
     // Give the hero energy so they can act before all of the monsters.
     energy.energy = Energy.actionCost;
 
@@ -99,15 +110,15 @@ class Hero extends Actor {
     // Acquire any skills from the starting items.
     // TODO: Doing this here is hacky. It only really comes into play for
     // starting items.
-    for (var item in inventory) {
+    foreach (var item in inventory) {
       _gainItemSkills(item);
     }
   }
 
   // TODO: Hackish.
-  Object get appearance => 'hero';
+  Object appearance => 'hero';
 
-  bool get needsInput {
+  bool needsInput {
     if (_behavior != null && !_behavior!.canPerform(this)) {
       waitForInput();
     }
@@ -116,13 +127,13 @@ class Hero extends Actor {
   }
 
   /// The hero's experience level.
-  int get level => _level.value;
-  final _level = Property<int>();
+  int level => _level.value;
+  public _level = Property<int>();
 
-  int get armor => save.armor;
+  int armor => save.armor;
 
   /// The total weight of all equipment.
-  int get weight => save.weight;
+  int weight => save.weight;
 
   // TODO: Not currently used since skills are not explicitly learned in the
   // UI. Re-enable when we add rogue skills?
@@ -153,9 +164,9 @@ class Hero extends Actor {
     }
   }
 
-  int get baseSpeed => Energy.normalSpeed;
+  int baseSpeed => Energy.normalSpeed;
 
-  int get baseDodge => 20 + agility.dodgeBonus;
+  int baseDodge => 20 + agility.dodgeBonus;
 
   Iterable<Defense> onGetDefenses() sync* {
     for (var item in equipment) {

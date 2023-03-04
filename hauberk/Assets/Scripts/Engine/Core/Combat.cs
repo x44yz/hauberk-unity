@@ -103,7 +103,7 @@ public class Hit {
     _strikeBonus += bonus;
   }
 
-  void scaleStrike(double factor) {
+  public void scaleStrike(double factor) {
     _strikeScale *= factor;
   }
 
@@ -212,7 +212,7 @@ public class Hit {
 
 /// TODO: Flags for which kinds of attacks (melee, ranged, magic) the dodge
 /// can apply to?
-class Defense {
+public class Defense {
   public int amount;
   public string message;
 

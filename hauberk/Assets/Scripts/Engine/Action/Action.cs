@@ -13,28 +13,28 @@ public abstract class Action
 
   public bool _consumesEnergy;
 
-  Game get game => _game;
+  Game game => _game;
 
   // TODO: Instead of making this nullable, split out actions with actors into
   // a separate subclass where the field is always non-null. Most actions will
   // always have an actor. It's only a few like burning floors that don't.
-  Actor? get actor => _actor;
+  Actor actor => _actor;
 
-  Monster get monster => _actor as Monster;
+  Monster monster => _actor as Monster;
 
-  Hero get hero => _actor as Hero;
+  Hero hero => _actor as Hero;
 
-  bool get consumesEnergy => _consumesEnergy;
+  bool consumesEnergy => _consumesEnergy;
 
   /// Whether this action can be immediately performed in the middle of an
   /// ongoing action or should wait until the current action is finished.
-  bool get isImmediate => true;
+  bool isImmediate => true;
 
-  void bind(Actor actor, {bool? consumesEnergy}) {
+  public void bind(Actor actor, bool consumesEnergy = true) {
     _actor = actor;
     _pos = actor.pos;
     _game = actor.game;
-    _consumesEnergy = consumesEnergy ?? true;
+    _consumesEnergy = consumesEnergy;
   }
 
   /// Binds an action created passively by the dungeon.
@@ -69,37 +69,39 @@ public abstract class Action
     _game.addAction(action);
   }
 
-  void addEvent(EventType type,
-      {Actor? actor,
-      Element? element,
-      Object? other,
-      Vec? pos,
-      Direction? dir}) {
+  public void addEvent(EventType type,
+      Actor actor = null,
+      Element element = null,
+      object other = null,
+      Vec pos = default(Vec),
+      Direction dir = default(Direction)) 
+  {
     _game.addEvent(type,
         actor: actor, element: element, pos: pos, dir: dir, other: other);
   }
 
   /// How much noise is produced by this action. Override to make certain
   /// actions quieter or louder.
-  double get noise => Sound.normalNoise;
+  double noise => Sound.normalNoise;
 
-  void error(String message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (!game.stage[_pos].isVisible) return;
     _game.log.error(message, noun1, noun2, noun3);
   }
 
-  void log(String message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (!game.stage[_pos].isVisible) return;
     _game.log.message(message, noun1, noun2, noun3);
   }
 
-  void gain(String message, [Noun? noun1, Noun? noun2, Noun? noun3]) {
+  void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (!game.stage[_pos].isVisible) return;
     _game.log.gain(message, noun1, noun2, noun3);
   }
 
   ActionResult succeed(
-      [String? message, Noun? noun1, Noun? noun2, Noun? noun3]) {
+      [String? message, Noun? noun1, Noun? noun2, Noun? noun3]) 
+  {
     if (message != null) log(message, noun1, noun2, noun3);
     return ActionResult.success;
   }

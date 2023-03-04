@@ -29,7 +29,7 @@ class Energy {
         240 // 4x normal speed
     };
 
-    int energy = 0;
+    public int energy = 0;
 
     bool canTakeTurn => energy >= actionCost;
 

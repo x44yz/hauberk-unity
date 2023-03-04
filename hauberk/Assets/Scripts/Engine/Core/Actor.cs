@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// An active entity in the game. Includes monsters and the hero.
-abstract class Actor
+public abstract class Actor : Noun
 {
   public Game game;
   public Energy energy = new Energy();
@@ -66,7 +66,7 @@ abstract class Actor
   }
 
   int _health = 0;
-  int health {
+  public int health {
     get { return _health; }
     set {
         _health = Mathf.Clamp(value, 0, maxHealth);
@@ -76,14 +76,14 @@ abstract class Actor
   public Actor(Game game, int x, int y)
   {
     this.game = game;
-    _pos = new Vec(x, y)
+    _pos = new Vec(x, y);
 
-    for (var element in game.content.elements) 
+    foreach (var element in game.content.elements) 
     {
-      resistances[element] = ResistCondition(element);
+      resistances[element] = new ResistCondition(element);
     }
 
-    for (var condition in conditions) 
+    foreach (var condition in conditions) 
     {
       condition.bind(this);
     }
@@ -121,15 +121,15 @@ abstract class Actor
   }
 
   /// Additional ways the actor can avoid a hit beyond dodging it.
-  Iterable<Defense> defenses sync* {
-    var dodge = baseDodge;
+  IEnumerator defenses() {
+      var dodge = baseDodge;
 
-    // Hard to dodge an attack you can't see coming.
-    if (isBlinded) dodge ~/= 2;
+      // Hard to dodge an attack you can't see coming.
+      if (isBlinded) dodge /= 2;
 
-    if (dodge != 0) yield Defense(dodge, "{1} dodge[s] {2}.");
+      if (dodge != 0) yield Defense(dodge, "{1} dodge[s] {2}.");
 
-    yield* onGetDefenses();
+      yield onGetDefenses();
   }
 
   /// The amount of protection against damage the actor has.
@@ -154,7 +154,7 @@ abstract class Actor
   /// attack missing the actor.
   int baseDodge;
 
-  Iterable<Defense> onGetDefenses();
+  public abstract List<Defense> onGetDefenses();
 
   Action getAction() {
     var action = onGetAction();
@@ -162,21 +162,21 @@ abstract class Actor
     return action;
   }
 
-  Action onGetAction() = 0;
+  public abstract Action onGetAction();
 
   /// Create a new [Hit] for this [Actor] to attempt to hit [defender].
   ///
   /// Note that [defender] may be null if this hit is being created for
   /// something like a bolt attack or whether the targeted actor isn't known.
-  List<Hit> createMeleeHits(Actor? defender) {
+  List<Hit> createMeleeHits(Actor defender) {
     var hits = onCreateMeleeHits(defender);
-    for (var hit in hits) {
+    foreach (var hit in hits) {
       modifyHit(hit, HitType.melee);
     }
     return hits;
   }
 
-  List<Hit> onCreateMeleeHits(Actor? defender);
+  public abstract List<Hit> onCreateMeleeHits(Actor defender);
 
   /// Applies the hit modifications from the actor.
   void modifyHit(Hit hit, HitType type) {
@@ -221,12 +221,12 @@ abstract class Actor
     return result;
   }
 
-  int onGetResistance(Element element) = 0;
+  public abstract int onGetResistance(Element element);
 
   /// Reduces the actor's health by [damage], and handles its death. Returns
   /// `true` if the actor died.
   bool takeDamage(Action action, int damage, Noun attackNoun,
-      [Actor? attacker]) {
+      Actor attacker) {
     health -= damage;
     onTakeDamage(action, attacker, damage);
 

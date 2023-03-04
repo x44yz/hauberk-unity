@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Direction : Vec {
+public class Direction : Vec {
     public static Direction none = new Direction(0, 0);
     public static Direction n = new Direction(0, -1);
     public static Direction ne = new Direction(1, -1);

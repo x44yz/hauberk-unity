@@ -30,7 +30,7 @@ abstract class Condition
 
     /// Binds the condition to the actor that it applies to. Must be called and
     /// can only be called once.
-    void bind(Actor actor) 
+    public void bind(Actor actor) 
     {
         _actor = actor;
     }
@@ -115,7 +115,7 @@ class BlindnessCondition : Condition {
 class ResistCondition : Condition {
   public Element _element;
 
-  ResistCondition(Element element)
+  public ResistCondition(Element element)
   {
     this._element = element;
   }

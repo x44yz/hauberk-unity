@@ -183,7 +183,7 @@ class Fortitude : StatBase {
 
   string _loseAdjective => "sickly";
 
-  int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
+  public int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
 }
 
 class Intellect : StatBase {
@@ -193,7 +193,7 @@ class Intellect : StatBase {
 
   string _loseAdjective => "stupid";
 
-  int maxFocus {
+  public int maxFocus {
     get {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
       return MathUtils.lerpInt(value, 10, 60, 100, 200);

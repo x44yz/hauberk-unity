@@ -20,11 +20,11 @@ class HeroSave
 
     var _inventory = Inventory(ItemLocation.inventory, Option.inventoryCapacity);
 
-    Inventory inventory => _inventory;
+    public Inventory inventory => _inventory;
 
     var _equipment = Equipment();
 
-    Equipment equipment => _equipment;
+    public Equipment equipment => _equipment;
 
     /// Items in the hero's home.
     Inventory home => _home;
@@ -37,17 +37,17 @@ class HeroSave
     /// The current inventories of all the shops.
     public Map<Shop, Inventory> shops;
 
-    int experience = 0;
+    public int experience = 0;
 
-    SkillSet skills;
+    public SkillSet skills;
 
     /// How much gold the hero has.
-    int gold = Option.heroGoldStart;
+    public int gold = Option.heroGoldStart;
 
     /// The lowest depth that the hero has successfully explored and exited.
     int maxDepth = 0;
 
-    Lore lore => _lore;
+    public Lore lore => _lore;
     Lore _lore;
 
     public Strength strength = new Strength();
@@ -56,7 +56,7 @@ class HeroSave
     public Intellect intellect = new Intellect();
     public Will will = new Will();
 
-    int emanationLevel {
+    public int emanationLevel {
         get {
             var level = 0;
             // Add the emanation of all equipment.
