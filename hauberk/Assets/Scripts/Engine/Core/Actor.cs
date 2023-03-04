@@ -226,7 +226,7 @@ public abstract class Actor : Noun
   /// Reduces the actor's health by [damage], and handles its death. Returns
   /// `true` if the actor died.
   public bool takeDamage(Action action, int damage, Noun attackNoun,
-      Actor attacker) {
+      Actor attacker = null) {
     health -= damage;
     onTakeDamage(action, attacker, damage);
 

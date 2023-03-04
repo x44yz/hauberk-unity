@@ -6,7 +6,7 @@ using UnityEngine;
 public class Stage {
     public Game game;
 
-    public List<Actor> _actors = new List<Actor>()
+    public List<Actor> _actors = new List<Actor>();
     public Lighting _lighting;
     public Sound _sound;
 
@@ -191,14 +191,14 @@ public class Stage {
     /// This should be called whenever an actor that emanates light moves or
     /// when its emanation changes (for example, the [Hero] equipping a light
     /// source).
-    void actorEmanationChanged() {
+    public void actorEmanationChanged() {
         _lighting.dirtyActorLight();
     }
 
     /// Marks the visibility as needing recalculation.
     ///
     /// This should be called whenever the [Hero] moves or their sight changes.
-    void heroVisibilityChanged() {
+    public void heroVisibilityChanged() {
         _lighting.dirtyVisibility();
     }
 

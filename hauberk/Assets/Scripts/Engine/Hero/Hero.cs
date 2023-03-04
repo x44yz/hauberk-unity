@@ -55,7 +55,7 @@ public class Hero : Actor {
 
   string nounText => "you";
 
-  Pronoun pronoun => Pronoun.you;
+  public override Pronoun pronoun => Pronoun.you;
 
   Inventory inventory => save.inventory;
 

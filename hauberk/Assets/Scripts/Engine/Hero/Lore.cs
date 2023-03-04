@@ -1,0 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// The history of interesting events the hero has experienced.
+class Lore {
+  /// The number of monsters of each breed the hero has detected.
+  ///
+  /// (Or, more specifically, that have died.)
+  public Dictionary<Breed, int> _seenBreeds;
+
+  /// The number of monsters of each breed the hero has killed.
+  ///
+  /// (Or, more specifically, that have died.)
+  public Dictionary<Breed, int> _slainBreeds;
+
+  /// The number of items of each type that the hero has picked up.
+  public Dictionary<ItemType, int> _foundItems;
+
+  /// The number of items with each affix that the hero has picked up or used.
+  public Dictionary<Affix, int> _foundAffixes;
+
+  /// The number of consumable items of each type that the hero has used.
+  public Dictionary<ItemType, int> _usedItems;
+
+  /// The breeds the hero has killed at least one of.
+  Iterable<Breed> slainBreeds => _slainBreeds.keys;
+
+  /// The total number of monsters slain.
+  int allSlain => _slainBreeds.values.fold(0, (a, b) => a + b);
+
+  Lore() : this.from({}, {}, {}, {}, {});
+
+  Lore.from(this._seenBreeds, this._slainBreeds, this._foundItems,
+      this._foundAffixes, this._usedItems);
+
+  void seeBreed(Breed breed) {
+    _seenBreeds.putIfAbsent(breed, () => 0);
+    _seenBreeds[breed] = _seenBreeds[breed]! + 1;
+  }
+
+  void slay(Breed breed) {
+    _slainBreeds.putIfAbsent(breed, () => 0);
+    _slainBreeds[breed] = _slainBreeds[breed]! + 1;
+  }
+
+  void findItem(Item item) {
+    _foundItems.putIfAbsent(item.type, () => 0);
+    _foundItems[item.type] = _foundItems[item.type]! + 1;
+
+    void findAffix(Affix? affix) {
+      if (affix == null) return;
+
+      _foundAffixes.putIfAbsent(affix, () => 0);
+      _foundAffixes[affix] = _foundAffixes[affix]! + 1;
+    }
+
+    findAffix(item.prefix);
+    findAffix(item.suffix);
+  }
+
+  void useItem(Item item) {
+    _usedItems.putIfAbsent(item.type, () => 0);
+    _usedItems[item.type] = _usedItems[item.type]! + 1;
+  }
+
+  /// The number of monsters of [breed] that the hero has detected.
+  int seenBreed(Breed breed) => _seenBreeds[breed] ?? 0;
+
+  /// The number of monsters of [breed] that the hero has killed.
+  int slain(Breed breed) => _slainBreeds[breed] ?? 0;
+
+  /// The number of items of [type] the hero has picked up.
+  int foundItems(ItemType type) => _foundItems[type] ?? 1;
+
+  /// The number of items with [affix] the hero has picked up.
+  int foundAffixes(Affix affix) => _foundAffixes[affix] ?? 0;
+
+  /// The number of items of [type] the hero has used.
+  int usedItems(ItemType type) => _usedItems[type] ?? 0;
+
+  Lore clone() => Lore.from(Map.of(_seenBreeds), Map.of(_slainBreeds),
+      Map.of(_foundItems), Map.of(_foundAffixes), Map.of(_usedItems));
+}

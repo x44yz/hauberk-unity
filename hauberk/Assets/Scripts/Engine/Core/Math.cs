@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using num = System.Single;
 
 public static class MathUtils
 {
@@ -19,18 +20,19 @@ public static class MathUtils
     /// Remaps [value] within the range [min]-[max] to the output range
     /// [outMin]-[outMax].
     public static int lerpInt(int value, int min, int max, int outMin, int outMax) =>
-        lerpDouble(value, min, max, outMin, outMax).round();
+        Mathf.RoundToInt((float)lerpDouble(value, min, max, outMin, outMax));
 
     // TODO: Not currently used. Delete?
     /// Finds the quadratic curve that goes through [x0],[y0], [x1],[y1], and
     /// [x2],[y2]. Then calculates the y position at [x].
-    double quadraticInterpolate(num x,
-        {required num x0,
-        required num y0,
-        required num x1,
-        required num y1,
-        required num x2,
-        required num y2}) {
+    public static double quadraticInterpolate(num x,
+        num x0,
+        num y0,
+        num x1,
+        num y1,
+        num x2,
+        num y2) 
+    {
         // From: http://mathonline.wikidot.com/deleted:quadratic-polynomial-interpolation
         var a = ((x - x1) * (x - x2)) / ((x0 - x1) * (x0 - x2));
         var b = ((x - x0) * (x - x2)) / ((x1 - x0) * (x1 - x2));
@@ -44,17 +46,16 @@ public static class MathUtils
     ///
     /// This can be used to associate random values with tiles without having to
     /// store them.
-    int hashPoint(int x, int y, [int? seed]) {
-        seed ??= 0;
+    public static int hashPoint(int x, int y, int seed = 0) 
+    {
+        return (int)(hashInt(hashInt(hashInt(seed) + x) + y) & 0xffffffff);
+    }
 
-        // From: https://stackoverflow.com/a/12996028/9457
-        int hashInt(int n) {
-            n = (((n >> 16) ^ n) * 0x45d9f3b) & 0xffffffff;
-            n = (((n >> 16) ^ n) * 0x45d9f3b) & 0xffffffff;
-            n = (n >> 16) ^ n;
-            return n;
-        }
-
-        return hashInt(hashInt(hashInt(seed) + x) + y) & 0xffffffff;
+            // From: https://stackoverflow.com/a/12996028/9457
+    public static int hashInt(int n) {
+        n = (int)((((n >> 16) ^ n) * 0x45d9f3b) & 0xffffffff);
+        n = (int)((((n >> 16) ^ n) * 0x45d9f3b) & 0xffffffff);
+        n = (n >> 16) ^ n;
+        return n;
     }
 }

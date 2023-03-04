@@ -15,7 +15,7 @@ using UnityEngine;
 /// The algorithms used here are designed to give acceptable results while also
 /// being efficient, at the expense of sacrificing realism. Also, much of this
 /// code is micro-optimized in ways that do matter for performance.
-class Lighting {
+public class Lighting {
     /// The maximum illumination value of a tile.
     ///
     /// This is clamped because the light propagation code uses a bucket queue

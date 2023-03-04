@@ -7,7 +7,7 @@ using UnityEngine;
 
 /// A temporary condition that modifies some property of an [Actor] while it
 /// is in effect.
-abstract class Condition 
+public abstract class Condition 
 {
     /// The [Actor] that this condition applies to.
     public Actor actor => _actor;
@@ -93,7 +93,7 @@ class PoisonCondition : Condition {
     // TODO: Apply resistances. If resistance lowers intensity to zero, end
     // condition and log message.
 
-    if (!actor.takeDamage(action, intensity, Noun("the poison"))) {
+    if (!actor.takeDamage(action, intensity, new Noun("the poison"))) {
       actor.log("{1} [are|is] hurt by poison!", actor);
     }
   }

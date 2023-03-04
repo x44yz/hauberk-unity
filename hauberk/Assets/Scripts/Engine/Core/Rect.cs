@@ -36,9 +36,10 @@ using UnityEngine;
 /// example, the width of this rect, determined by subtracting the left
 /// coordinate (-1) from the right (3) is 4 and indeed it contains four columns
 /// of points.
-class Rect extends IterableBase<Vec> {
+class Rect // : IterableBase<Vec> 
+{
   /// Gets the empty rectangle.
-  static const empty = Rect.posAndSize(Vec.zero, Vec.zero);
+  public static Rect empty = Rect.posAndSize(Vec.zero, Vec.zero);
 
   /// Creates a new rectangle that is the intersection of [a] and [b].
   ///
@@ -50,81 +51,105 @@ class Rect extends IterableBase<Vec> {
   ///     '-+--------'    |
   ///       |             |
   ///       '-------------'
-  static Rect intersect(Rect a, Rect b) {
-    final left = math.max(a.left, b.left);
-    final right = math.min(a.right, b.right);
-    final top = math.max(a.top, b.top);
-    final bottom = math.min(a.bottom, b.bottom);
+  static Rect intersect(Rect a, Rect b) 
+  {
+    var left = Mathf.Max(a.left, b.left);
+    var right = Mathf.Min(a.right, b.right);
+    var top = Mathf.Max(a.top, b.top);
+    var bottom = Mathf.Min(a.bottom, b.bottom);
 
-    final width = math.max(0, right - left);
-    final height = math.max(0, bottom - top);
+    var width = Mathf.Max(0, right - left);
+    var height = Mathf.Max(0, bottom - top);
 
-    return Rect(left, top, width, height);
+    return new Rect(left, top, width, height);
   }
 
-  static Rect centerIn(Rect toCenter, Rect main) {
-    final pos = main.pos + ((main.size - toCenter.size) ~/ 2);
-    return Rect.posAndSize(pos, toCenter.size);
+  static Rect centerIn(Rect toCenter, Rect main) 
+  {
+    var pos = main.pos + ((main.size - toCenter.size) / 2);
+    return new Rect(pos, toCenter.size);
   }
 
-  final Vec pos;
-  final Vec size;
+  public Vec pos;
+  public Vec size;
 
-  int get x => pos.x;
-  int get y => pos.y;
-  int get width => size.x;
-  int get height => size.y;
+  public int x => pos.x;
+  public int y => pos.y;
+  public int width => size.x;
+  public int height => size.y;
 
   // Use min and max to handle negative sizes.
 
-  int get left => math.min(x, x + width);
-  int get top => math.min(y, y + height);
-  int get right => math.max(x, x + width);
-  int get bottom => math.max(y, y + height);
+  public int left => Mathf.Min(x, x + width);
+  public int top => Mathf.Min(y, y + height);
+  public int right => Mathf.Max(x, x + width);
+  public int bottom => Mathf.Max(y, y + height);
 
-  Vec get topLeft => Vec(left, top);
-  Vec get topRight => Vec(right, top);
-  Vec get bottomLeft => Vec(left, bottom);
-  Vec get bottomRight => Vec(right, bottom);
+  public Vec topLeft => new Vec(left, top);
+  public Vec topRight => new Vec(right, top);
+  public Vec bottomLeft => new Vec(left, bottom);
+  public Vec bottomRight => new Vec(right, bottom);
 
-  Vec get center => Vec((left + right) ~/ 2, (top + bottom) ~/ 2);
+  Vec center => new Vec((left + right) / 2, (top + bottom) / 2);
 
-  int get area => size.area;
+  int area => size.area;
 
-  const Rect.posAndSize(this.pos, this.size);
+  Rect(Vec pos, Vec size)
+  {
+    this.pos = pos;
+    this.size = size;
+  }
 
-  Rect.leftTopRightBottom(int left, int top, int right, int bottom)
-      : pos = Vec(left, top),
-        size = Vec(right - left, bottom - top);
+  public static Rect posAndSize(Vec pos, Vec size)
+  {
+    return new Rect(pos, size);
+  }
+
+  public static Rect leftTopRightBottom(int left, int top, int right, int bottom)
+  {
+      var pos = new Vec(left, top);
+      var size = new Vec(right - left, bottom - top);
+      return new Rect(pos, size);
+  }
 
   Rect(int x, int y, int width, int height)
-      : pos = Vec(x, y),
-        size = Vec(width, height);
+  {
+    pos = new Vec(x, y);
+    size = new Vec(width, height);
+  }
+
 
   /// Creates a new rectangle a single row in height, as wide as [size],
   /// with its top left corner at [pos].
-  Rect.row(int x, int y, int size) : this(x, y, size, 1);
+  public static Rect row(int x, int y, int size)
+  {
+    return new Rect(x, y, size, 1);
+  }
 
   /// Creates a new rectangle a single column in width, as tall as [size],
   /// with its top left corner at [pos].
-  Rect.column(int x, int y, int size) : this(x, y, 1, size);
+  public static Rect column(int x, int y, int size)
+  {
+    return new Rect(x, y, 1, size);
+  }
 
-  String toString() => '($pos)-($size)';
+  string tostring() => $"({pos})-({size})";
 
   Rect inflate(int distance) {
-    return Rect(x - distance, y - distance, width + (distance * 2),
+    return new Rect(x - distance, y - distance, width + (distance * 2),
         height + (distance * 2));
   }
 
-  Rect offset(int x, int y) => Rect(this.x + x, this.y + y, width, height);
+  Rect offset(int x, int y) => new Rect(this.x + x, this.y + y, width, height);
 
-  bool contains(Object? object) {
-    if (object is! Vec) return false;
+  bool contains(object obj) {
+    if (!(obj is Vec)) return false;
 
-    if (object.x < pos.x) return false;
-    if (object.x >= pos.x + size.x) return false;
-    if (object.y < pos.y) return false;
-    if (object.y >= pos.y + size.y) return false;
+    var objVec = obj as Vec;
+    if (objVec.x < pos.x) return false;
+    if (objVec.x >= pos.x + size.x) return false;
+    if (objVec.y < pos.y) return false;
+    if (objVec.y >= pos.y + size.y) return false;
 
     return true;
   }
@@ -141,12 +166,12 @@ class Rect extends IterableBase<Vec> {
   /// Returns a new [Vec] that is as near to [vec] as possible while being in
   /// bounds.
   Vec clamp(Vec vec) {
-    var x = vec.x.clamp(left, right).toInt();
-    var y = vec.y.clamp(top, bottom).toInt();
-    return Vec(x, y);
+    var x = (int)Mathf.Clamp(vec.x, left, right);
+    var y = (int)Mathf.Clamp(vec.y, top, bottom);
+    return new Vec(x, y);
   }
 
-  RectIterator get iterator => RectIterator(this);
+  RectIterator iterator => RectIterator(this);
 
   /// Returns the distance between this Rect and [other]. This is minimum
   /// length that a corridor would have to be to go from one Rect to the other.
@@ -177,27 +202,27 @@ class Rect extends IterableBase<Vec> {
   }
 
   /// Iterates over the points along the edge of the Rect.
-  Iterable<Vec> trace() {
+  List<Vec> trace() {
     if ((width > 1) && (height > 1)) {
       // TODO(bob): Implement an iterator class here if building the list is
       // slow.
       // Trace all four sides.
-      final result = <Vec>[];
+      var result = new List<Vec>();
 
       for (var x = left; x < right; x++) {
-        result.add(Vec(x, top));
-        result.add(Vec(x, bottom - 1));
+        result.Add(new Vec(x, top));
+        result.Add(new Vec(x, bottom - 1));
       }
 
       for (var y = top + 1; y < bottom - 1; y++) {
-        result.add(Vec(left, y));
-        result.add(Vec(right - 1, y));
+        result.Add(new Vec(left, y));
+        result.Add(new Vec(right - 1, y));
       }
 
       return result;
     } else if ((width > 1) && (height == 1)) {
       // A single row.
-      return Rect.row(left, top, width);
+      return new List<Vec>().Add(Rect.row(left, top, width));
     } else if ((height >= 1) && (width == 1)) {
       // A single column, or one unit
       return Rect.column(left, top, height);
@@ -211,8 +236,9 @@ class Rect extends IterableBase<Vec> {
   // TODO: Equality operator and hashCode.
 }
 
-class RectIterator implements Iterator<Vec> {
-  final Rect _rect;
+class RectIterator : Iterator<Vec> 
+{
+  public Rect _rect;
   int _x;
   int _y;
 
@@ -220,7 +246,7 @@ class RectIterator implements Iterator<Vec> {
       : _x = _rect.x - 1,
         _y = _rect.y;
 
-  Vec get current => Vec(_x, _y);
+  Vec current => Vec(_x, _y);
 
   bool moveNext() {
     _x++;

@@ -20,7 +20,7 @@ public class VecBase
     /// Gets the area of a [Rect] whose corners are (0, 0) and this Vec.
     ///
     /// Returns a negative area if one of the Vec's coordinates are negative.
-    int area => x * y;
+    public int area => x * y;
 
     /// Gets the rook length of the Vec, which is the number of squares a rook on
     /// a chessboard would need to move from (0, 0) to reach the endpoint of the

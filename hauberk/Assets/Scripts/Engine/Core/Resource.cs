@@ -41,7 +41,7 @@ class ResourceSet<T> {
     endFrequency ??= startFrequency;
 
     if (_resources.ContainsKey(name)) {
-      throw ArgumentError('Already have a resource named "$name".');
+      throw new System.ArgumentException($"Already have a resource named \"{name}\".");
     }
 
     var resource =
@@ -51,7 +51,7 @@ class ResourceSet<T> {
     if (tags != null && tags != "") {
       foreach (var tagName in tags.Split(' ')) {
         var tag = _tags[tagName];
-        if (tag == null) throw ArgumentError('Unknown tag "$tagName".');
+        if (tag == null) throw new System.ArgumentException($"Unknown tag \"{tagName}\".");
         resource._tags.add(tag);
       }
     }
@@ -61,7 +61,8 @@ class ResourceSet<T> {
   /// "e" (if not already defined) and wires them up such that "c"'s parent is
   /// "b", "b"'s is "a", and "e"'s parent is "d".
   void defineTags(string paths) {
-    for (var path in paths.split(" ")) {
+    foreach (var path in paths.Split(' ')) 
+    {
       _Tag<T>? parent;
       _Tag<T>? tag;
       for (var name in path.split("/")) {
@@ -79,7 +80,7 @@ class ResourceSet<T> {
   /// Returns the resource with [name].
   T find(string name) {
     var resource = _resources[name];
-    if (resource == null) throw ArgumentError('Unknown resource "$name".');
+    if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     return resource.obj;
   }
 
@@ -94,10 +95,10 @@ class ResourceSet<T> {
   /// immediate tags or one of their parents.
   bool hasTag(string name, string tagName) {
     var resource = _resources[name];
-    if (resource == null) throw ArgumentError('Unknown resource "$name".');
+    if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
 
     var tag = _tags[tagName];
-    if (tag == null) throw ArgumentError('Unknown tag "$tagName".');
+    if (tag == null) throw new System.ArgumentException($"Unknown tag \"{tagName}\".");
 
     return resource._tags.any((thisTag) => thisTag.contains(tag));
   }
@@ -105,7 +106,7 @@ class ResourceSet<T> {
   /// Gets the names of the tags for the resource with [name].
   Iterable<string> getTags(string name) {
     var resource = _resources[name];
-    if (resource == null) throw ArgumentError('Unknown resource "$name".');
+    if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     return resource._tags.map((tag) => tag.name);
   }
 

@@ -269,7 +269,7 @@ public class Log {
 public class Noun {
   public string nounText;
 
-  public Pronoun pronoun => Pronoun.it;
+  public virtual Pronoun pronoun => Pronoun.it;
 
   public Noun(string nounText)
   {
