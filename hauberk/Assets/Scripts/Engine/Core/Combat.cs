@@ -105,7 +105,7 @@ public class Hit {
     this._attack = _attack;
   }
 
-  void addStrike(int bonus) {
+  public void addStrike(int bonus) {
     _strikeBonus += bonus;
   }
 
@@ -113,15 +113,15 @@ public class Hit {
     _strikeScale *= factor;
   }
 
-  void addDamage(int offset) {
+  public void addDamage(int offset) {
     _damageBonus += offset;
   }
 
-  void scaleDamage(double factor) {
+  public void scaleDamage(double factor) {
     _damageScale *= factor;
   }
 
-  void brand(Element element) {
+  public void brand(Element element) {
     // TODO: What if it's already branded? How do they compose?
     if (element != Element.none) _brand = element;
   }

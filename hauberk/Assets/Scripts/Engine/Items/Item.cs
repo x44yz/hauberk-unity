@@ -111,17 +111,17 @@ public class Item : Noun, System.IComparable<Item>
     /// How much the one unit of the item can be bought and sold for.
     int price {
         get {
-            var price = type.price.toDouble();
+            var price = (float)type.price;
 
             // If an item has both a prefix and a suffix, it's even more expensive
             // since that makes the item more powerful.
-            var affixScale = 1.0;
-            if (prefix != null && suffix != null) affixScale = 1.5;
+            var affixScale = 1.0f;
+            if (prefix != null && suffix != null) affixScale = 1.5f;
 
             _applyAffixes((affix) => price *= affix.priceScale * affixScale);
             _applyAffixes((affix) => price += affix.priceBonus * affixScale);
 
-            return price.ceil();
+            return Mathf.CeilToInt(price);
         }
     }
 
@@ -132,16 +132,16 @@ public class Item : Noun, System.IComparable<Item>
         get {
             var result = type.weight;
             _applyAffixes((affix) => result += affix.weightBonus);
-            return math.max(0, result);
+            return Mathf.Max(0, result);
         }
     }
 
     /// The amount of strength required to wield the item effectively.
     int heft {
         get {
-            var result = type.heft.toDouble();
+            var result = (double)type.heft;
             _applyAffixes((affix) => result *= affix.heftScale);
-            return result.round();
+            return Mathf.RoundToInt((float)result);
         }
     }
 

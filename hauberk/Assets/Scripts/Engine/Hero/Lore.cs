@@ -24,34 +24,51 @@ class Lore {
   public Dictionary<ItemType, int> _usedItems;
 
   /// The breeds the hero has killed at least one of.
-  Iterable<Breed> slainBreeds => _slainBreeds.keys;
+  Iterable<Breed> slainBreeds => _slainBreeds.Keys;
 
   /// The total number of monsters slain.
   int allSlain => _slainBreeds.values.fold(0, (a, b) => a + b);
 
-  Lore() : this.from({}, {}, {}, {}, {});
+  Lore()
+  {
+    this._seenBreeds = new Dictionary<Breed, int>();
+    this._slainBreeds = new Dictionary<Breed, int>();
+    this._foundItems = new Dictionary<ItemType, int>();
+    this._foundAffixes = new Dictionary<Affix, int>();
+    this._usedItems = new Dictionary<ItemType, int>();
+  }
 
-  Lore.from(this._seenBreeds, this._slainBreeds, this._foundItems,
-      this._foundAffixes, this._usedItems);
+    Lore(Dictionary<Breed, int> _seenBreeds, 
+        Dictionary<Breed, int> _slainBreeds, 
+        Dictionary<ItemType, int> _foundItems,
+        Dictionary<Affix, int> _foundAffixes, 
+        Dictionary<ItemType, int> _usedItems)
+    {
+        this._seenBreeds = _seenBreeds;
+        this._slainBreeds = _slainBreeds;
+        this._foundItems = _foundItems;
+        this._foundAffixes = _foundAffixes;
+        this._usedItems = _usedItems;
+    }
 
   void seeBreed(Breed breed) {
-    _seenBreeds.putIfAbsent(breed, () => 0);
-    _seenBreeds[breed] = _seenBreeds[breed]! + 1;
+    if (!_seenBreeds.ContainsKey(breed)) _seenBreeds.Add(breed, 0);
+    _seenBreeds[breed] = _seenBreeds[breed] + 1;
   }
 
   void slay(Breed breed) {
-    _slainBreeds.putIfAbsent(breed, () => 0);
-    _slainBreeds[breed] = _slainBreeds[breed]! + 1;
+    if (!_slainBreeds.ContainsKey(breed)) _slainBreeds.Add(breed, 0);
+    _slainBreeds[breed] = _slainBreeds[breed] + 1;
   }
 
   void findItem(Item item) {
-    _foundItems.putIfAbsent(item.type, () => 0);
+    if (!_foundItems.ContainsKey(item.type)) _foundItems.Add(item.type, 0);
     _foundItems[item.type] = _foundItems[item.type]! + 1;
 
     void findAffix(Affix? affix) {
       if (affix == null) return;
 
-      _foundAffixes.putIfAbsent(affix, () => 0);
+      if (!_foundAffixes.ContainsKey(affix)) _foundAffixes.Add(affix, 0);
       _foundAffixes[affix] = _foundAffixes[affix]! + 1;
     }
 
@@ -60,24 +77,49 @@ class Lore {
   }
 
   void useItem(Item item) {
-    _usedItems.putIfAbsent(item.type, () => 0);
+    if (!_usedItems.ContainsKey(item.type)) _usedItems.Add(item.type, 0);
     _usedItems[item.type] = _usedItems[item.type]! + 1;
   }
 
   /// The number of monsters of [breed] that the hero has detected.
-  int seenBreed(Breed breed) => _seenBreeds[breed] ?? 0;
+  int seenBreed(Breed breed)
+  {
+    int val = 0;
+    _seenBreeds.TryGetValue(breed, out val);
+    return val;
+  }
 
   /// The number of monsters of [breed] that the hero has killed.
-  int slain(Breed breed) => _slainBreeds[breed] ?? 0;
+  int slain(Breed breed)
+  {
+    int val = 0;
+    _slainBreeds.TryGetValue(breed, out val);
+    return val;
+  }
 
   /// The number of items of [type] the hero has picked up.
-  int foundItems(ItemType type) => _foundItems[type] ?? 1;
+  int foundItems(ItemType type)
+  {
+    int val = 1;
+    _foundItems.TryGetValue(type, out val);
+    return val;
+  }
 
   /// The number of items with [affix] the hero has picked up.
-  int foundAffixes(Affix affix) => _foundAffixes[affix] ?? 0;
+  int foundAffixes(Affix affix)
+  {
+    int val = 0;
+    _foundAffixes.TryGetValue(affix, out val);
+    return val;
+  }
 
   /// The number of items of [type] the hero has used.
-  int usedItems(ItemType type) => _usedItems[type] ?? 0;
+  int usedItems(ItemType type)
+  {
+    int val = 0;
+    _usedItems.TryGetValue(type, out val);
+    return val;
+  }
 
   Lore clone() => Lore.from(Map.of(_seenBreeds), Map.of(_slainBreeds),
       Map.of(_foundItems), Map.of(_foundAffixes), Map.of(_usedItems));

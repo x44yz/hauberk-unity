@@ -27,7 +27,7 @@ public class Log {
   ///     quantify("bunn[y|ies]", 2); // -> "2 bunnies"
   ///     quantify("(a) unicorn", 1); // -> "a unicorn"
   ///     quantify("ocelot", 1);      // -> "an ocelot"
-  static string quantify(string text, int count) {
+  public static string quantify(string text, int count) {
     string quantity;
     if (count == 1) {
       // Handle irregular nouns that start with a vowel but use "a", like

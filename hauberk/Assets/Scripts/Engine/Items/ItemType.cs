@@ -105,7 +105,7 @@ public class ItemType {
     ///
     /// That means it just has a gold value. As soon as the hero steps on it, it
     /// increases the hero's gold and disappears.
-    bool isTreasure;
+    public bool isTreasure;
 
     /// The maximum number of items of this type that a single stack may contain.
     public int maxStack;

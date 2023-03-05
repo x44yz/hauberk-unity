@@ -30,33 +30,48 @@ public class Affix
   public int priceBonus;
   public double priceScale;
 
-  Affix(this.name, this.displayName,
-      {double? heftScale,
-      int? weightBonus,
-      int? strikeBonus,
-      double? damageScale,
-      int? damageBonus,
-      Element? brand,
-      int? armor,
-      int? priceBonus,
-      double? priceScale})
-      : heftScale = heftScale ?? 1.0,
-        weightBonus = weightBonus ?? 0,
-        strikeBonus = strikeBonus ?? 0,
-        damageScale = damageScale ?? 1.0,
-        damageBonus = damageBonus ?? 1,
-        brand = brand ?? Element.none,
-        armor = armor ?? 0,
-        priceBonus = priceBonus ?? 0,
-        priceScale = priceScale ?? 1.0;
+  Affix(string name, string displayName,
+      double heftScale = 1.0,
+      int weightBonus = 0,
+      int strikeBonus = 0,
+      double damageScale = 1.0,
+      int damageBonus = 1,
+      Element brand = null,
+      int armor = 0,
+      int priceBonus = 0,
+      double priceScale = 1.0)
+    {
+      this.name = name;
+      this.displayName = displayName;
 
-  int resistance(Element element) => _resists[element] ?? 0;
+      this.heftScale = heftScale;
+      this.weightBonus = weightBonus;
+      this.strikeBonus = strikeBonus;
+      this.damageScale = damageScale;
+      this.damageBonus = damageBonus;
+      this.brand = brand ?? Element.none;
+      this.armor = armor;
+      this.priceBonus = priceBonus;
+      this.priceScale = priceScale;
+    }
+
+  public int resistance(Element element)
+  {
+    int val = 0;
+    _resists.TryGetValue(element, out val);
+    return val;
+  }
 
   void resist(Element element, int power) {
     _resists[element] = power;
   }
 
-  int statBonus(Stat stat) => _statBonuses[stat] ?? 0;
+  int statBonus(Stat stat)
+  {
+    int val = 0;
+    _statBonuses.TryGetValue(stat, out val);
+    return val;
+  }
 
   void setStatBonus(Stat stat, int bonus) {
     _statBonuses[stat] = bonus;

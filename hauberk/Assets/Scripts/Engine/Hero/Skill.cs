@@ -28,7 +28,7 @@ public abstract class Skill : System.IComparable<Skill> {
   /// Message displayed when the hero first discovers this skill.
   string  discoverMessage;
 
-  int maxLevel;
+  public int maxLevel;
 
   // TODO: Not used right now. Might be useful for rogue skills.
   /*
@@ -296,7 +296,7 @@ class SkillSet {
   }
 
   bool gain(Skill skill, int level) {
-    level = math.min(level, skill.maxLevel);
+    level = Mathf.Min(level, skill.maxLevel);
 
     if (_levels[skill] == level) return false;
 

@@ -93,17 +93,17 @@ class Inventory : IterableMixin<Item> with ItemCollection {
 
   /// Removes all items from the inventory.
   void clear() {
-    _items.clear();
+    _items.Clear();
     _lastUnequipped = null;
   }
 
   void remove(Item item) {
-    _items.remove(item);
+    _items.Remove(item);
   }
 
   Item removeAt(int index) {
     var item = _items[index];
-    _items.removeAt(index);
+    _items.RemoveAt(index);
     if (_lastUnequipped == item) _lastUnequipped = null;
     return item;
   }
@@ -163,7 +163,7 @@ class Inventory : IterableMixin<Item> with ItemCollection {
     var items = _items.toList();
     _items.clear();
 
-    for (var item in items) {
+    foreach (var item in items) {
       var result = tryAdd(item);
       assert(result.remaining == 0);
     }
