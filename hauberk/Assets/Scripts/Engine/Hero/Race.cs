@@ -11,21 +11,27 @@ class Race {
   // TODO: Wrap this in a method that returns a non-nullable int.
   /// The base number of points a hero of this race will attain by the max
   /// level for each stat.
-  public Map<Stat, int> stats;
+  public Dictionary<Stat, int> stats;
 
-  Race(this.name, this.description, this.stats);
+  Race(string name, string description, Dictionary<Stat, int> stats)
+  {
+    this.name = name;
+    this.description = description;
+    this.stats = stats;
+  }
 
   /// Determines how the hero's stats should increase at each level based on
   /// this race.
-  RaceStats rollStats() {
+  RaceStats rollStats() 
+  {
     // Pick specific values for each stat.
-    var rolled = <Stat, int>{};
-    for (var stat in stats.keys) {
-      var base = stats[stat]!;
-      var value = base;
+    var rolled = new Dictionary<Stat, int>();
+    foreach (var stat in stats.Keys) {
+      var _base = stats[stat]!;
+      var value = _base;
 
       // Randomly boost the max some.
-      value += rng.range(4);
+      value +=  .range(4);
       while (value < 50 && rng.percent(base ~/ 2 + 30)) {
         value++;
       }
@@ -39,7 +45,7 @@ class Race {
 /// Tracks the stat points gained at each level due to the hero's race.
 class RaceStats {
   public Race _race;
-  public Map<Stat, int> _max;
+  public Dictionary<Stat, int> _max;
 
   /// The stat gains are distributed somewhat randomly across levels. This seed
   /// ensures we use the same distribution every time for a given hero.
@@ -50,15 +56,20 @@ class RaceStats {
   ///
   /// Indexes into the list are offset by one, so list element 0 represents
   /// hero level 1.
-  public List<Map<Stat, int>> _stats = [];
+  public List<Dictionary<Stat, int>> _stats = new List<Dictionary<Stat, int>>();
 
-  RaceStats(this._race, this._max, this.seed) {
-    var min = <Stat, int>{};
-    var current = <Stat, int>{};
+  RaceStats(Race _race, Dictionary<Stat, int> _max, int seed) 
+  {
+    this._race = _race;
+    this._max = _max;
+    this.seed = seed;
+
+    var min = new Dictionary<Stat, int>();
+    var current = new Dictionary<Stat, int>();
     var totalMin = 0;
     var totalMax = 0;
-    for (var stat in _max.keys) {
-      min[stat] = 10 + _max[stat]! ~/ 15;
+    foreach (var stat in _max.Keys) {
+      min[stat] = 10 + _max[stat]! / 15;
       totalMin += min[stat]!;
       totalMax += _max[stat]!;
       current[stat] = 0;
