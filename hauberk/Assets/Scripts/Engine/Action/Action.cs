@@ -22,7 +22,7 @@ public abstract class Action
 
   Monster monster => _actor as Monster;
 
-  Hero hero => _actor as Hero;
+  public Hero hero => _actor as Hero;
 
   bool consumesEnergy => _consumesEnergy;
 
@@ -156,16 +156,20 @@ public class ActionResult {
 }
 
 /// Attempts to perform an action that spends focus.
-class FocusAction : Action {
+public class FocusAction : Action {
   /// The focus cost of the action.
   public int _focus;
 
   /// The action to perform if the hero has enough focus.
   public Action _action;
 
-  FocusAction(this._focus, this._action);
+  public FocusAction(int _focus, Action _action)
+  {
+    this._focus = _focus;
+    this._action = _action;
+  }
 
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     if (hero.focus < _focus) return fail("You aren't focused enough.");
 
     hero.spendFocus(_focus);
@@ -181,9 +185,13 @@ class FuryAction : Action {
   /// The action to perform if the hero has enough focus.
   public Action _action;
 
-  FuryAction(this._fury, this._action);
+  public FuryAction(int _fury, Action _action)
+  {
+    this._fury = _fury;
+    this._action = _action;
+  }
 
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     if (hero.fury < _fury) return fail("You aren't angry enough.");
 
     hero.spendFury(_fury);

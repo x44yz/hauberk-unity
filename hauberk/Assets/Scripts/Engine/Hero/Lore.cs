@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The history of interesting events the hero has experienced.
-class Lore {
   /// The number of monsters of each breed the hero has detected.
+public class Lore {
   ///
   /// (Or, more specifically, that have died.)
   public Dictionary<Breed, int> _seenBreeds;
@@ -29,7 +29,7 @@ class Lore {
   /// The total number of monsters slain.
   int allSlain => _slainBreeds.values.fold(0, (a, b) => a + b);
 
-  Lore()
+  public Lore()
   {
     this._seenBreeds = new Dictionary<Breed, int>();
     this._slainBreeds = new Dictionary<Breed, int>();
@@ -38,7 +38,7 @@ class Lore {
     this._usedItems = new Dictionary<ItemType, int>();
   }
 
-    Lore(Dictionary<Breed, int> _seenBreeds, 
+    public Lore(Dictionary<Breed, int> _seenBreeds, 
         Dictionary<Breed, int> _slainBreeds, 
         Dictionary<ItemType, int> _foundItems,
         Dictionary<Affix, int> _foundAffixes, 

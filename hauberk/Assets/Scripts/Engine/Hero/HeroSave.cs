@@ -18,24 +18,24 @@ public class HeroSave
 
     int level => experienceLevel(experience);
 
-    var _inventory = Inventory(ItemLocation.inventory, Option.inventoryCapacity);
+    Inventory _inventory = new Inventory(ItemLocation.inventory, Option.inventoryCapacity);
 
     public Inventory inventory => _inventory;
 
-    var _equipment = Equipment();
+    Equipment _equipment = Equipment();
 
     public Equipment equipment => _equipment;
 
     /// Items in the hero's home.
     Inventory home => _home;
-    var _home = Inventory(ItemLocation.home, Option.homeCapacity);
+    Inventory _home = Inventory(ItemLocation.home, Option.homeCapacity);
 
     /// Items in the hero's crucible.
     Inventory crucible => _crucible;
-    var _crucible = Inventory(ItemLocation.crucible, Option.crucibleCapacity);
+    Inventory _crucible = Inventory(ItemLocation.crucible, Option.crucibleCapacity);
 
     /// The current inventories of all the shops.
-    public Map<Shop, Inventory> shops;
+    public Dictionary<Shop, Inventory> shops;
 
     public int experience = 0;
 
@@ -100,28 +100,28 @@ public class HeroSave
         this.race = race;
         this.heroClass = heroClass;
         race = race.rollStats();
-        shops = {};
-        skills = SkillSet();
-        _lore = Lore();
+        shops = new Dictionary<Shop, Inventory>();
+        skills = new SkillSet();
+        _lore = new Lore();
 
         _bindStats();
     }
 
     // TODO: Rename.
-    HeroSave.load(
+    HeroSave(
         string name,
         Race race,
         HeroClass heroClass,
-        this._inventory,
-        this._equipment,
-        this._home,
-        this._crucible,
-        this.shops,
-        this.experience,
-        this.skills,
-        this._lore,
-        this.gold,
-        this.maxDepth) 
+        Inventory _inventory,
+        Equipment _equipment,
+        Inventory _home,
+        Inventory _crucible,
+        Dictionary<Shop, Inventory> shops,
+        int experience,
+        SkillSet skills,
+        Lore _lore,
+        int gold,
+        int maxDepth) 
     {
         this.name = name;
         this.race = race;

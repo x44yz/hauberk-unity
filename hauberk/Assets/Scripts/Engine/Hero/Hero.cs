@@ -37,7 +37,7 @@ public class Hero : Actor {
   int _stomach = Option.heroMaxStomach / 2;
 
   /// How calm and centered the hero is. Mental skills like spells spend focus.
-  int focus => _focus;
+  public int focus => _focus;
   int _focus = 0;
 
   /// How enraged the hero is. Physical skills like active disciplines spend

@@ -11,7 +11,7 @@ public abstract class Skill : System.IComparable<Skill> {
 
   public int _sortOrder = _nextSortOrder++;
 
-  string  name;
+  public string  name;
 
   string  description;
 
@@ -28,7 +28,7 @@ public abstract class Skill : System.IComparable<Skill> {
   /// Message displayed when the hero first discovers this skill.
   string  discoverMessage;
 
-  public int maxLevel;
+  public virtual int maxLevel => 0;
 
   // TODO: Not used right now. Might be useful for rogue skills.
   /*
@@ -36,7 +36,7 @@ public abstract class Skill : System.IComparable<Skill> {
   */
 
   /// Determines what level [hero] has in this skill.
-  int calculateLevel(HeroSave hero) =>
+ protected int calculateLevel(HeroSave hero) =>
       onCalculateLevel(hero, hero.skills.points(this));
 
   public abstract int onCalculateLevel(HeroSave hero, int points);
@@ -81,7 +81,7 @@ public abstract class Skill : System.IComparable<Skill> {
 /// Some skills require additional data to be performed -- a target position
 /// or a direction. Those will implement one of the subclasses, [TargetSkill]
 /// or [DirectionSkill].
-mixin UsableSkill implements Skill {
+public class UsableSkill {
   /// The focus cost to use the skill, with proficiency applied.
   int focusCost(HeroSave hero, int level) => 0;
 
@@ -91,17 +91,17 @@ mixin UsableSkill implements Skill {
   /// If the skill cannot currently be used (for example Archery when a bow is
   /// not equipped), returns the reason why. Otherwise, returns `null` to
   /// indicate the skill is usable.
-  string ? unusableReason(Game game) => null;
+  string unusableReason(Game game) => null;
 
   /// If this skill has a focus or fury cost, wraps [action] in an appropriate
   /// action to spend that.
-  Action _wrapActionCost(HeroSave hero, int level, Action action) {
+  protected Action _wrapActionCost(HeroSave hero, int level, Action action) {
     if (focusCost(hero, level) > 0) {
-      return FocusAction(focusCost(hero, level), action);
+      return new FocusAction(focusCost(hero, level), action);
     }
 
     if (furyCost(hero, level) > 0) {
-      return FuryAction(furyCost(hero, level), action);
+      return new FuryAction(furyCost(hero, level), action);
     }
 
     return action;
@@ -109,16 +109,16 @@ mixin UsableSkill implements Skill {
 }
 
 /// A skill that can be directly used to perform an action.
-mixin ActionSkill implements UsableSkill {
+public class ActionSkill : UsableSkill {
   Action getAction(Game game, int level) {
     return _wrapActionCost(game.hero.save, level, onGetAction(game, level));
   }
 
-  Action onGetAction(Game game, int level);
+  public abstract Action onGetAction(Game game, int level);
 }
 
 /// A skill that requires a target position to perform.
-mixin TargetSkill implements UsableSkill {
+public class TargetSkill : UsableSkill {
   bool canTargetSelf => false;
 
   /// The maximum range of the target from the hero.
@@ -135,7 +135,7 @@ mixin TargetSkill implements UsableSkill {
 }
 
 /// A skill that requires a direction to perform.
-mixin DirectionSkill implements UsableSkill {
+public class DirectionSkill : UsableSkill {
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
   Action getDirectionAction(Game game, int level, Direction dir) {
@@ -156,14 +156,14 @@ mixin DirectionSkill implements UsableSkill {
 ///
 /// The underlying data used to track progress in disciplines is stored in the
 /// hero's [Lore].
-abstract class Discipline extends Skill {
-  string  gainMessage(int level) => "You have reached level $level in $name.";
+abstract class Discipline : Skill {
+  public override string  gainMessage(int level) => $"You have reached level {level} in {name}.";
 
-  string  discoverMessage => "{1} can begin training in $name.";
+  string  discoverMessage => $"{1} can begin training in {name}.";
 
-  string  levelDescription(int level);
+  public abstract string  levelDescription(int level);
 
-  int onCalculateLevel(HeroSave hero, int points) {
+  public override int onCalculateLevel(HeroSave hero, int points) {
     var training = hero.skills.points(this);
     for (var level = 1; level <= maxLevel; level++) {
       if (training < trainingNeeded(hero.heroClass, level)!) return level - 1;
@@ -181,7 +181,7 @@ abstract class Discipline extends Skill {
     var points = hero.skills.points(this);
     var current = trainingNeeded(hero.heroClass, level)!;
     var next = trainingNeeded(hero.heroClass, level + 1)!;
-    return 100 * (points - current) ~/ (next - current);
+    return 100 * (points - current) / (next - current);
   }
 
   /// How much training is needed for a hero of [heroClass] to reach [level],
@@ -190,25 +190,25 @@ abstract class Discipline extends Skill {
     var profiency = heroClass.proficiency(this);
     if (profiency == 0.0) return null;
 
-    return (baseTrainingNeeded(level) / profiency).ceil();
+    return Mathf.CeilToInt((float)(baseTrainingNeeded(level) / profiency));
   }
 
   /// How much training is needed for to reach [level], ignoring class
   /// proficiency.
-  int baseTrainingNeeded(int level);
+  public abstract int baseTrainingNeeded(int level);
 }
 
 /// Spells are the primary skill for mages.
 ///
 /// Spells do not need to be explicitly trained or learned. As soon as one is
 /// discovered, as long as it's not too complex, the hero can use it.
-abstract class Spell extends Skill with UsableSkill {
-  string  gainMessage(int level) => '{1} have learned the spell $name.';
+abstract class Spell : Skill {
+  public override string  gainMessage(int level) => $"{1} have learned the spell {name}.";
 
-  string  discoverMessage => '{1} are not wise enough to cast $name.';
+  string  discoverMessage => $"{1} are not wise enough to cast {name}.";
 
   /// Spells are not leveled.
-  int maxLevel => 1;
+  public override int maxLevel => 1;
 
   /// The base focus cost to cast the spell.
   int baseFocusCost;
@@ -223,7 +223,7 @@ abstract class Spell extends Skill with UsableSkill {
   /// The range of the spell, or 0 if not relevant.
   int range => 0;
 
-  int onCalculateLevel(HeroSave hero, int points) {
+  public override int onCalculateLevel(HeroSave hero, int points) {
     if (hero.heroClass.proficiency(this) == 0.0) return 0;
 
     // If the hero has enough intellect, they have it.
@@ -231,7 +231,7 @@ abstract class Spell extends Skill with UsableSkill {
   }
 
   int focusCost(HeroSave hero, int level) {
-    var cost = baseFocusCost.toDouble();
+    var cost = (double)baseFocusCost;
 
     // Intellect makes spells cheaper, relative to their complexity.
     cost *= hero.intellect.spellFocusScale(complexity(hero.heroClass));
@@ -240,32 +240,38 @@ abstract class Spell extends Skill with UsableSkill {
     cost /= hero.heroClass.proficiency(this);
 
     // Round up so that it always costs at least 1.
-    return cost.ceil();
+    return Mathf.CeilToInt((float)cost);
   }
 
   int complexity(HeroClass heroClass) =>
-      ((baseComplexity - 9) / heroClass.proficiency(this)).round() + 9;
+      ((baseComplexity - 9) / Mathf.RoundToInt((float)heroClass.proficiency(this))) + 9;
 
   int getRange(Game game) => range;
 }
 
 /// A collection of [Skill]s and the hero's progress in them.
-class SkillSet {
+public class SkillSet {
   /// The levels the hero has gained in each skill.
   ///
   /// If a skill is at level zero here, it means the hero has discovered the
   /// skill, but not gained it. If not present in the map at all, the hero has
   /// not discovered it.
-  public Map<Skill, int> _levels;
+  public Dictionary<Skill, int> _levels;
 
   /// How many points the hero has earned towards the next level of each skill.
-  public Map<Skill, int> _points;
+  public Dictionary<Skill, int> _points;
 
-  SkillSet()
-      : _levels = {},
-        _points = {};
+  public SkillSet()
+  {
+        _levels = new Dictionary<Skill, int>();
+        _points = new Dictionary<Skill, int>();
+  }
 
-  SkillSet.from(this._levels, this._points);
+  public SkillSet(Dictionary<Skill, int> _levels, Dictionary<Skill, int> points)
+  {
+    this._levels = _levels;
+    this._points = points;
+  }
 
   /// All the skills the hero knows about.
   Iterable<Skill> discovered => _levels.keys.toList()..sort();
@@ -289,7 +295,7 @@ class SkillSet {
   ///
   /// Returns `true` if the hero wasn't already aware of this skill.
   bool discover(Skill skill) {
-    if (_levels.containsKey(skill)) return false;
+    if (_levels.ContainsKey(skill)) return false;
 
     _levels[skill] = 0;
     return true;
@@ -301,7 +307,7 @@ class SkillSet {
     if (_levels[skill] == level) return false;
 
     // Don't discover the skill if not already known.
-    if (level == 0 && !_levels.containsKey(skill)) return false;
+    if (level == 0 && !_levels.ContainsKey(skill)) return false;
 
     _levels[skill] = level;
     return true;
@@ -323,20 +329,22 @@ class SkillSet {
   */
 
   /// Whether the hero is aware of the existence of this skill.
-  bool isDiscovered(Skill skill) => _levels.containsKey(skill);
+  bool isDiscovered(Skill skill) => _levels.ContainsKey(skill);
 
   /// Whether the hero knows of and has learned this skill.
   bool isAcquired(Skill skill) =>
-      _levels.containsKey(skill) && _levels[skill]! > 0;
+      _levels.ContainsKey(skill) && _levels[skill] > 0;
 
   SkillSet clone() => SkillSet.from(Map.from(_levels), Map.from(_points));
 
   void update(SkillSet other) {
-    _levels.clear();
-    _levels.addAll(other._levels);
+    _levels.Clear();
+    foreach (var kv in other._levels)
+      _levels[kv.Key] = kv.Value;
 
-    _points.clear();
-    _points.addAll(other._points);
+    _points.Clear();
+    foreach (var kv in other._points)
+      _points[kv.Key] = kv.Value;
   }
 }
 

@@ -200,7 +200,7 @@ class Intellect : StatBase {
     }
   }
 
-  double spellFocusScale(int complexity) {
+  public double spellFocusScale(int complexity) {
     var relative = value - Mathf.Clamp(complexity, 0, 50);
     return MathUtils.lerpDouble(relative, 0, 50, 1.0, 0.2);
   }
