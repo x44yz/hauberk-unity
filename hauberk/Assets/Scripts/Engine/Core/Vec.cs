@@ -185,7 +185,7 @@ public class VecBase
 
     /// Returns a new [Vec] with the absolute value of the coordinates of this
     /// one.
-    Vec abs() => new Vec(Mathf.Abs(x), Mathf.Abs(y));
+    public Vec abs() => new Vec(Mathf.Abs(x), Mathf.Abs(y));
 
     /// Returns a new [Vec] whose coordinates are this one's translated by [x] and
     /// [y].
@@ -205,7 +205,7 @@ public class VecBase
 /// A two-dimensional point.
 public class Vec : VecBase 
 {
-    public static Vec zero = new Vec(0, 0);
+    public static Vec zero => new Vec(0, 0);
 
     int hashCode {
         get {

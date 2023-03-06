@@ -10,12 +10,12 @@ using System.Text;
 class BreedRef {
   public static List<BreedRef> _unresolved = new List<BreedRef>();
 
-  static void resolve(Breed Function(string) resolver) {
-    for (var ref in _unresolved) {
-      ref._breed = resolver(ref._name);
+  static void resolve(Func<string, Breed> resolver) {
+    foreach (var _ref in _unresolved) {
+      _ref._breed = resolver(_ref._name);
     }
 
-    _unresolved.clear();
+    _unresolved.Clear();
   }
 
   public string _name;
@@ -110,33 +110,48 @@ class Breed {
 
   public string description;
 
-  Breed(this._name, this.pronoun, this.appearance, this.attacks, this.moves,
-      this.drop, this.location, this.motility,
-      {required this.depth,
-      required this.maxHealth,
-      required this.tracking,
+  Breed(string _name, Pronoun pronoun, object appearance, List<Attack> attacks, 
+      List<Move> moves,
+      Drop drop, SpawnLocation location, Motility motility,
+      int depth,
+      int maxHealth,
+      int tracking,
       int? vision,
       int? hearing,
-      required this.meander,
+      int meander,
       int? speed,
       int? dodge,
       int? emanationLevel,
       int? countMin,
       int? countMax,
-      this.minions,
-      this.stain,
-      required this.flags,
-      string? description})
+      Spawn minions,
+      TileType stain,
+      BreedFlags flags,
+      string description)
   {
-    
+    this._name = _name;
+    this.pronoun = pronoun;
+    this.appearance = appearance;
+    this.attacks = attacks;
+    this.moves = moves;
+    this.drop = drop;
+    this.location = location;
+    this.motility = motility;
+    this.depth = depth;
+    this.maxHealth = maxHealth;
+    this.tracking = tracking;
 
-    vision = vision ?? 8,
-    hearing = hearing ?? 10,
-    speed = speed ?? 0,
-    dodge = dodge ?? 20,
-    emanationLevel = emanationLevel ?? 0,
-    countMin = countMin ?? 1,
-    countMax = countMax ?? 1,
+    vision = vision ?? 8;
+    hearing = hearing ?? 10;
+    this.meander = meander;
+    speed = speed ?? 0;
+    dodge = dodge ?? 20;
+    emanationLevel = emanationLevel ?? 0;
+    countMin = countMin ?? 1;
+    countMax = countMax ?? 1;
+    this.minions = minions;
+    this.stain = stain;
+    this.flags = flags;
     description = description ?? "Indescribable.";
   }
 
@@ -201,7 +216,7 @@ class Breed {
       // when rounded to an integer.
       exp /= 40;
 
-      return exp.ceil();
+      return Mathf.CeilToInt((float)exp);
     }
   }
 

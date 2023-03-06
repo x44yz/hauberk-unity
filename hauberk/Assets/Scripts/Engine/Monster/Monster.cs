@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using num = System.Single;
+using num = System.Double;
 
 class Monster : Actor {
   public const float _maxAlertness = 1.0f;
@@ -67,11 +67,11 @@ class Monster : Actor {
   ///
   /// Give this some random variation within monsters of the same breed so
   /// they don't all become frightened at the same time.
-  double _frightenThreshold = rng.range(60, 200).toDouble();
+  double _frightenThreshold = (double)Rng.rng.range(60, 200);
 
   double fear => _fear;
 
-  Object appearance => breed.appearance;
+  object appearance => breed.appearance;
 
   public string nounText => $"the {breed.name}";
 
@@ -121,7 +121,7 @@ class Monster : Actor {
     // TODO: Make rate and experience be double instead of num? If so, get rid
     // of this toDouble().
     _recharges[move] =
-        _recharges[move]! + rng.float(move.rate.toDouble(), move.rate * 1.3);
+        _recharges[move]! + Rng.rng.rfloat((double)move.rate, move.rate * 1.3);
   }
 
   /// Returns `true` if [move] is recharged.
