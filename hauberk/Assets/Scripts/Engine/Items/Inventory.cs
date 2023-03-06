@@ -63,7 +63,16 @@ public interface ItemCollection {
 }
 
 /// The collection of [Item]s held by an [Actor].
-class Inventory : ICollection<Item>, ItemCollection {
+public class Inventory : IEnumerable<Item> {
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return iterator;
+  }
+  public IEnumerator<Item> GetEnumerator()
+  {
+    return iterator;
+  }
+
   public ItemLocation location;
 
   public List<Item> _items;
@@ -78,9 +87,9 @@ class Inventory : ICollection<Item>, ItemCollection {
 
   int length => _items.Count;
 
-  Item operator [](int index) => _items[index];
+  public Item this[int index] => _items[index];
 
-  Inventory(ItemLocation location, int _capacity, List<Item> items = null)
+  public Inventory(ItemLocation location, int _capacity = 0, List<Item> items = null)
   {
     this.location = location;
     this._capacity = _capacity;
@@ -103,7 +112,7 @@ class Inventory : ICollection<Item>, ItemCollection {
     _lastUnequipped = null;
   }
 
-  void remove(Item item) {
+  public void remove(Item item) {
     _items.Remove(item);
   }
 
@@ -166,16 +175,16 @@ class Inventory : ICollection<Item>, ItemCollection {
   /// inventory is changed.
   void countChanged() {
     // Hacky. Just re-add everything from scratch.
-    var items = _items.toList();
-    _items.clear();
+    var items = _items;
+    _items.Clear();
 
     foreach (var item in items) {
       var result = tryAdd(item);
-      assert(result.remaining == 0);
+      DartUtils.assert(result.remaining == 0);
     }
   }
 
-  Iterator<Item> get iterator => _items.iterator;
+  IEnumerator<Item> iterator => _items.GetEnumerator();
 }
 
 /// Describes the result of attempting to add an item stack to the inventory.

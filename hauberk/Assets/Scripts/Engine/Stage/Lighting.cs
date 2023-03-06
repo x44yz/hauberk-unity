@@ -93,7 +93,7 @@ public class Lighting {
     bool _actorLightDirty = true;
     bool _visibilityDirty = true;
 
-    Lighting(Stage stage)
+    public Lighting(Stage stage)
     {
         _stage = stage,
         _floorLight = new Array2D(stage.width, stage.height, 0),

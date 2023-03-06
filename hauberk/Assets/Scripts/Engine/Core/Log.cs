@@ -86,7 +86,7 @@ public class Log {
     add(LogType.quest, message, noun1, noun2, noun3);
   }
 
-  void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.gain, message, noun1, noun2, noun3);
   }
 

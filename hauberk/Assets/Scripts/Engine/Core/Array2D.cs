@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 /// A two-dimensional fixed-size array of elements of type [T].
 ///
@@ -9,7 +11,10 @@ using System.Collections.Generic;
 ///
 /// Internally, the elements are stored in a single contiguous list in row-major
 /// order.
-class Array2D<T> {
+public class Array2D<T> where T : class {
+    /// A [Rect] whose bounds cover the full range of valid element indexes.
+    public Rect bounds;
+
     /// The number of elements in a row of the array.
     public int width => bounds.width;
 
@@ -18,9 +23,13 @@ class Array2D<T> {
 
     public List<T> _elements;
 
+    public Array2D()
+    {
+    }
+
     /// Creates a new array with [width], [height] elements initialized to
     /// [value].
-    Array2D(int width, int height, T value)
+    public Array2D(int width, int height, T value)
     {
         bounds = new Rect(0, 0, width, height);
         _elements = new List<T>(width * height);
@@ -30,33 +39,42 @@ class Array2D<T> {
 
     /// Creates a new array with [width], [height] elements initialized to the
     /// result of calling [generator] on each element.
-    Array2D.generated(int width, int height, T Function(Vec) generator)
+    public static Array2D<T> generated(int width, int height, System.Func<Vec, T> generator)
     {
-        bounds = Rect(0, 0, width, height),
-        _elements = width * height > 0
-                ? List<T>.filled(width * height, generator(Vec.zero))
-                : List<T>.empty() 
+        var a2 = new Array2D<T>();
+
+        a2.bounds = new Rect(0, 0, width, height);
+        a2._elements = new List<T>();
+        if (width * height > 0)
+        {
+            for (int i = 0; i < width * height; ++i)
+                a2._elements.Add(generator(Vec.zero));
+        }
 
         // Don't call generator() on the first cell twice.
         for (var x = 1; x < width; x++) {
-            set(x, 0, generator(Vec(x, 0)));
+            a2._set(x, 0, generator(new Vec(x, 0)));
         }
 
         for (var y = 1; y < height; y++) {
             for (var x = 0; x < width; x++) {
-                set(x, y, generator(Vec(x, y)));
+                a2._set(x, y, generator(new Vec(x, y)));
             }
         }
+
+        return a2;
     }
 
     /// Gets the element at [pos].
-    T operator [](Vec pos) => get(pos.x, pos.y);
+    public T this[Vec pos] 
+    {
+        get { return _get(pos.x, pos.y); }
+        set { _set(pos.x, pos.y, value); }
+    }
 
     /// Sets the element at [pos].
-    public static void operator []=(Vec pos, T value) => set(pos.x, pos.y, value);
+    // public static void operator []=(Vec pos, T value) => set(pos.x, pos.y, value);
 
-    /// A [Rect] whose bounds cover the full range of valid element indexes.
-    public Rect bounds;
     // Store the bounds rect instead of simply the width and height because this
     // is accessed very frequently and avoids allocating a new Rect each time.
 
@@ -64,32 +82,34 @@ class Array2D<T> {
     Vec size => bounds.size;
 
     /// Gets the element in the array at [x], [y].
-    public T get(int x, int y) {
+    public T _get(int x, int y) {
         _checkBounds(x, y);
         return _elements[y * width + x];
     }
 
     /// Sets the element in the array at [x], [y] to [value].
-    void set(int x, int y, T value) {
+    public void _set(int x, int y, T value) {
         _checkBounds(x, y);
         _elements[y * width + x] = value;
     }
 
     /// Sets every element to [value].
     void fill(T value) {
-        _elements.fillRange(0, _elements.length, value);
+        for (int i = 0; i < _elements.Count; ++i)
+            _elements[i] = value;
     }
 
     /// Evaluates [generator] on each position in the array and sets the element
     /// at that position to the result.
-    void generate(T Function(Vec) generator) {
-        for (var pos in bounds) this[pos] = generator(pos);
+    void generate(System.Func<Vec, T> generator) {
+        foreach (var pos in bounds) 
+            this[pos] = generator(pos);
     }
 
-    Iterator<T> get iterator => _elements.iterator;
+    IEnumerator<T> iterator => _elements.GetEnumerator();
 
     void _checkBounds(int x, int y) {
-        if (x < 0 || x >= width) throw RangeError.value(x, "x");
-        if (y < 0 || y >= height) throw RangeError.value(y, "y");
+        if (x < 0 || x >= width) throw new System.ArgumentOutOfRangeException("x", x.ToString());
+        if (y < 0 || y >= height) throw new System.ArgumentOutOfRangeException("y", y.ToString());
     }
 }

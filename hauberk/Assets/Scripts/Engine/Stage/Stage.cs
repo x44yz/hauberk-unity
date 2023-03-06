@@ -16,7 +16,7 @@ public class Stage {
 
     public int height => tiles.height;
 
-    Rect bounds => tiles.bounds;
+    public Rect bounds => tiles.bounds;
 
     List<Actor> actors => _actors;
 
@@ -30,36 +30,40 @@ public class Stage {
     ///
     /// This is a performance bottleneck since pathfinding needs to ensure it
     /// doesn't step on other actors.
-    public Array2D<Actor?> _actorsByTile;
+    public Array2D<Actor> _actorsByTile;
 
     public Stage(int width, int height, Game game)
     {
         this.game = game;
 
-        tiles = Array2D.generated(width, height, (_) => Tile());
-        _actorsByTile = Array2D(width, height, null);
+        tiles = Array2D<Tile>.generated(width, height, (_) => new Tile());
+        _actorsByTile = new Array2D<Actor>(width, height, null);
 
         _lighting = new Lighting(this);
         _sound = new Sound(this);
     }
 
-    Tile operator [](Vec pos) => tiles[pos];
+    Tile this[Vec pos] => tiles[pos];
 
     /// Iterates over every item on the ground on the stage.
-    Iterable<Item> allItems sync* {
-        for (var inventory in _itemsByTile.values) {
-            yield* inventory;
+    IEnumerator<Item> allItems {
+        get {
+            var rt = new List<Item>();
+            foreach (var inventory in _itemsByTile.Values) {
+                rt.AddRange(inventory._items);
+            }
+            return rt.GetEnumerator();
         }
     }
 
-    Tile get(int x, int y) => tiles.get(x, y);
+    Tile get(int x, int y) => tiles._get(x, y);
 
-    void set(int x, int y, Tile tile) => tiles.set(x, y, tile);
+    void set(int x, int y, Tile tile) => tiles._set(x, y, tile);
 
     void addActor(Actor actor) {
-        DartUtil.assert(_actorsByTile[actor.pos] == null);
+        DartUtils.assert(_actorsByTile[actor.pos] == null);
 
-        _actors.add(actor);
+        _actors.Add(actor);
         _actorsByTile[actor.pos] = actor;
     }
 
@@ -71,55 +75,55 @@ public class Stage {
     }
 
     public void removeActor(Actor actor) {
-        assert(_actorsByTile[actor.pos] == actor);
+        DartUtils.assert(_actorsByTile[actor.pos] == actor);
 
-        var index = _actors.indexOf(actor);
+        var index = _actors.IndexOf(actor);
         if (_currentActorIndex > index) _currentActorIndex--;
-        _actors.removeAt(index);
+        _actors.RemoveAt(index);
 
-        if (_currentActorIndex >= _actors.length) _currentActorIndex = 0;
+        if (_currentActorIndex >= _actors.Count) _currentActorIndex = 0;
 
         _actorsByTile[actor.pos] = null;
     }
 
     void advanceActor() {
-        _currentActorIndex = (_currentActorIndex + 1) % _actors.length;
+        _currentActorIndex = (_currentActorIndex + 1) % _actors.Count;
     }
 
     Actor? actorAt(Vec pos) => _actorsByTile[pos];
 
     List<Item> placeDrops(Vec pos, Motility motility, Drop drop) {
-        var items = <Item>[];
+        var items = new List<Item>();
 
         // Try to keep dropped items from overlapping.
         var flow = MotilityFlow(this, pos, motility, avoidActors: false);
 
-        drop.dropItem(game.depth, (item) {
-        items.add(item);
+        drop.dropItem(game.depth, (item) => {
+            items.Add(item);
 
-        // Prefer to not place under monsters or stack with other items.
-        var itemPos = flow.bestWhere((pos) {
-            // Some chance to place on occupied tiles.
-            if (rng.oneIn(5)) return true;
+            // Prefer to not place under monsters or stack with other items.
+            var itemPos = flow.bestWhere((pos) => {
+                // Some chance to place on occupied tiles.
+                if (rng.oneIn(5)) return true;
 
-            return actorAt(pos) == null && !isItemAt(pos);
-        });
+                return actorAt(pos) == null && !isItemAt(pos);
+            });
 
-        // If that doesn't work, pick any nearby tile.
-        if (itemPos == null) {
-            var allowed = flow.reachable.take(10).toList();
-            if (allowed.isNotEmpty) {
-                itemPos = rng.item(allowed);
-            } else {
-                // Nowhere to place it.
-                // TODO: If the starting position doesn't allow the motility (as in
-                // when opening a barrel), this does the wrong thing. What should we
-                // do then?
-                itemPos = pos;
+            // If that doesn't work, pick any nearby tile.
+            if (itemPos == null) {
+                var allowed = flow.reachable.take(10).toList();
+                if (allowed.isNotEmpty) {
+                    itemPos = Rng.rng.item(allowed);
+                } else {
+                    // Nowhere to place it.
+                    // TODO: If the starting position doesn't allow the motility (as in
+                    // when opening a barrel), this does the wrong thing. What should we
+                    // do then?
+                    itemPos = pos;
+                }
             }
-        }
 
-        addItem(item, itemPos!);
+            addItem(item, itemPos!);
         });
 
         return items;
@@ -138,11 +142,11 @@ public class Stage {
     }
 
     /// Returns `true` if there is at least one item at [pos].
-    bool isItemAt(Vec pos) => _itemsByTile.containsKey(pos);
+    bool isItemAt(Vec pos) => _itemsByTile.ContainsKey(pos);
 
     /// Gets the [Item]s at [pos].
     Inventory itemsAt(Vec pos) =>
-        _itemsByTile[pos] ?? Inventory(ItemLocation.onGround);
+        _itemsByTile[pos] ?? new Inventory(ItemLocation.onGround);
     // TODO: This is kind of slow, probably from creating the inventory each time.
     // Use a const one for the empty case?
 
@@ -204,7 +208,7 @@ public class Stage {
 
     /// Marks the tile at [x],[y] as explored if the hero can see it and hasn't
     /// previously explored it.
-    void exploreAt(int x, int y, {bool? force}) {
+    void exploreAt(int x, int y, bool? force) {
         var tile = tiles.get(x, y);
         if (tile.updateExplored(force: force)) {
             if (tile.isVisible) {
@@ -216,7 +220,7 @@ public class Stage {
         }
     }
 
-    void explore(Vec pos, {bool? force}) {
+    void explore(Vec pos, bool? force) {
         exploreAt(pos.x, pos.y, force: force);
     }
 

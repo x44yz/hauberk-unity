@@ -30,7 +30,7 @@ public class VecBase
     /// Gets the king length of the Vec, which is the number of squares a king on
     /// a chessboard would need to move from (0, 0) to reach the endpoint of the
     /// Vec. Also known as Chebyshev distance.
-    int kingLength => Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
+    public int kingLength => Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
 
     int lengthSquared => x * x + y * y;
 

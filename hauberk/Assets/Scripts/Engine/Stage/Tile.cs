@@ -127,7 +127,7 @@ class TileType {
     public bool canEnter(Motility motility) => this.motility.overlaps(motility);
 }
 
-class Tile {
+public class Tile {
     /// The tile's basic type.
     ///
     /// If you change this during the game, make sure to call
@@ -221,9 +221,9 @@ class Tile {
 
     bool isTraversable => type.isTraversable;
 
-    bool isFlyable => canEnter(Motility.fly);
+    public bool isFlyable => canEnter(Motility.fly);
 
-    bool isClosedDoor => type.motility == Motility.door;
+    public bool isClosedDoor => type.motility == Motility.door;
 
     TilePortal? portal => type.portal;
 

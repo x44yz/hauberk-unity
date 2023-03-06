@@ -36,7 +36,7 @@ using UnityEngine;
 /// example, the width of this rect, determined by subtracting the left
 /// coordinate (-1) from the right (3) is 4 and indeed it contains four columns
 /// of points.
-class Rect // : IterableBase<Vec> 
+public class Rect : IEnumerable<Vec> 
 {
   /// Gets the empty rectangle.
   public static Rect empty = Rect.posAndSize(Vec.zero, Vec.zero);
@@ -94,7 +94,7 @@ class Rect // : IterableBase<Vec>
 
   int area => size.area;
 
-  Rect(Vec pos, Vec size)
+  public Rect(Vec pos, Vec size)
   {
     this.pos = pos;
     this.size = size;
@@ -112,7 +112,7 @@ class Rect // : IterableBase<Vec>
       return new Rect(pos, size);
   }
 
-  Rect(int x, int y, int width, int height)
+  public Rect(int x, int y, int width, int height)
   {
     pos = new Vec(x, y);
     size = new Vec(width, height);
@@ -142,7 +142,7 @@ class Rect // : IterableBase<Vec>
 
   Rect offset(int x, int y) => new Rect(this.x + x, this.y + y, width, height);
 
-  bool contains(object obj) {
+  public bool contains(object obj) {
     if (!(obj is Vec)) return false;
 
     var objVec = obj as Vec;
@@ -236,7 +236,7 @@ class Rect // : IterableBase<Vec>
   // TODO: Equality operator and hashCode.
 }
 
-class RectIterator : Iterator<Vec> 
+class RectIterator : IEnumerator<Vec> 
 {
   public Rect _rect;
   int _x;

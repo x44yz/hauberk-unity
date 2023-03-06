@@ -95,7 +95,7 @@ abstract class Pathfinder<T> {
             path.startDirection == Direction.none ? dir : path.startDirection,
             neighbor,
             path.length + 1,
-            path.cost + cost);
+            path.cost + cost.Value);
         paths.add(newPath, priority(newPath, end));
       }
     }
@@ -124,7 +124,7 @@ int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
   /// If the pathfinder wants to immediately stop processing and return a value,
   /// this should return a non-`null` value. Otherwise, return `null` and the
   /// pathfinder will continue.
-  public abstract T processStep(Path path);
+  public abstract T? processStep(Path path);
 
   /// Called when the pathfinder has found a [path] to the end point.
   ///

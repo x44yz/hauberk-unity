@@ -12,13 +12,25 @@ public class Sound {
 
   public const int maxDistance = 16;
 
+  public static int _tileCost(Tile tile) {
+    // Closed doors block some but not all sound.
+    if (tile.isClosedDoor) return 8;
+
+    // Walls almost block all sound, but a 1-thick wall does let a little
+    // through.
+    if (!tile.isFlyable) return 10;
+
+    // Open tiles don't block any.
+    return 1;
+  }
+
   public Stage _stage;
 
   /// A [Flow] that calculates how much sound attenuates from the hero's
   /// current position.
   Flow? _flow;
 
-  Sound(Stage _stage)
+  public Sound(Stage _stage)
   {
     this._stage = _stage;
   }
@@ -46,7 +58,7 @@ public class Sound {
   double volumeBetween(Vec from, Vec to) {
     if ((to - from).kingLength > maxDistance) return 0.0;
 
-    var distance = _SoundPathfinder(_stage, from, to).search();
+    var distance = new _SoundPathfinder(_stage, from, to).search();
     return _volume(distance);
   }
 
@@ -106,33 +118,23 @@ class _SoundFlow : Flow {
 }
 
 class _SoundPathfinder : Pathfinder<int> {
-  _SoundPathfinder(Stage stage, Vec from, Vec to) : super(stage, from, to);
+  public _SoundPathfinder(Stage stage, Vec from, Vec to) : super(stage, from, to);
 
-  int? processStep(Path path) {
+  public override int? processStep(Path path) {
     if (path.cost > Sound.maxDistance) return Sound.maxDistance;
     return null;
   }
 
-  int stepCost(Vec pos, Tile tile) {
-    return _tileCost(tile);
+  public override int? stepCost(Vec pos, Tile tile) {
+    return Sound._tileCost(tile);
   }
 
-  int reachedGoal(Path path) => path.cost;
+  public override int reachedGoal(Path path) => path.cost;
 
   /// There's no path to the goal so, just pick the path that gets nearest to
   /// it and hope for the best. (Maybe someone will open a door later or
   /// something.)
-  int unreachableGoal() => Sound.maxDistance;
+  public override int unreachableGoal() => Sound.maxDistance;
 }
 
-int _tileCost(Tile tile) {
-  // Closed doors block some but not all sound.
-  if (tile.isClosedDoor) return 8;
 
-  // Walls almost block all sound, but a 1-thick wall does let a little
-  // through.
-  if (!tile.isFlyable) return 10;
-
-  // Open tiles don't block any.
-  return 1;
-}

@@ -158,7 +158,7 @@ public class Agility : StatBase {
 
   // TODO: Subtract encumbrance.
 
-  int dodgeBonus {
+  public int dodgeBonus {
     get {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -50, 0);
       if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);

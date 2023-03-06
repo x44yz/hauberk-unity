@@ -26,7 +26,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public abstract string gainMessage(int level);
 
   /// Message displayed when the hero first discovers this skill.
-  string  discoverMessage;
+  public string  discoverMessage;
 
   public virtual int maxLevel => 0;
 
@@ -36,7 +36,7 @@ public abstract class Skill : System.IComparable<Skill> {
   */
 
   /// Determines what level [hero] has in this skill.
- protected int calculateLevel(HeroSave hero) =>
+  public int calculateLevel(HeroSave hero) =>
       onCalculateLevel(hero, hero.skills.points(this));
 
   public abstract int onCalculateLevel(HeroSave hero, int points);
@@ -294,14 +294,14 @@ public class SkillSet {
   /// Learns that [skill] exists.
   ///
   /// Returns `true` if the hero wasn't already aware of this skill.
-  bool discover(Skill skill) {
+  public bool discover(Skill skill) {
     if (_levels.ContainsKey(skill)) return false;
 
     _levels[skill] = 0;
     return true;
   }
 
-  bool gain(Skill skill, int level) {
+  public bool gain(Skill skill, int level) {
     level = Mathf.Min(level, skill.maxLevel);
 
     if (_levels[skill] == level) return false;

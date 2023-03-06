@@ -155,7 +155,7 @@ public class Hero : Actor {
   // like other properties.
   /// Discover or acquire any skills associated with [item].
   void _gainItemSkills(Item item) {
-    for (var skill in item.type.skills) {
+    foreach (var skill in item.type.skills) {
       if (save.heroClass.proficiency(skill) != 0.0 && skills.discover(skill)) {
         // See if the hero can immediately use it.
         var level = skill.calculateLevel(save);
@@ -172,8 +172,8 @@ public class Hero : Actor {
 
   int baseDodge => 20 + agility.dodgeBonus;
 
-  Iterable<Defense> onGetDefenses() sync* {
-    for (var item in equipment) {
+  IEnumerator<Defense> onGetDefenses() {
+    foreach (var item in equipment) {
       var defense = item.defense;
       if (defense != null) yield defense;
     }
@@ -186,7 +186,7 @@ public class Hero : Actor {
     // TODO: Temporary bonuses, etc.
   }
 
-  Action onGetAction() => _behavior!.getAction(this);
+  public override Action onGetAction() => _behavior!.getAction(this);
 
   List<Hit> onCreateMeleeHits(Actor? defender) {
     var hits = <Hit>[];

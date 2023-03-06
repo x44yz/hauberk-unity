@@ -6,6 +6,15 @@ using System.Linq;
 /// The collection of wielded [Item]s held by the hero. Unlike [Inventory], the
 /// [Equipment] holds each item in a categorized slot.
 public class Equipment : IEnumerable<Item> {
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return iterator;
+  }
+  public IEnumerator<Item> GetEnumerator()
+  {
+    return iterator;
+  }
+
   ItemLocation location => ItemLocation.equipment;
 
   public List<string> slotTypes;
