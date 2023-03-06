@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 /// A lazy named reference to a Breed.
 ///
@@ -32,7 +34,7 @@ class Breed {
   public string name => Log.singular(_name);
 
   /// Untyped so the engine isn't coupled to how monsters appear.
-  public Object appearance;
+  public object appearance;
 
   /// The breeds's depth.
   ///
@@ -78,7 +80,7 @@ class Breed {
   public int emanationLevel;
 
   /// Additional defenses this breed has.
-  public List<Defense> defenses = [];
+  public List<Defense> defenses = new List<Defense>();
 
   /// The minimum number of this breed that are spawned when it is placed in
   /// the dungeon.
@@ -104,7 +106,7 @@ class Breed {
   /// Used to determine which kinds of slaying affect which monsters. For
   /// display purposes in the lore screen, the last group in the list should
   /// be noun-like while the others are adjectives, like `["undead", "bug"]`.
-  public List<string> groups = [];
+  public List<string> groups = new List<string>();
 
   public string description;
 
@@ -125,14 +127,18 @@ class Breed {
       this.stain,
       required this.flags,
       string? description})
-      : vision = vision ?? 8,
-        hearing = hearing ?? 10,
-        speed = speed ?? 0,
-        dodge = dodge ?? 20,
-        emanationLevel = emanationLevel ?? 0,
-        countMin = countMin ?? 1,
-        countMax = countMax ?? 1,
-        description = description ?? "Indescribable.";
+  {
+    
+
+    vision = vision ?? 8,
+    hearing = hearing ?? 10,
+    speed = speed ?? 0,
+    dodge = dodge ?? 20,
+    emanationLevel = emanationLevel ?? 0,
+    countMin = countMin ?? 1,
+    countMax = countMax ?? 1,
+    description = description ?? "Indescribable.";
+  }
 
   /// How much experience a level one [Hero] gains for killing a [Monster] of
   /// this breed.
@@ -142,11 +148,11 @@ class Breed {
   public int experience {
     get {
       // The more health it has, the longer it can hurt the hero.
-      var exp = maxHealth.toDouble();
+      var exp = (double)maxHealth;
 
       // The more it can dodge, the longer it lives.
       var totalDodge = dodge;
-      for (var defense in defenses) {
+      foreach (var defense in defenses) {
         totalDodge += defense.amount;
       }
 
@@ -188,7 +194,7 @@ class Breed {
       // TODO: Modify by minions.
 
       // Meandering monsters are worth less.
-      exp *= lerpDouble(meander, 0.0, 100.0, 1.0, 0.7);
+      exp *= MathUtils.lerpDouble(meander, 0.0f, 100.0f, 1.0, 0.7);
 
       // Scale it down arbitrarily to keep the numbers reasonable. This is tuned
       // so that the weakest monsters can still have some variance in experience
@@ -203,7 +209,7 @@ class Breed {
     var generation = 1;
     if (parent != null) generation = parent.generation + 1;
 
-    return Monster(game, this, pos.x, pos.y, generation);
+    return new Monster(game, this, pos.x, pos.y, generation);
   }
 
   /// Generate the list of breeds spawned by this breed.
@@ -211,18 +217,18 @@ class Breed {
   /// Each item in the list represents a breed that should spawn a single
   /// monster. Takes into account this breed's count and minions.
   List<Breed> spawnAll() {
-    var breeds = <Breed>[];
+    var breeds = new List<Breed>();
 
     // This breed.
-    var count = rng.inclusive(countMin, countMax);
+    var count = Rng.rng.inclusive(countMin, countMax);
     for (var i = 0; i < count; i++) {
-      breeds.add(this);
+      breeds.Add(this);
     }
 
     if (minions != null) {
       // Minions are weaker than the main breed.
-      var minionDepth = (depth * 0.9).floor();
-      minions!.spawnBreed(minionDepth, breeds.add);
+      var minionDepth = Math.Floor(depth * 0.9);
+      minions!.spawnBreed((int)minionDepth, breeds.Add);
     }
 
     return breeds;
@@ -246,10 +252,10 @@ enum SpawnLocation {
   corner,
 }
 
-typedef AddMonster = void Function(Breed breed);
+// typedef AddMonster = void Function(Breed breed);
 
 abstract class Spawn {
-  void spawnBreed(int depth, AddMonster addMonster);
+  public abstract void spawnBreed(int depth, System.Action<Breed> addMonster);
 }
 
 class BreedFlags {
@@ -273,7 +279,7 @@ class BreedFlags {
 
   /// The way this set of flags affects the experience gained when killing a
   /// monster.
-  double experienceScale {
+  public double experienceScale {
     get {
       var scale = 1.0;
 
@@ -288,32 +294,32 @@ class BreedFlags {
 
   }
 
-  factory BreedFlags.fromSet(Set<string> names) {
-    names = names.toSet();
+  public static BreedFlags fromSet(HashSet<string> names) {
+    //names = names.toSet();
 
-    var flags = BreedFlags(
-        berzerk: names.remove("berzerk"),
-        cowardly: names.remove("cowardly"),
-        fearless: names.remove("fearless"),
-        immobile: names.remove("immobile"),
-        protective: names.remove("protective"),
-        unique: names.remove("unique"));
+    var flags = new BreedFlags(
+        berzerk: names.Remove("berzerk"),
+        cowardly: names.Remove("cowardly"),
+        fearless: names.Remove("fearless"),
+        immobile: names.Remove("immobile"),
+        protective: names.Remove("protective"),
+        unique: names.Remove("unique"));
 
-    if (names.isNotEmpty) {
-      throw ArgumentError('Unknown flags "${names.join(', ')}"');
+    if (names.Count != 0) {
+      throw new System.ArgumentException($"Unknown flags \"{string.Join(", ", names)}\"");
     }
 
     return flags;
   }
 
   string toString() {
-      return [
-        if (berzerk) "berzerk",
-        if (cowardly) "cowardly",
-        if (fearless) "fearless",
-        if (immobile) "immobile",
-        if (protective) "protective",
-        if (unique) "unique",
-      ].join(" ");
+      List<string> rt = new List<string>();
+        if (berzerk) rt.Add("berzerk");
+        if (cowardly) rt.Add("cowardly");
+        if (fearless) rt.Add("fearless");
+        if (immobile) rt.Add("immobile");
+        if (protective) rt.Add("protective");
+        if (unique) rt.Add("unique");
+        return string.Join(" ", rt);
   }
 }

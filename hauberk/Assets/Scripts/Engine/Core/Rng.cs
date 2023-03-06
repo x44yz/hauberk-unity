@@ -41,7 +41,7 @@ public class Rng {
   /// in the range `[minOrMax, max]`. Otherwise, it is `[0, minOrMax]`. In
   /// other words, `inclusive(2)` returns a `0`, `1`, or `2`, and
   /// `inclusive(2, 4)` returns `2`, `3`, or `4`.
-  int inclusive(int minOrMax, int? max = null) {
+  public int inclusive(int minOrMax, int? max = null) {
     if (max == null) {
       max = minOrMax;
       minOrMax = 0;
@@ -75,7 +75,7 @@ public class Rng {
   /// gives you some chance of still producing one instead of always rounding
   /// down to zero.
   int countFromFloat(double range) {
-    var count = (float)range;
+    var count = Math.Floor(range);
     if (rng.rfloat(1.0) < range - count) count++;
     return (int)count;
   }
@@ -109,7 +109,7 @@ public class Rng {
   /// For example, `round(3.2)` has a 20% chance of returning 3, and an 80%
   /// chance of returning 4.
   int round(double value) {
-    var result = (float)value;
+    var result = Math.Floor(value);
     if ((float)(1.0) < value - result) result++;
     return (int)result;
   }

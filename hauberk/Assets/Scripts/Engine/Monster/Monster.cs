@@ -31,7 +31,7 @@ class Monster : Actor {
   ///
   /// When a monster spawns another, its generation increases too so that it
   /// also spawns less frequently over time.
-  int generation;
+  public int generation;
 
   MonsterState _state = new AsleepState();
 
@@ -97,7 +97,7 @@ class Monster : Actor {
     }
   }
 
-  Monster(Game game, Breed _breed, int x, int y, int generation)
+  public Monster(Game game, Breed _breed, int x, int y, int generation)
       : base(game, x, y) 
   {
     this._breed = _breed;

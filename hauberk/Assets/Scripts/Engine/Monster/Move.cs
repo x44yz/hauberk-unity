@@ -21,7 +21,7 @@ abstract class Move {
   /// The experience gained by killing a [Monster] with this move.
   ///
   /// This should take the power of the move into account, but not its rate.
-  num experience;
+  public num experience;
 
   public Move(num rate)
   {
