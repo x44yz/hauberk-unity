@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
-class ResourceSet<T> {
+class ResourceSet<T> where T : class {
   public Dictionary<string, _Tag<T>> _tags = new Dictionary<string, _Tag<T>>();
   public Dictionary<string, _Resource<T>> _resources = new Dictionary<string, _Resource<T>>();
 
@@ -13,10 +14,10 @@ class ResourceSet<T> {
 
   bool isNotEmpty => _resources.Count != 0;
 
-  Iterable<T> get all => _resources.values.map((resource) => resource.object);
+  IEnumerable<T> all => _resources.Values.ToList().Select((resource) => resource.obj);
 
-  void add(T obj,
-      string name = null, int? depth = null, double? frequency = null, string tags = null)
+  void add(T obj, string name = null, int? depth = null, 
+    double? frequency = null, string tags = null)
   {
     _add(obj, name, depth, depth, frequency, frequency, tags);
   }
@@ -45,14 +46,15 @@ class ResourceSet<T> {
     }
 
     var resource =
-        new _Resource(obj, startDepth, endDepth, startFrequency, endFrequency);
+        new _Resource<T>(obj, startDepth.Value, endDepth.Value, 
+        startFrequency.Value, endFrequency.Value);
     _resources[name] = resource;
 
     if (tags != null && tags != "") {
       foreach (var tagName in tags.Split(' ')) {
         var tag = _tags[tagName];
         if (tag == null) throw new System.ArgumentException($"Unknown tag \"{tagName}\".");
-        resource._tags.add(tag);
+        resource._tags.Add(tag);
       }
     }
   }
@@ -63,12 +65,13 @@ class ResourceSet<T> {
   void defineTags(string paths) {
     foreach (var path in paths.Split(' ')) 
     {
-      _Tag<T>? parent;
-      _Tag<T>? tag;
-      for (var name in path.split("/")) {
+      _Tag<T> parent = null;
+      _Tag<T> tag = null;
+      var names = path.Split('/');
+      foreach (var name in names) {
         tag = _tags[name];
         if (tag == null) {
-          tag = _Tag<T>(name, parent);
+          tag = new _Tag<T>(name, parent);
           _tags[name] = tag;
         }
 
@@ -100,14 +103,15 @@ class ResourceSet<T> {
     var tag = _tags[tagName];
     if (tag == null) throw new System.ArgumentException($"Unknown tag \"{tagName}\".");
 
-    return resource._tags.any((thisTag) => thisTag.contains(tag));
+    return resource._tags.Any((thisTag) => thisTag.contains(tag));
   }
 
   /// Gets the names of the tags for the resource with [name].
-  Iterable<string> getTags(string name) {
+  IEnumerable<string> getTags(string name) {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
-    return resource._tags.map((tag) => tag.name);
+    // return new List<string>().Add(resource._tags.ToList((tag) => tag.name);
+    return resource._tags.ToList().Select(tag => tag.name);
   }
 
   bool tagExists(string tagName) => _tags.ContainsKey(tagName);
@@ -129,7 +133,7 @@ class ResourceSet<T> {
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  T? tryChoose(int depth, {string? tag, bool? includeParents}) {
+  T? tryChoose(int depth, string? tag = null, bool? includeParents = null) {
     includeParents ??= true;
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
@@ -137,9 +141,9 @@ class ResourceSet<T> {
     var goalTag = _tags[tag]!;
 
     var label = goalTag.name;
-    if (!includeParents) label += " (only)";
+    if (!includeParents.Value) label += " (only)";
 
-    return _runQuery(label, depth, (resource) {
+    return _runQuery(label, depth, (_Resource<T> resource) {
       var scale = 1.0;
       for (_Tag<T>? thisTag = goalTag;
           thisTag != null;
@@ -167,7 +171,7 @@ class ResourceSet<T> {
   /// For example, given tag path "equipment/weapon/sword", if [tags] is
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
-  T? tryChooseMatching(int depth, Iterable<string> tags) {
+  T? tryChooseMatching(int depth, IEnumerable<string> tags) {
     var tagObjects = tags.map((name) {
       var tag = _tags[name];
       if (tag == null) throw ArgumentError('Unknown tag "$name".');
@@ -187,17 +191,17 @@ class ResourceSet<T> {
   }
 
   T? _runQuery(
-      string name, int depth, double Function(_Resource<T> resource) scale) {
+      string name, int depth, System.Func<_Resource<T>, double> scale) {
     // Reuse a cached query, if possible.
-    var key = _QueryKey(name, depth);
+    var key = new _QueryKey(name, depth);
     var query = _queries[key];
     if (query == null) {
-      var resources = <_Resource<T>>[];
-      var chances = <double>[];
+      var resources = new List<_Resource<T>>();
+      var chances = new List<double>();
       var totalChance = 0.0;
 
       // Determine the weighted chance for each resource.
-      for (var resource in _resources.values) {
+      foreach (var resource in _resources.Values) {
         var chance = scale(resource);
         if (chance == 0.0) continue;
 
@@ -208,7 +212,7 @@ class ResourceSet<T> {
         // items can have a 0% chance of being generated due to floating point
         // rounding. Since that breaks the query chooser, and because it's a
         // little sad, always have some non-zero minimum chance.
-        chance = math.max(0.0000001, chance);
+        chance = Math.Max(0.0000001, chance);
 
         totalChance += chance;
         resources.add(resource);
@@ -231,9 +235,9 @@ class _Resource<T> {
   public double startFrequency;
   public double endFrequency;
 
-  public Set<_Tag<T>> _tags = {};
+  public HashSet<_Tag<T>> _tags = new HashSet<_Tag<T>>();
 
-  _Resource(T obj, int startDepth, int endDepth, double startFrequency,
+  public _Resource(T obj, int startDepth, int endDepth, double startFrequency,
       double endFrequency)
   {
     this.obj = obj;
@@ -248,7 +252,7 @@ class _Resource<T> {
   /// Between the [startDepth] and [endDepth], this linearly interpolates
   /// between [startFrequency] and [endFrequency]. Outside of that range, it
   /// uses either the start or end.
-  double frequencyAtDepth(int depth) 
+  public double frequencyAtDepth(int depth) 
   {
     if (startDepth == endDepth) return startFrequency;
     return MathUtils.lerpDouble(
@@ -273,12 +277,12 @@ class _Resource<T> {
   /// things are.
   ///
   /// https://en.wikipedia.org/wiki/Normal_distribution
-  double chanceAtDepth(int depth) {
+  public double chanceAtDepth(int depth) {
     if (depth < startDepth) {
       var relative = startDepth - depth;
       var deviation = 0.6f + depth * 0.2f;
 
-      return Mathf.Exp(-0.5f * relative * relative / (deviation * deviation));
+      return Math.Exp(-0.5f * relative * relative / (deviation * deviation));
     } else if (depth > endDepth) {
       var relative = depth - endDepth;
 
@@ -286,7 +290,7 @@ class _Resource<T> {
       // you still find weaker stuff fairly frequently.
       var deviation = 1.0f + depth * 0.1f;
 
-      return Mathf.Exp(-0.5f * relative * relative / (deviation * deviation));
+      return Math.Exp(-0.5f * relative * relative / (deviation * deviation));
     } else {
       // Within the resource's depth range.
       return 1.0;
@@ -298,14 +302,14 @@ class _Tag<T> {
   public string name;
   public _Tag<T> parent;
 
-  _Tag(string name, _Tag<T> parent)
+  public _Tag(string name, _Tag<T> parent)
   {
     this.name = name;
     this.parent = parent;
   }
 
   /// Returns `true` if this tag is [tag] or one of this tag's parents is.
-  bool contains(_Tag<T> tag) {
+  public bool contains(_Tag<T> tag) {
     for (_Tag<T>? thisTag = this; thisTag != null; thisTag = thisTag.parent) {
       if (tag == thisTag) return true;
     }
@@ -324,7 +328,7 @@ class _QueryKey {
   public string name;
   public int depth;
 
-  _QueryKey(string name, int depth)
+  public _QueryKey(string name, int depth)
   {
     this.name = name;
     this.depth = depth;
@@ -340,7 +344,7 @@ class _QueryKey {
     return !(a == other);
   }
 
-  string toString() => $"{name} ({depth})";
+  public string toString() => $"{name} ({depth})";
 }
 
 /// A stored query that let us quickly choose a random weighted resource for
@@ -359,31 +363,38 @@ class _QueryKey {
 /// [ResourceSet.tryChooseMatching] with the same arguments.
 ///
 /// This caches that state.
-class _ResourceQuery<T> {
+class _ResourceQuery<T> where T : class {
   public int depth;
   public List<_Resource<T>> resources;
   public List<double> chances;
   public double totalChance;
 
-  _ResourceQuery(this.depth, this.resources, this.chances, this.totalChance);
+  _ResourceQuery(int depth, List<_Resource<T>> resources, 
+    List<double> chances, double totalChance)
+  {
+    this.depth = depth;
+    this.resources = resources;
+    this.chances = chances;
+    this.totalChance = totalChance;
+  }
 
   /// Choose a random resource that matches this query.
   T? choose() {
-    if (resources.isEmpty) return null;
+    if (resources.Count == 0) return null;
 
     // Pick a point in the probability range.
-    var t = rng.float(totalChance);
+    var t = Rng.rng.rfloat(totalChance);
 
     // Binary search to find the resource in that chance range.
     var first = 0;
-    var last = resources.length - 1;
+    var last = resources.Count - 1;
 
     while (true) {
-      var middle = (first + last) ~/ 2;
+      var middle = (first + last) / 2;
       if (middle > 0 && t < chances[middle - 1]) {
         last = middle - 1;
       } else if (t < chances[middle]) {
-        return resources[middle].object;
+        return resources[middle].obj;
       } else {
         first = middle + 1;
       }
@@ -391,13 +402,13 @@ class _ResourceQuery<T> {
   }
 
   void dump(_QueryKey key) {
-    print(key);
+    DartUtils.print(key.toString());
     for (var i = 0; i < resources.Count; i++) {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =
-          (100.0 * chance / totalChance).toStringAsFixed(5).padLeft(8);
-      print("$percent% ${resources[i].object}");
+          (100.0 * chance / totalChance).ToString("F5").PadLeft(8);
+      DartUtils.print($"{percent}% {resources[i].obj}");
     }
   }
 }

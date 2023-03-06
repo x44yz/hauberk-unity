@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 /// The message log.
 public class Log {
@@ -32,40 +33,40 @@ public class Log {
     if (count == 1) {
       // Handle irregular nouns that start with a vowel but use "a", like
       // "a unicorn".
-      if (text.startsWith("(a) ")) {
+      if (text.StartsWith("(a) ")) {
         quantity = "a";
-        text = text.substring(4);
-      } else if ("aeiouAEIOU".contains(text[0])) {
+        text = text.Substring(4);
+      } else if ("aeiouAEIOU".Contains(text[0].ToString())) {
         quantity = "an";
       } else {
         quantity = "a";
       }
     } else {
-      quantity = count.toString();
+      quantity = count.ToString();
     }
 
-    return "$quantity ${_categorize(text, isFirst: count == 1, force: true)}";
+    return $"{quantity} {_categorize(text, isFirst: count == 1, force: true)}";
   }
 
   static List<string> wordWrap(int width, string text) {
-    var lines = <string>[];
+    var lines = new List<string>();
     var start = 0;
-    int? wordBreak;
-    for (var i = 0; i < text.length; i++) {
+    int? wordBreak = null;
+    for (var i = 0; i < text.Length; i++) {
       if (text[i] == ' ') wordBreak = i + 1;
 
       if (i - start >= width) {
         // No space to break at, so character wrap.
         wordBreak ??= i;
-        lines.add(text.substring(start, wordBreak).trim());
-        start = wordBreak;
-        while (start < text.length && text[start] == ' ') {
+        lines.Add(text.Substring(start, wordBreak.Value).Trim());
+        start = wordBreak.Value;
+        while (start < text.Length && text[start] == ' ') {
           start++;
         }
       }
     }
 
-    lines.add(text.substring(start, text.length).trim());
+    lines.Add(text.Substring(start, text.Length).Trim());
     return lines;
   }
 
@@ -223,42 +224,42 @@ public class Log {
   /// If [force] is `true`, then a trailing "s" will be added to the end if
   /// [isFirst] is `false` and [text] doesn't have any formatting.
   static string _categorize(string text,
-      {required bool isFirst, bool force = false}) {
-    var optionalSuffix = RegExp(r'\[(\w+?)\]');
-    var irregular = RegExp(r'\[([^|]+)\|([^\]]+)\]');
+      bool isFirst, bool force = false) {
+    var optionalSuffix = new Regex("\\[(\\w+?)\\]");
+    var irregular = new Regex("\\[([^|]+)\\|([^\\]]+)\\]");
 
     // If it's a regular word in second category, just add an "s".
-    if (force && !isFirst && !text.contains("[")) return "${text}s";
+    if (force && !isFirst && !text.Contains("[")) return $"{text}s";
 
     // Handle words with optional suffixes like `close[s]` and `sword[s]`.
     while (true) {
-      var match = optionalSuffix.firstMatch(text);
+      var match = optionalSuffix.Match(text);
       if (match == null) break;
 
-      var before = text.substring(0, match.start);
-      var after = text.substring(match.end);
+      var before = text.Substring(0, match.start);
+      var after = text.Substring(match.end);
       if (isFirst) {
         // Omit the optional part.
-        text = '$before$after';
+        text = $"{before}{after}";
       } else {
         // Include the optional part.
-        text = '$before${match[1]}$after';
+        text = $"{before}{match[1]}{after}";
       }
     }
 
     // Handle irregular words like `[are|is]` and `sta[ff|aves]`.
     while (true) {
-      var match = irregular.firstMatch(text);
+      var match = irregular.Match(text);
       if (match == null) break;
 
-      var before = text.substring(0, match.start);
-      var after = text.substring(match.end);
+      var before = text.Substring(0, match.start);
+      var after = text.Substring(match.end);
       if (isFirst) {
         // Use the first form.
-        text = '$before${match[1]}$after';
+        text = $"{before}{match[1]}{after}";
       } else {
         // Use the second form.
-        text = '$before${match[2]}$after';
+        text = $"{before}{match[2]}{after}";
       }
     }
 
@@ -299,7 +300,7 @@ public class Pronoun {
   }
 }
 
-enum LogType {
+public enum LogType {
   /// Normal log messages.
   message,
 
@@ -320,7 +321,7 @@ enum LogType {
 }
 
 /// A single log entry.
-class Message {
+public class Message {
   public LogType type;
   public string text;
 

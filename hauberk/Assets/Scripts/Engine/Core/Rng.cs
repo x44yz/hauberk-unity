@@ -52,7 +52,7 @@ public class Rng {
   }
 
   /// Gets a random floating-point value within the given range.
-  double rfloat(double? minOrMax = null, double? max = null) {
+  public double rfloat(double? minOrMax = null, double? max = null) {
     if (minOrMax == null) {
       return _random.NextDouble();
     } else if (max == null) {
@@ -145,7 +145,7 @@ public class Rng {
   } 
 
   /// Randomly re-orders elements in [items].
-  void shuffle<T>(List<T> items) {
+  public void shuffle<T>(List<T> items) {
     items.shuffle(_random);
   }
 
@@ -193,7 +193,7 @@ public class Rng {
   /// Choose a point in that square. Figure out which half of the triangle the
   /// point is in, and then remap the point back out to the original triangle.
   /// The result is the *x* coordinate of the point in the original triangle.
-  int triangleInt(int center, int range) {
+  public int triangleInt(int center, int range) {
     if (range < 0) {
       throw new System.ArgumentException("The argument \"range\" must be zero or greater.");
     }

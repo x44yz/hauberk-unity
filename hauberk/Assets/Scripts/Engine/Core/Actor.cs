@@ -121,15 +121,17 @@ public abstract class Actor : Noun
   }
 
   /// Additional ways the actor can avoid a hit beyond dodging it.
-  IEnumerator defenses() {
-      var dodge = baseDodge;
+  public List<Defense> defenses {
+      get {
+        var dodge = baseDodge;
 
-      // Hard to dodge an attack you can't see coming.
-      if (isBlinded) dodge /= 2;
+        // Hard to dodge an attack you can't see coming.
+        if (isBlinded) dodge /= 2;
 
-      if (dodge != 0) yield Defense(dodge, "{1} dodge[s] {2}.");
+        if (dodge != 0) yield Defense(dodge, "{1} dodge[s] {2}.");
 
-      yield onGetDefenses();
+        yield onGetDefenses();
+      }
   }
 
   /// The amount of protection against damage the actor has.

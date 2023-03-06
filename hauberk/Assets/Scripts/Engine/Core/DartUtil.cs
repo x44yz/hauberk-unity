@@ -8,4 +8,9 @@ public static class DartUtils
     {
         Debug.Assert(v);
     }
+
+    public static void print(string s)
+    {
+        Debug.Log(s);
+    }
 }

@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
 using num = System.Double;
-
-/// Armor reduces damage by an inverse curve such that increasing armor has
-/// less and less effect. Damage is reduced to the following:
-///
-///     armor damage
-///     ------------
-///     0     100%
-///     40    50%
-///     80    33%
-///     120   25%
-///     160   20%
-///     ...   etc.
-num getArmorMultiplier(int armor) {
-  // Damage is never increased.
-  return 1.0 / (1.0 + Mathf.Max(0, armor) / 40.0);
-}
+using System.Linq;
 
 public class Attack {
+
+  /// Armor reduces damage by an inverse curve such that increasing armor has
+  /// less and less effect. Damage is reduced to the following:
+  ///
+  ///     armor damage
+  ///     ------------
+  ///     0     100%
+  ///     40    50%
+  ///     80    33%
+  ///     120   25%
+  ///     160   20%
+  ///     ...   etc.
+  public static num getArmorMultiplier(int armor) {
+    // Damage is never increased.
+    return 1.0 / (1.0 + Math.Max(0, armor) / 40.0);
+  }
+
   /// The thing performing the attack. If `null`, then the attacker will be
   /// used.
   public Noun noun;
@@ -75,7 +77,7 @@ public class Hit {
     get {
       if (_attack.range == 0) return 0;
 
-      return Mathf.RoundToInt(Mathf.Max(1, (float)(_attack.range * _rangeScale)));
+      return (int)Math.Round(Math.Max(1, (float)(_attack.range * _rangeScale)));
     }
   }
 
@@ -152,13 +154,13 @@ public class Hit {
     // define the set of elements it can block and then apply them based on
     // that.
     if (canMiss) {
-      var strike = rng.inclusive(1, 100) * _strikeScale + _strikeBonus;
+      var strike = Rng.rng.inclusive(1, 100) * _strikeScale + _strikeBonus;
 
       // Shuffle them so the message shown isn't biased by their order (just
       // their relative amounts).
-      var defenses = defender.defenses.toList();
-      rng.shuffle(defenses);
-      for (var defense in defenses) {
+      var defenses = defender.defenses;
+      Rng.rng.shuffle<Defense>(defenses);
+      foreach (var defense in defenses) {
         strike -= defense.amount;
         if (strike < 0) {
           action.log(defense.message, defender, attackNoun);
@@ -201,7 +203,7 @@ public class Hit {
     action.addEvent(EventType.hit,
         actor: defender, element: element, other: damage);
     action.log(
-        '{1} ${_attack.verb} {2} for $damage damage.', attackNoun, defender);
+        $"{1} ${_attack.verb} {2} for {damage} damage.", attackNoun, defender);
     return damage;
   }
 
@@ -211,11 +213,11 @@ public class Hit {
     // Calculate in cents so that we don't do as much rounding until after
     // armor is taken into account.
     var damage = (_attack.damage * _damageScale + _damageBonus) * resistScale;
-    var damageCents = (damage * 100).toInt();
+    var damageCents = (int)(damage * 100);
 
-    var rolled = rng.triangleInt(damageCents, damageCents ~/ 2).toDouble();
-    rolled *= getArmorMultiplier(armor);
-    return (rolled / 100).round();
+    var rolled = (double)Rng.rng.triangleInt(damageCents, damageCents / 2);
+    rolled *= Attack.getArmorMultiplier(armor);
+    return (int)Math.Round(rolled / 100);
   }
 }
 
