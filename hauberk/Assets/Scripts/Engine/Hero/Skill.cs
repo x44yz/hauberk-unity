@@ -274,11 +274,11 @@ public class SkillSet {
   }
 
   /// All the skills the hero knows about.
-  Iterable<Skill> discovered => _levels.keys.toList()..sort();
+  IEnumerable<Skill> discovered => _levels.keys.toList()..sort();
 
   /// All the skills the hero actually has.
-  Iterable<Skill> acquired =>
-      _levels.keys.where((skill) => _levels[skill]! > 0);
+  public IEnumerable<Skill> acquired =>
+      _levels.Keys.where((skill) => _levels[skill]! > 0);
 
   /// Gets the current level of [skill] or 0 if the skill isn't known.
   int level(Skill skill) => _levels[skill] ?? 0;

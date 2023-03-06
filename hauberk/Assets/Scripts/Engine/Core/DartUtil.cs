@@ -4,9 +4,12 @@ using UnityEngine;
 
 public static class DartUtils
 {
-    public static void assert(bool v)
+    public static void assert(bool v, string msg = null)
     {
-        Debug.Assert(v);
+        if (msg != null)
+            Debug.Assert(v, msg);
+        else
+            Debug.Assert(v);
     }
 
     public static void print(string s)

@@ -83,7 +83,7 @@ public class HeroSave
     }
 
     /// The total weight of all equipment.
-    int weight {
+    public int weight {
         get {
             var total = 0;
             foreach (var item in equipment) {
@@ -97,9 +97,8 @@ public class HeroSave
     HeroSave(string name, Race race, HeroClass heroClass)
     {
         this.name = name;
-        this.race = race;
         this.heroClass = heroClass;
-        race = race.rollStats();
+        this.race = race.rollStats();
         shops = new Dictionary<Shop, Inventory>();
         skills = new SkillSet();
         _lore = new Lore();
@@ -110,7 +109,7 @@ public class HeroSave
     // TODO: Rename.
     HeroSave(
         string name,
-        Race race,
+        RaceStats race,
         HeroClass heroClass,
         Inventory _inventory,
         Equipment _equipment,
@@ -153,7 +152,7 @@ public class HeroSave
         maxDepth = hero.save.maxDepth;
     }
 
-    HeroSave clone() => HeroSave.load(
+    HeroSave clone() => new HeroSave(
         name,
         race,
         heroClass,

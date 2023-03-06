@@ -104,7 +104,7 @@ abstract class StatBase : Property<int>
   }
 }
 
-class Strength : StatBase 
+public class Strength : StatBase 
 {
   Stat _stat => Stat.strength;
 
@@ -149,7 +149,7 @@ class Strength : StatBase
   }
 }
 
-class Agility : StatBase {
+public class Agility : StatBase {
   Stat _stat => Stat.agility;
 
   string _gainAdjective => "dextrous";
@@ -176,7 +176,7 @@ class Agility : StatBase {
 }
 
 // TODO: "Vitality"?
-class Fortitude : StatBase {
+public class Fortitude : StatBase {
   Stat _stat => Stat.fortitude;
 
   string _gainAdjective => "tough";
@@ -186,7 +186,7 @@ class Fortitude : StatBase {
   public int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
 }
 
-class Intellect : StatBase {
+public class Intellect : StatBase {
   Stat _stat => Stat.intellect;
 
   string _gainAdjective => "smart";
@@ -206,7 +206,7 @@ class Intellect : StatBase {
   }
 }
 
-class Will : StatBase {
+public class Will : StatBase {
   Stat _stat => Stat.will;
 
   string _gainAdjective => "driven";

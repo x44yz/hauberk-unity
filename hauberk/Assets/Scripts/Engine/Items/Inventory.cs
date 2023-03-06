@@ -90,7 +90,7 @@ class Inventory : ICollection<Item>, ItemCollection {
   /// Creates a new copy of this Inventory. This is done when the [Hero] enters
   /// a stage so that any inventory changes that happen in the stage are
   /// discarded if the hero dies.
-  Inventory clone() {
+  public Inventory clone() {
     var items = new List<Item>();
     foreach (var k in _items)
       items.Add(k.clone());

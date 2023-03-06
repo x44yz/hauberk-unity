@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using num = System.Double;
 
-class Monster : Actor {
+public class Monster : Actor {
   public const float _maxAlertness = 1.0f;
 
   Breed _breed;

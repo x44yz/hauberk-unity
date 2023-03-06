@@ -21,7 +21,7 @@ public class Item : Noun, System.IComparable<Item>
     object appearance => type.appearance;
 
     bool canEquip => equipSlot != null;
-    string? equipSlot => type.equipSlot;
+    public string equipSlot => type.equipSlot;
 
     /// Whether the item can be used or not.
     bool canUse => type.use != null;
@@ -80,7 +80,7 @@ public class Item : Noun, System.IComparable<Item>
     Defense? defense => type.defense;
 
     /// The amount of protection provided by the item when equipped.
-    int armor => baseArmor + armorModifier;
+    public int armor => baseArmor + armorModifier;
 
     /// The base amount of protection provided by the item when equipped,
     /// ignoring any affix modifiers.
@@ -128,7 +128,7 @@ public class Item : Noun, System.IComparable<Item>
     bool isTreasure => type.isTreasure;
 
     /// The penalty to the hero's strength when wearing this.
-    int weight {
+    public int weight {
         get {
             var result = type.weight;
             _applyAffixes((affix) => result += affix.weightBonus);
@@ -146,7 +146,7 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     // TODO: Affixes that modify.
-    int emanationLevel => type.emanationLevel;
+    public int emanationLevel => type.emanationLevel;
 
     /// The number of items in this stack.
     public int count => _count;

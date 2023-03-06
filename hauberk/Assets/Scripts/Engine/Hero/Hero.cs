@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class Hero : Actor {
   public HeroSave save;
 
   /// Monsters the hero has already seen. Makes sure we don't double count them.
-  public Set<Monster> _seenMonsters = {};
+  public HashSet<Monster> _seenMonsters = new HashSet<Monster>();
 
   Behavior? _behavior;
 
@@ -18,7 +19,8 @@ public class Hero : Actor {
   /// equipment, and stats.
   ///
   /// This list parallels the sequence returned by `equipment.weapons`.
-  public List<Property<double>> _heftScales = [Property(), Property()];
+  public List<Property<double>> _heftScales = 
+    new List<Property<double>>(){new Property<double>(), new Property<double>()};
 
   /// How full the hero is.
   ///
@@ -57,25 +59,25 @@ public class Hero : Actor {
 
   public override Pronoun pronoun => Pronoun.you;
 
-  Inventory inventory => save.inventory;
+  public Inventory inventory => save.inventory;
 
-  Equipment equipment => save.equipment;
+  public Equipment equipment => save.equipment;
 
-  int experience
+  public int experience
   {
     get { return save.experience; }
     set { save.experience = value; }
   }
 
-  SkillSet skills => save.skills;
+  public SkillSet skills => save.skills;
 
-  int gold
+  public int gold
   {
     get { return save.gold; }
     set { save.gold = value; }
   }
 
-  Lore lore => save.lore;
+  public Lore lore => save.lore;
 
   public int maxHealth => fortitude.maxHealth;
 
@@ -357,12 +359,12 @@ public class Hero : Actor {
       return false;
     }
 
-    _behavior = RestBehavior();
+    _behavior = new RestBehavior();
     return true;
   }
 
   void run(Direction direction) {
-    _behavior = RunBehavior(direction);
+    _behavior = new RunBehavior(direction);
   }
 
   public void disturb() {
@@ -486,10 +488,10 @@ public class Hero : Actor {
     _refreshSkills();
 
     // Keep other stats in bounds.
-    health = health.clamp(0, maxHealth);
-    _focus = _focus.clamp(0, intellect.maxFocus);
+    health = Mathf.Clamp(health, 0, maxHealth);
+    _focus = Mathf.Clamp(_focus, 0, intellect.maxFocus);
     // TODO: Is this how we want max fury derived?
-    _fury = _fury.clamp(0, strength.maxFury);
+    _fury = Mathf.Clamp(_fury, 0, strength.maxFury);
   }
 
   /// Called when the hero holds an item.

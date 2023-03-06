@@ -22,7 +22,7 @@ class Race {
 
   /// Determines how the hero's stats should increase at each level based on
   /// this race.
-  RaceStats rollStats() 
+  public RaceStats rollStats() 
   {
     // Pick specific values for each stat.
     var rolled = new Dictionary<Stat, int>();
