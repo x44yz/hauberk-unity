@@ -29,7 +29,7 @@ class BreedRef {
 }
 
 /// A single kind of [Monster] in the game.
-class Breed {
+public class Breed {
   public Pronoun pronoun;
   public string name => Log.singular(_name);
 

@@ -160,9 +160,9 @@ public class Monster : Actor {
 
   int baseDodge => breed.dodge;
 
-  Iterable<Defense> onGetDefenses() => breed.defenses;
+  public override List<Defense> onGetDefenses() => breed.defenses;
 
-  Action onGetAction() {
+  public override Action onGetAction() {
     // Recharge moves.
     foreach (var move in breed.moves) {
       _recharges[move] = Mathf.Max(0.0f, _recharges[move]! - 1.0f);
@@ -326,14 +326,17 @@ public class Monster : Actor {
     _state.bind(this);
   }
 
-  List<Hit> onCreateMeleeHits(Actor? defender) =>
-      [rng.item(breed.attacks).createHit()];
+  public override List<Hit> onCreateMeleeHits(Actor? defender) 
+  {
+    return new List<Hit>(){ Rng.rng.item(breed.attacks).createHit() };
+  }
+
 
   // TODO: Breed resistances.
-  int onGetResistance(Element element) => 0;
+  public override int onGetResistance(Element element) => 0;
 
   /// Inflicting damage decreases fear.
-  void onGiveDamage(Action action, Actor defender, int damage) {
+  public override void onGiveDamage(Action action, Actor defender, int damage) {
     // The greater the power of the hit, the more emboldening it is.
     var fear = 100.0 * damage / game.hero.maxHealth;
 
@@ -383,7 +386,7 @@ public class Monster : Actor {
         .where((move) => move.shouldUseOnDamage(this, damage))
         .toList();
     if (moves.isNotEmpty) {
-      action.addAction(rng.item(moves).getAction(this), this);
+      action.addAction(Rng.rng.item(moves).getAction(this), this);
     }
   }
 
@@ -419,8 +422,8 @@ public class Monster : Actor {
     game.stage.removeActor(this);
   }
 
-  void changePosition(Vec from, Vec to) {
-    super.changePosition(from, to);
+  public override void changePosition(Vec from, Vec to) {
+    base.changePosition(from, to);
 
     // If the monster is (or was) visible, don't let the hero rest through it
     // moving.
@@ -435,16 +438,17 @@ public class Monster : Actor {
   }
 
   /// Invokes [callback] on all nearby monsters that can see this one.
-  void _updateWitnesses(void Function(Monster monster) callback) {
+  void _updateWitnesses(System.Action<Monster> callback) {
     foreach (var other in game.stage.actors) {
       if (other == this) continue;
-      if (other is! Monster) continue;
+      if (!(other is Monster)) continue;
 
       // TODO: Take breed vision into account.
       var distance = (other.pos - pos).kingLength;
       if (distance > 20) continue;
 
-      if (other.canView(pos)) callback(other);
+      var monter = other as Monster;
+      if (monter.canView(pos)) callback(monter);
     }
   }
 
@@ -469,7 +473,7 @@ public class Monster : Actor {
   /// when first spotted.
   void _resetCharges() {
     foreach (var move in breed.moves) {
-      _recharges[move] = rng.float(move.rate / 2);
+      _recharges[move] = Rng.rng.rfloat(move.rate / 2);
     }
   }
 }

@@ -50,7 +50,7 @@ public class Attack {
 
   bool isRanged => range > 0;
 
-  Hit createHit() => new Hit(this);
+  public Hit createHit() => new Hit(this);
 
   string toString() {
     var result = damage.ToString();

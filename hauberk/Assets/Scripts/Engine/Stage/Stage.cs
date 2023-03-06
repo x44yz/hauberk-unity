@@ -92,7 +92,7 @@ public class Stage {
 
     Actor? actorAt(Vec pos) => _actorsByTile[pos];
 
-    List<Item> placeDrops(Vec pos, Motility motility, Drop drop) {
+    public List<Item> placeDrops(Vec pos, Motility motility, Drop drop) {
         var items = new List<Item>();
 
         // Try to keep dropped items from overlapping.

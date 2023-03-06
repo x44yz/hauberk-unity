@@ -6,7 +6,7 @@ using num = System.Double;
 /// A [Move] is an action that a [Monster] can perform aside from the basic
 /// walking and melee attack actions. Moves include things like spells, breaths,
 /// and missiles.
-abstract class Move {
+public abstract class Move {
   /// The frequency at which the monster can perform this move (with some
   /// randomness added in).
   ///

@@ -98,7 +98,7 @@ public abstract class Actor : Noun
   bool isAlive => health > 0;
 
   /// Whether or not the actor can be seen by the hero.
-  bool isVisibleToHero => game.stage[pos].isVisible;
+  public bool isVisibleToHero => game.stage[pos].isVisible;
 
   /// Whether the actor's vision is currently impaired.
   bool isBlinded => blindness.isActive || dazzle.isActive;
@@ -144,7 +144,7 @@ public abstract class Actor : Noun
   public int emanationLevel;
 
   /// Called when the actor's position is about to change from [from] to [to].
-  void changePosition(Vec from, Vec to) {
+  public virtual void changePosition(Vec from, Vec to) {
     game.stage.moveActor(from, to);
 
     if (emanationLevel > 0) game.stage.actorEmanationChanged();
@@ -246,7 +246,7 @@ public abstract class Actor : Noun
   }
 
   /// Called when this actor has successfully hit [defender].
-  public void onGiveDamage(Action action, Actor defender, int damage) {
+  public virtual void onGiveDamage(Action action, Actor defender, int damage) {
     // Do nothing.
   }
 
