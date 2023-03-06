@@ -189,7 +189,7 @@ public class HeroSave
         var bonus = 0;
 
         // Let equipment modify it.
-        for (var item in equipment) {
+        foreach (var item in equipment) {
             if (item.prefix != null) bonus += item.prefix!.statBonus(stat);
             if (item.suffix != null) bonus += item.suffix!.statBonus(stat);
         }

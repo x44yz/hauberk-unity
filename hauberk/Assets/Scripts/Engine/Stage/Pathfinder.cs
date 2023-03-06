@@ -49,7 +49,7 @@ abstract class Pathfinder<T> {
   }
 
   /// Perform an A* search from [start] trying to reach [end].
-  T search() 
+  public T search() 
   {
     var paths = new BucketQueue<Path>();
 

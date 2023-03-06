@@ -213,10 +213,10 @@ public class Hero : Actor {
       hits.add(Attack(this, 'punch[es]', Option.heroPunchDamage).createHit());
     }
 
-    for (var hit in hits) {
+    foreach (var hit in hits) {
       hit.addStrike(agility.strikeBonus);
 
-      for (var skill in skills.acquired) {
+      foreach (var skill in skills.acquired) {
         skill.modifyAttack(
             this, defender as Monster?, hit, skills.level(skill));
       }
@@ -260,7 +260,7 @@ public class Hero : Actor {
     // Let armor modify it. We don't worry about weapons here since the weapon
     // modified it when the hit was created. This ensures that when
     // dual-wielding that one weapon's modifiers don't affect the other.
-    for (var item in equipment) {
+    foreach (var item in equipment) {
       if (item.type.weaponType == null) item.modifyHit(hit);
     }
 
@@ -286,7 +286,7 @@ public class Hero : Actor {
 
     // TODO: Would be better to do skills.discovered, but right now this also
     // discovers BattleHardening.
-    for (var skill in game.content.skills) {
+    foreach (var skill in game.content.skills) {
       skill.takeDamage(this, damage);
     }
   }
@@ -302,7 +302,7 @@ public class Hero : Actor {
 
     lore.slay(monster.breed);
 
-    for (var skill in skills.discovered) {
+    foreach (var skill in skills.discovered) {
       skill.killMonster(this, action, monster);
     }
 
@@ -386,7 +386,7 @@ public class Hero : Actor {
       // If this is the first time we've seen this breed, see if that unlocks
       // a slaying skill for it.
       if (lore.seenBreed(monster.breed) == 1) {
-        for (var skill in game.content.skills) {
+        foreach (var skill in game.content.skills) {
           skill.seeBreed(this, monster.breed);
         }
       }
@@ -464,12 +464,12 @@ public class Hero : Actor {
         // Discover the dual-wield skill.
         // TODO: This is a really specific method to put on Skill. Is there a
         // cleaner way to handle this?
-        for (var skill in game.content.skills) {
+        foreach (var skill in game.content.skills) {
           skill.dualWield(this);
         }
       }
 
-      for (var skill in skills.acquired) {
+      foreach (var skill in skills.acquired) {
         heftModifier =
             skill.modifyHeft(this, skills.level(skill), heftModifier);
       }

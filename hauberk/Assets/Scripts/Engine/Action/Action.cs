@@ -100,13 +100,13 @@ public abstract class Action
   }
 
   ActionResult succeed(
-      [String? message, Noun? noun1, Noun? noun2, Noun? noun3]) 
+      [string? message, Noun? noun1, Noun? noun2, Noun? noun3]) 
   {
     if (message != null) log(message, noun1, noun2, noun3);
     return ActionResult.success;
   }
 
-  ActionResult fail([String? message, Noun? noun1, Noun? noun2, Noun? noun3]) {
+  ActionResult fail([string? message, Noun? noun1, Noun? noun2, Noun? noun3]) {
     if (message != null) error(message, noun1, noun2, noun3);
     return ActionResult.failure;
   }

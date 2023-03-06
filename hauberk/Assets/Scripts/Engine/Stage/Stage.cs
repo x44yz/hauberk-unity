@@ -168,7 +168,7 @@ public class Stage {
     /// position.
     void forEachItem(void Function(Item item, Vec pos) callback) {
         _itemsByTile.forEach((pos, inventory) {
-            for (var item in inventory) {
+            foreach (var item in inventory) {
                 callback(item, pos);
             }
         });

@@ -148,7 +148,7 @@ class ResourceSet<T> where T : class {
       for (_Tag<T>? thisTag = goalTag;
           thisTag != null;
           thisTag = thisTag.parent) {
-        for (var resourceTag in resource._tags) {
+        foreach (var resourceTag in resource._tags) {
           if (resourceTag.contains(thisTag)) return scale;
         }
 
@@ -182,7 +182,7 @@ class ResourceSet<T> where T : class {
     tagNames.sort();
 
     return _runQuery("${tagNames.join('|')} (match)", depth, (resource) {
-      for (var resourceTag in resource._tags) {
+      foreach (var resourceTag in resource._tags) {
         if (tagObjects.any((tag) => tag.contains(resourceTag))) return 1.0;
       }
 
@@ -403,7 +403,7 @@ class _ResourceQuery<T> where T : class {
 
   void dump(_QueryKey key) {
     DartUtils.print(key.toString());
-    for (var i = 0; i < resources.Count; i++) {
+    foreach (var i = 0; i < resources.Count; i++) {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =

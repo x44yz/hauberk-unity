@@ -133,7 +133,7 @@ public class Monster : Actor {
   /// and the target.
   bool canView(Vec target) {
     // Walk to the target.
-    for (var step in Line(pos, target)) {
+    foreach (var step in Line(pos, target)) {
       if (step == target) return true;
       if (game.stage[step].blocksView) return false;
     }
@@ -147,7 +147,7 @@ public class Monster : Actor {
   /// and the target.
   bool canTarget(Vec target) {
     // Walk to the target.
-    for (var step in Line(pos, target)) {
+    foreach (var step in Line(pos, target)) {
       if (step == target) return true;
       if (game.stage.actorAt(step) != null) return false;
       if (game.stage[step].blocksView) return false;
@@ -436,7 +436,7 @@ public class Monster : Actor {
 
   /// Invokes [callback] on all nearby monsters that can see this one.
   void _updateWitnesses(void Function(Monster monster) callback) {
-    for (var other in game.stage.actors) {
+    foreach (var other in game.stage.actors) {
       if (other == this) continue;
       if (other is! Monster) continue;
 

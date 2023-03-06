@@ -33,13 +33,13 @@ class Recipe {
     /// that are not used by this recipe.
     Map<ItemType, int>? _missingIngredients(Iterable<Item> items) {
     var missing = Map<ItemType, int>.from(ingredients);
-    for (var item in items) {
+    foreach (var item in items) {
         if (!missing.containsKey(item.type)) return null;
         missing[item.type] = missing[item.type]! - item.count;
     }
 
     // Remove the ingredients that are complete.
-    for (var ingredient in missing.keys.toList()) {
+    foreach (var ingredient in missing.keys.toList()) {
         if (missing[ingredient]! <= 0) missing.remove(ingredient);
     }
 

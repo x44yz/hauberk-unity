@@ -54,7 +54,7 @@ public class Game
     rng.shuffle(_substanceUpdateOrder);
   }
 
-  Iterable<String> generate() sync* {
+  Iterable<string> generate() sync* {
     // TODO: Do something useful with depth.
     Vec heroPos;
     yield* content.buildStage(_save.lore, _stage, depth, (pos) {

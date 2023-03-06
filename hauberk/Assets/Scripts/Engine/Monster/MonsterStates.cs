@@ -163,7 +163,7 @@ class AwakeState : MonsterState {
     var rangedDamage = 0.0;
     var rangedAttacks = 0.0;
 
-    for (var move in breed.moves) {
+    foreach (var move in breed.moves) {
       if (move is! RangedMove) continue;
 
       rangedDamage += move.attack.damage / move.rate;
@@ -179,7 +179,7 @@ class AwakeState : MonsterState {
       var meleeDamage = 0.0;
       var meleeAttacks = 0.0;
 
-      for (var attack in breed.attacks) {
+      foreach (var attack in breed.attacks) {
         // Monsters don't have any raw ranged attacks, just ranged moves.
         assert(!attack.isRanged);
         meleeDamage += attack.damage;
@@ -252,7 +252,7 @@ class AwakeState : MonsterState {
   /// if no good ranged position could be found.
   Direction? _findRangedPath() {
     var maxRange = 9999;
-    for (var move in breed.moves) {
+    foreach (var move in breed.moves) {
       if (move.range > 0 && move.range < maxRange) maxRange = move.range;
     }
 
@@ -287,7 +287,7 @@ class AwakeState : MonsterState {
       bestDistance = (pos - game.hero.pos).kingLength;
     }
 
-    for (var dir in Direction.all) {
+    foreach (var dir in Direction.all) {
       var pos = monster.pos + dir;
       if (!monster.willEnter(pos)) continue;
       if (!isValidRangedPosition(pos)) continue;
@@ -340,7 +340,7 @@ class AwakeState : MonsterState {
     Vec? first;
     var length = 1;
 
-    for (var pos in Line(pos, game.hero.pos)) {
+    foreach (var pos in Line(pos, game.hero.pos)) {
       first ??= pos;
 
       // Don't walk into fire, etc.
@@ -388,7 +388,7 @@ class AwakeState : MonsterState {
 
   /// Returns `true` if there is an open LOS from [from] to the hero.
   bool _hasLosFrom(Vec from) {
-    for (var step in Line(from, game.hero.pos)) {
+    foreach (var step in Line(from, game.hero.pos)) {
       if (step == game.hero.pos) return true;
       if (game.stage[step].blocksView) return false;
       var actor = game.stage.actorAt(step);

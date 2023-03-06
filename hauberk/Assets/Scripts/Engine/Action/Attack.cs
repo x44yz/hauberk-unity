@@ -14,9 +14,9 @@ class AttackAction : Action
 
     ActionResult onPerform() 
     {
-        for (var hit in actor!.createMeleeHits(defender)) {
-        hit.perform(this, actor, defender);
-        if (!defender.isAlive) break;
+        foreach (var hit in actor!.createMeleeHits(defender)) {
+            hit.perform(this, actor, defender);
+            if (!defender.isAlive) break;
         }
 
         return ActionResult.success;
