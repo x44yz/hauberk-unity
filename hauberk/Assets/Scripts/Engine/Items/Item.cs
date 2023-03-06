@@ -149,7 +149,7 @@ public class Item : Noun, System.IComparable<Item>
     int emanationLevel => type.emanationLevel;
 
     /// The number of items in this stack.
-    int count => _count;
+    public int count => _count;
     int _count = 1;
 
     /// Apply any affix modifications to hit.
@@ -185,9 +185,9 @@ public class Item : Noun, System.IComparable<Item>
     ///
     /// If [count] is given, the clone has that count. Otherwise, it has the
     /// same count as this item.
-    Item clone(int? count) => new Item(type, count ?? _count, prefix, suffix);
+    public Item clone(int? count = null) => new Item(type, count ?? _count, prefix, suffix);
 
-    bool canStack(Item item) {
+    public bool canStack(Item item) {
         if (type != item.type) return false;
 
         // Items with affixes don't stack.
@@ -203,7 +203,7 @@ public class Item : Noun, System.IComparable<Item>
     /// Updates the counts of the two items. If completely successful, [item]
     /// will end up with a count of zero. If the items cannot be stacked, [item]'s
     /// count is unchanged.
-    void stack(Item item) {
+    public void stack(Item item) {
         if (!canStack(item)) return;
 
         // If we here, we are trying to stack. We don't support stacking
