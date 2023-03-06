@@ -58,4 +58,19 @@ public static class MathUtils
         n = (n >> 16) ^ n;
         return n;
     }
+
+    // Knuth Durstenfeld
+    public static void shuffle<T>(this List<T> list, System.Random random)
+    {
+        //随机交换
+        int currentIndex;
+        T tempValue;
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            currentIndex = random.Next(0, i+1);
+            tempValue = list[currentIndex];
+            list[currentIndex] = list[i];
+            list[i] = tempValue;
+        }
+    }
 }

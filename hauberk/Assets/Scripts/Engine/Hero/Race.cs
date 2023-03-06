@@ -31,14 +31,14 @@ class Race {
       var value = _base;
 
       // Randomly boost the max some.
-      value +=  .range(4);
-      while (value < 50 && rng.percent(base ~/ 2 + 30)) {
+      value +=  Rng.rng.range(4);
+      while (value < 50 && Rng.rng.percent(_base / 2 + 30)) {
         value++;
       }
       rolled[stat] = value;
     }
 
-    return RaceStats(this, rolled, rng.range(100000));
+    return new RaceStats(this, rolled, Rng.rng.range(100000));
   }
 }
 
@@ -58,7 +58,7 @@ class RaceStats {
   /// hero level 1.
   public List<Dictionary<Stat, int>> _stats = new List<Dictionary<Stat, int>>();
 
-  RaceStats(Race _race, Dictionary<Stat, int> _max, int seed) 
+  public RaceStats(Race _race, Dictionary<Stat, int> _max, int seed) 
   {
     this._race = _race;
     this._max = _max;
@@ -75,7 +75,7 @@ class RaceStats {
       current[stat] = 0;
     }
 
-    var random = Rng(seed);
+    var random = new Rng(seed);
 
     // Distribute the total points evenly across the levels.
     var previous = 0;
@@ -87,7 +87,7 @@ class RaceStats {
 
       // Figure out how many total stat points should have been distributed by
       // this level.
-      var points = lerp(totalMin, totalMax).toInt();
+      var points = (int)lerp(totalMin, totalMax);
       var gained = points - previous;
 
       // Distribute the points across the stats.
@@ -96,17 +96,17 @@ class RaceStats {
         // should ideally be at this level. The stat with the largest error is
         // the one who gets this point.
         var worstError = -100.0;
-        var worstStats = <Stat>[];
+        var worstStats = new List<Stat>();
 
-        for (var stat in _max.keys) {
-          var ideal = lerp(min[stat]!, _max[stat]!);
-          var error = ideal - current[stat]!;
+        foreach (var stat1 in _max.Keys) {
+          var ideal = lerp(min[stat1]!, _max[stat1]!);
+          var error = ideal - current[stat1]!;
 
           if (error > worstError) {
-            worstStats = [stat];
+            worstStats = new List<Stat>(){stat1};
             worstError = error;
           } else if (error == worstError) {
-            worstStats.add(stat);
+            worstStats.Add(stat1);
           }
         }
 
@@ -115,12 +115,13 @@ class RaceStats {
         current[stat] = current[stat]! + 1;
       }
 
-      _stats.add(Map<Stat, int>.from(current));
+      // stats.Add(Map<Stat, int>.from(current));
+      _stats.Add(current);
       previous = points;
     }
   }
 
-  string get name => _race.name;
+  string name => _race.name;
 
   /// The maximum number of points of [stat] the hero will gain.
   int max(Stat stat) => _max[stat]!;
