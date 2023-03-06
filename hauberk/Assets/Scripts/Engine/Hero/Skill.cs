@@ -62,7 +62,7 @@ public abstract class Skill : System.IComparable<Skill> {
   int modifyArmor(HeroSave hero, int level, int armor) => armor;
 
   /// Gives the skill a chance to add new defenses to the hero.
-  Defense? getDefense(Hero hero, int level) => null;
+  public Defense? getDefense(Hero hero, int level) => null;
 
   /// Gives the skill a chance to adjust the [heftModifier] applied to the base
   /// heft of a weapon.
@@ -281,7 +281,7 @@ public class SkillSet {
       _levels.Keys.where((skill) => _levels[skill]! > 0);
 
   /// Gets the current level of [skill] or 0 if the skill isn't known.
-  int level(Skill skill) => _levels[skill] ?? 0;
+  public int level(Skill skill) => _levels[skill] ?? 0;
 
   /// Gets the current points in [skill] or 0 if the skill isn't known.
   public int points(Skill skill) => _points[skill] ?? 0;

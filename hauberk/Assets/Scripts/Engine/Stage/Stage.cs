@@ -18,7 +18,7 @@ public class Stage {
 
     public Rect bounds => tiles.bounds;
 
-    List<Actor> actors => _actors;
+    public List<Actor> actors => _actors;
 
     Actor currentActor => _actors[_currentActorIndex];
 
@@ -43,7 +43,7 @@ public class Stage {
         _sound = new Sound(this);
     }
 
-    Tile this[Vec pos] => tiles[pos];
+    public Tile this[Vec pos] => tiles[pos];
 
     /// Iterates over every item on the ground on the stage.
     IEnumerator<Item> allItems {
@@ -56,9 +56,9 @@ public class Stage {
         }
     }
 
-    Tile get(int x, int y) => tiles._get(x, y);
+    public Tile get(int x, int y) => tiles._get(x, y);
 
-    void set(int x, int y, Tile tile) => tiles._set(x, y, tile);
+    public void set(int x, int y, Tile tile) => tiles._set(x, y, tile);
 
     void addActor(Actor actor) {
         DartUtils.assert(_actorsByTile[actor.pos] == null);
@@ -145,7 +145,7 @@ public class Stage {
     bool isItemAt(Vec pos) => _itemsByTile.ContainsKey(pos);
 
     /// Gets the [Item]s at [pos].
-    Inventory itemsAt(Vec pos) =>
+    public Inventory itemsAt(Vec pos) =>
         _itemsByTile[pos] ?? new Inventory(ItemLocation.onGround);
     // TODO: This is kind of slow, probably from creating the inventory each time.
     // Use a const one for the empty case?
@@ -208,19 +208,19 @@ public class Stage {
 
     /// Marks the tile at [x],[y] as explored if the hero can see it and hasn't
     /// previously explored it.
-    void exploreAt(int x, int y, bool? force) {
-        var tile = tiles.get(x, y);
+    public void exploreAt(int x, int y, bool force) {
+        var tile = tiles._get(x, y);
         if (tile.updateExplored(force: force)) {
             if (tile.isVisible) {
-                var actor = actorAt(Vec(x, y));
+                var actor = actorAt(new Vec(x, y));
                 if (actor != null && actor is Monster) {
-                game.hero.seeMonster(actor);
+                    game.hero.seeMonster(actor as Monster);
                 }
             }
         }
     }
 
-    void explore(Vec pos, bool? force) {
+    public void explore(Vec pos, bool force = false) {
         exploreAt(pos.x, pos.y, force: force);
     }
 
@@ -230,7 +230,7 @@ public class Stage {
         if (tile.isVisible) {
             var actor = actorAt(pos);
             if (actor != null && actor is Monster) {
-                game.hero.seeMonster(actor);
+                game.hero.seeMonster(actor as Monster);
             }
         }
     }
@@ -245,7 +245,7 @@ public class Stage {
     /// Selects a random passable tile that does not have an [Actor] on it.
     Vec findOpenTile() {
         while (true) {
-            var pos = rng.vecInRect(bounds);
+            var pos = Rng.rng.vecInRect(bounds);
 
             if (!this[pos].isWalkable) continue;
             if (actorAt(pos) != null) continue;

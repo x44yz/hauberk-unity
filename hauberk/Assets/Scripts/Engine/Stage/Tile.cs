@@ -139,7 +139,7 @@ public class Tile {
     /// This gets updated by [Fov] as the hero moves around.
     bool _isOccluded = false;
 
-    bool isOccluded => _isOccluded;
+    public bool isOccluded => _isOccluded;
 
     /// How much visibility is reduced by distance fall-off.
     int fallOff => _fallOff;
@@ -150,12 +150,12 @@ public class Tile {
     /// We assume any tile that an actor can fly over is also "open" enough to
     /// be seen through. We don't use [isWalkable] because things like water
     /// cannot be walked over but can be seen through.
-    bool blocksView => !isFlyable;
+    public bool blocksView => !isFlyable;
 
     /// Whether the hero can currently see the tile.
     ///
     /// To be visible, a tile must not be occluded, in the dark, or too far away.
-    bool isVisible => !isOccluded && illumination > _fallOff;
+    public bool isVisible => !isOccluded && illumination > _fallOff;
 
     /// The total amount of light being cast onto this tile from various sources.
     ///
@@ -163,14 +163,14 @@ public class Tile {
     /// from nearby tiles, light from actors, etc.
     int illumination => floorIllumination + actorIllumination;
 
-    int floorIllumination = 0;
-    int actorIllumination = 0;
+    public int floorIllumination = 0;
+    public int actorIllumination = 0;
 
     /// The amount of light the tile produces.
     ///
     /// Includes "native" emanation from the tile itself along with light that
     /// has been applied to it.
-    int emanation =>
+    public int emanation =>
         Mathf.Clamp(type.emanation + _appliedEmanation, 0, Lighting.floorMax);
 
     /// The extra emanation applied to this tile independent of its type from
@@ -197,7 +197,7 @@ public class Tile {
     /// This should not be called directly. Instead, call [Stage.explore()].
     ///
     /// Returns true if this tile was explored just now.
-    bool updateExplored(bool force = false) {
+    public bool updateExplored(bool force = false) {
         if ((force || isVisible) && !_isExplored) {
             _isExplored = true;
             return true;
@@ -205,19 +205,19 @@ public class Tile {
         return false;
     }
 
-    void updateVisibility(bool isOccluded, int fallOff) {
+    public void updateVisibility(bool isOccluded, int fallOff) {
         _isOccluded = isOccluded;
         _fallOff = fallOff;
     }
 
     /// The element of the substance occupying this file: fire, water, poisonous
     /// gas, etc.
-    Element element = Element.none;
+    public Element element = Element.none;
 
     /// How much of [element] is occupying the tile.
-    int substance = 0;
+    public int substance = 0;
 
-    bool isWalkable => type.isWalkable;
+    public bool isWalkable => type.isWalkable;
 
     bool isTraversable => type.isTraversable;
 

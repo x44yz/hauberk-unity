@@ -77,7 +77,7 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     // TODO: Affix defenses?
-    Defense? defense => type.defense;
+    public Defense? defense => type.defense;
 
     /// The amount of protection provided by the item when equipped.
     public int armor => baseArmor + armorModifier;

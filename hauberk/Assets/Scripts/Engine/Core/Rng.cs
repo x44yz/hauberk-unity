@@ -150,7 +150,7 @@ public class Rng {
   }
 
   /// Gets a random [Vec] within the given [Rect] (half-inclusive).
-  Vec vecInRect(Rect rect) {
+  public Vec vecInRect(Rect rect) {
     return new Vec(range(rect.left, rect.right), range(rect.top, rect.bottom));
   }
 

@@ -19,7 +19,7 @@ using UnityEngine;
 ///
 /// * https://en.wikipedia.org/wiki/Bucket_queue
 /// * https://www.redblobgames.com/pathfinding/a-star/implementation.html#algorithm
-class BucketQueue<T> where T : class
+public class BucketQueue<T> where T : class
 {
   public List<Queue<T>> _buckets = new List<Queue<T>>();
   int _bucket = 0;

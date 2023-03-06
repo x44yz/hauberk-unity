@@ -141,7 +141,7 @@ public abstract class Actor : Noun
   ///
   /// This is not a raw emanation value, but a "level" to be passed to
   /// [Lighting.emanationForLevel()].
-  int emanationLevel;
+  public int emanationLevel;
 
   /// Called when the actor's position is about to change from [from] to [to].
   void changePosition(Vec from, Vec to) {

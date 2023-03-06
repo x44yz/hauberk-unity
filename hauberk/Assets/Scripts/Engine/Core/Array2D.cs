@@ -11,7 +11,7 @@ using System.Linq;
 ///
 /// Internally, the elements are stored in a single contiguous list in row-major
 /// order.
-public class Array2D<T> where T : class {
+public class Array2D<T> {
     /// A [Rect] whose bounds cover the full range of valid element indexes.
     public Rect bounds;
 
@@ -94,7 +94,7 @@ public class Array2D<T> where T : class {
     }
 
     /// Sets every element to [value].
-    void fill(T value) {
+    public void fill(T value) {
         for (int i = 0; i < _elements.Count; ++i)
             _elements[i] = value;
     }

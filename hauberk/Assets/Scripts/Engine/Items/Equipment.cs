@@ -39,13 +39,19 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Gets the currently-equipped weapons, if any.
-  IEnumerable<Item> weapons =>
-      slots.whereType<Item>().where((item) => item.type.weaponType != null);
+  IEnumerable<Item> weapons
+  {
+    get {
+      return slots.Where<Item>((item) => item.type.weaponType != null);
+    }
+  }
 
   /// Gets the number of equipped items. Ignores empty slots.
   int length {
     get {
-      return slots.fold(0, (count, item) => count + ((item == null) ? 0 : 1));
+      int count = 0;
+      slots.ForEach((item) => count += (item == null) ? 0 : 1);
+      return count;
     }
   }
 
@@ -165,7 +171,7 @@ public class Equipment : IEnumerable<Item> {
       if (heldSlots.Count == 2) {
         var unequipped2 = slots[heldSlots[0]]!;
         slots[heldSlots[0]] = item;
-        return [unequipped2];
+        return new List<Item>(){unequipped2};
       }
 
       // One empty hand, so use it.
@@ -225,5 +231,5 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Gets the non-empty item slots.
-  IEnumerator<Item> iterator => slots.whereType<Item>().iterator;
+  IEnumerator<Item> iterator => slots.Where(x => x != null).GetEnumerator();
 }

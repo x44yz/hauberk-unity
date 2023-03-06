@@ -172,24 +172,26 @@ public class Hero : Actor {
 
   int baseDodge => 20 + agility.dodgeBonus;
 
-  IEnumerator<Defense> onGetDefenses() {
+  public override List<Defense> onGetDefenses() {
+    var rt = new List<Defense>();
     foreach (var item in equipment) {
       var defense = item.defense;
-      if (defense != null) yield defense;
+      if (defense != null) rt.Add(defense);
     }
 
-    for (var skill in skills.acquired) {
+    foreach (var skill in skills.acquired) {
       var defense = skill.getDefense(this, skills.level(skill));
-      if (defense != null) yield defense;
+      if (defense != null) rt.Add(defense);
     }
 
     // TODO: Temporary bonuses, etc.
+    return rt;
   }
 
   public override Action onGetAction() => _behavior!.getAction(this);
 
-  List<Hit> onCreateMeleeHits(Actor? defender) {
-    var hits = <Hit>[];
+  public override List<Hit> onCreateMeleeHits(Actor? defender) {
+    var hits = new List<Hit>();
 
     // See if any melee weapons are equipped.
     var weapons = equipment.weapons.toList();
@@ -372,7 +374,7 @@ public class Hero : Actor {
       waitForInput();
   }
 
-  void seeMonster(Monster monster) {
+  public void seeMonster(Monster monster) {
     // TODO: Blindness and dazzle.
 
     if (_seenMonsters.add(monster)) {

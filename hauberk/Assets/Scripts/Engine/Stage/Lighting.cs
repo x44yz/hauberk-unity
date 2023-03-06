@@ -95,25 +95,25 @@ public class Lighting {
 
     public Lighting(Stage stage)
     {
-        _stage = stage,
-        _floorLight = new Array2D(stage.width, stage.height, 0),
-        _actorLight = new Array2D(stage.width, stage.height, 0),
-        _fov = Fov(stage)
+        _stage = stage;
+        _floorLight = new Array2D<int>(stage.width, stage.height, 0);
+        _actorLight = new Array2D<int>(stage.width, stage.height, 0);
+        _fov = new Fov(stage);
     }
 
-    void dirtyFloorLight() {
+    public void dirtyFloorLight() {
         _floorLightDirty = true;
     }
 
-    void dirtyActorLight() {
+    public void dirtyActorLight() {
         _actorLightDirty = true;
     }
 
-    void dirtyVisibility() {
+    public void dirtyVisibility() {
         _visibilityDirty = true;
     }
 
-    void refresh() {
+    public void refresh() {
         if (_floorLightDirty) _lightFloor();
         if (_actorLightDirty) _lightActors();
         if (_visibilityDirty) _fov.refresh(_stage.game.hero.pos);
@@ -144,31 +144,31 @@ public class Lighting {
 
             // Add any light from items laying on the tile.
             var itemEmanation = 0;
-            for (var item in _stage.itemsAt(pos)) {
-            itemEmanation = math.max(itemEmanation, item.emanationLevel);
+            foreach (var item in _stage.itemsAt(pos)) {
+                itemEmanation = Mathf.Max(itemEmanation, item.emanationLevel);
             }
 
             // Reduce emanation since floor lighting has less attenuation than
             // actor lighting. We don't want torches to glow farther on the floor
             // than when held.
-            emanation += emanationForLevel(itemEmanation) ~/ 2;
+            emanation += emanationForLevel(itemEmanation) / 2;
 
             if (tile.element.emanates && tile.substance > 0) {
             // TODO: Different levels for different substances?
-            emanation += emanationForLevel(7);
+                emanation += emanationForLevel(7);
             }
 
             if (emanation > 0) {
-            emanation = math.min(emanation, floorMax);
-            _floorLight.set(x, y, emanation);
-            _enqueue(pos, emanation);
-            } else {
-            _floorLight[pos] = 0;
+                emanation = Mathf.Min(emanation, floorMax);
+                _floorLight._set(x, y, emanation);
+                _enqueue(pos, emanation);
+                } else {
+                _floorLight[pos] = 0;
             }
         }
         }
 
-        _process(_floorLight, 256 ~/ 12);
+        _process(_floorLight, 256 / 12);
     }
 
     /// Recalculates [_actorLight] by propagating light from the emanating actors.
@@ -176,16 +176,16 @@ public class Lighting {
         _actorLight.fill(0);
         _queue.reset();
 
-        for (var actor in _stage.actors) {
-        var emanation = emanationForLevel(actor.emanationLevel);
+        foreach (var actor in _stage.actors) {
+            var emanation = emanationForLevel(actor.emanationLevel);
 
-        if (emanation > 0) {
-            _actorLight[actor.pos] = emanation;
-            _enqueue(actor.pos, emanation);
-        }
+            if (emanation > 0) {
+                _actorLight[actor.pos] = emanation;
+                _enqueue(actor.pos, emanation);
+            }
         }
 
-        _process(_actorLight, 256 ~/ 6);
+        _process(_actorLight, 256 / 6);
     }
 
     /// Combines the light layers of opaque tiles into a single summed
@@ -198,8 +198,8 @@ public class Lighting {
             var tile = _stage.get(x, y);
             if (tile.blocksView) continue;
 
-            tile.floorIllumination = _floorLight.get(x, y).clamp(0, max);
-            tile.actorIllumination = _actorLight.get(x, y).clamp(0, max);
+            tile.floorIllumination = Mathf.Clamp(_floorLight._get(x, y), 0, max);
+            tile.actorIllumination = Mathf.Clamp(_actorLight._get(x, y), 0, max);
         }
         }
     }
@@ -238,23 +238,23 @@ public class Lighting {
 
             openNeighbor = true;
             floorIllumination =
-                math.max(floorIllumination, neighborTile.floorIllumination);
+                Mathf.Max(floorIllumination, neighborTile.floorIllumination);
             actorIllumination =
-                math.max(actorIllumination, neighborTile.actorIllumination);
+                Mathf.Max(actorIllumination, neighborTile.actorIllumination);
             }
 
             // First, see if any of the cardinal neighbors are lit.
-            for (var dir in Direction.cardinal) {
-            checkNeighbor(dir);
+            foreach (var dir in Direction.cardinal) {
+                checkNeighbor(dir);
             }
 
             // If so, we use their light. Only if not do we check the corners. This
             // makes the corners of room walls visible, but avoids overly lightening
             // walls that don't need to be because they aren't in corners.
             if (!openNeighbor) {
-            for (var dir in Direction.intercardinal) {
-                checkNeighbor(dir);
-            }
+                foreach (var dir in Direction.intercardinal) {
+                    checkNeighbor(dir);
+                }
             }
 
             tile.floorIllumination = floorIllumination;

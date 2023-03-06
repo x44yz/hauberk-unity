@@ -39,7 +39,7 @@ public class Sound {
   ///
   /// This should be called if a tile in the dungeon is changed in a way that
   /// affects how it attenuates sound. For example, opening a door.
-  void dirty() {
+  public void dirty() {
     // TODO: Especially during a fight, the hero probably moves a bunch but
     // reoccupies the same set of tiles repeatedly. It may be worth keeping a
     // cache of some fixed number of recently used flows instead of only a
@@ -53,9 +53,9 @@ public class Sound {
   /// Returns a number between 0.0 (completely inaudible) to 1.0 (maximum
   /// volume). Does not take hero noise into account. This is how well the hero
   /// can be heard in general.
-  double heroVolume(Vec pos) => _volume(_heroAuditoryDistance(pos));
+  public double heroVolume(Vec pos) => _volume(_heroAuditoryDistance(pos));
 
-  double volumeBetween(Vec from, Vec to) {
+  public double volumeBetween(Vec from, Vec to) {
     if ((to - from).kingLength > maxDistance) return 0.0;
 
     var distance = new _SoundPathfinder(_stage, from, to).search();
