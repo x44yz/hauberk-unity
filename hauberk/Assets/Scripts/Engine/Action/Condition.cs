@@ -104,7 +104,7 @@ class PoisonCondition : Condition {
 }
 
 /// A condition that impairs vision.
-class BlindnessCondition : Condition {
+public class BlindnessCondition : Condition {
   protected override void onDeactivate() {
     actor.log("{1} can see clearly again.", actor);
     if (actor == actor.game.hero) actor.game.stage.heroVisibilityChanged();
@@ -112,7 +112,7 @@ class BlindnessCondition : Condition {
 }
 
 /// A condition that provides resistance to an element.
-class ResistCondition : Condition {
+public class ResistCondition : Condition {
   public Element _element;
 
   public ResistCondition(Element element)
@@ -126,7 +126,7 @@ class ResistCondition : Condition {
 }
 
 /// A condition that provides non-visual perception of nearby monsters.
-class PerceiveCondition : Condition {
+public class PerceiveCondition : Condition {
   protected override void onDeactivate() {
     actor.log("{1} no longer perceive[s] monsters.", actor);
   }

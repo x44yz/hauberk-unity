@@ -22,22 +22,22 @@ class Shop {
         return inventory;
     }
 
-    Inventory load(Iterable<Item> items) {
+    Inventory load(List<Item> items) {
         return new Inventory(ItemLocation.shop(name), capacity, items);
     }
 
     void update(Inventory inventory) 
     {
         // Remove some.
-        var remainCount = rng.float(capacity * 0.2, capacity * 0.4).toInt();
+        var remainCount = (int)Rng.rng.rfloat(capacity * 0.2, capacity * 0.4);
 
         while (inventory.length > remainCount) {
-            inventory.removeAt(rng.range(inventory.length));
+            inventory.removeAt(Rng.rng.range(inventory.length));
         }
 
         // Add some.
         var tries = 0;
-        var count = rng.float(capacity * 0.3, capacity * 0.7).toInt();
+        var count = (int)Rng.rng.rfloat(capacity * 0.3, capacity * 0.7);
 
         while (inventory.length < count && tries++ < 100) 
         {

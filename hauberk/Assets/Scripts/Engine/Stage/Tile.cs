@@ -9,7 +9,7 @@ using UnityEngine;
 /// movement is needed to enter the tile. Monsters and the hero have a set of
 /// motilities that determine which ways they are able to move. In order to
 /// move into a tile, the actor must have one of the tile's motilities.
-class Motility {
+public class Motility {
     public static Motility none = new Motility(0);
 
     // TODO: Should these be in content, engine, or a mixture of both?
@@ -161,7 +161,7 @@ public class Tile {
     ///
     /// This is a combination of the tile's [emanation], the propagated emanation
     /// from nearby tiles, light from actors, etc.
-    int illumination => floorIllumination + actorIllumination;
+    public int illumination => floorIllumination + actorIllumination;
 
     public int floorIllumination = 0;
     public int actorIllumination = 0;

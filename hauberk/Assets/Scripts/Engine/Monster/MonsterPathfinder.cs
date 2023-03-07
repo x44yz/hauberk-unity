@@ -5,37 +5,40 @@ using UnityEngine;
 class MonsterPathfinder : Pathfinder<Direction> {
   /// When calculating pathfinding, how much it "costs" to move one step on
   /// an open floor tile.
-  static const _floorCost = 10;
+  public const int _floorCost = 10;
 
   /// When calculating pathfinding, how much it costs to move one step on a
   /// tile already occupied by an actor. For pathfinding, we consider occupied
   /// tiles as accessible but expensive. The idea is that by the time the
   /// pathfinding monster gets there, the occupier may have moved, so the tile
   /// is "sorta" empty, but still not as desirable as an actually empty tile.
-  static const _occupiedCost = 60;
+  public const int _occupiedCost = 60;
 
   /// When calculating pathfinding, how much it costs to cross a closed door.
   /// Instead of considering them completely impassable, we just have them be
   /// expensive, because it still may be beneficial for the monster to get
   /// closer to the door (for when the hero opens it later).
-  static const _doorCost = 80;
+  public const int _doorCost = 80;
 
   /// Diagonal steps are considered a little more expensive than straight ones
   /// so that monsters avoid zig-zagging paths when a straighter path is
   /// available.
-  static const _diagonalCost = 11;
+  public const int _diagonalCost = 11;
 
   static Direction? findDirection(Stage stage, Monster monster) {
-    return MonsterPathfinder(stage, monster).search();
+    return new MonsterPathfinder(stage, monster).search();
   }
 
-  final Monster _monster;
+  public Monster _monster;
   Path? _nearest;
 
-  MonsterPathfinder(Stage stage, this._monster)
-      : super(stage, _monster.pos, stage.game.hero.pos);
+  MonsterPathfinder(Stage stage, Monster _monster)
+      : base(stage, _monster.pos, stage.game.hero.pos)
+      {
+        this._monster = _monster;
+      }
 
-  Direction? processStep(Path path) {
+  public override Direction? processStep(Path path) {
     if (_nearest == null ||
         heuristic(path.pos, end) < heuristic(_nearest!.pos, end)) {
       _nearest = path;
@@ -59,12 +62,12 @@ class MonsterPathfinder : Pathfinder<Direction> {
   ///     .*...*.
   int heuristic(Vec pos, Vec end) {
     var offset = (end - pos).abs();
-    var diagonal = math.min(offset.x, offset.y);
-    var straight = math.max(offset.x, offset.y) - diagonal;
+    var diagonal = Mathf.Min(offset.x, offset.y);
+    var straight = Mathf.Max(offset.x, offset.y) - diagonal;
     return straight * _floorCost + diagonal * _diagonalCost;
   }
 
-  int? stepCost(Vec pos, Tile tile) {
+  public override int? stepCost(Vec pos, Tile tile) {
     // Don't enter tiles that are on fire, etc.
     // TODO: Take resistance and immunity into account.
     if (tile.substance != 0) return null;
@@ -109,12 +112,12 @@ class MonsterPathfinder : Pathfinder<Direction> {
     return null;
   }
 
-  Direction reachedGoal(Path path) => path.startDirection;
+  public override Direction reachedGoal(Path path) => path.startDirection;
 
   /// There's no path to the goal so, just pick the path that gets nearest to
   /// it and hope for the best. (Maybe someone will open a door later or
   /// something.)
-  Direction? unreachableGoal() {
+  public override Direction? unreachableGoal() {
     // If the monster was totally blocked in, there is no path.
     if (_nearest == null) return null;
 

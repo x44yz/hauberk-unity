@@ -52,7 +52,7 @@ public class Hero : Actor {
   int _turnsSinceLostFocus = 0;
 
   /// How much noise the Hero's last action made.
-  double lastNoise => _lastNoise;
+  public double lastNoise => _lastNoise;
   double _lastNoise = 0.0;
 
   string nounText => "you";

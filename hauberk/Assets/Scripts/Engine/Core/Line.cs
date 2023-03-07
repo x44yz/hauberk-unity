@@ -21,7 +21,7 @@ class Line : IEnumerable<Vec> {
   public Vec start;
   public Vec end;
 
-  Line(Vec start, Vec end)
+  public Line(Vec start, Vec end)
   {
     this.start = start;
     this.end = end;

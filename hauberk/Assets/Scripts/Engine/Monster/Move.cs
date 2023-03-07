@@ -34,11 +34,11 @@ public abstract class Move {
 
   /// Returns `true` if the monster would reasonably perform this move in
   /// response to taking [damage].
-  bool shouldUseOnDamage(Monster monster, int damage) => false;
+  public bool shouldUseOnDamage(Monster monster, int damage) => false;
 
   /// Called when the [Monster] has selected this move. Returns an [Action] that
   /// performs the move.
-  Action getAction(Monster monster) {
+  public Action getAction(Monster monster) {
     monster.useMove(this);
     return onGetAction(monster);
   }

@@ -95,7 +95,7 @@ public abstract class Actor : Noun
 
   Pronoun pronoun => Pronoun.it;
 
-  bool isAlive => health > 0;
+  public bool isAlive => health > 0;
 
   /// Whether or not the actor can be seen by the hero.
   public bool isVisibleToHero => game.stage[pos].isVisible;
@@ -123,14 +123,17 @@ public abstract class Actor : Noun
   /// Additional ways the actor can avoid a hit beyond dodging it.
   public List<Defense> defenses {
       get {
+        var rt = new List<Defense>();
+
         var dodge = baseDodge;
 
         // Hard to dodge an attack you can't see coming.
         if (isBlinded) dodge /= 2;
 
-        if (dodge != 0) yield Defense(dodge, "{1} dodge[s] {2}.");
+        if (dodge != 0) rt.Add(new Defense(dodge, "{1} dodge[s] {2}."));
 
-        yield onGetDefenses();
+        rt.AddRange(onGetDefenses());
+        return rt;
       }
   }
 
@@ -274,7 +277,7 @@ public abstract class Actor : Noun
   }
 
   /// Whether it's possible for the actor to ever be on the tile at [pos].
-  bool canOccupy(Vec pos) {
+  public bool canOccupy(Vec pos) {
     if (pos.x < 0) return false;
     if (pos.x >= game.stage.width) return false;
     if (pos.y < 0) return false;
@@ -298,7 +301,7 @@ public abstract class Actor : Noun
   /// Whether the actor desires to enter the tile at [pos].
   ///
   /// Takes into account that actors do not want to step into burning tiles.
-  bool willEnter(Vec pos) => canEnter(pos) && game.stage[pos].substance == 0;
+  public bool willEnter(Vec pos) => canEnter(pos) && game.stage[pos].substance == 0;
 
   // TODO: Take resistance and immunities into account.
 

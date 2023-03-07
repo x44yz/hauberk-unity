@@ -95,14 +95,17 @@ public class Sound {
     if (_flow != null && _stage.game.hero.pos == _flow!.start) return;
 
     // TODO: Is this the right motility set?
-    _flow = _SoundFlow(_stage);
+    _flow = new _SoundFlow(_stage);
   }
 }
 
 class _SoundFlow : Flow {
-  _SoundFlow(Stage stage) : super(stage, stage.game.hero.pos);
+  public _SoundFlow(Stage stage) : base(stage, stage.game.hero.pos)
+  {
 
-  int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal) {
+  }
+
+  public override int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal) {
     // Stop propagating if we reach the max distance.
     if (parentCost >= Sound.maxDistance) return null;
 
@@ -113,12 +116,15 @@ class _SoundFlow : Flow {
     if (pos.y < 1) return null;
     if (pos.y >= stage.height - 1) return null;
 
-    return _tileCost(tile);
+    return Sound._tileCost(tile);
   }
 }
 
 class _SoundPathfinder : Pathfinder<int> {
-  public _SoundPathfinder(Stage stage, Vec from, Vec to) : super(stage, from, to);
+  public _SoundPathfinder(Stage stage, Vec from, Vec to) : base(stage, from, to)
+  {
+
+  }
 
   public override int? processStep(Path path) {
     if (path.cost > Sound.maxDistance) return Sound.maxDistance;

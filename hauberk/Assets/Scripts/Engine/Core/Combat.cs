@@ -60,7 +60,7 @@ public class Attack {
   }
 }
 
-enum HitType { melee, ranged, toss }
+public enum HitType { melee, ranged, toss }
 
 public class Hit {
   public Attack _attack;
@@ -227,7 +227,7 @@ public class Defense {
   public int amount;
   public string message;
 
-  Defense(int amount, string message)
+  public Defense(int amount, string message)
   {
     this.amount = amount;
     this.message = message;

@@ -39,7 +39,7 @@ public class Direction : Vec {
             else if (this == w) return sw;
             else if (this == nw) return w;
             
-            Debug.LogError("unreachable > " + this);
+            UnityEngine.Debug.LogError("unreachable > " + this);
             return this;
         }
     }
@@ -56,7 +56,7 @@ public class Direction : Vec {
             if (this == w) return nw;
             if (this == nw) return n;
 
-            Debug.LogError("unreachable > " + this);
+            UnityEngine.Debug.LogError("unreachable > " + this);
             return this;
         }
     }
@@ -73,7 +73,7 @@ public class Direction : Vec {
             else if (this == w) return s;
             else if (this == nw) return sw;
 
-            Debug.LogError("unreachable > " + this);
+            UnityEngine.Debug.LogError("unreachable > " + this);
             return this;
         }
     }
@@ -90,7 +90,7 @@ public class Direction : Vec {
             else if (this == w) return n;
             else if (this == nw) return ne;
 
-            Debug.LogError("unreachable > " + this);
+            UnityEngine.Debug.LogError("unreachable > " + this);
             return this;
         }
     }
@@ -107,7 +107,7 @@ public class Direction : Vec {
             else if (this == w) return e;
             else if (this == nw) return se;
 
-            Debug.LogError("unreachable > " + this);
+            UnityEngine.Debug.LogError("unreachable > " + this);
             return this;
         }
     }
@@ -123,7 +123,7 @@ public class Direction : Vec {
         else if (this == w) return "w";
         else if (this == nw) return "nw";
 
-        Debug.LogError("unreachable > " + this);
+        UnityEngine.Debug.LogError("unreachable > " + this);
         return "unreachable";
     }
 }

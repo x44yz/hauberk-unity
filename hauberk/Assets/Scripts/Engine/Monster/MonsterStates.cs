@@ -55,7 +55,7 @@ using System.Linq;
 /// If it decides to go melee, it simply pathfinds to the hero and goes for it.
 /// In either case, the end result is walking one tile (or possibly standing
 /// in place.)
-abstract class MonsterState {
+public abstract class MonsterState {
     public Monster _monster;
 
     public void bind(Monster monster) {
@@ -338,10 +338,10 @@ class AwakeState : MonsterState {
   ///    pick a direction that's closest to the direction pointing at the hero.
   Direction? _findLosWalkPath() {
     // TODO: Need to verify that this does actually help performance.
-    Vec? first;
+    Vec? first = null;
     var length = 1;
 
-    foreach (var pos in Line(pos, game.hero.pos)) {
+    foreach (var pos in new Line(pos, game.hero.pos)) {
       first ??= pos;
 
       // Don't walk into fire, etc.
@@ -354,7 +354,7 @@ class AwakeState : MonsterState {
 
       // Don't walk into other monsters.
       var actor = game.stage.actorAt(pos);
-      if (actor != null && actor is! Hero) return null;
+      if (actor != null && !(actor is Hero)) return null;
 
       if (++length >= breed.tracking) return null;
 
@@ -389,14 +389,14 @@ class AwakeState : MonsterState {
 
   /// Returns `true` if there is an open LOS from [from] to the hero.
   bool _hasLosFrom(Vec from) {
-    foreach (var step in Line(from, game.hero.pos)) {
+    foreach (var step in new Line(from, game.hero.pos)) {
       if (step == game.hero.pos) return true;
       if (game.stage[step].blocksView) return false;
       var actor = game.stage.actorAt(step);
       if (actor != null && actor != monster) return false;
     }
 
-    throw AssertionError("Unreachable.");
+    throw new System.Exception("Unreachable.");
   }
 }
 
@@ -408,28 +408,28 @@ class AfraidState : MonsterState {
 
     // TODO: Should not walk past hero to get to escape!
     // Run to the nearest place the hero can't see.
-    var flow = MotilityFlow(game.stage, pos, monster.motility,
+    var flow = new MotilityFlow(game.stage, pos, monster.motility,
         maxDistance: breed.tracking, avoidSubstances: true);
     // TODO: Should monsters prefer darkness too?
     var dir = flow.directionToBestWhere((pos) => game.stage[pos].isOccluded);
 
     if (dir != Direction.none) {
       Debug.monsterLog(monster, "fleeing $dir out of sight");
-      return WalkAction(_meander(dir));
+      return new WalkAction(_meander(dir));
     }
 
     // If we couldn't find a hidden tile, at least try to get some distance.
     var heroDistance = (pos - game.hero.pos).kingLength;
-    var farther = Direction.all.where((dir) {
+    var farther = Direction.all.Where((dir) => {
       var here = pos + dir;
       if (!monster.willEnter(here)) return false;
       return (here - game.hero.pos).kingLength > heroDistance;
-    });
+    }).ToList();
 
-    if (farther.isNotEmpty) {
-      dir = rng.item(farther.toList());
+    if (farther.Count > 0) {
+      dir = Rng.rng.item(farther);
       Debug.monsterLog(monster, "fleeing $dir away from hero");
-      return WalkAction(_meander(dir));
+      return new WalkAction(_meander(dir));
     }
 
     // If we got here, we couldn't escape. Cornered!

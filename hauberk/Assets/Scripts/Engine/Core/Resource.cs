@@ -170,7 +170,7 @@ class ResourceSet<T> where T : class {
   /// For example, given tag path "equipment/weapon/sword", if [tags] is
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
-  T? tryChooseMatching(int depth, IEnumerable<string> tags) {
+  T tryChooseMatching(int depth, IEnumerable<string> tags) {
     var tagObjects = tags.map((name) {
       var tag = _tags[name];
       if (tag == null) throw ArgumentError('Unknown tag "$name".');
@@ -189,7 +189,7 @@ class ResourceSet<T> where T : class {
     });
   }
 
-  T? _runQuery(
+  T _runQuery(
       string name, int depth, System.Func<_Resource<T>, double> scale) {
     // Reuse a cached query, if possible.
     var key = new _QueryKey(name, depth);
@@ -378,7 +378,7 @@ class _ResourceQuery<T> where T : class {
   }
 
   /// Choose a random resource that matches this query.
-  public T? choose() {
+  public T choose() {
     if (resources.Count == 0) return null;
 
     // Pick a point in the probability range.

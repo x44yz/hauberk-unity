@@ -85,7 +85,7 @@ public class Inventory : IEnumerable<Item> {
   Item? lastUnequipped => _lastUnequipped;
   Item? _lastUnequipped;
 
-  int length => _items.Count;
+  public int length => _items.Count;
 
   public Item this[int index] => _items[index];
 
@@ -116,7 +116,7 @@ public class Inventory : IEnumerable<Item> {
     _items.Remove(item);
   }
 
-  Item removeAt(int index) {
+  public Item removeAt(int index) {
     var item = _items[index];
     _items.RemoveAt(index);
     if (_lastUnequipped == item) _lastUnequipped = null;
@@ -141,7 +141,11 @@ public class Inventory : IEnumerable<Item> {
     return false;
   }
 
-  AddItemResult tryAdd(Item item, bool wasUnequipped = false) {
+  public void tryAdd(Item item) {
+      tryAdd(item, false);
+  }
+
+  public AddItemResult tryAdd(Item item, bool wasUnequipped = false) {
     var adding = item.count;
 
     // Try to add it to existing stacks.

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// A recipe defines a set of items that can be placed into the crucible and
 /// transmuted into something new.
@@ -15,34 +16,39 @@ class Recipe {
     /// item's name. Otherwise, [produces] will be null.
     public List<string> produces;
 
-    Recipe(this.ingredients, this.result, this.produces);
+    Recipe(Dictionary<ItemType, int> ingredients, Drop result, List<string> produces)
+    {
+        this.ingredients = ingredients;
+        this.result = result;
+        this.produces = produces;
+    }
 
     /// Returns `true` if [items] are valid (but not necessarily complete)
     /// ingredients for this recipe.
-    bool allows(Iterable<Item> items) => _missingIngredients(items) != null;
+    bool allows(List<Item> items) => _missingIngredients(items) != null;
 
     /// Returns `true` if [items] are the complete ingredients needed for this
     /// recipe.
-    bool isComplete(Iterable<Item> items) {
-    var missing = _missingIngredients(items);
-    return missing != null && missing.isEmpty;
+    bool isComplete(List<Item> items) {
+        var missing = _missingIngredients(items);
+        return missing != null && missing.Count == 0;
     }
 
     /// Gets the remaining ingredients needed to complete this recipe given
     /// [items] ingredients. Returns `null` if [items] contains any ingredients
     /// that are not used by this recipe.
-    Map<ItemType, int>? _missingIngredients(Iterable<Item> items) {
-    var missing = Map<ItemType, int>.from(ingredients);
-    foreach (var item in items) {
-        if (!missing.containsKey(item.type)) return null;
-        missing[item.type] = missing[item.type]! - item.count;
-    }
+    Dictionary<ItemType, int> _missingIngredients(List<Item> items) {
+        var missing = new Dictionary<ItemType, int>(ingredients);
+        foreach (var item in items) {
+            if (!missing.ContainsKey(item.type)) return null;
+            missing[item.type] = missing[item.type]! - item.count;
+        }
 
-    // Remove the ingredients that are complete.
-    foreach (var ingredient in missing.keys.toList()) {
-        if (missing[ingredient]! <= 0) missing.remove(ingredient);
-    }
+        // Remove the ingredients that are complete.
+        foreach (var ingredient in missing.Keys.ToList()) {
+            if (missing[ingredient]! <= 0) missing.Remove(ingredient);
+        }
 
-    return missing;
+        return missing;
     }
 }

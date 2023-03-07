@@ -41,7 +41,7 @@ abstract class Pathfinder<T> {
   public Vec start;
   public Vec end;
 
-  Pathfinder(Stage stage, Vec start, Vec end)
+  public Pathfinder(Stage stage, Vec start, Vec end)
   {
     this.stage = stage;
     this.start = start;
@@ -124,7 +124,7 @@ int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
   /// If the pathfinder wants to immediately stop processing and return a value,
   /// this should return a non-`null` value. Otherwise, return `null` and the
   /// pathfinder will continue.
-  public abstract T? processStep(Path path);
+  public abstract T processStep(Path path);
 
   /// Called when the pathfinder has found a [path] to the end point.
   ///

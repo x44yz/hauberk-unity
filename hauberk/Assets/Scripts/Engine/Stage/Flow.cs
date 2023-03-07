@@ -46,7 +46,7 @@ abstract class Flow {
 
   public bool includeDiagonals => true;
 
-  public Flow(Stage stage, Vec _start, int? maxDistance)
+  public Flow(Stage stage, Vec _start, int? maxDistance = null)
     {
         this.stage = stage;
         this._start = _start;
@@ -108,7 +108,7 @@ abstract class Flow {
 
   /// Gets the cost from the starting position to [pos], or `null` if there is
   /// no path to it.
-  int? costAt(Vec pos) {
+  public int? costAt(Vec pos) {
     pos -= _offset;
     if (!_costs.bounds.contains(pos)) return null;
 
@@ -132,7 +132,7 @@ abstract class Flow {
   /// best positions matching [predicate].
   ///
   /// Returns [Direction.none] if no matching positions were found.
-  Direction directionToBestWhere(System.Func<Vec, bool> predicate) {
+  public Direction directionToBestWhere(System.Func<Vec, bool> predicate) {
     var directions = directionsToBestWhere(predicate);
     if (directions.Count == 0) return Direction.none;
     return Rng.rng.item(directions);

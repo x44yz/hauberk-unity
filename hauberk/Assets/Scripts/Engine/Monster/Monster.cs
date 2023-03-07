@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using num = System.Double;
+using System.Linq;
 
 public class Monster : Actor {
   public const float _maxAlertness = 1.0f;
@@ -133,12 +135,12 @@ public class Monster : Actor {
   /// and the target.
   bool canView(Vec target) {
     // Walk to the target.
-    foreach (var step in Line(pos, target)) {
+    foreach (var step in new Line(pos, target)) {
       if (step == target) return true;
       if (game.stage[step].blocksView) return false;
     }
 
-    throw AssertionError("Unreachable.");
+    throw new System.Exception("Unreachable.");
   }
 
   /// Gets whether or not this monster has a line of sight to [target].
@@ -147,13 +149,13 @@ public class Monster : Actor {
   /// and the target.
   bool canTarget(Vec target) {
     // Walk to the target.
-    foreach (var step in Line(pos, target)) {
+    foreach (var step in new Line(pos, target)) {
       if (step == target) return true;
       if (game.stage.actorAt(step) != null) return false;
       if (game.stage[step].blocksView) return false;
     }
 
-    throw AssertionError("Unreachable.");
+    throw new System.Exception("Unreachable.");
   }
 
   int baseSpeed => Energy.normalSpeed + breed.speed;
@@ -165,7 +167,7 @@ public class Monster : Actor {
   public override Action onGetAction() {
     // Recharge moves.
     foreach (var move in breed.moves) {
-      _recharges[move] = Mathf.Max(0.0f, _recharges[move]! - 1.0f);
+      _recharges[move] = Mathf.Max(0.0f, (float)(_recharges[move]! - 1.0f));
     }
 
     // Use the monster's senses to update its mood.
@@ -179,12 +181,12 @@ public class Monster : Actor {
     // TODO: The ratio here could be tuned by breeds where some have longer
     // memories than others.
     _alertness = _alertness * 0.75 + awareness * 0.2;
-    _alertness = Mathf.Clamp(_alertness, 0.0f, _maxAlertness);
+    _alertness = Mathf.Clamp((float)_alertness, 0.0f, _maxAlertness);
 
     _decayFear();
-    _fear = _fear.clamp(0.0, _frightenThreshold);
+    _fear = Mathf.Clamp((float)_fear, 0.0f, (float)_frightenThreshold);
 
-    var notice = math.max(awareness, _alertness);
+    var notice = Math.Max(awareness, _alertness);
 
     Debug.monsterStat(this, "aware", awareness);
     Debug.monsterStat(this, "alert", _alertness);
@@ -205,8 +207,8 @@ public class Monster : Actor {
         game.addEvent(EventType.frighten, actor: this);
 
         _resetCharges();
-        _changeState(AfraidState());
-      } else if (rng.percent(_awakenPercent(notice))) {
+        _changeState(new AfraidState());
+      } else if (Rng.rng.percent(_awakenPercent(notice))) {
         log("{1} wakes up!", this);
 
         // TODO: Probably shouldn't add event if monster woke up because they
@@ -215,23 +217,23 @@ public class Monster : Actor {
 
         _alertness = _maxAlertness;
         _resetCharges();
-        _changeState(AwakeState());
+        _changeState(new AwakeState());
       }
     } else if (isAwake) {
       if (_fear > _frightenThreshold) {
         log("{1} is afraid!", this);
         game.addEvent(EventType.frighten, actor: this);
-        _changeState(AfraidState());
+        _changeState(new AfraidState());
       } else if (notice < 0.01) {
         log("{1} falls asleep!", this);
 
         _alertness = 0.0;
-        _changeState(AsleepState());
+        _changeState(new AsleepState());
       }
     } else if (isAfraid) {
       if (_fear <= 0.0) {
         log("{1} grows courageous!", this);
-        _changeState(AwakeState());
+        _changeState(new AwakeState());
       }
     }
   }
@@ -243,8 +245,8 @@ public class Monster : Actor {
     if (notice > 0.8) return 100;
 
     // Between them, gradually increasing chance of waking up.
-    var normal = lerpDouble(notice, 0.1, 0.8, 0.0, 1.0);
-    return lerpDouble(normal * normal * normal, 0.0, 1.0, 5.0, 100.0).round();
+    var normal = MathUtils.lerpDouble((float)notice, 0.1f, 0.8f, 0.0, 1.0);
+    return Mathf.RoundToInt((float)MathUtils.lerpDouble((float)(normal * normal * normal), 0.0f, 1.0f, 5.0, 100.0));
   }
 
   double _seeHero() {
@@ -306,7 +308,7 @@ public class Monster : Actor {
     // If it doesn't flee, there's no point in being afraid.
     if (breed.flags.immobile) return;
 
-    _fear = math.max(0.0, _fear + offset);
+    _fear = Mathf.Max(0.0f, (float)(_fear + offset));
   }
 
   /// Adds an audible signal at [volume] to the monster's alertness.
@@ -345,7 +347,7 @@ public class Monster : Actor {
         "hit for $damage/${game.hero.maxHealth} decrease by $fear");
 
     // Nearby monsters may witness it.
-    _updateWitnesses((witness) {
+    _updateWitnesses((witness) => {
       witness._viewHeroDamage(action, damage);
     });
   }
@@ -377,15 +379,15 @@ public class Monster : Actor {
         this, "fear", "hit for $damage/$maxHealth increases by $fear");
 
     // Nearby monsters may witness it.
-    _updateWitnesses((witness) {
+    _updateWitnesses((witness) => {
       witness._viewMonsterDamage(action, this, damage);
     });
 
     // See if the monster does anything when hit.
     var moves = breed.moves
-        .where((move) => move.shouldUseOnDamage(this, damage))
-        .toList();
-    if (moves.isNotEmpty) {
+        .Where((move) => move.shouldUseOnDamage(this, damage))
+        .ToList();
+    if (moves.Count > 0) {
       action.addAction(Rng.rng.item(moves).getAction(this), this);
     }
   }

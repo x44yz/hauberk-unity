@@ -171,12 +171,12 @@ public class Game
     }
   }
 
-  void addEvent(EventType type,
-      Actor actor,
-      Element element,
-      object other,
-      Vec pos,
-      Direction dir) {
+  public void addEvent(EventType type,
+      Actor actor = null,
+      Element element = null,
+      object other = null,
+      Vec pos = null,
+      Direction dir = null) {
     _events.Add(new Event(type, actor, element ?? Element.none, pos, dir, other));
   }
 

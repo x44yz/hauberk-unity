@@ -69,7 +69,7 @@ public class Stage {
     }
 
     /// Called when an [Actor]'s position has changed so the stage can track it.
-    void moveActor(Vec from, Vec to) {
+    public void moveActor(Vec from, Vec to) {
         var actor = _actorsByTile[from];
         _actorsByTile[from] = null;
         _actorsByTile[to] = actor;
