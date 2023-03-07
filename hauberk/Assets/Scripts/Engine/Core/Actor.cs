@@ -107,7 +107,7 @@ public abstract class Actor : Noun
 
   Motility motility;
 
-  int maxHealth;
+  public int maxHealth;
 
   /// Gets the actor's current speed, taking into any account any active
   /// [Condition]s.
@@ -181,7 +181,7 @@ public abstract class Actor : Noun
   public abstract List<Hit> onCreateMeleeHits(Actor defender);
 
   /// Applies the hit modifications from the actor.
-  void modifyHit(Hit hit, HitType type) {
+  public void modifyHit(Hit hit, HitType type) {
     // Hard to hit an actor you can't see.
     if (isBlinded) {
       switch (type) {

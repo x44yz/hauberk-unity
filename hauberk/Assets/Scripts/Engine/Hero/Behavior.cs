@@ -19,7 +19,7 @@ abstract class Behavior {
 class ActionBehavior : Behavior {
   public Action action;
 
-  ActionBehavior(Action action)
+  public ActionBehavior(Action action)
   {
     this.action = action;
   }
@@ -68,7 +68,10 @@ class RunBehavior : Behavior {
 
   Direction direction;
 
-  RunBehavior(this.direction);
+  public RunBehavior(Direction direction)
+  {
+    this.direction = direction;
+  }
 
   public override bool canPerform(Hero hero) {
     // On first step, always try to go in direction player pressed.

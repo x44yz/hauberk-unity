@@ -74,11 +74,11 @@ public class Log {
 
   public List<Message> messages = new List<Message>();
 
-  void message(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void message(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.message, message, noun1, noun2, noun3);
   }
 
-  void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.error, message, noun1, noun2, noun3);
   }
 

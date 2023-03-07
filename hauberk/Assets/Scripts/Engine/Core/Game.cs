@@ -246,7 +246,7 @@ public abstract class Content {
 
   List<Race> races;
 
-  List<Skill> skills;
+  public List<Skill> skills;
 
   Dictionary<string, Shop> shops;
 

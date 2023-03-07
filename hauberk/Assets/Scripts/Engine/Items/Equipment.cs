@@ -39,10 +39,10 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Gets the currently-equipped weapons, if any.
-  IEnumerable<Item> weapons
+  public List<Item> weapons
   {
     get {
-      return slots.Where<Item>((item) => item.type.weaponType != null);
+      return slots.Where<Item>((item) => item.type.weaponType != null).ToList();
     }
   }
 

@@ -27,7 +27,7 @@ public class Property<T> where T : IComparable
   /// Stores the new base [value]. If [value] is different from the current
   /// base value, calls [onChange], passing in the previous value. Does not take
   /// any modification into account.
-  protected void update(T value, Action<T> onChange) {
+  public void update(T value, Action<T> onChange) {
     if (_value.Equals(value)) return;
 
     var previous = _value;
@@ -64,7 +64,7 @@ public class Stat
   }
 }
 
-abstract class StatBase : Property<int> 
+public abstract class StatBase : Property<int> 
 {
   public HeroSave _hero;
 
@@ -87,7 +87,7 @@ abstract class StatBase : Property<int>
     _value = _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
   }
 
-  void refresh(Game game)
+  public void refresh(Game game)
   {
     var newValue =
         _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
@@ -114,14 +114,14 @@ public class Strength : StatBase
 
   int _statOffset => -_hero.weight;
 
-  int maxFury {
+  public int maxFury {
     get {
         if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
         return MathUtils.lerpInt(value, 10, 60, 100, 200);
     }
   }
 
-  double tossRangeScale {
+  public double tossRangeScale {
     get {
       if (value <= 20) return MathUtils.lerpDouble(value, 1, 20, 0.1, 1.0);
       if (value <= 30) return MathUtils.lerpDouble(value, 20, 30, 1.0, 1.5);
@@ -133,7 +133,7 @@ public class Strength : StatBase
 
   /// Calculates the melee damage scaling factor based on the hero's strength
   /// relative to the weapon's [heft].
-  double heftScale(int heft) {
+  public double heftScale(int heft) {
     var relative = Mathf.Clamp(value - heft, -20, 50);
 
     if (relative < -10) {
@@ -166,7 +166,7 @@ public class Agility : StatBase {
     }
   }
 
-  int strikeBonus {
+  public int strikeBonus {
     get {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -30, 0);
       if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);
@@ -214,7 +214,7 @@ public class Will : StatBase {
   string _loseAdjective => "foolish";
 
   /// Scales how much focus is lost when taking damage.
-  double damageFocusScale {
+  public double damageFocusScale {
     get {
       if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 800, 400);
       return MathUtils.lerpDouble(value, 10, 60, 400, 80);
@@ -222,7 +222,7 @@ public class Will : StatBase {
   }
 
   /// Scales how much fury is lost when regenerating focus.
-  double restFuryScale {
+  public double restFuryScale {
     get {
       if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 4.0, 1.0);
       return MathUtils.lerpDouble(value, 10, 60, 1.0, 0.2);

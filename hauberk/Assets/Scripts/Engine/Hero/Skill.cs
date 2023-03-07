@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// An immutable unique skill a hero may learn.
 ///
@@ -42,21 +43,21 @@ public abstract class Skill : System.IComparable<Skill> {
   public abstract int onCalculateLevel(HeroSave hero, int points);
 
   /// Called when the hero takes damage.
-  void takeDamage(Hero hero, int damage) {}
+  public void takeDamage(Hero hero, int damage) {}
 
   /// Called the first time the hero has seen a monster of [breed].
-  void seeBreed(Hero hero, Breed breed) {}
+  public void seeBreed(Hero hero, Breed breed) {}
 
   /// Called when the hero kills [monster].
-  void killMonster(Hero hero, Action action, Monster monster) {}
+  public void killMonster(Hero hero, Action action, Monster monster) {}
 
   /// Called when the hero is dual-wielding two weapons.
-  void dualWield(Hero hero) {}
+  public void dualWield(Hero hero) {}
 
   // TODO: Rename to "modifyHit".
   /// Gives the skill a chance to modify the [hit] the [hero] is about to
   /// perform on [monster].
-  void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
+  public void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
 
   /// Modifies the hero's base armor.
   int modifyArmor(HeroSave hero, int level, int armor) => armor;
@@ -66,7 +67,7 @@ public abstract class Skill : System.IComparable<Skill> {
 
   /// Gives the skill a chance to adjust the [heftModifier] applied to the base
   /// heft of a weapon.
-  double modifyHeft(Hero hero, int level, double heftModifier) => heftModifier;
+  public double modifyHeft(Hero hero, int level, double heftModifier) => heftModifier;
 
   /// Gives the skill a chance to modify the hit the hero is about to receive.
 // TODO: Not currently used.
@@ -109,7 +110,7 @@ public class UsableSkill {
 }
 
 /// A skill that can be directly used to perform an action.
-public class ActionSkill : UsableSkill {
+public abstract class ActionSkill : UsableSkill {
   Action getAction(Game game, int level) {
     return _wrapActionCost(game.hero.save, level, onGetAction(game, level));
   }
@@ -118,11 +119,11 @@ public class ActionSkill : UsableSkill {
 }
 
 /// A skill that requires a target position to perform.
-public class TargetSkill : UsableSkill {
+public abstract class TargetSkill : UsableSkill {
   bool canTargetSelf => false;
 
   /// The maximum range of the target from the hero.
-  int getRange(Game game);
+  public abstract int getRange(Game game);
 
   Action getTargetAction(Game game, int level, Vec target) {
     return _wrapActionCost(
@@ -131,11 +132,11 @@ public class TargetSkill : UsableSkill {
 
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
-  Action onGetTargetAction(Game game, int level, Vec target);
+  public abstract Action onGetTargetAction(Game game, int level, Vec target);
 }
 
 /// A skill that requires a direction to perform.
-public class DirectionSkill : UsableSkill {
+public abstract class DirectionSkill : UsableSkill {
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
   Action getDirectionAction(Game game, int level, Direction dir) {
@@ -145,7 +146,7 @@ public class DirectionSkill : UsableSkill {
 
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
-  Action onGetDirectionAction(Game game, int level, Direction dir);
+  public abstract Action onGetDirectionAction(Game game, int level, Direction dir);
 }
 
 /// Disciplines are the primary [Skill]s of warriors.
@@ -274,17 +275,23 @@ public class SkillSet {
   }
 
   /// All the skills the hero knows about.
-  IEnumerable<Skill> discovered => _levels.keys.toList()..sort();
+  public IEnumerable<Skill> discovered {
+    get {
+      var s = _levels.Keys.ToList();
+      s.Sort();
+      return s;
+    }
+  }
 
   /// All the skills the hero actually has.
   public IEnumerable<Skill> acquired =>
-      _levels.Keys.where((skill) => _levels[skill]! > 0);
+      _levels.Keys.Where((skill) => _levels[skill]! > 0);
 
   /// Gets the current level of [skill] or 0 if the skill isn't known.
-  public int level(Skill skill) => _levels[skill] ?? 0;
+  public int level(Skill skill) => _levels.ContainsKey(skill) ? _levels[skill] : 0;
 
   /// Gets the current points in [skill] or 0 if the skill isn't known.
-  public int points(Skill skill) => _points[skill] ?? 0;
+  public int points(Skill skill) => _points.ContainsKey(skill) ? _points[skill] : 0;
 
   void earnPoints(Skill skill, int points) {
     points += this.points(skill);
@@ -335,7 +342,18 @@ public class SkillSet {
   bool isAcquired(Skill skill) =>
       _levels.ContainsKey(skill) && _levels[skill] > 0;
 
-  SkillSet clone() => SkillSet.from(Map.from(_levels), Map.from(_points));
+  SkillSet clone() 
+  {
+    var ls = new Dictionary<Skill, int>();
+    foreach (var kv in _levels)
+      ls.Add(kv.Key, kv.Value);
+
+    var ps = new Dictionary<Skill, int>();
+    foreach (var kv in _points)
+      ps.Add(kv.Key, kv.Value);
+
+    return new SkillSet(ls, ps);
+  } 
 
   void update(SkillSet other) {
     _levels.Clear();

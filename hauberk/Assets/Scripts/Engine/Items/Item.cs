@@ -38,7 +38,7 @@ public class Item : Noun, System.IComparable<Item>
     bool canToss => type.toss != null;
 
     /// The base attack for the item, ignoring its own affixes.
-    Attack? attack => type.attack;
+    public Attack? attack => type.attack;
 
     Toss? toss => type.toss;
 
@@ -137,7 +137,7 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     /// The amount of strength required to wield the item effectively.
-    int heft {
+    public int heft {
         get {
             var result = (double)type.heft;
             _applyAffixes((affix) => result *= affix.heftScale);
@@ -153,7 +153,7 @@ public class Item : Noun, System.IComparable<Item>
     int _count = 1;
 
     /// Apply any affix modifications to hit.
-    void modifyHit(Hit hit) {
+    public void modifyHit(Hit hit) {
         hit.addStrike(strikeBonus);
         hit.scaleDamage(damageScale);
         hit.addDamage(damageBonus);
@@ -162,7 +162,7 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     /// Gets the resistance this item confers to [element] when equipped.
-    int resistance(Element element) {
+    public int resistance(Element element) {
         var resistance = 0;
         _applyAffixes((affix) => resistance += affix.resistance(element));
         return resistance;

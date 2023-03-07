@@ -171,7 +171,7 @@ public class HeroSave
         maxDepth);
 
     /// Gets the total permament resistance provided by all equipment.
-    int equipmentResistance(Element element) {
+    public int equipmentResistance(Element element) {
         // TODO: If class or race can affect this, add it in.
         var resistance = 0;
 

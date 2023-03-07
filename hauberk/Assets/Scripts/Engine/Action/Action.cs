@@ -82,7 +82,7 @@ public abstract class Action
 
   /// How much noise is produced by this action. Override to make certain
   /// actions quieter or louder.
-  double noise => Sound.normalNoise;
+  public double noise => Sound.normalNoise;
 
   void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (!game.stage[_pos].isVisible) return;

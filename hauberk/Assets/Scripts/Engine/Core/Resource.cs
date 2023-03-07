@@ -403,7 +403,7 @@ class _ResourceQuery<T> where T : class {
 
   void dump(_QueryKey key) {
     DartUtils.print(key.toString());
-    foreach (var i = 0; i < resources.Count; i++) {
+    for (var i = 0; i < resources.Count; i++) {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =

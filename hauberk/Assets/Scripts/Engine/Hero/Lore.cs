@@ -51,17 +51,17 @@ public class Lore {
         this._usedItems = _usedItems;
     }
 
-  void seeBreed(Breed breed) {
+  public void seeBreed(Breed breed) {
     if (!_seenBreeds.ContainsKey(breed)) _seenBreeds.Add(breed, 0);
     _seenBreeds[breed] = _seenBreeds[breed] + 1;
   }
 
-  void slay(Breed breed) {
+  public void slay(Breed breed) {
     if (!_slainBreeds.ContainsKey(breed)) _slainBreeds.Add(breed, 0);
     _slainBreeds[breed] = _slainBreeds[breed] + 1;
   }
 
-  void findItem(Item item) {
+  public void findItem(Item item) {
     if (!_foundItems.ContainsKey(item.type)) _foundItems.Add(item.type, 0);
     _foundItems[item.type] = _foundItems[item.type]! + 1;
 
@@ -82,7 +82,7 @@ public class Lore {
   }
 
   /// The number of monsters of [breed] that the hero has detected.
-  int seenBreed(Breed breed)
+  public int seenBreed(Breed breed)
   {
     int val = 0;
     _seenBreeds.TryGetValue(breed, out val);

@@ -194,8 +194,8 @@ public class Hero : Actor {
     var hits = new List<Hit>();
 
     // See if any melee weapons are equipped.
-    var weapons = equipment.weapons.toList();
-    for (var i = 0; i < weapons.length; i++) {
+    var weapons = equipment.weapons;
+    for (var i = 0; i < weapons.Count; i++) {
       var weapon = weapons[i];
       if (weapon.attack!.isRanged) continue;
 
@@ -205,12 +205,12 @@ public class Hero : Actor {
 
       // Take heft and strength into account.
       hit.scaleDamage(_heftScales[i].value);
-      hits.add(hit);
+      hits.Add(hit);
     }
 
     // If not, punch it.
-    if (hits.isEmpty) {
-      hits.add(Attack(this, 'punch[es]', Option.heroPunchDamage).createHit());
+    if (hits.Count == 0) {
+      hits.Add(new Attack(this, "punch[es]", Option.heroPunchDamage).createHit());
     }
 
     foreach (var hit in hits) {
@@ -218,7 +218,7 @@ public class Hero : Actor {
 
       foreach (var skill in skills.acquired) {
         skill.modifyAttack(
-            this, defender as Monster?, hit, skills.level(skill));
+            this, defender as Monster, hit, skills.level(skill));
       }
     }
 
@@ -226,9 +226,9 @@ public class Hero : Actor {
   }
 
   Hit createRangedHit() {
-    var weapons = equipment.weapons.toList();
-    var i = weapons.indexWhere((weapon) => weapon.attack!.isRanged);
-    assert(i != -1, "Should have ranged weapon equipped.");
+    var weapons = equipment.weapons;
+    var i = weapons.FindIndex((weapon) => weapon.attack!.isRanged);
+    DartUtils.assert(i != -1, "Should have ranged weapon equipped.");
 
     var hit = weapons[i].attack!.createHit();
 
@@ -268,9 +268,9 @@ public class Hero : Actor {
   }
 
   // TODO: If class or race can affect this, add it in.
-  int onGetResistance(Element element) => save.equipmentResistance(element);
+  public override int onGetResistance(Element element) => save.equipmentResistance(element);
 
-  void onGiveDamage(Action action, Actor defender, int damage) {
+  public override void onGiveDamage(Action action, Actor defender, int damage) {
     // Hitting increases fury.
     _gainFury(damage / defender.maxHealth * maxHealth / 100);
   }
@@ -278,8 +278,8 @@ public class Hero : Actor {
   void onTakeDamage(Action action, Actor? attacker, int damage) {
     // Getting hit loses focus and gains fury.
     // TODO: Lose less focus for ranged attacks?
-    var focus = (damage / maxHealth * will.damageFocusScale).ceil();
-    _focus = (_focus - focus).clamp(0, intellect.maxFocus);
+    var focus = Mathf.CeilToInt((float)(damage / maxHealth * will.damageFocusScale));
+    _focus = Mathf.Clamp(_focus - focus, 0, intellect.maxFocus);
 
     _gainFury(damage / maxHealth * 50);
     _turnsSinceLostFocus = 0;
@@ -295,7 +295,7 @@ public class Hero : Actor {
     var monster = defender as Monster;
 
     // It only counts if the hero's seen the monster at least once.
-    if (!_seenMonsters.contains(monster)) return;
+    if (!_seenMonsters.Contains(monster)) return;
 
     // Gain some fury.
     _gainFury(defender.maxHealth / maxHealth * 50);
@@ -329,8 +329,8 @@ public class Hero : Actor {
     // TODO: Passive skills?
   }
 
-  void changePosition(Vec from, Vec to) {
-    super.changePosition(from, to);
+  public override void changePosition(Vec from, Vec to) {
+    base.changePosition(from, to);
     game.stage.heroVisibilityChanged();
   }
 
@@ -339,7 +339,7 @@ public class Hero : Actor {
   }
 
   void setNextAction(Action action) {
-    _behavior = ActionBehavior(action);
+    _behavior = new ActionBehavior(action);
   }
 
   /// Starts resting, if the hero has eaten and is able to regenerate.
@@ -370,14 +370,14 @@ public class Hero : Actor {
   }
 
   public void disturb() {
-    if (_behavior is! ActionBehavior) 
+    if (!(_behavior is ActionBehavior)) 
       waitForInput();
   }
 
   public void seeMonster(Monster monster) {
     // TODO: Blindness and dazzle.
 
-    if (_seenMonsters.add(monster)) {
+    if (_seenMonsters.Add(monster)) {
       // TODO: If we want to give the hero experience for seeing a monster too,
       // (so that sneak play-style still lets the player gain levels), do that
       // here.
@@ -397,7 +397,7 @@ public class Hero : Actor {
   ///
   /// Does not reset [_turnsSinceLostFocus].
   void spendFocus(int focus) {
-    assert(focus >= _focus);
+    DartUtils.assert(focus >= _focus);
 
     _focus -= focus;
   }
@@ -406,7 +406,7 @@ public class Hero : Actor {
   ///
   /// Does not reset [_turnsSinceLostFocus].
   void spendFury(int fury) {
-    assert(fury >= fury);
+    DartUtils.assert(fury >= fury);
 
     _fury -= fury;
   }
@@ -414,16 +414,14 @@ public class Hero : Actor {
   void regenerateFocus(int focus) {
     // The longer the hero goes without losing focus, the more quickly it
     // regenerates.
-    var scale = (_turnsSinceLostFocus + 1).clamp(1, 8) / 4;
-    _focus = (_focus + focus * scale).ceil().clamp(0, intellect.maxFocus);
+    var scale = Mathf.Clamp(_turnsSinceLostFocus + 1, 1, 8) / 4;
+    _focus = (int)Mathf.Clamp(Mathf.Ceil(_focus + focus * scale), 0, intellect.maxFocus);
 
-    _fury = (_fury - focus * scale * will.restFuryScale)
-        .ceil()
-        .clamp(0, strength.maxFury);
+    _fury = Mathf.Clamp(Mathf.CeilToInt((float)(_fury - focus * scale * will.restFuryScale)), 0, strength.maxFury);
   }
 
   void _gainFury(double fury) {
-    _fury = (_fury + fury.ceil()).clamp(0, strength.maxFury);
+    _fury = (int)Mathf.Clamp(_fury + Mathf.Ceil((float)fury), 0, strength.maxFury);
   }
 
   /// Refreshes all hero state whose change should be logged.
@@ -439,8 +437,8 @@ public class Hero : Actor {
   /// depend on.
   void refreshProperties() {
     var level = experienceLevel(experience);
-    _level.update(level, (previous) {
-      game.log.gain('You have reached level $level.');
+    _level.update(level, (previous) => {
+      game.log.gain($"You have reached level {level}.");
       // TODO: Different message if level went down.
     });
 
@@ -451,14 +449,14 @@ public class Hero : Actor {
     will.refresh(game);
 
     // Refresh the heft scales.
-    var weapons = equipment.weapons.toList();
-    for (var i = 0; i < weapons.length; i++) {
+    var weapons = equipment.weapons;
+    for (var i = 0; i < weapons.Count; i++) {
       var weapon = weapons[i];
 
       // Dual-wielding imposes a heft penalty.
       var heftModifier = 1.0;
 
-      if (weapons.length == 2) {
+      if (weapons.Count == 2) {
         heftModifier = 1.3;
 
         // Discover the dual-wield skill.
@@ -474,14 +472,14 @@ public class Hero : Actor {
             skill.modifyHeft(this, skills.level(skill), heftModifier);
       }
 
-      var heft = (weapon.heft * heftModifier).round();
+      var heft = Mathf.RoundToInt((float)(weapon.heft * heftModifier));
       var heftScale = strength.heftScale(heft);
-      _heftScales[i].update(heftScale, (previous) {
+      _heftScales[i].update(heftScale, (previous) => {
         // TODO: Reword these if there is no weapon equipped?
         if (heftScale < 1.0 && previous >= 1.0) {
-          game.log.error("You are too weak to effectively wield $weapon.");
+          game.log.error($"You are too weak to effectively wield {weapon}.");
         } else if (heftScale >= 1.0 && previous < 1.0) {
-          game.log.message("You feel comfortable wielding $weapon.");
+          game.log.message($"You feel comfortable wielding {weapon}.");
         }
       });
     }
@@ -538,21 +536,24 @@ public class Hero : Actor {
   bool canPerceive(Actor actor) {
     if (game.stage[actor.pos].isVisible) return true;
     if (perception.isActive && (pos - actor.pos) < perception.intensity) {
-    return true;
+      return true;
     }
     return false;
   }
-}
 
-int experienceLevel(int experience) {
+  public int experienceLevel(int experience) {
     for (var level = 1; level <= Hero.maxLevel; level++) {
-        if (experience < experienceLevelCost(level)) return level - 1;
+        if (experience < experienceLevelCost(level)) 
+          return level - 1;
     }
     return Hero.maxLevel;
+  }
+
+  /// Returns how much experience is needed to reach [level].
+  int experienceLevelCost(int level) {
+      if (level > Hero.maxLevel) throw new System.ArgumentOutOfRangeException("level", level.ToString());
+      return (int)(Mathf.Pow(level - 1, 3)) * 1000;
+  }
 }
 
-/// Returns how much experience is needed to reach [level].
-int experienceLevelCost(int level) {
-    if (level > Hero.maxLevel) throw RangeError.value(level, "level");
-    return math.pow(level - 1, 3).toInt() * 1000;
-}
+

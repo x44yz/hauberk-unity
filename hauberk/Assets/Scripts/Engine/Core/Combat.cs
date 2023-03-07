@@ -39,7 +39,7 @@ public class Attack {
 
   public Element element;
 
-  Attack(Noun noun, string verb, int damage, int range = 0, Element element = default(Element))
+  public Attack(Noun noun, string verb, int damage, int range = 0, Element element = default(Element))
   {
     this.noun = noun;
     this.verb = verb;
@@ -48,7 +48,7 @@ public class Attack {
     this.element = element;
   }
 
-  bool isRanged => range > 0;
+  public bool isRanged => range > 0;
 
   public Hit createHit() => new Hit(this);
 
@@ -128,7 +128,7 @@ public class Hit {
     if (element != Element.none) _brand = element;
   }
 
-  void scaleRange(double factor) {
+  public void scaleRange(double factor) {
     _rangeScale *= factor;
   }
 
