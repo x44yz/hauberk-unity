@@ -38,8 +38,18 @@ using UnityEngine;
 /// of points.
 public class Rect : IEnumerable<Vec> 
 {
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+       return (IEnumerator) GetEnumerator();
+    }
+
+    public IEnumerator<Vec> GetEnumerator()
+    {
+        return iterator;
+    }
+
   /// Gets the empty rectangle.
-  public static Rect empty = Rect.posAndSize(Vec.zero, Vec.zero);
+  public static Rect empty => Rect.posAndSize(Vec.zero, Vec.zero);
 
   /// Creates a new rectangle that is the intersection of [a] and [b].
   ///
@@ -135,7 +145,7 @@ public class Rect : IEnumerable<Vec>
 
   string tostring() => $"({pos})-({size})";
 
-  Rect inflate(int distance) {
+  public Rect inflate(int distance) {
     return new Rect(x - distance, y - distance, width + (distance * 2),
         height + (distance * 2));
   }
@@ -171,7 +181,7 @@ public class Rect : IEnumerable<Vec>
     return new Vec(x, y);
   }
 
-  RectIterator iterator => RectIterator(this);
+  RectIterator iterator => new RectIterator(this);
 
   /// Returns the distance between this Rect and [other]. This is minimum
   /// length that a corridor would have to be to go from one Rect to the other.
@@ -202,7 +212,7 @@ public class Rect : IEnumerable<Vec>
   }
 
   /// Iterates over the points along the edge of the Rect.
-  List<Vec> trace() {
+  IEnumerable<Vec> trace() {
     if ((width > 1) && (height > 1)) {
       // TODO(bob): Implement an iterator class here if building the list is
       // slow.
@@ -222,7 +232,7 @@ public class Rect : IEnumerable<Vec>
       return result;
     } else if ((width > 1) && (height == 1)) {
       // A single row.
-      return new List<Vec>().Add(Rect.row(left, top, width));
+      return Rect.row(left, top, width);
     } else if ((height >= 1) && (width == 1)) {
       // A single column, or one unit
       return Rect.column(left, top, height);
@@ -230,7 +240,7 @@ public class Rect : IEnumerable<Vec>
 
     // Otherwise, the rect doesn't have a positive size, so there's nothing to
     // trace.
-    return const [];
+    return new List<Vec>();
   }
 
   // TODO: Equality operator and hashCode.
@@ -238,15 +248,32 @@ public class Rect : IEnumerable<Vec>
 
 class RectIterator : IEnumerator<Vec> 
 {
+
+  object IEnumerator.Current => current;
+    public Vec Current => current;
+    public bool MoveNext() => moveNext();
+    public void Reset()
+    {
+        _rect= Rect.empty;
+        _x = 0;
+        _y = 0;
+    }
+    public void Dispose()
+    {
+    }
+
   public Rect _rect;
   int _x;
   int _y;
 
-  RectIterator(this._rect)
-      : _x = _rect.x - 1,
-        _y = _rect.y;
+  public RectIterator(Rect _rect)
+  {
+    this._rect = _rect;
+      _x = _rect.x - 1;
+      _y = _rect.y;
+  }
 
-  Vec current => Vec(_x, _y);
+  Vec current => new Vec(_x, _y);
 
   bool moveNext() {
     _x++;

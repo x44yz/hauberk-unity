@@ -88,7 +88,7 @@ class ResourceSet<T> where T : class {
   }
 
   /// Returns the resource with [name], if any, or else `null`.
-  T? tryFind(string name) {
+  T tryFind(string name) {
     var resource = _resources[name];
     if (resource == null) return default(T);
     return resource.obj;
@@ -133,17 +133,16 @@ class ResourceSet<T> where T : class {
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  T? tryChoose(int depth, string? tag = null, bool? includeParents = null) {
-    includeParents ??= true;
+  T tryChoose(int depth, string tag = null, bool includeParents = true) {
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
 
     var goalTag = _tags[tag]!;
 
     var label = goalTag.name;
-    if (!includeParents.Value) label += " (only)";
+    if (!includeParents) label += " (only)";
 
-    return _runQuery(label, depth, (_Resource<T> resource) {
+    return _runQuery(label, depth, (_Resource<T> resource) => {
       var scale = 1.0;
       for (_Tag<T>? thisTag = goalTag;
           thisTag != null;
@@ -152,7 +151,7 @@ class ResourceSet<T> where T : class {
           if (resourceTag.contains(thisTag)) return scale;
         }
 
-        if (!includeParents!) break;
+        if (!includeParents) break;
 
         // Resources in sibling trees are included with lower probability based
         // on how far their common ancestor is. So if the goal is
@@ -215,11 +214,11 @@ class ResourceSet<T> where T : class {
         chance = Math.Max(0.0000001, chance);
 
         totalChance += chance;
-        resources.add(resource);
-        chances.add(totalChance);
+        resources.Add(resource);
+        chances.Add(totalChance);
       }
 
-      query = _ResourceQuery<T>(depth, resources, chances, totalChance);
+      query = new _ResourceQuery<T>(depth, resources, chances, totalChance);
       _queries[key] = query;
     }
 
@@ -369,7 +368,7 @@ class _ResourceQuery<T> where T : class {
   public List<double> chances;
   public double totalChance;
 
-  _ResourceQuery(int depth, List<_Resource<T>> resources, 
+  public _ResourceQuery(int depth, List<_Resource<T>> resources, 
     List<double> chances, double totalChance)
   {
     this.depth = depth;
@@ -379,7 +378,7 @@ class _ResourceQuery<T> where T : class {
   }
 
   /// Choose a random resource that matches this query.
-  T? choose() {
+  public T? choose() {
     if (resources.Count == 0) return null;
 
     // Pick a point in the probability range.

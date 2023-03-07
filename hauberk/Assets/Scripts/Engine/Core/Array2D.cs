@@ -79,7 +79,7 @@ public class Array2D<T> {
     // is accessed very frequently and avoids allocating a new Rect each time.
 
     /// The size of the array.
-    Vec size => bounds.size;
+    public Vec size => bounds.size;
 
     /// Gets the element in the array at [x], [y].
     public T _get(int x, int y) {

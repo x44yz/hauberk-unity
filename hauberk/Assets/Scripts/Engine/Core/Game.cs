@@ -50,22 +50,25 @@ public class Game
     // TODO: Vary size?
     _stage = new Stage(width, height, this);
 
-    _substanceUpdateOrder.addAll(_stage.bounds.inflate(-1));
-    rng.shuffle(_substanceUpdateOrder);
+    _substanceUpdateOrder.AddRange(_stage.bounds.inflate(-1));
+    Rng.rng.shuffle(_substanceUpdateOrder);
   }
 
-  Iterable<string> generate() sync* {
+  List<string> generate(){
     // TODO: Do something useful with depth.
-    Vec heroPos;
-    yield* content.buildStage(_save.lore, _stage, depth, (pos) {
-      heroPos = pos;
-    });
+    var rt = new List<string>();
 
-    hero = Hero(this, heroPos, _save);
+    Vec heroPos = Vec.zero;
+    rt.AddRange(content.buildStage(_save.lore, _stage, depth, (pos) => {
+      heroPos = pos;
+    }));
+
+    hero = new Hero(this, heroPos, _save);
     _stage.addActor(hero);
 
-    yield "Calculating visibility";
+    rt.Add("Calculating visibility");
     _stage.refreshView();
+    return rt;
   }
 
   GameResult update() 
@@ -74,7 +77,7 @@ public class Game
 
     while (true) {
       // Process any ongoing or pending actions.
-      while (_actions.isNotEmpty) {
+      while (_actions.Count > 0) {
         var action = _actions.first;
 
         var result = action.perform();
@@ -88,7 +91,7 @@ public class Game
           result = action.perform();
         }
 
-        while (_reactions.isNotEmpty) {
+        while (_reactions.Count > 0) {
           var reaction = _reactions.removeLast();
           var result = reaction.perform();
 
@@ -98,7 +101,7 @@ public class Game
             result = reaction.perform();
           }
 
-          assert(result.succeeded, "Reactions should never fail.");
+          DartUtils.assert(result.succeeded, "Reactions should never fail.");
         }
 
         stage.refreshView();
@@ -127,7 +130,7 @@ public class Game
 
       // If we get here, all pending actions are done, so advance to the next
       // tick until an actor moves.
-      while (_actions.isEmpty) {
+      while (_actions.Count == 0) {
         var actor = stage.currentActor;
 
         // If we are still waiting for input for the actor, just return (again).
@@ -162,9 +165,9 @@ public class Game
 
   void addAction(Action action) {
     if (action.isImmediate) {
-      _reactions.add(action);
+      _reactions.Add(action);
     } else {
-      _actions.add(action);
+      _actions.Add(action);
     }
   }
 
@@ -174,25 +177,25 @@ public class Game
       object other,
       Vec pos,
       Direction dir) {
-    _events.add(new Event(type, actor, element ?? Element.none, pos, dir, other));
+    _events.Add(new Event(type, actor, element ?? Element.none, pos, dir, other));
   }
 
   GameResult makeResult(bool madeProgress) {
     var result = new GameResult(madeProgress);
-    result.events.addAll(_events);
-    _events.clear();
+    result.events.AddRange(_events);
+    _events.Clear();
     return result;
   }
 
   void _updateSubstances() {
-    while (_substanceIndex! < _substanceUpdateOrder.length) {
-      var pos = _substanceUpdateOrder[_substanceIndex!];
+    while (_substanceIndex! < _substanceUpdateOrder.Count) {
+      var pos = _substanceUpdateOrder[_substanceIndex!.Value];
       var action = content.updateSubstance(stage, pos);
       _substanceIndex = _substanceIndex! + 1;
 
       if (action != null) {
         action.bindPassive(this, pos);
-        _actions.add(action);
+        _actions.Enqueue(action);
         return;
       }
     }
@@ -250,7 +253,7 @@ public abstract class Content {
 
   Dictionary<string, Shop> shops;
 
-  public abstract HeroSave createHero(String name, Race race = null, HeroClass heroClass);
+  public abstract HeroSave createHero(string name, Race race = null, HeroClass heroClass = null);
 
   public abstract Action updateSubstance(Stage stage, Vec pos);
 }

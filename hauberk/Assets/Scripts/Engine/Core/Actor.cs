@@ -101,7 +101,7 @@ public abstract class Actor : Noun
   public bool isVisibleToHero => game.stage[pos].isVisible;
 
   /// Whether the actor's vision is currently impaired.
-  bool isBlinded => blindness.isActive || dazzle.isActive;
+  public bool isBlinded => blindness.isActive || dazzle.isActive;
 
   bool needsInput => false;
 
@@ -288,12 +288,12 @@ public abstract class Actor : Noun
   ///
   /// Takes into account that actors do not want to step into burning tiles,
   /// but does not care if the tile is occupied.
-  bool willOccupy(Vec pos) => canOccupy(pos) && game.stage[pos].substance == 0;
+  public bool willOccupy(Vec pos) => canOccupy(pos) && game.stage[pos].substance == 0;
 
   /// Whether the actor can enter the tile at [pos] right now.
   ///
   /// This is true if the actor can occupy [pos] and no other actor already is.
-  bool canEnter(Vec pos) => canOccupy(pos) && game.stage.actorAt(pos) == null;
+  public bool canEnter(Vec pos) => canOccupy(pos) && game.stage.actorAt(pos) == null;
 
   /// Whether the actor desires to enter the tile at [pos].
   ///

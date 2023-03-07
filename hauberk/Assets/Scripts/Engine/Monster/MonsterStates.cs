@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// This defines the monster AI. AI is broken into a three level hierarchy.
 ///
@@ -61,95 +62,95 @@ abstract class MonsterState {
         _monster = monster;
     }
 
-    Monster monster => _monster;
+    public Monster monster => _monster;
 
-    Breed breed => _monster.breed;
+    public Breed breed => _monster.breed;
 
-    Game game => _monster.game;
+    public Game game => _monster.game;
 
-    Vec pos => _monster.pos;
+    public Vec pos => _monster.pos;
 
     void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
         monster.log(message, noun1, noun2, noun3);
     }
 
-    Action getAction();
+    public abstract Action getAction();
 
     /// Applies the monster's meandering to [dir].
-    Direction _meander(Direction dir) {
-    var meander = breed.meander;
+    public Direction _meander(Direction dir) {
+      var meander = breed.meander;
 
-    if (monster.isBlinded) {
-        // Being blinded makes the monster stumble around.
-        meander += (monster.sightReliance * 50).toInt();
-    } else if (pos + dir == game.hero.pos) {
-        // Monsters are (mostly) smart enough to not meander when they're about
-        // to melee. A small chance of meandering is still useful to get a
-        // monster out of a doorway sometimes.
-        meander ~/= 4;
-    }
+      if (monster.isBlinded) {
+          // Being blinded makes the monster stumble around.
+          meander += (int)(monster.sightReliance * 50);
+      } else if (pos + dir == game.hero.pos) {
+          // Monsters are (mostly) smart enough to not meander when they're about
+          // to melee. A small chance of meandering is still useful to get a
+          // monster out of a doorway sometimes.
+          meander /= 4;
+      }
 
-    // Should always have a chance to go the right direction.
-    meander = math.min(meander, 90);
+      // Should always have a chance to go the right direction.
+      meander = Mathf.Min(meander, 90);
 
-    if (!rng.percent(meander)) return dir;
+      if (!Rng.rng.percent(meander)) return dir;
 
-    List<Direction> dirs;
-    if (dir == Direction.none) {
-        // Since the monster has no direction, any is equally valid.
-        dirs = Direction.all;
-    } else {
-        dirs = [];
+      List<Direction> dirs;
+      if (dir == Direction.none) {
+          // Since the monster has no direction, any is equally valid.
+          dirs = Direction.all;
+      } else {
+          dirs = new List<Direction>();
 
-        // Otherwise, bias towards the direction the monster is headed.
-        for (var i = 0; i < 3; i++) {
-        dirs.add(dir.rotateLeft45);
-        dirs.add(dir.rotateRight45);
-        }
+          // Otherwise, bias towards the direction the monster is headed.
+          for (var i = 0; i < 3; i++) {
+            dirs.Add(dir.rotateLeft45);
+            dirs.Add(dir.rotateRight45);
+          }
 
-        for (var i = 0; i < 2; i++) {
-        dirs.add(dir.rotateLeft90);
-        dirs.add(dir.rotateRight90);
-        }
+          for (var i = 0; i < 2; i++) {
+            dirs.Add(dir.rotateLeft90);
+            dirs.Add(dir.rotateRight90);
+          }
 
-        dirs.add(dir.rotateLeft90.rotateLeft45);
-        dirs.add(dir.rotateRight90.rotateRight45);
-    }
+          dirs.Add(dir.rotateLeft90.rotateLeft45);
+          dirs.Add(dir.rotateRight90.rotateRight45);
+      }
 
-    dirs = dirs.where((dir) {
-        var here = pos + dir;
-        if (!monster.willOccupy(here)) return false;
-        var actor = game.stage.actorAt(here);
-        return actor == null || actor == game.hero;
-    }).toList();
+      dirs = dirs.Where((dir) => {
+          var here = pos + dir;
+          if (!monster.willOccupy(here)) return false;
+          var actor = game.stage.actorAt(here);
+          return actor == null || actor == game.hero;
+      }).ToList();
 
-    if (dirs.isEmpty) return dir;
-    return rng.item(dirs);
+      if (dirs.Count == 0) return dir;
+      return Rng.rng.item(dirs);
     }
 }
 
 class AsleepState : MonsterState {
-  Action getAction() => RestAction();
+  public override Action getAction() => new RestAction();
 }
 
 class AwakeState : MonsterState {
-  Action getAction() {
+  public override Action getAction() {
     // If on a burning etc. tile, try to get out.
     // TODO: Should consider moves like teleport that will help it escape.
     var escape = _escapeSubstance();
-    if (escape != Direction.none) return WalkAction(escape);
+    if (escape != Direction.none) return new WalkAction(escape);
 
     // If there is a worthwhile move, use it.
     var moves = breed.moves
         .where((move) => monster.canUse(move) && move.shouldUse(monster))
         .toList();
-    if (moves.isNotEmpty) return rng.item(moves).getAction(monster);
+    if (moves.isNotEmpty) return Rng.rng.item(moves).getAction(monster);
 
     // If the monster doesn't pursue, then it does melee or waits.
     if (breed.flags.immobile) {
       var toHero = game.hero.pos - pos;
-      if (toHero.kingLength != 1) return RestAction();
-      return WalkAction(toHero.nearestDirection);
+      if (toHero.kingLength != 1) return new RestAction();
+      return new WalkAction(toHero.nearestDirection);
     }
 
     // The monster doesn't have a move to use, so they are going to attack.
@@ -164,7 +165,7 @@ class AwakeState : MonsterState {
     var rangedAttacks = 0.0;
 
     foreach (var move in breed.moves) {
-      if (move is! RangedMove) continue;
+      if (!(move is RangedMove)) continue;
 
       rangedDamage += move.attack.damage / move.rate;
       rangedAttacks++;
@@ -181,7 +182,7 @@ class AwakeState : MonsterState {
 
       foreach (var attack in breed.attacks) {
         // Monsters don't have any raw ranged attacks, just ranged moves.
-        assert(!attack.isRanged);
+        DartUtils.assert(!attack.isRanged);
         meleeDamage += attack.damage;
         meleeAttacks++;
 
@@ -228,7 +229,7 @@ class AwakeState : MonsterState {
 
     walkDir ??= Direction.none;
 
-    return WalkAction(_meander(walkDir));
+    return new WalkAction(_meander(walkDir));
   }
 
   /// If the monster is currently on a substance tile, find the nearest path
@@ -400,10 +401,10 @@ class AwakeState : MonsterState {
 }
 
 class AfraidState : MonsterState {
-  Action getAction() {
+  public override Action getAction() {
     // TODO: Take light and the breed's light preference into account.
     // If we're already hidden, rest.
-    if (game.stage[pos].isOccluded) return RestAction();
+    if (game.stage[pos].isOccluded) return new RestAction();
 
     // TODO: Should not walk past hero to get to escape!
     // Run to the nearest place the hero can't see.

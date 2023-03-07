@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// What the [Hero] is "doing". If the hero has no behavior, he is waiting for
 /// user input. Otherwise, the behavior will determine which [Action]s he
@@ -53,7 +54,7 @@ class RestBehavior : Behavior {
     return true;
   }
 
-  public override Action getAction(Hero hero) => RestAction();
+  public override Action getAction(Hero hero) => new RestAction();
 }
 
 /// Automatic running.
@@ -97,29 +98,29 @@ class RunBehavior : Behavior {
       //
       // If the player presses NE here, we want to run north and not get
       // confused by the east passage.
-      var dirs = [
+      var dirs = new List<Direction>(){
         direction.rotateLeft45,
         direction,
         direction.rotateRight45,
-      ];
+      };
 
-      if (Direction.cardinal.contains(direction)) {
-        dirs.add(direction.rotateLeft90);
-        dirs.add(direction.rotateRight90);
+      if (Direction.cardinal.Contains(direction)) {
+        dirs.Add(direction.rotateLeft90);
+        dirs.Add(direction.rotateRight90);
       }
 
-      var openDirs = dirs.where((dir) => _isOpen(hero, dir));
+      var openDirs = dirs.Where((dir) => _isOpen(hero, dir)).ToList();
 
-      if (openDirs.isEmpty) return false;
+      if (openDirs.Count == 0) return false;
 
-      if (openDirs.length == 1) {
+      if (openDirs.Count == 1) {
         // Entering a passage.
         openLeft = false;
         openRight = false;
 
         // The direction may change if the first step entered a passage from
         // around a corner.
-        direction = openDirs.first;
+        direction = openDirs[0];
       } else {
         // Entering an open area.
         openLeft = _isOpen(hero, direction.rotateLeft90);
@@ -136,7 +137,7 @@ class RunBehavior : Behavior {
 
   public override Action getAction(Hero hero) {
     firstStep = false;
-    return WalkAction(direction);
+    return new WalkAction(direction);
   }
 
   /// Advance one step while in a passage.

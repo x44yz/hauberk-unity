@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class MonsterPathfinder : Pathfinder<Direction?> {
+class MonsterPathfinder : Pathfinder<Direction> {
   /// When calculating pathfinding, how much it "costs" to move one step on
   /// an open floor tile.
   static const _floorCost = 10;

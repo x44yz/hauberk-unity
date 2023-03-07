@@ -49,11 +49,11 @@ public class Monster : Actor {
 
   bool isAwake => _state is AwakeState;
 
-  Motility motility => breed.motility;
+  public Motility motility => breed.motility;
 
   /// Whether the monster wanted to melee or do a ranged attack the last time
   /// it took a step.
-  bool wantsToMelee = true;
+  public bool wantsToMelee = true;
 
   double _alertness = 0.0;
 
@@ -69,7 +69,7 @@ public class Monster : Actor {
   /// they don't all become frightened at the same time.
   double _frightenThreshold = (double)Rng.rng.range(60, 200);
 
-  double fear => _fear;
+  public double fear => _fear;
 
   object appearance => breed.appearance;
 
@@ -89,7 +89,7 @@ public class Monster : Actor {
   int emanationLevel => breed.emanationLevel;
 
   /// How much the monster relies on sight to sense the hero, from 0.0 to 1.0.
-  double sightReliance {
+  public double sightReliance {
     get {
       var senses = breed.vision + breed.hearing;
       if (senses == 0) return 0.0;
@@ -315,7 +315,7 @@ public class Monster : Actor {
     _alertness = _alertness.clamp(0.0, _maxAlertness);
   }
 
-  MonsterState awaken() {
+  public MonsterState awaken() {
     var state = new AwakeState();
     _changeState(state);
     return state;

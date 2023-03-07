@@ -227,5 +227,5 @@ public class Tile {
 
     TilePortal? portal => type.portal;
 
-    bool canEnter(Motility motility) => type.canEnter(motility);
+    public bool canEnter(Motility motility) => type.canEnter(motility);
 }

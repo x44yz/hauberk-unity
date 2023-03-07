@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// The game's live play area.
 public class Stage {
@@ -60,7 +61,7 @@ public class Stage {
 
     public void set(int x, int y, Tile tile) => tiles._set(x, y, tile);
 
-    void addActor(Actor actor) {
+    public void addActor(Actor actor) {
         DartUtils.assert(_actorsByTile[actor.pos] == null);
 
         _actors.Add(actor);
@@ -90,7 +91,7 @@ public class Stage {
         _currentActorIndex = (_currentActorIndex + 1) % _actors.Count;
     }
 
-    Actor? actorAt(Vec pos) => _actorsByTile[pos];
+    public Actor? actorAt(Vec pos) => _actorsByTile[pos];
 
     public List<Item> placeDrops(Vec pos, Motility motility, Drop drop) {
         var items = new List<Item>();
@@ -161,17 +162,20 @@ public class Stage {
         if (item.emanationLevel > 0) floorEmanationChanged();
 
         // Discard empty inventories. Note that [isItemAt] assumes this is done.
-        if (inventory.isEmpty) _itemsByTile.remove(pos);
+        if (inventory.isEmpty) _itemsByTile.Remove(pos);
     }
 
     /// Iterates over every item on the stage and returns the item and its
     /// position.
-    void forEachItem(void Function(Item item, Vec pos) callback) {
-        _itemsByTile.forEach((pos, inventory) {
+    void forEachItem(System.Action<Item, Vec> callback) {
+        foreach (var kv in _itemsByTile)
+        {
+            var pos = kv.Key;
+            var inventory = kv.Value;
             foreach (var item in inventory) {
                 callback(item, pos);
             }
-        });
+        }
     }
 
     /// Marks the illumination and field-of-view as needing recalculation.
@@ -236,7 +240,7 @@ public class Stage {
     }
 
     /// Recalculates any lighting or visibility state that needs it.
-    void refreshView() {
+    public void refreshView() {
         _lighting.refresh();
     }
 

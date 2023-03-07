@@ -28,7 +28,7 @@ public abstract class Action
 
   /// Whether this action can be immediately performed in the middle of an
   /// ongoing action or should wait until the current action is finished.
-  bool isImmediate => true;
+  public bool isImmediate => true;
 
   public void bind(Actor actor, bool consumesEnergy = true) {
     _actor = actor;
@@ -38,7 +38,7 @@ public abstract class Action
   }
 
   /// Binds an action created passively by the dungeon.
-  void bindPassive(Game game, Vec pos) {
+  public void bindPassive(Game game, Vec pos) {
     _pos = pos;
     _game = game;
     _consumesEnergy = false;
@@ -100,20 +100,20 @@ public abstract class Action
   }
 
   ActionResult succeed(
-      [string? message, Noun? noun1, Noun? noun2, Noun? noun3]) 
+      string? message, Noun? noun1, Noun? noun2, Noun? noun3) 
   {
     if (message != null) log(message, noun1, noun2, noun3);
     return ActionResult.success;
   }
 
-  ActionResult fail([string? message, Noun? noun1, Noun? noun2, Noun? noun3]) {
+  public ActionResult fail(string? message = null, Noun? noun1 = null, Noun? noun2 = null, Noun? noun3 = null) {
     if (message != null) error(message, noun1, noun2, noun3);
     return ActionResult.failure;
   }
 
-  ActionResult alternate(Action action) {
+  public ActionResult alternate(Action action) {
     action.bind(_actor!, consumesEnergy: _consumesEnergy);
-    return ActionResult.alternate(action);
+    return new ActionResult(action);
   }
 
   /// Returns [ActionResult.success] if [done] is `true`, otherwise returns
@@ -140,14 +140,14 @@ public class ActionResult {
   /// `true` if the [Action] does not need any further processing.
   public bool done;
 
-  ActionResult(bool succeeded, bool done)
+  public ActionResult(bool succeeded, bool done)
   {
     this.succeeded = succeeded;
     this.done = done;
     this.alternative = null;
   }
 
-  ActionResult(Action alternative)
+  public ActionResult(Action alternative)
   {
       this.alternative = alternative;
       succeeded = false;
@@ -202,7 +202,7 @@ class FuryAction : Action {
 // TODO: Use this for more actions.
 /// For multi-step actions, lets you define one using a `sync*` function and
 /// `yield` instead of building the state machine manually.
-mixin GeneratorActionMixin on Action {
+abstract GeneratorActionMixin {
   /// Start the generator the first time through.
   public Iterator<ActionResult> _iterator = onGenerate().iterator;
 
@@ -217,8 +217,8 @@ mixin GeneratorActionMixin on Action {
   ActionResult waitOne() => ActionResult.notDone;
 
   /// Wait [frames] frames.
-  Iterable<ActionResult> wait(int frames) =>
+  IEnumerable<ActionResult> wait(int frames) =>
       List.generate(frames, (_) => ActionResult.notDone);
 
-  Iterable<ActionResult> onGenerate();
+  public abstract IEnumerable<ActionResult> onGenerate();
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The hero's species.
-class Race {
+public class Race {
   public string name;
 
   public string description;

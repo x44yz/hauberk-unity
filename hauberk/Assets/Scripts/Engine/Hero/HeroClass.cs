@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// The hero's class.
-class HeroClass {
+public class HeroClass {
   public string name;
 
   public string description;

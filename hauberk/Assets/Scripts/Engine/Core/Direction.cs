@@ -14,14 +14,14 @@ public class Direction : Vec {
     public static Direction nw = new Direction(-1, -1);
 
     /// The eight cardinal and intercardinal directions.
-    public static Direction[] all = new Direction[]{n, ne, e, se, s, sw, w, nw};
+    public static List<Direction> all = new List<Direction>(){n, ne, e, se, s, sw, w, nw};
 
     /// The four cardinal directions: north, south, east, and west.
-    public static Direction[] cardinal = new Direction[]{n, e, s, w};
+    public static List<Direction> cardinal = new List<Direction>(){n, e, s, w};
 
     /// The four directions between the cardinal ones: northwest, northeast,
     /// southwest and southeast.
-    public static Direction[] intercardinal = new Direction[]{ne, se, sw, nw};
+    public static List<Direction> intercardinal = new List<Direction>(){ne, se, sw, nw};
 
     public Direction(int x, int y) : base(x, y)
     {

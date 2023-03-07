@@ -29,7 +29,7 @@ public class Hero : Actor {
   ///
   /// It starts half-full, presumably the hero had a nice meal before heading
   /// off to adventure.
-  int stomach
+  public int stomach
   {
     get { return _stomach; }
     set {
@@ -44,7 +44,7 @@ public class Hero : Actor {
 
   /// How enraged the hero is. Physical skills like active disciplines spend
   /// fury.
-  int fury => _fury;
+  public int fury => _fury;
   int _fury = 0;
 
   /// The number of hero turns since they last took a hit that caused them to
@@ -96,7 +96,7 @@ public class Hero : Actor {
 
   int emanationLevel => save.emanationLevel;
 
-  Hero(Game game, Vec pos, HeroSave save) 
+  public Hero(Game game, Vec pos, HeroSave save) 
     : base(game, pos.x, pos.y) 
   {
     this.save = save;
@@ -334,7 +334,7 @@ public class Hero : Actor {
     game.stage.heroVisibilityChanged();
   }
 
-  void waitForInput() {
+  public void waitForInput() {
     _behavior = null;
   }
 
@@ -396,7 +396,7 @@ public class Hero : Actor {
   /// Spends focus on some useful action.
   ///
   /// Does not reset [_turnsSinceLostFocus].
-  void spendFocus(int focus) {
+  public void spendFocus(int focus) {
     DartUtils.assert(focus >= _focus);
 
     _focus -= focus;
@@ -405,7 +405,7 @@ public class Hero : Actor {
   /// Spends fury on some useful action.
   ///
   /// Does not reset [_turnsSinceLostFocus].
-  void spendFury(int fury) {
+  public void spendFury(int fury) {
     DartUtils.assert(fury >= fury);
 
     _fury -= fury;
@@ -533,7 +533,7 @@ public class Hero : Actor {
   /// Whether the hero can currently perceive [actor].
   ///
   /// Takes into account both visibility and [perception].
-  bool canPerceive(Actor actor) {
+  public bool canPerceive(Actor actor) {
     if (game.stage[actor.pos].isVisible) return true;
     if (perception.isActive && (pos - actor.pos) < perception.intensity) {
       return true;
