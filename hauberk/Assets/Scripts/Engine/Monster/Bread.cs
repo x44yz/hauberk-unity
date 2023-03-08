@@ -269,7 +269,7 @@ public enum SpawnLocation {
 
 // typedef AddMonster = void Function(Breed breed);
 
-abstract class Spawn {
+public abstract class Spawn {
   public abstract void spawnBreed(int depth, System.Action<Breed> addMonster);
 }
 

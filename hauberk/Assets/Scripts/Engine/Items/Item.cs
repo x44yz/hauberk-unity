@@ -118,7 +118,7 @@ public class Item : Noun, System.IComparable<Item>
             var affixScale = 1.0f;
             if (prefix != null && suffix != null) affixScale = 1.5f;
 
-            _applyAffixes((affix) => price *= affix.priceScale * affixScale);
+            _applyAffixes((affix) => price *= (float)affix.priceScale * affixScale);
             _applyAffixes((affix) => price += affix.priceBonus * affixScale);
 
             return Mathf.CeilToInt(price);
@@ -168,15 +168,15 @@ public class Item : Noun, System.IComparable<Item>
         return resistance;
     }
 
-    public override int CompareTo(Item other) {
+    public int CompareTo(Item other) {
         if (type.sortIndex != other.type.sortIndex) {
-            return type.sortIndex.compareTo(other.type.sortIndex);
+            return type.sortIndex.CompareTo(other.type.sortIndex);
         }
 
         // TODO: Take into account affixes.
 
         // Order by descending count.
-        if (count != other.count) return other.count.compareTo(count);
+        if (count != other.count) return other.count.CompareTo(count);
 
         return 0;
     }
@@ -209,7 +209,7 @@ public class Item : Noun, System.IComparable<Item>
         // If we here, we are trying to stack. We don't support stacking
         // items with affixes, and we should avoid that by not having any affixes
         // defined for stackable items. Validate that invariant here.
-        assert(prefix == null &&
+        DartUtils.assert(prefix == null &&
             suffix == null &&
             item.prefix == null &&
             item.suffix == null);
@@ -229,13 +229,13 @@ public class Item : Noun, System.IComparable<Item>
         /// Splits this item into two stacks. Returns a new item with [count], and
         /// reduces this stack by that amount.
         Item splitStack(int count) {
-        assert(count < _count);
+        DartUtils.assert(count < _count);
 
         _count -= count;
         return clone(count);
     }
 
-    string toString() => nounText;
+    public override string toString() => nounText;
 
     void _applyAffixes(System.Action<Affix> callback) {
         if (prefix != null) callback(prefix!);

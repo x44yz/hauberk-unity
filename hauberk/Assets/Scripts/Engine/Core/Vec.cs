@@ -39,7 +39,7 @@ public class VecBase
     /// If you just need to compare the magnitude of two vectors, prefer using
     /// the comparison operators or [lengthSquared], both of which are faster
     /// than this.
-    float length => Mathf.Sqrt(lengthSquared);
+    public float length => Mathf.Sqrt(lengthSquared);
 
     /// The [Direction] that most closely approximates the angle of this Vec.
     ///

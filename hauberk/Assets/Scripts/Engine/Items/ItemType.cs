@@ -20,7 +20,7 @@ public class ItemUse {
 }
 
 /// Tracks information about a tossable [ItemType].
-class Toss {
+public class Toss {
     /// The percent chance of the item breaking when thrown. `null` if the item
     /// can't be thrown.
     public int breakage;

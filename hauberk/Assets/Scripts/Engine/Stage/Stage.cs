@@ -228,7 +228,7 @@ public class Stage {
         exploreAt(pos.x, pos.y, force: force);
     }
 
-    void setVisibility(Vec pos, bool isOccluded, int fallOff) {
+    public void setVisibility(Vec pos, bool isOccluded, int fallOff) {
         var tile = tiles[pos];
         tile.updateVisibility(isOccluded, fallOff);
         if (tile.isVisible) {

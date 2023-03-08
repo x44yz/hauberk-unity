@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// The history of interesting events the hero has experienced.
   /// The number of monsters of each breed the hero has detected.
@@ -24,10 +25,17 @@ public class Lore {
   public Dictionary<ItemType, int> _usedItems;
 
   /// The breeds the hero has killed at least one of.
-  Iterable<Breed> slainBreeds => _slainBreeds.Keys;
+  List<Breed> slainBreeds => _slainBreeds.Keys.ToList();
 
   /// The total number of monsters slain.
-  int allSlain => _slainBreeds.values.fold(0, (a, b) => a + b);
+  int allSlain {
+    get {
+      int rt = 0;
+      foreach (var kv in _slainBreeds)
+        rt += kv.Value;
+      return rt;
+    }
+  }
 
   public Lore()
   {

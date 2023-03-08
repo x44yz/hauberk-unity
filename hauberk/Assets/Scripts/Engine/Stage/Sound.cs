@@ -126,9 +126,10 @@ class _SoundPathfinder : Pathfinder<int> {
 
   }
 
-  public override int? processStep(Path path) {
+  public override int processStep(Path path) {
     if (path.cost > Sound.maxDistance) return Sound.maxDistance;
-    return null;
+    // TODO
+    return -1;
   }
 
   public override int? stepCost(Vec pos, Tile tile) {

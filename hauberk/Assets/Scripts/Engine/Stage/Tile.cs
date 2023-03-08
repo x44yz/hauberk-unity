@@ -69,7 +69,7 @@ public class Motility {
 
 /// Enum-like class for tiles that transport the hero: dungeon entrance, exit,
 /// shops, etc.
-class TilePortal {
+public class TilePortal {
   public string  name;
 
   TilePortal(string name)
@@ -80,7 +80,7 @@ class TilePortal {
   string  toString() => name;
 }
 
-class TileType {
+public class TileType {
     /// The type of a tile when first constructed.
     public static TileType uninitialized = new TileType("uninitialized", null, Motility.none);
 
