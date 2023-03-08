@@ -78,6 +78,8 @@ public class Inventory : IEnumerable<Item> {
   public List<Item> _items;
   public int _capacity;
 
+  public bool isEmpty => _items == null || _items.Count == 0;
+
   /// If the [Hero] had to unequip an item in order to equip another one, this
   /// will refer to the item that was unequipped.
   ///
@@ -177,7 +179,7 @@ public class Inventory : IEnumerable<Item> {
   ///
   /// This should be called any time the count of an item stack in the hero's
   /// inventory is changed.
-  void countChanged() {
+  public void countChanged() {
     // Hacky. Just re-add everything from scratch.
     var items = _items;
     _items.Clear();

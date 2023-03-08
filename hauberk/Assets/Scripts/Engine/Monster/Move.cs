@@ -16,7 +16,7 @@ public abstract class Move {
   public num rate;
 
   /// The range of this move if it's a ranged one, or `0` otherwise.
-  int range => 0;
+  public int range => 0;
 
   /// The experience gained by killing a [Monster] with this move.
   ///

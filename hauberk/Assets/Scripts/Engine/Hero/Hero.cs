@@ -435,7 +435,7 @@ public class Hero : Actor {
   /// wrapped in a [Property] and updated here. Note that order that these are
   /// updated matters. Properties must be updated after the properties they
   /// depend on.
-  void refreshProperties() {
+  public void refreshProperties() {
     var level = experienceLevel(experience);
     _level.update(level, (previous) => {
       game.log.gain($"You have reached level {level}.");
@@ -498,7 +498,7 @@ public class Hero : Actor {
   ///
   /// This can be in response to picking it up, or equipping or using it
   /// straight from the ground.
-  void pickUp(Item item) {
+  public void pickUp(Item item) {
     // TODO: If the user repeatedly picks up and drops the same item, it gets
     // counted every time. Maybe want to put a (serialized) flag on items for
     // whether they have been picked up or not.

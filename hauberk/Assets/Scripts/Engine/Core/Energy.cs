@@ -31,11 +31,11 @@ public class Energy {
 
     public int energy = 0;
 
-    bool canTakeTurn => energy >= actionCost;
+    public bool canTakeTurn => energy >= actionCost;
 
     /// Advances one game turn and gains an appropriate amount of energy. Returns
     /// `true` if there is enough energy to take a turn.
-    bool gain(int speed) {
+    public bool gain(int speed) {
         energy += gains[speed];
         return canTakeTurn;
     }

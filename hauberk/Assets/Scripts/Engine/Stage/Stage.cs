@@ -21,7 +21,7 @@ public class Stage {
 
     public List<Actor> actors => _actors;
 
-    Actor currentActor => _actors[_currentActorIndex];
+    public Actor currentActor => _actors[_currentActorIndex];
 
     public Array2D<Tile> tiles;
 
@@ -87,7 +87,7 @@ public class Stage {
         _actorsByTile[actor.pos] = null;
     }
 
-    void advanceActor() {
+    public void advanceActor() {
         _currentActorIndex = (_currentActorIndex + 1) % _actors.Count;
     }
 
@@ -130,7 +130,7 @@ public class Stage {
         return items;
     }
 
-    void addItem(Item item, Vec pos) {
+    public void addItem(Item item, Vec pos) {
         // Get the inventory for the tile.
         var inventory =
             _itemsByTile.putIfAbsent(pos, () => Inventory(ItemLocation.onGround));
@@ -154,7 +154,7 @@ public class Stage {
     /// Removes [item] from the stage at [pos].
     ///
     /// It is an error to call this if [item] is not on the ground at [pos].
-    void removeItem(Item item, Vec pos) {
+    public void removeItem(Item item, Vec pos) {
         var inventory = _itemsByTile[pos]!;
         inventory.remove(item);
 

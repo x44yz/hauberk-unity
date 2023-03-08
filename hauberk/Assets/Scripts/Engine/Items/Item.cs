@@ -24,10 +24,10 @@ public class Item : Noun, System.IComparable<Item>
     public string equipSlot => type.equipSlot;
 
     /// Whether the item can be used or not.
-    bool canUse => type.use != null;
+    public bool canUse => type.use != null;
 
     /// Create the action to perform when this item is used, and reduce its count.
-    Action use() {
+    public Action use() {
     // TODO: Some kinds of usable items shouldn't be consumed, like rods in
     // Angband.
         _count--;
@@ -224,11 +224,11 @@ public class Item : Noun, System.IComparable<Item>
             _count = type.maxStack;
             item._count = total - type.maxStack;
         }
-        }
+    }
 
         /// Splits this item into two stacks. Returns a new item with [count], and
         /// reduces this stack by that amount.
-        Item splitStack(int count) {
+    public Item splitStack(int count) {
         DartUtils.assert(count < _count);
 
         _count -= count;

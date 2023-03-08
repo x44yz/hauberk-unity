@@ -109,7 +109,7 @@ public abstract class Actor : Noun
   /// Whether the actor's vision is currently impaired.
   public bool isBlinded => blindness.isActive || dazzle.isActive;
 
-  bool needsInput => false;
+  public bool needsInput => false;
 
   Motility motility;
 
@@ -117,7 +117,7 @@ public abstract class Actor : Noun
 
   /// Gets the actor's current speed, taking into any account any active
   /// [Condition]s.
-  int speed {
+  public int speed {
     get {
         var speed = baseSpeed;
         speed += haste.intensity;
@@ -167,7 +167,7 @@ public abstract class Actor : Noun
 
   public abstract List<Defense> onGetDefenses();
 
-  Action getAction() {
+  public Action getAction() {
     var action = onGetAction();
     action.bind(this);
     return action;
@@ -311,7 +311,7 @@ public abstract class Actor : Noun
 
   // TODO: Take resistance and immunities into account.
 
-  void finishTurn(Action action) {
+  public void finishTurn(Action action) {
     energy.spend();
 
     foreach (var condition in conditions) {

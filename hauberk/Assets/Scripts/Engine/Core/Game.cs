@@ -11,7 +11,7 @@ public class Game
   public HeroSave _save;
   public Log log = new Log();
 
-  public Queue<Action> _actions = new Queue<Action>();
+  public List<Action> _actions = new List<Action>();
   public List<Action> _reactions = new List<Action>();
 
   /// The events that have occurred since the last call to [update()].
@@ -78,37 +78,38 @@ public class Game
     while (true) {
       // Process any ongoing or pending actions.
       while (_actions.Count > 0) {
-        var action = _actions.first;
+        var action = _actions[0];
 
         var result = action.perform();
 
         // Cascade through the alternates until we hit bottom.
         while (result.alternative != null) {
-          _actions.removeFirst();
+          _actions.RemoveAt(0);
           action = result.alternative!;
-          _actions.addFirst(action);
+          _actions.Insert(0, action);
 
           result = action.perform();
         }
 
         while (_reactions.Count > 0) {
-          var reaction = _reactions.removeLast();
-          var result = reaction.perform();
+          var reaction = _reactions[_reactions.Count - 1];
+          _reactions.RemoveAt(_reactions.Count - 1);
+          var rt = reaction.perform();
 
           // Cascade through the alternates until we hit bottom.
-          while (result.alternative != null) {
-            reaction = result.alternative!;
-            result = reaction.perform();
+          while (rt.alternative != null) {
+            reaction = rt.alternative!;
+            rt = reaction.perform();
           }
 
-          DartUtils.assert(result.succeeded, "Reactions should never fail.");
+          DartUtils.assert(rt.succeeded, "Reactions should never fail.");
         }
 
         stage.refreshView();
         madeProgress = true;
 
         if (result.done) {
-          _actions.removeFirst();
+          _actions.RemoveAt(0);
 
           if (result.succeeded && action.consumesEnergy) {
             action.actor!.finishTurn(action);
@@ -119,7 +120,7 @@ public class Game
           if (action.actor == hero) return makeResult(madeProgress);
         }
 
-        if (_events.isNotEmpty) return makeResult(madeProgress);
+        if (_events.Count > 0) return makeResult(madeProgress);
       }
 
       // If we are in the middle of updating substances, keep working through
@@ -143,7 +144,7 @@ public class Game
           // return so we can wait for it.
           if (actor.needsInput) return makeResult(madeProgress);
 
-          _actions.add(actor.getAction());
+          _actions.Add(actor.getAction());
         } else {
           // This actor doesn't have enough energy yet, so move on to the next.
           stage.advanceActor();
@@ -195,7 +196,7 @@ public class Game
 
       if (action != null) {
         action.bindPassive(this, pos);
-        _actions.Enqueue(action);
+        _actions.Add(action);
         return;
       }
     }

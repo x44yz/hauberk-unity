@@ -17,7 +17,7 @@ using UnityEngine;
 /// See:
 ///
 /// * http://www.roguebasin.com/index.php?title=The_Incredible_Power_of_Dijkstra_Maps
-abstract class Flow {
+public abstract class Flow {
   public const int _unknown = -2;
   public const int _unreachable = -1;
 
@@ -268,14 +268,14 @@ abstract class Flow {
 
 /// A basic [Flow] implementation that flows through any tile permitting one of
 /// a given [Motility].
-class MotilityFlow : Flow {
+public class MotilityFlow : Flow {
   public Motility _motility;
   public bool _avoidActors;
   public bool _avoidSubstances;
   public int? _maxDistance;
 
-  MotilityFlow(Stage stage, Vec start, Motility _motility,
-      int? maxDistance, bool? avoidActors, bool? avoidSubstances)
+  public MotilityFlow(Stage stage, Vec start, Motility _motility,
+      int? maxDistance = null, bool? avoidActors = null, bool? avoidSubstances = null)
       :base(stage, start, maxDistance: maxDistance)
     {
         this._motility = _motility;

@@ -25,7 +25,7 @@ class MonsterPathfinder : Pathfinder<Direction> {
   /// available.
   public const int _diagonalCost = 11;
 
-  static Direction? findDirection(Stage stage, Monster monster) {
+  public static Direction? findDirection(Stage stage, Monster monster) {
     return new MonsterPathfinder(stage, monster).search();
   }
 

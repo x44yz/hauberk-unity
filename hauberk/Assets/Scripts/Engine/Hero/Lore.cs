@@ -84,7 +84,7 @@ public class Lore {
     findAffix(item.suffix);
   }
 
-  void useItem(Item item) {
+  public void useItem(Item item) {
     if (!_usedItems.ContainsKey(item.type)) _usedItems.Add(item.type, 0);
     _usedItems[item.type] = _usedItems[item.type]! + 1;
   }

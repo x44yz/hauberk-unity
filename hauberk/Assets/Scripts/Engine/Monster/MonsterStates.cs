@@ -280,7 +280,7 @@ class AwakeState : MonsterState {
     // a tolerable position, the monster will hill-climb to get into a local
     // optimal position (which basically means as far from the hero as possible
     // while still in range).
-    Direction? best;
+    Direction best = null;
     var bestDistance = 0;
 
     if (isValidRangedPosition(pos)) {
@@ -288,14 +288,14 @@ class AwakeState : MonsterState {
       bestDistance = (pos - game.hero.pos).kingLength;
     }
 
-    foreach (var dir in Direction.all) {
-      var pos = monster.pos + dir;
+    foreach (var dir2 in Direction.all) {
+      var pos = monster.pos + dir2;
       if (!monster.willEnter(pos)) continue;
       if (!isValidRangedPosition(pos)) continue;
 
       var distance = (pos - game.hero.pos).kingLength;
       if (distance > bestDistance) {
-        best = dir;
+        best = dir2;
         bestDistance = distance;
       }
     }
@@ -303,7 +303,7 @@ class AwakeState : MonsterState {
     if (best != null) return best;
 
     // Otherwise, we'll need to actually pathfind to reach a good vantage point.
-    var flow = MotilityFlow(game.stage, pos, monster.motility,
+    var flow = new MotilityFlow(game.stage, pos, monster.motility,
         maxDistance: maxRange, avoidSubstances: true);
     var dir = flow.directionToBestWhere(isValidRangedPosition);
     if (dir != Direction.none) {

@@ -85,7 +85,7 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Gets whether or not there is a slot to equip [item].
-  bool canEquip(Item item) {
+  public bool canEquip(Item item) {
     return slotTypes.Any((slot) => item.equipSlot == slot);
   }
 
@@ -117,7 +117,7 @@ public class Equipment : IEnumerable<Item> {
     return new AddItemResult(0, item.count);
   }
 
-  void countChanged() {
+  public void countChanged() {
     // Do nothing. Equipment doesn't stack.
   }
 
@@ -126,7 +126,7 @@ public class Equipment : IEnumerable<Item> {
   /// Returns any items that had to be unequipped to make room for it. This is
   /// usually nothing or a single item, but can be two held items if equipping
   /// a two-handed item.
-  List<Item> equip(Item item) {
+  public List<Item> equip(Item item) {
     DartUtils.assert(item.count == 1, "Must split the stack before equipping.");
 
     // Handle hands and two-handed items specially. We need to preserve the
@@ -204,7 +204,7 @@ public class Equipment : IEnumerable<Item> {
     return unequipped;
   }
 
-  void remove(Item item) {
+  public void remove(Item item) {
     for (var i = 0; i < slots.Count; i++) {
       if (slots[i] == item) {
         slots[i] = null;

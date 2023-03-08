@@ -13,7 +13,7 @@ public abstract class Action
 
   public bool _consumesEnergy;
 
-  Game game => _game;
+  public Game game => _game;
 
   // TODO: Instead of making this nullable, split out actions with actors into
   // a separate subclass where the field is always non-null. Most actions will
@@ -24,7 +24,7 @@ public abstract class Action
 
   public Hero hero => _actor as Hero;
 
-  bool consumesEnergy => _consumesEnergy;
+  public bool consumesEnergy => _consumesEnergy;
 
   /// Whether this action can be immediately performed in the middle of an
   /// ongoing action or should wait until the current action is finished.
@@ -52,7 +52,7 @@ public abstract class Action
     _consumesEnergy = false;
   }
 
-  ActionResult perform() {
+  public ActionResult perform() {
     return onPerform();
   }
 
