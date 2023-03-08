@@ -80,7 +80,7 @@ class Debug {
   }
 
   /// Updates [stat]'s [reason] text without appending a new value.
-  static void monsterReason(Monster monster, string stat, string? reason) {
+  public static void monsterReason(Monster monster, string stat, string reason) {
     if (!enabled) return;
 
     _MonsterLog monsterLog = null;

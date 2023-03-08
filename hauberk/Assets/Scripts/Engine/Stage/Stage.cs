@@ -97,7 +97,7 @@ public class Stage {
         var items = new List<Item>();
 
         // Try to keep dropped items from overlapping.
-        var flow = MotilityFlow(this, pos, motility, avoidActors: false);
+        var flow = new MotilityFlow(this, pos, motility, avoidActors: false);
 
         drop.dropItem(game.depth, (item) => {
             items.Add(item);
@@ -105,15 +105,15 @@ public class Stage {
             // Prefer to not place under monsters or stack with other items.
             var itemPos = flow.bestWhere((pos) => {
                 // Some chance to place on occupied tiles.
-                if (rng.oneIn(5)) return true;
+                if (Rng.rng.oneIn(5)) return true;
 
                 return actorAt(pos) == null && !isItemAt(pos);
             });
 
             // If that doesn't work, pick any nearby tile.
             if (itemPos == null) {
-                var allowed = flow.reachable.take(10).toList();
-                if (allowed.isNotEmpty) {
+                var allowed = flow.reachable.Take(10).ToList();
+                if (allowed.Count > 0) {
                     itemPos = Rng.rng.item(allowed);
                 } else {
                     // Nowhere to place it.
@@ -132,11 +132,15 @@ public class Stage {
 
     public void addItem(Item item, Vec pos) {
         // Get the inventory for the tile.
-        var inventory =
-            _itemsByTile.putIfAbsent(pos, () => Inventory(ItemLocation.onGround));
+        Inventory inventory = null;
+        if (_itemsByTile.TryGetValue(pos, out inventory) == false)
+        {
+            inventory = new Inventory(ItemLocation.onGround);
+            _itemsByTile[pos] = inventory;
+        }
         var result = inventory.tryAdd(item);
         // Inventory is unlimited, so should always succeed.
-        assert(result.remaining == 0);
+        DartUtils.assert(result.remaining == 0);
 
         // If a light source is dropped, we need to light the floor.
         if (item.emanationLevel > 0) floorEmanationChanged();
@@ -212,7 +216,7 @@ public class Stage {
 
     /// Marks the tile at [x],[y] as explored if the hero can see it and hasn't
     /// previously explored it.
-    public void exploreAt(int x, int y, bool force) {
+    public void exploreAt(int x, int y, bool force = false) {
         var tile = tiles._get(x, y);
         if (tile.updateExplored(force: force)) {
             if (tile.isVisible) {
@@ -260,7 +264,7 @@ public class Stage {
 
     /// How loud the hero is from [pos] in terms of sound flow, up to
     /// [Sound.maxDistance].
-    double heroVolume(Vec pos) => _sound.heroVolume(pos);
+    public double heroVolume(Vec pos) => _sound.heroVolume(pos);
 
     double volumeBetween(Vec from, Vec to) => _sound.volumeBetween(from, to);
 }

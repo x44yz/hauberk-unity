@@ -66,7 +66,7 @@ public class VecBase
     ///         /  '  |  '  \
     ///       sw -2.0   2.0  se
     ///               s
-    Direction nearestDirection {
+    public Direction nearestDirection {
         get {
             if (x == 0) {
                 if (y < 0) {

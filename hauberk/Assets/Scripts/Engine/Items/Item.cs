@@ -11,6 +11,7 @@ public class Item : Noun, System.IComparable<Item>
     public Affix suffix;
 
     public Item(ItemType type, int _count, Affix prefix, Affix suffix)
+        :base("")
     {
         this.type = type;
         this._count = _count;

@@ -98,7 +98,7 @@ public class Rng {
   }
 
   /// Returns `true` if a random int chosen between 1 and chance was 1.
-  bool oneIn(int chance) => range(chance) == 0;
+  public bool oneIn(int chance) => range(chance) == 0;
 
   /// Returns `true` [chance] percent of the time.
   public bool percent(int chance) => range(100) < chance;

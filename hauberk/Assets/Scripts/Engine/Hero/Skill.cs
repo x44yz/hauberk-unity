@@ -342,7 +342,7 @@ public class SkillSet {
   bool isAcquired(Skill skill) =>
       _levels.ContainsKey(skill) && _levels[skill] > 0;
 
-  SkillSet clone() 
+  public SkillSet clone() 
   {
     var ls = new Dictionary<Skill, int>();
     foreach (var kv in _levels)

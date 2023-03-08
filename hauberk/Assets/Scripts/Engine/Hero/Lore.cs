@@ -129,6 +129,11 @@ public class Lore {
     return val;
   }
 
-  Lore clone() => Lore.from(Map.of(_seenBreeds), Map.of(_slainBreeds),
-      Map.of(_foundItems), Map.of(_foundAffixes), Map.of(_usedItems));
+  public Lore clone() {
+    return new Lore(new Dictionary<Breed, int>(_seenBreeds),
+      new Dictionary<Breed, int>(_slainBreeds),
+      new Dictionary<ItemType, int>(_foundItems),
+      new Dictionary<Affix, int>(_foundAffixes),
+      new Dictionary<ItemType, int>(_usedItems));
+  }
 }

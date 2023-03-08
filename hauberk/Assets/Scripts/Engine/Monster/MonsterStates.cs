@@ -142,9 +142,9 @@ class AwakeState : MonsterState {
 
     // If there is a worthwhile move, use it.
     var moves = breed.moves
-        .where((move) => monster.canUse(move) && move.shouldUse(monster))
-        .toList();
-    if (moves.isNotEmpty) return Rng.rng.item(moves).getAction(monster);
+        .Where((move) => monster.canUse(move) && move.shouldUse(monster))
+        .ToList();
+    if (moves.Count > 0) return Rng.rng.item(moves).getAction(monster);
 
     // If the monster doesn't pursue, then it does melee or waits.
     if (breed.flags.immobile) {
@@ -167,7 +167,8 @@ class AwakeState : MonsterState {
     foreach (var move in breed.moves) {
       if (!(move is RangedMove)) continue;
 
-      rangedDamage += move.attack.damage / move.rate;
+      var rmove = move as RangedMove;
+      rangedDamage += rmove.attack.damage / move.rate;
       rangedAttacks++;
 
       // TODO: Take elements into account?
@@ -242,7 +243,7 @@ class AwakeState : MonsterState {
 
     // Otherwise, we'll need to actually pathfind to reach a good vantage point.
     var flow =
-        MotilityFlow(game.stage, pos, monster.motility, avoidSubstances: true);
+        new MotilityFlow(game.stage, pos, monster.motility, avoidSubstances: true);
     return flow.directionToBestWhere((pos) => game.stage[pos].substance == 0);
   }
 

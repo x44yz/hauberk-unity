@@ -80,7 +80,7 @@ public abstract class Flow {
   }
 
   /// Lazily iterates over all reachable tiles in order of increasing cost.
-  List<Vec> reachable {
+  public List<Vec> reachable {
     get {
         List<Vec> rt = new List<Vec>();
         for (var i = 0;; i++) {
@@ -100,7 +100,7 @@ public abstract class Flow {
   ///
   /// If there are multiple equivalent positions, chooses one randomly. If
   /// there are none, returns null.
-  Vec? bestWhere(System.Func<Vec, bool> predicate) {
+  public Vec? bestWhere(System.Func<Vec, bool> predicate) {
     var results = _findAllBestWhere(predicate);
     if (results.Count == 0) return null;
 

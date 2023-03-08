@@ -127,7 +127,7 @@ public class Monster : Actor {
   }
 
   /// Returns `true` if [move] is recharged.
-  bool canUse(Move move) => _recharges[move] == 0.0;
+  public bool canUse(Move move) => _recharges[move] == 0.0;
 
   /// Gets whether or not this monster has a line of sight to [target].
   ///
@@ -314,7 +314,7 @@ public class Monster : Actor {
   /// Adds an audible signal at [volume] to the monster's alertness.
   void hear(double volume) {
     _alertness += volume * breed.hearing;
-    _alertness = _alertness.clamp(0.0, _maxAlertness);
+    _alertness = Mathf.Clamp((float)_alertness, 0.0f, _maxAlertness);
   }
 
   public MonsterState awaken() {

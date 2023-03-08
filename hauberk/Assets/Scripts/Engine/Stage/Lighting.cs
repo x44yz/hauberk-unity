@@ -292,7 +292,7 @@ public class Lighting {
         //
         // Using 1.5 instead of a closer approximation to `sqrt(2)` because it makes
         // fall-off look a little less squarish.
-        var diagonalAttenuate = (attenuate * 1.5).ceil();
+        var diagonalAttenuate = (int)Mathf.Ceil(attenuate * 1.5f);
 
         while (true) {
         var pos = _queue.removeNext();

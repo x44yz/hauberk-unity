@@ -143,7 +143,7 @@ public class Inventory : IEnumerable<Item> {
     return false;
   }
 
-  public void tryAdd(Item item) {
+  public void _tryAdd(Item item) {
       tryAdd(item, false);
   }
 

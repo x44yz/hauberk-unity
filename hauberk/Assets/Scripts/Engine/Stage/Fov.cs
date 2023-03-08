@@ -23,13 +23,13 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
 
   List<_Shadow> _shadows = new List<_Shadow>(); // Temporary value.
 
-  Fov(Stage _stage)
+  public Fov(Stage _stage)
   {
     this._stage = _stage;
   }
 
   /// Updates the visible flags in [_stage] given the hero's [pos].
-  void refresh(Vec pos) {
+  public void refresh(Vec pos) {
     if (_stage.game.hero.blindness.isActive) {
       _hideAll();
       return;

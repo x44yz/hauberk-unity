@@ -66,7 +66,7 @@ public class Affix
     _resists[element] = power;
   }
 
-  int statBonus(Stat stat)
+  public int statBonus(Stat stat)
   {
     int val = 0;
     _statBonuses.TryGetValue(stat, out val);

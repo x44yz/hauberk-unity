@@ -16,7 +16,7 @@ public abstract class Move {
   public num rate;
 
   /// The range of this move if it's a ranged one, or `0` otherwise.
-  public int range => 0;
+  public virtual int range => 0;
 
   /// The experience gained by killing a [Monster] with this move.
   ///
@@ -30,7 +30,7 @@ public abstract class Move {
 
   /// Returns `true` if the monster would reasonably perform this move right
   /// now during its turn.
-  bool shouldUse(Monster monster) => true;
+  public bool shouldUse(Monster monster) => true;
 
   /// Returns `true` if the monster would reasonably perform this move in
   /// response to taking [damage].
@@ -54,7 +54,7 @@ public abstract class Move {
 abstract class RangedMove : Move {
   public Attack attack;
 
-  int range => attack.range;
+  public override int range => attack.range;
 
   RangedMove(num rate, Attack attack) 
     : base(rate)

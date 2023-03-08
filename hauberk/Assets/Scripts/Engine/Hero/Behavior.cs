@@ -126,7 +126,7 @@ class RunBehavior : Behavior {
         openLeft = _isOpen(hero, direction.rotateLeft90);
         openRight = _isOpen(hero, direction.rotateRight90);
       }
-    } else if (!openLeft! && !openRight!) {
+    } else if (!(openLeft!).Value && !(openRight!).Value) {
       if (!_runInPassage(hero)) return false;
     } else {
       if (!_runInOpen(hero)) return false;

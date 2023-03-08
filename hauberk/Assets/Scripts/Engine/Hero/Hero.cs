@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// The main player-controlled [Actor]. The player's avatar in the game world.
 public class Hero : Actor {
@@ -510,7 +511,7 @@ public class Hero : Actor {
 
   /// See if any known skills have leveled up.
   void _refreshSkills() {
-    skills.discovered.forEach(refreshSkill);
+    skills.discovered.ToList().ForEach(x => refreshSkill(x));
   }
 
   /// Ensures the hero has discovered [skill] and logs if it is the first time
