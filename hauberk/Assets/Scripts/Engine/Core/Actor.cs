@@ -111,7 +111,7 @@ public abstract class Actor : Noun
 
   public bool needsInput => false;
 
-  Motility motility;
+  public Motility motility;
 
   public int maxHealth;
 

@@ -258,6 +258,15 @@ public class ActionMixin {
   public Game game => action.game;
   public Actor actor => action.actor;
   public Hero hero => action.hero;
+  public void addAction(Action action, Actor actor = null) => action.addAction(action, actor);
+
+  public void addEvent(EventType type,
+      Actor actor = null,
+      Element element = null,
+      object other = null,
+      Vec pos = default(Vec),
+      Direction dir = default(Direction)) => action.addEvent(type, actor, element, other, pos, dir);
+  
 }
 
 /// Mixin for actions that permanently destroy items.
@@ -309,7 +318,7 @@ public class DestroyActionMixin : ActionMixin {
   }
 
   /// Attempts to destroy items on the floor that can be destroyed by [element].
-  int destroyFloorItems(Vec pos, Element element) {
+  public int destroyFloorItems(Vec pos, Element element) {
     var fuel = _destroy(element, game.stage.itemsAt(pos), false, (item) => {
       game.stage.removeItem(item, pos);
       // TODO: If the item takes effect when destroyed, do that here.

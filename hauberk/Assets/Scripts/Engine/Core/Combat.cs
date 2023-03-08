@@ -83,14 +83,14 @@ public class Hit {
 
   double _rangeScale = 1.0;
 
-  Element element {
+  public Element element {
     get {
       if (_brand != Element.none) return _brand;
       return _attack.element;
     }
   }
 
-  double averageDamage => _attack.damage * _damageScale + _damageBonus;
+  public double averageDamage => _attack.damage * _damageScale + _damageBonus;
 
   // TODO: This is just used for the game screen weapon display. Show the
   // bonuses and stuff more explicitly there and get rid of this.

@@ -12,7 +12,7 @@ class Elements {
       destroyMessage: "burns up",
       attack: (_) => new BurnActorAction(),
       floor: (pos, hit, distance, fuel) =>
-          new BurnFloorAction(pos, hit.averageDamage.toInt(), fuel));
+          new BurnFloorAction(pos, (int)hit.averageDamage, fuel));
 
   // TODO: Push back attack action.
   // TODO: Move items on floor.
@@ -32,7 +32,7 @@ class Elements {
   static public Element poison = new Element("poison", "Po", 2.0,
       attack: (damage) => new PoisonAction(damage),
       floor: (pos, hit, distance, _) =>
-          new PoisonFloorAction(pos, hit.averageDamage.toInt()));
+          new PoisonFloorAction(pos, (int)hit.averageDamage));
 
   // TODO: Remove tile emanation.
   static public Element dark =

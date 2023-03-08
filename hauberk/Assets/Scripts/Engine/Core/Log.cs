@@ -236,14 +236,15 @@ public class Log {
       var match = optionalSuffix.Match(text);
       if (match == null) break;
 
-      var before = text.Substring(0, match.start);
-      var after = text.Substring(match.end);
+      var before = text.Substring(0, match.Index);
+      var after = text.Substring(match.Index + match.Length);
       if (isFirst) {
         // Omit the optional part.
         text = $"{before}{after}";
       } else {
         // Include the optional part.
-        text = $"{before}{match[1]}{after}";
+        string m1 = match.Value;
+        text = $"{before}{m1}{after}";
       }
     }
 
@@ -252,14 +253,16 @@ public class Log {
       var match = irregular.Match(text);
       if (match == null) break;
 
-      var before = text.Substring(0, match.start);
-      var after = text.Substring(match.end);
+      var before = text.Substring(0, match.Index);
+      var after = text.Substring(match.Index + match.Length);
       if (isFirst) {
         // Use the first form.
-        text = $"{before}{match[1]}{after}";
+        string m1 = match.Value.Substring(0, match.Value.IndexOf('|'));
+        text = $"{before}{m1}{after}";
       } else {
         // Use the second form.
-        text = $"{before}{match[2]}{after}";
+        string m2 = match.Value.Substring(match.Value.IndexOf('|'));
+        text = $"{before}{m2}{after}";
       }
     }
 

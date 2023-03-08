@@ -178,7 +178,7 @@ public class Tile {
     int _appliedEmanation = 0;
 
     /// If you call this, make sure to call [Stage.tileEmanationChanged()].
-    void addEmanation(int offset) {
+    public void addEmanation(int offset) {
         _appliedEmanation =
             Mathf.Clamp(_appliedEmanation + offset, 0, Lighting.floorMax);
     }

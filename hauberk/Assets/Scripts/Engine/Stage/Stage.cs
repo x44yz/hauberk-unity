@@ -194,7 +194,7 @@ public class Stage {
     ///
     /// This should be called when a tile's emanation changes, or a
     /// light-emitting item is dropped or picked up.
-    void floorEmanationChanged() {
+    public void floorEmanationChanged() {
         _lighting.dirtyFloorLight();
     }
 

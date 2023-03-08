@@ -60,7 +60,7 @@ public abstract class Condition
     }
 
     /// Cancels the condition immediately. Does not deactivate the condition.
-    void cancel() {
+    public void cancel() {
         _turnsRemaining = 0;
         _intensity = 0;
     }

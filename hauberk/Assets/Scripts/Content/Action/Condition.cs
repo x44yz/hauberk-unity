@@ -6,7 +6,7 @@ class HasteAction : ConditionAction {
   public int _speed;
   public int _duration;
 
-  HasteAction(int _speed, int _duration)
+  public HasteAction(int _speed, int _duration)
   {
     this._speed = _speed;
     this._duration = _duration;
@@ -25,7 +25,7 @@ class FreezeActorAction : ConditionAction {
   public int _damage;
   public DestroyActionMixin _destroyMixin;
 
-  FreezeActorAction(int _damage)
+  public FreezeActorAction(int _damage)
   {
     this._damage = _damage;
     _destroyMixin = new DestroyActionMixin(this);
@@ -48,7 +48,7 @@ class FreezeActorAction : ConditionAction {
 class PoisonAction : ConditionAction {
   public int _damage;
 
-  PoisonAction(int _damage)
+  public PoisonAction(int _damage)
   {
     this._damage = _damage;
   }
@@ -65,7 +65,7 @@ class PoisonAction : ConditionAction {
 class BlindAction : ConditionAction {
   public int _damage;
 
-  BlindAction(int _damage)
+  public BlindAction(int _damage)
   {
     this._damage = _damage;
   }
@@ -85,7 +85,7 @@ class BlindAction : ConditionAction {
 class DazzleAction : ConditionAction {
   public int _damage;
 
-  DazzleAction(int _damage)
+  public DazzleAction(int _damage)
   {
     this._damage = _damage;
   }
@@ -101,7 +101,7 @@ class ResistAction : ConditionAction {
   public int _duration;
   public Element _element;
 
-  ResistAction(int _duration, Element _element)
+  public ResistAction(int _duration, Element _element)
   {
     this._duration = _duration;
     this._element = _element;

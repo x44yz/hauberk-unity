@@ -60,7 +60,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
 
   /// Modifies the hero's base armor.
-  int modifyArmor(HeroSave hero, int level, int armor) => armor;
+  public int modifyArmor(HeroSave hero, int level, int armor) => armor;
 
   /// Gives the skill a chance to add new defenses to the hero.
   public Defense? getDefense(Hero hero, int level) => null;
