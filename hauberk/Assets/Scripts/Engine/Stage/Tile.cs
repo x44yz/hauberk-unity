@@ -72,7 +72,7 @@ public class Motility {
 public class TilePortal {
   public string  name;
 
-  TilePortal(string name)
+  public TilePortal(string name)
   {
     this.name = name;
   }

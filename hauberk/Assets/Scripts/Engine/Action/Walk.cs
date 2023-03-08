@@ -76,7 +76,7 @@ class OpenDoorAction : Action {
   public Vec pos;
   public TileType openDoor;
 
-  OpenDoorAction(Vec pos, TileType openDoor)
+  public OpenDoorAction(Vec pos, TileType openDoor)
   {
     this.pos = pos;
     this.openDoor = openDoor;
@@ -95,7 +95,7 @@ class CloseDoorAction : Action {
   public Vec doorPos;
   public TileType closedDoor;
 
-  CloseDoorAction(Vec doorPos, TileType closedDoor)
+  public CloseDoorAction(Vec doorPos, TileType closedDoor)
   {
     this.doorPos = doorPos;
     this.closedDoor = closedDoor;
