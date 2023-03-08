@@ -219,7 +219,7 @@ public class Tile {
 
     public bool isWalkable => type.isWalkable;
 
-    bool isTraversable => type.isTraversable;
+    public bool isTraversable => type.isTraversable;
 
     public bool isFlyable => canEnter(Motility.fly);
 

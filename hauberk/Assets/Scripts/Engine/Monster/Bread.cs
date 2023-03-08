@@ -254,7 +254,7 @@ public class Breed {
 
 // TODO: Should this affect how the monster moves during the game too?
 /// Where in the dungeon the breed prefers to spawn.
-enum SpawnLocation {
+public enum SpawnLocation {
   anywhere,
 
   /// Away from walls.
@@ -273,7 +273,7 @@ abstract class Spawn {
   public abstract void spawnBreed(int depth, System.Action<Breed> addMonster);
 }
 
-class BreedFlags {
+public class BreedFlags {
   public bool berzerk;
   public bool cowardly;
   public bool fearless;

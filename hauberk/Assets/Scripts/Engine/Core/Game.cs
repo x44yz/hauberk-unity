@@ -163,7 +163,7 @@ public class Game
     }
   }
 
-  void addAction(Action action) {
+  public void addAction(Action action) {
     if (action.isImmediate) {
       _reactions.Add(action);
     } else {

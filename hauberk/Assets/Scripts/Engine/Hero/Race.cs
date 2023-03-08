@@ -43,7 +43,7 @@ public class Race {
 }
 
 /// Tracks the stat points gained at each level due to the hero's race.
-class RaceStats {
+public class RaceStats {
   public Race _race;
   public Dictionary<Stat, int> _max;
 
@@ -126,5 +126,5 @@ class RaceStats {
   /// The maximum number of points of [stat] the hero will gain.
   int max(Stat stat) => _max[stat]!;
 
-  int valueAtLevel(Stat stat, int level) => _stats[level - 1][stat]!;
+  public int valueAtLevel(Stat stat, int level) => _stats[level - 1][stat]!;
 }

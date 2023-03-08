@@ -16,23 +16,23 @@ public class HeroSave
     public RaceStats race;
     public HeroClass heroClass;
 
-    int level => experienceLevel(experience);
+    public int level => experienceLevel(experience);
 
     Inventory _inventory = new Inventory(ItemLocation.inventory, Option.inventoryCapacity);
 
     public Inventory inventory => _inventory;
 
-    Equipment _equipment = Equipment();
+    Equipment _equipment = new Equipment();
 
     public Equipment equipment => _equipment;
 
     /// Items in the hero's home.
     Inventory home => _home;
-    Inventory _home = Inventory(ItemLocation.home, Option.homeCapacity);
+    Inventory _home = new Inventory(ItemLocation.home, Option.homeCapacity);
 
     /// Items in the hero's crucible.
     Inventory crucible => _crucible;
-    Inventory _crucible = Inventory(ItemLocation.crucible, Option.crucibleCapacity);
+    Inventory _crucible = new Inventory(ItemLocation.crucible, Option.crucibleCapacity);
 
     /// The current inventories of all the shops.
     public Dictionary<Shop, Inventory> shops;

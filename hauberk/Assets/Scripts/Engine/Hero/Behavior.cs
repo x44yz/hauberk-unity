@@ -148,16 +148,16 @@ class RunBehavior : Behavior {
   bool _runInPassage(Hero hero) {
     // Keep running as long as there's only one direction to go. Allow up to a
     // 90° turn while running.
-    var openDirs = [
+    var openDirs = new List<Direction>(){
       direction.rotateLeft90,
       direction.rotateLeft45,
       direction,
       direction.rotateRight45,
       direction.rotateRight90
-    ].where((dir) => _isOpen(hero, dir)).toSet();
+    }.Where((dir) => _isOpen(hero, dir)).ToList();
 
-    if (openDirs.length == 1) {
-      direction = openDirs.first;
+    if (openDirs.Count == 1) {
+      direction = openDirs[0];
       return true;
     }
 
@@ -173,10 +173,10 @@ class RunBehavior : Behavior {
     //
     // We detect this case by seeing if there are two (and only two) open
     // directions: ahead and 45° *and* if one step past that is blocked.
-    if (openDirs.length != 2) return false;
-    if (!openDirs.contains(direction)) return false;
-    if (!openDirs.contains(direction.rotateLeft45) &&
-        !openDirs.contains(direction.rotateRight45)) return false;
+    if (openDirs.Count != 2) return false;
+    if (!openDirs.Contains(direction)) return false;
+    if (!openDirs.Contains(direction.rotateLeft45) &&
+        !openDirs.Contains(direction.rotateRight45)) return false;
 
     var twoStepsAhead = hero.game.stage[hero.pos + direction * 2].isTraversable;
     if (twoStepsAhead) return false;

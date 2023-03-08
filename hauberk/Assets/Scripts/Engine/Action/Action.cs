@@ -18,7 +18,7 @@ public abstract class Action
   // TODO: Instead of making this nullable, split out actions with actors into
   // a separate subclass where the field is always non-null. Most actions will
   // always have an actor. It's only a few like burning floors that don't.
-  Actor actor => _actor;
+  public Actor actor => _actor;
 
   Monster monster => _actor as Monster;
 
@@ -82,7 +82,7 @@ public abstract class Action
 
   /// How much noise is produced by this action. Override to make certain
   /// actions quieter or louder.
-  public double noise => Sound.normalNoise;
+  public virtual double noise => Sound.normalNoise;
 
   void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (!game.stage[_pos].isVisible) return;
@@ -124,9 +124,9 @@ public abstract class Action
 }
 
 public class ActionResult {
-  public static ActionResult success = new ActionResult(succeeded: true, done: true);
-  public static ActionResult failure = new ActionResult(succeeded: false, done: true);
-  public static ActionResult notDone = new ActionResult(succeeded: true, done: false);
+  public static ActionResult success => new ActionResult(succeeded: true, done: true);
+  public static ActionResult failure => new ActionResult(succeeded: false, done: true);
+  public static ActionResult notDone => new ActionResult(succeeded: true, done: false);
 
   /// An alternate [Action] that should be performed instead of the one that
   /// failed to perform and returned this. For example, when the [Hero] walks
@@ -202,23 +202,28 @@ class FuryAction : Action {
 // TODO: Use this for more actions.
 /// For multi-step actions, lets you define one using a `sync*` function and
 /// `yield` instead of building the state machine manually.
-abstract GeneratorActionMixin {
+abstract class GeneratorActionMixin {
   /// Start the generator the first time through.
-  public Iterator<ActionResult> _iterator = onGenerate().iterator;
+  public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
 
   ActionResult onPerform() {
     // If it reaches the end, it succeeds.
-    if (!_iterator.moveNext()) return ActionResult.success;
+    if (!_iterator.MoveNext()) return ActionResult.success;
 
-    return _iterator.current;
+    return _iterator.Current;
   }
 
   /// Wait a single frame.
   ActionResult waitOne() => ActionResult.notDone;
 
   /// Wait [frames] frames.
-  IEnumerable<ActionResult> wait(int frames) =>
-      List.generate(frames, (_) => ActionResult.notDone);
+  IEnumerable<ActionResult> wait(int frames)
+  {
+    var rt = new List<ActionResult>();
+    for (int i = 0; i < frames; ++i)
+      rt.Add(ActionResult.notDone);
+    return rt;
+  }
 
   public abstract IEnumerable<ActionResult> onGenerate();
 }

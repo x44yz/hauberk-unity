@@ -30,15 +30,20 @@ public abstract class Actor : Noun
   public Dictionary<Element, ResistCondition> resistances = new Dictionary<Element, ResistCondition>();
 
   // All [Condition]s for the actor.
-  IEnumerable<Condition> conditions => [
+  List<Condition> conditions {
+    get {
+      var rt = new List<Condition>() {
         haste,
         cold,
         poison,
         blindness,
         dazzle,
         perception,
-        ...resistances.values
-      ];
+      };
+      rt.AddRange(resistances.Values);
+      return rt;
+    }
+  }
 
   Vec _pos;
   public Vec pos {
@@ -74,6 +79,7 @@ public abstract class Actor : Noun
   }
 
   public Actor(Game game, int x, int y)
+  :base("")
   {
     this.game = game;
     _pos = new Vec(x, y);
@@ -91,9 +97,9 @@ public abstract class Actor : Noun
 
   Object appearance;
 
-  string nounText;
+  // string nounText;
 
-  Pronoun pronoun => Pronoun.it;
+  public override Pronoun pronoun => Pronoun.it;
 
   public bool isAlive => health > 0;
 
@@ -173,7 +179,7 @@ public abstract class Actor : Noun
   ///
   /// Note that [defender] may be null if this hit is being created for
   /// something like a bolt attack or whether the targeted actor isn't known.
-  List<Hit> createMeleeHits(Actor defender) {
+  public List<Hit> createMeleeHits(Actor defender) {
     var hits = onCreateMeleeHits(defender);
     foreach (var hit in hits) {
       modifyHit(hit, HitType.melee);
@@ -316,11 +322,11 @@ public abstract class Actor : Noun
   }
 
   /// Logs [message] if the actor is visible to the hero.
-  public void log(string message, params object[] objs) 
+  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
   {
     if (!game.hero.canPerceive(this)) return;
     game.log.message(message, noun1, noun2, noun3);
   }
 
-  string toString() => nounText;
+  public override string toString() => nounText;
 }

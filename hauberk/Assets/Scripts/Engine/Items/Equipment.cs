@@ -20,7 +20,7 @@ public class Equipment : IEnumerable<Item> {
   public List<string> slotTypes;
   public List<Item> slots;
 
-  Equipment()
+  public Equipment()
   {
     slotTypes = new List<string>(){
       "hand",

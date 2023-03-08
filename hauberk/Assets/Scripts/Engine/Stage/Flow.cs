@@ -85,12 +85,13 @@ abstract class Flow {
         List<Vec> rt = new List<Vec>();
         for (var i = 0;; i++) {
             // Lazily find the next reachable tile.
-            while (i >= _found.length) {
+            while (i >= _found.Count) {
                 // If we run out of tiles to search, stop.
-                if (!_processNext()) return;
+                if (!_processNext())
+                  return rt;
             }
 
-            yield _found[i] + _offset;
+            rt.Add(_found[i] + _offset);
         }
     }
   }

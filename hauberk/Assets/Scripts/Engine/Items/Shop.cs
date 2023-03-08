@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Shop {
+public class Shop {
     /// The maximum number of items a shop can contain.
     public static int capacity = 26;
 

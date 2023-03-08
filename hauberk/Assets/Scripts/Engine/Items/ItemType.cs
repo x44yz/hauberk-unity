@@ -4,7 +4,7 @@ using UnityEngine;
 using TossItemUse = System.Func<Vec, Action>;
 using AddItem = System.Action<Item>;
 
-abstract class Drop {
+public abstract class Drop {
     public abstract void dropItem(int depth, AddItem addItem);
 }
 

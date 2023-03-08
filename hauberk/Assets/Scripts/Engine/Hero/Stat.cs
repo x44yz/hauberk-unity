@@ -22,7 +22,7 @@ public class Property<T> where T : IComparable
 
   /// A subclass can override this to modify the observed value. The updating
   /// and notifications are based on the raw base value.
-  public T _modify(T _base) => _base;
+  public virtual T _modify(T _base) => _base;
 
   /// Stores the new base [value]. If [value] is different from the current
   /// base value, calls [onChange], passing in the previous value. Does not take
@@ -76,29 +76,29 @@ public abstract class StatBase : Property<int>
 
   string _loseAdjective;
 
-  int _modify(int _base) =>
-      (_base + _statOffset + _hero.statBonus(_stat)).clamp(1, Stat.max);
+  public override int _modify(int _base) => 
+      Mathf.Clamp(_base + _statOffset + _hero.statBonus(_stat), 1, Stat.max);
 
   int _statOffset => 0;
 
   public void bindHero(HeroSave hero)
   {
     _hero = hero;
-    _value = _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
+    _value = Mathf.Clamp(_hero.race.valueAtLevel(_stat, _hero.level), 1, Stat.max);
   }
 
   public void refresh(Game game)
   {
-    var newValue =
-        _hero.race.valueAtLevel(_stat, _hero.level).clamp(1, Stat.max);
-    update(newValue, (previous) {
+    var newValue = Mathf.Clamp(
+        _hero.race.valueAtLevel(_stat, _hero.level), 1, Stat.max);
+    update(newValue, (previous) => {
       var gain = newValue - previous;
       if (gain > 0) {
         game.log
-            .gain("You feel $_gainAdjective! Your $name increased by $gain.");
+            .gain($"You feel {_gainAdjective!} Your {name} increased by {gain}.");
       } else {
         game.log.error(
-            "You feel $_loseAdjective! Your $name decreased by ${-gain}.");
+            $"You feel {_loseAdjective!} Your {name} decreased by {-gain}.");
       }
     });
   }

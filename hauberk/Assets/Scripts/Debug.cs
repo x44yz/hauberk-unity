@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using num = System.Double;
+using System.Text;
+using System.Linq;
 
 /// A class for storing debugging information.
 ///
@@ -24,7 +26,7 @@ class Debug {
   /// Typed as Object? so that this library isn't coupled to the UI.
   static Object? densityMap;
 
-  static public Map<Monster, _MonsterLog> _monsters = {};
+  static public Dictionary<Monster, _MonsterLog> _monsters = new Dictionary<Monster, _MonsterLog>();
 
   /// The current game screen.
   ///
@@ -32,16 +34,21 @@ class Debug {
   static object? _gameScreen;
   static object? gameScreen => _gameScreen;
 
-  static void bindGameScreen(Object? screen) {
+  static void bindGameScreen(object? screen) {
     _gameScreen = screen;
-    _monsters.clear();
+    _monsters.Clear();
   }
 
   /// Appends [message] to the debug log for [monster].
   public static void monsterLog(Monster monster, string message) {
     if (!enabled) return;
 
-    var monsterLog = _monsters.putIfAbsent(monster, () => _MonsterLog(monster));
+    _MonsterLog monsterLog = null;
+    if (_monsters.TryGetValue(monster, out monsterLog) == false)
+    {
+      monsterLog = new _MonsterLog(monster);
+      _monsters[monster] = monsterLog;
+    }
     monsterLog.add(message);
   }
 
@@ -53,10 +60,21 @@ class Debug {
       string reason = null) {
     if (!enabled) return;
 
-    var monsterLog = _monsters.putIfAbsent(monster, () => _MonsterLog(monster));
-    var stats = monsterLog.stats.putIfAbsent(stat, () => Queue());
-    stats.add(value);
-    if (stats.length > 20) stats.removeFirst();
+    _MonsterLog monsterLog = null;
+    if (_monsters.TryGetValue(monster, out monsterLog) == false)
+    {
+      monsterLog = new _MonsterLog(monster);
+      _monsters[monster] = monsterLog;
+    }
+
+    List<num> stats = null;
+    if (monsterLog.stats.TryGetValue(stat, out stats) == false)
+    {
+      stats = new List<num>();
+      monsterLog.stats[stat] = stats;
+    }
+    stats.Add(value);
+    if (stats.Count > 20) stats.RemoveAt(0);
 
     monsterReason(monster, stat, reason);
   }
@@ -65,7 +83,12 @@ class Debug {
   static void monsterReason(Monster monster, string stat, string? reason) {
     if (!enabled) return;
 
-    var monsterLog = _monsters.putIfAbsent(monster, () => _MonsterLog(monster));
+    _MonsterLog monsterLog = null;
+    if (_monsters.TryGetValue(monster, out monsterLog) == false)
+    {
+      monsterLog = new _MonsterLog(monster);
+      _monsters[monster] = monsterLog;
+    }
     monsterLog.statReason[stat] = reason;
   }
 
@@ -81,22 +104,25 @@ class Debug {
 
 class _MonsterLog {
   public Monster monster;
-  public Queue<string> log = Queue<string>();
+  public Queue<string> log = new Queue<string>();
 
-  public Map<string, Queue<num>> stats = {};
-  public Map<string, string?> statReason = {};
+  public Dictionary<string, List<num>> stats = new Dictionary<string, List<num>>();
+  public Dictionary<string, string> statReason = new Dictionary<string, string>();
 
-  _MonsterLog(this.monster);
-
-  void add(string logItem) {
-    log.add(logItem);
-    if (log.length > 10) log.removeFirst();
+  public _MonsterLog(Monster monster)
+  {
+    this.monster = monster;
   }
 
-  string toString() {
-    var buffer = StringBuffer();
+  public void add(string logItem) {
+    log.Enqueue(logItem);
+    if (log.Count > 10) log.Dequeue();
+  }
 
-    buffer.write(monster.breed.name);
+  public string toString() {
+    var buffer = new StringBuilder();
+
+    buffer.Append(monster.breed.name);
 
     var state = "asleep";
     if (monster.isAfraid) {
@@ -104,38 +130,39 @@ class _MonsterLog {
     } else if (monster.isAwake) {
       state = "awake";
     }
-    buffer.writeln(" ($state)");
+    buffer.Append($" ({state})");
 
-    var statNames = stats.keys.toList();
-    statNames.sort();
-    var length =
-        statNames.fold<int>(0, (length, name) => math.max(length, name.length));
+    var statNames = stats.Keys.ToList();
+    statNames.Sort();
+    var length = 0;
+    foreach (var name in statNames)
+      length += Mathf.Max(length, name.Length);
 
     var barChars = " ▁▂▃▄▅▆▇█";
-    for (var name in statNames) {
-      var barBuffer = StringBuffer("${name.padRight(length)} ");
+    foreach (var name in statNames) {
+      var barBuffer = new StringBuilder($"{name.PadRight(length)} ");
       var showBar = false;
 
       var values = stats[name]!;
-      for (var value in values) {
-        var i = (value * barChars.length).ceil().clamp(0, barChars.length - 1);
-        barBuffer.write(barChars[i]);
+      foreach (var value in values) {
+        var i = Mathf.Clamp(Mathf.CeilToInt((float)(value * barChars.Length)), 0, barChars.Length - 1);
+        barBuffer.Append(barChars[i]);
         if (i > 0) showBar = true;
       }
 
-      if (values.isNotEmpty) {
-        barBuffer.write(" ${values.last.toStringAsFixed(4).padLeft(6)}");
+      if (values.Count > 0) {
+        barBuffer.Append($" {values[values.Count - 1].ToString("F4").PadLeft(6)}");
       }
 
       if (statReason[name] != null) {
-        barBuffer.write(" ${statReason[name]}");
+        barBuffer.Append($" {statReason[name]}");
         showBar = true;
       }
 
-      if (showBar) buffer.writeln(barBuffer.toString());
+      if (showBar) buffer.Append(barBuffer.ToString());
     }
 
-    buffer.writeAll(log, "\n");
-    return buffer.toString();
+    buffer.Append(log + "\n");
+    return buffer.ToString();
   }
 }

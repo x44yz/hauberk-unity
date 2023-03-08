@@ -45,11 +45,11 @@ public class Monster : Actor {
   /// time. When it reaches zero, the move can be performed again.
   public Dictionary<Move, num> _recharges = new Dictionary<Move, num>();
 
-  bool isAfraid => _state is AfraidState;
+  public bool isAfraid => _state is AfraidState;
 
   bool isAsleep => _state is AsleepState;
 
-  bool isAwake => _state is AwakeState;
+  public bool isAwake => _state is AwakeState;
 
   public Motility motility => breed.motility;
 

@@ -171,18 +171,18 @@ class ResourceSet<T> where T : class {
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
   T tryChooseMatching(int depth, IEnumerable<string> tags) {
-    var tagObjects = tags.map((name) {
+    var tagObjects = tags.Select((name) => {
       var tag = _tags[name];
-      if (tag == null) throw ArgumentError('Unknown tag "$name".');
+      if (tag == null) throw new System.Exception($"Unknown tag \"{name}.");
       return tag;
     });
 
-    var tagNames = tags.toList();
-    tagNames.sort();
+    var tagNames = tags.ToList();
+    tagNames.Sort();
 
-    return _runQuery("${tagNames.join('|')} (match)", depth, (resource) {
+    return _runQuery($"{string.Join("|", tagNames)} (match)", depth, (resource) => {
       foreach (var resourceTag in resource._tags) {
-        if (tagObjects.any((tag) => tag.contains(resourceTag))) return 1.0;
+        if (tagObjects.Any((tag) => tag.contains(resourceTag))) return 1.0;
       }
 
       return 0.0;

@@ -137,7 +137,7 @@ public class Hit {
   ///
   /// Returns the amount of damage done if the attack connected or `null` if
   /// it missed.
-  int perform(Action action, Actor attacker, Actor defender, bool canMiss = true) 
+  public int perform(Action action, Actor attacker, Actor defender, bool canMiss = true) 
   {
     // If the attack itself doesn't have a noun ("the arrow hits"), use the
     // attacker ("the wolf bites").

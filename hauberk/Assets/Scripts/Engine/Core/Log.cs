@@ -277,7 +277,7 @@ public class Noun {
     this.nounText = nounText;
   }
 
-  public string toString() => nounText;
+  public virtual string toString() => nounText;
 }
 
 public class Pronoun {

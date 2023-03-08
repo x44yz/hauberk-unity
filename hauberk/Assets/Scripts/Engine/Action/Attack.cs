@@ -12,7 +12,7 @@ class AttackAction : Action
         this.defender = defender;
     }
 
-    ActionResult onPerform() 
+    public override ActionResult onPerform() 
     {
         foreach (var hit in actor!.createMeleeHits(defender)) {
             hit.perform(this, actor, defender);
@@ -22,7 +22,7 @@ class AttackAction : Action
         return ActionResult.success;
     }
 
-    double noise => Sound.attackNoise;
+    public override double noise => Sound.attackNoise;
 
     string toString() => "$actor attacks $defender";
 }
