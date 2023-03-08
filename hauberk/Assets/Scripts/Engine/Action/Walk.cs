@@ -37,29 +37,29 @@ public class WalkAction : Action {
         game.stage.explore(pos, force: true);
       }
 
-      return fail('{1} hit[s] the ${tile.name}.', actor);
+      return fail($"{1} hit[s] the {tile.name}.", actor);
     }
 
     actor!.pos = pos;
 
     // See if the hero stepped on anything interesting.
     if (actor is Hero) {
-      for (var item in game.stage.itemsAt(pos).toList()) {
+      foreach (var item in game.stage.itemsAt(pos)) {
         hero.disturb();
 
         // Treasure is immediately, freely acquired.
         if (item.isTreasure) {
           // Pick a random value near the price.
-          var min = (item.price * 0.5).ceil();
-          var max = (item.price * 1.5).ceil();
-          var value = rng.range(min, max);
+          var min = Mathf.CeilToInt(item.price * 0.5f);
+          var max = Mathf.CeilToInt(item.price * 1.5f);
+          var value = Rng.rng.range(min, max);
           hero.gold += value;
           log("{1} pick[s] up {2} worth $value gold.", hero, item);
           game.stage.removeItem(item, pos);
 
           addEvent(EventType.gold, actor: actor, pos: actor!.pos, other: item);
         } else {
-          log('{1} [are|is] standing on {2}.', actor, item);
+          log("{1} [are|is] standing on {2}.", actor, item);
         }
       }
 
@@ -69,31 +69,39 @@ public class WalkAction : Action {
     return succeed();
   }
 
-  String toString() => '$actor walks $dir';
+  string toString() => $"{actor} walks {dir}";
 }
 
 class OpenDoorAction : Action {
-  final Vec pos;
-  final TileType openDoor;
+  public Vec pos;
+  public TileType openDoor;
 
-  OpenDoorAction(this.pos, this.openDoor);
+  OpenDoorAction(Vec pos, TileType openDoor)
+  {
+    this.pos = pos;
+    this.openDoor = openDoor;
+  }
 
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     game.stage[pos].type = openDoor;
     game.stage.tileOpacityChanged();
 
     if (actor is Hero) hero.regenerateFocus(4);
-    return succeed('{1} open[s] the door.', actor);
+    return succeed("{1} open[s] the door.", actor);
   }
 }
 
 class CloseDoorAction : Action {
-  final Vec doorPos;
-  final TileType closedDoor;
+  public Vec doorPos;
+  public TileType closedDoor;
 
-  CloseDoorAction(this.doorPos, this.closedDoor);
+  CloseDoorAction(Vec doorPos, TileType closedDoor)
+  {
+    this.doorPos = doorPos;
+    this.closedDoor = closedDoor;
+  }
 
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     var blockingActor = game.stage.actorAt(doorPos);
     if (blockingActor != null) {
       return fail("{1} [are|is] in the way!", blockingActor);
@@ -104,13 +112,13 @@ class CloseDoorAction : Action {
     game.stage.tileOpacityChanged();
 
     if (actor is Hero) hero.regenerateFocus(4);
-    return succeed('{1} close[s] the door.', actor);
+    return succeed("{1} close[s] the door.", actor);
   }
 }
 
 /// Action for doing nothing for a turn.
 class RestAction : Action {
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     if (actor is Hero) {
       if (hero.stomach > 0 && !hero.poison.isActive) {
         // TODO: Does this scale well when the hero has very high max health?
@@ -128,5 +136,5 @@ class RestAction : Action {
     return succeed();
   }
 
-  double get noise => Sound.restNoise;
+  public override double noise => Sound.restNoise;
 }

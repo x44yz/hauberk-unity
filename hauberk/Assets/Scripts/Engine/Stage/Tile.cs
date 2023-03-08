@@ -94,17 +94,17 @@ public class TileType {
 
     bool canClose => onClose != null;
 
-    bool canOpen => onOpen != null;
+    public bool canOpen => onOpen != null;
 
     public Motility motility;
 
     /// If the tile can be "opened", this is the function that produces an open
     /// action for it. Otherwise `null`.
-    public Func<Action, Vec> onClose;
+    public Func<Vec, Action> onClose;
 
     /// If the tile can be "opened", this is the function that produces an open
     /// action for it. Otherwise `null`.
-    public Func<Action, Vec> onOpen;
+    public Func<Vec, Action> onOpen;
 
     public bool isTraversable => canEnter(Motility.doorAndWalk);
 
@@ -112,7 +112,7 @@ public class TileType {
 
     TileType(string name, object appearance, Motility motility,
         int emanation = 0, TilePortal portal = null, 
-        Func<Action, Vec> onClose = null, Func<Action, Vec> onOpen = null)
+        Func<Vec, Action> onClose = null, Func<Vec, Action> onOpen = null)
     {
         this.name = name;
         this.appearance = appearance;
@@ -132,7 +132,7 @@ public class Tile {
     ///
     /// If you change this during the game, make sure to call
     /// [Stage.tileOpacityChanged] if the tile's opacity changed.
-    TileType type = TileType.uninitialized;
+    public TileType type = TileType.uninitialized;
 
     /// Whether some other opaque tile is blocking the hero's view of this tile.
     ///

@@ -7,7 +7,7 @@ class AttackAction : Action
 {
     public Actor defender;
 
-    AttackAction(Actor defender)
+    public AttackAction(Actor defender)
     {
         this.defender = defender;
     }

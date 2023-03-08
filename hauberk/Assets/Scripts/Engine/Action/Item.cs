@@ -186,7 +186,7 @@ class EquipAction : ItemAction {
 /// [Inventory]. If there is no room in the inventory, it will drop to the
 /// ground.
 class UnequipAction : ItemAction {
-  UnequipAction(ItemLocation location, Item item) : base(location, item)
+  public UnequipAction(ItemLocation location, Item item) : base(location, item)
   {
 
   }
@@ -243,32 +243,53 @@ class UseAction : ItemAction {
   }
 }
 
+public class ActionMixin {
+    public Action action;
+
+  public ActionMixin(Action action)
+  {
+    this.action = action;
+  }
+
+  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+    action.log(message, noun1, noun2, noun3);
+  }
+
+  public Game game => action.game;
+  public Actor actor => action.actor;
+  public Hero hero => action.hero;
+}
+
 /// Mixin for actions that permanently destroy items.
-mixin DestroyActionMixin implements Action {
+public class DestroyActionMixin : ActionMixin {
   // TODO: Take damage into account when choosing the odds?
+
+    public DestroyActionMixin(Action action) : base(action)
+  {
+  }
 
   /// Tries to destroy [items] with [element].
   ///
   /// Handles splitting stacks and logging errors. Returns the total fuel
   /// produced by all destroyed items.
-  int _destroy(Element element, Iterable<Item> items, bool isHeld,
-      void Function(Item) removeItem) {
+  int _destroy(Element element, IEnumerable<Item> items, bool isHeld,
+      System.Action<Item> removeItem) {
     var fuel = 0;
 
     // Copy items to avoid concurrent modification.
-    for (var item in items.toList()) {
+    foreach (var item in items) {
       // TODO: Having to handle missing keys here is lame.
-      var chance = item.type.destroyChance[element] ?? 0;
+      var chance = item.type.destroyChance.ContainsKey(element) ? item.type.destroyChance[element] : 0;
 
       // Holding an item makes it less likely to be destroyed.
-      if (isHeld) chance = math.min(30, chance ~/ 2);
+      if (isHeld) chance = Mathf.Min(30, chance / 2);
 
       if (chance == 0) continue;
 
       // See how much of the stack is destroyed.
       var destroyedCount = 0;
       for (var i = 0; i < item.count; i++) {
-        if (rng.percent(chance)) destroyedCount++;
+        if (Rng.rng.percent(chance)) destroyedCount++;
       }
 
       if (destroyedCount == item.count) {
@@ -289,7 +310,7 @@ mixin DestroyActionMixin implements Action {
 
   /// Attempts to destroy items on the floor that can be destroyed by [element].
   int destroyFloorItems(Vec pos, Element element) {
-    var fuel = _destroy(element, game.stage.itemsAt(pos), false, (item) {
+    var fuel = _destroy(element, game.stage.itemsAt(pos), false, (item) => {
       game.stage.removeItem(item, pos);
       // TODO: If the item takes effect when destroyed, do that here.
     });
@@ -299,20 +320,20 @@ mixin DestroyActionMixin implements Action {
 
   /// Attempts to destroy items the actor is holding that can be destroyed by
   /// [element].
-  int destroyHeldItems(Element element) {
+  public int destroyHeldItems(Element element) {
     // TODO: If monsters have inventories, need to handle that here.
-    if (actor is! Hero) return 0;
+    if ((actor is Hero) == false) return 0;
 
     // Any resistance prevents destruction.
     if (actor!.resistance(element) > 0) return 0;
 
-    var fuel = _destroy(element, hero.inventory, true, (item) {
+    var fuel = _destroy(element, hero.inventory, true, (item) => {
       hero.inventory.remove(item);
       // TODO: If the item takes effect when destroyed, do that here.
     });
 
     var anyEquipmentDestroyed = false;
-    fuel += _destroy(element, hero.equipment, true, (item) {
+    fuel += _destroy(element, hero.equipment, true, (item) => {
       hero.equipment.remove(item);
       // TODO: If the item takes effect when destroyed, do that here.
       anyEquipmentDestroyed = true;

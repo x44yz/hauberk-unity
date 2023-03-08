@@ -73,7 +73,7 @@ public class Hit {
 
   Element _brand = Element.none;
 
-  int range {
+  public int range {
     get {
       if (_attack.range == 0) return 0;
 

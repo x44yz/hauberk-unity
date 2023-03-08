@@ -28,7 +28,7 @@ public abstract class Action
 
   /// Whether this action can be immediately performed in the middle of an
   /// ongoing action or should wait until the current action is finished.
-  public bool isImmediate => true;
+  public virtual bool isImmediate => true;
 
   public void bind(Actor actor, bool consumesEnergy = true) {
     _actor = actor;
@@ -99,8 +99,8 @@ public abstract class Action
     _game.log.gain(message, noun1, noun2, noun3);
   }
 
-  ActionResult succeed(
-      string? message, Noun? noun1, Noun? noun2, Noun? noun3) 
+  public ActionResult succeed(
+      string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
   {
     if (message != null) log(message, noun1, noun2, noun3);
     return ActionResult.success;
@@ -118,7 +118,7 @@ public abstract class Action
 
   /// Returns [ActionResult.success] if [done] is `true`, otherwise returns
   /// [ActionResult.notDone].
-  ActionResult doneIf(bool done) {
+  public ActionResult doneIf(bool done) {
     return done ? ActionResult.success : ActionResult.notDone;
   }
 }

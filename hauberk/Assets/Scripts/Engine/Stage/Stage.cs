@@ -179,7 +179,7 @@ public class Stage {
     }
 
     /// Marks the illumination and field-of-view as needing recalculation.
-    void tileOpacityChanged() {
+    public void tileOpacityChanged() {
         _lighting.dirtyFloorLight();
         _lighting.dirtyActorLight();
         _lighting.dirtyVisibility();

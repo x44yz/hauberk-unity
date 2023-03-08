@@ -16,7 +16,7 @@ public class HeroSave
     public RaceStats race;
     public HeroClass heroClass;
 
-    public int level => experienceLevel(experience);
+    public int level => Hero.experienceLevel(experience);
 
     Inventory _inventory = new Inventory(ItemLocation.inventory, Option.inventoryCapacity);
 

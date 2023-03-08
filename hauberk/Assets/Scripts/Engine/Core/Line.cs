@@ -27,7 +27,7 @@ class Line : IEnumerable<Vec> {
     this.end = end;
   }
 
-  IEnumerator<Vec> iterator => new _LineIterator(start, end);
+  public IEnumerator<Vec> iterator => new _LineIterator(start, end);
 
   int length => throw new System.NotSupportedException("Line iteration is unbounded.");
 }

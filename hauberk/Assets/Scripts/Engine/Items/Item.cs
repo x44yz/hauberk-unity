@@ -35,12 +35,12 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     /// Whether the item can be thrown or not.
-    bool canToss => type.toss != null;
+    public bool canToss => type.toss != null;
 
     /// The base attack for the item, ignoring its own affixes.
     public Attack? attack => type.attack;
 
-    Toss? toss => type.toss;
+    public Toss? toss => type.toss;
 
     Element element {
         get {
@@ -109,7 +109,7 @@ public class Item : Noun, System.IComparable<Item>
     Pronoun pronoun => Pronoun.it;
 
     /// How much the one unit of the item can be bought and sold for.
-    int price {
+    public int price {
         get {
             var price = (float)type.price;
 
@@ -125,7 +125,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    bool isTreasure => type.isTreasure;
+    public bool isTreasure => type.isTreasure;
 
     /// The penalty to the hero's strength when wearing this.
     public int weight {

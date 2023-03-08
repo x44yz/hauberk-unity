@@ -8,13 +8,17 @@ using UnityEngine;
 /// interface. "Toss" is used just to avoid using "throw" in code, which is a
 /// reserved word.
 class TossAction : ItemAction {
-  final Hit _hit;
-  final Vec _target;
+  public Hit _hit;
+  public Vec _target;
 
-  TossAction(ItemLocation location, Item item, this._hit, this._target)
-      : super(location, item);
+  TossAction(ItemLocation location, Item item, Hit _hit, Vec _target)
+      : base(location, item)
+    {
+        this._hit = _hit;
+        this._target = _target;
+    }
 
-  ActionResult onPerform() {
+  public override ActionResult onPerform() {
     if (!item.canToss) return fail("{1} can't be thrown.", item);
 
     Item tossed;
@@ -29,25 +33,29 @@ class TossAction : ItemAction {
     }
 
     // Take the item and throw it.
-    return alternate(TossLosAction(_target, tossed, _hit));
+    return alternate(new TossLosAction(_target, tossed, _hit));
   }
 }
 
 /// Action for handling the path of a thrown item while it's in flight.
-class TossLosAction extends LosAction {
-  final Item _item;
-  final Hit _hit;
+class TossLosAction : LosAction {
+  public Item _item;
+  public Hit _hit;
 
   /// `true` if the item has reached an [Actor] and failed to hit it. When this
   /// happens, the item will keep flying past its target until the end of its
   /// range.
   bool _missed = false;
 
-  int get range => _hit.range;
+  int range => _hit.range;
 
-  TossLosAction(Vec target, this._item, this._hit) : super(target);
+  public TossLosAction(Vec target, Item _item, Hit _hit) : base(target)
+  {
+    this._item = _item;
+    this._hit = _hit;
+  }
 
-  void onStep(Vec previous, Vec pos) {
+  public override void onStep(Vec previous, Vec pos) {
     addEvent(EventType.toss, pos: pos, other: _item);
   }
 
@@ -91,7 +99,7 @@ class TossLosAction extends LosAction {
     }
 
     // See if it breaks.
-    if (rng.percent(toss.breakage)) {
+    if (Rng.rng.percent(toss.breakage)) {
       log("{1} breaks!", _item);
       return;
     }

@@ -2,132 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: To reinforce the session-oriented play style of the game, maybe these
-// shouldn't wear off?
+/// Base class for an [Action] that applies (or extends/intensifies) a
+/// [Condition]. It handles cases where the condition is already in effect with
+/// possibly a different intensity.
+abstract class ConditionAction : Action {
+  /// The [Condition] on the actor that should be affected.
+  Condition condition;
 
-/// A temporary condition that modifies some property of an [Actor] while it
-/// is in effect.
-public abstract class Condition 
-{
-    /// The [Actor] that this condition applies to.
-    public Actor actor => _actor;
-    public Actor _actor;
+  /// The intensity of the condition to apply.
+  int getIntensity() => 1;
 
-    /// The number of turns that the condition while remain in effect for.
-    public int _turnsRemaining = 0;
+  /// The number of turns the condition should last.
+  public abstract int getDuration();
 
-    /// The "intensity" of this condition. The interpretation of this varies from
-    /// condition to condition.
-    public int _intensity = 0;
+  /// Override this to log the message when the condition is first applied.
+  public abstract void onActivate();
 
-    /// Gets whether the condition is currently in effect.
-    public bool isActive => _turnsRemaining > 0;
+  /// Override this to log the message when the condition is already in effect
+  /// and its duration is extended.
+  public abstract void onExtend();
 
-    public int duration => _turnsRemaining;
+  /// Override this to log the message when the condition is already in effect
+  /// at a weaker intensity and the intensity increases.
+  public virtual void onIntensify() {}
 
-    /// The condition's current intensity, or zero if not active.
-    public int intensity => _intensity;
+  public override ActionResult onPerform() {
+    var intensity = getIntensity();
+    var duration = getDuration();
 
-    /// Binds the condition to the actor that it applies to. Must be called and
-    /// can only be called once.
-    public void bind(Actor actor) 
-    {
-        _actor = actor;
+    if (!condition.isActive) {
+      condition.activate(duration, intensity);
+      onActivate();
+      return ActionResult.success;
     }
 
-    /// Processes one turn of the condition.
-    public void update(Action action) {
-        if (isActive) {
-            _turnsRemaining--;
-            if (isActive) {
-            onUpdate(action);
-            } else {
-            onDeactivate();
-            _intensity = 0;
-            }
-        }
+    if (condition.intensity >= intensity) {
+      // Scale down the new duration by how much weaker the new intensity is.
+      duration = (duration * intensity) / condition.intensity;
+
+      // Compounding doesn't add as much as the first one.
+      duration /= 2;
+      if (duration == 0) return succeed();
+
+      condition.extend(duration);
+      onExtend();
+      return ActionResult.success;
     }
 
-    /// Extends the condition by [duration].
-    void extend(int duration) {
-        _turnsRemaining += duration;
-    }
+    // Scale down the existing duration by how much stronger the new intensity
+    // is.
+    var oldDuration = (condition.duration * condition.intensity) / intensity;
 
-    /// Activates the condition for [duration] turns at [intensity].
-    void activate(int duration, int intensity = 1) {
-        _turnsRemaining = duration;
-        _intensity = intensity;
-    }
-
-    /// Cancels the condition immediately. Does not deactivate the condition.
-    void cancel() {
-        _turnsRemaining = 0;
-        _intensity = 0;
-    }
-
-    // TODO: Instead of modifying the given action, should this create a reaction?
-    protected virtual void onUpdate(Action action) {}
-
-    protected virtual  void onDeactivate() {}
-}
-
-// TODO: Move these to content?
-
-/// A condition that temporarily boosts the actor's speed.
-class HasteCondition : Condition {
-  protected override void onDeactivate() {
-    actor.log("{1} slow[s] back down.", actor);
-  }
-}
-
-/// A condition that temporarily lowers the actor's speed.
-class ColdCondition : Condition {
-  protected override void onDeactivate() {
-    actor.log("{1} warm[s] back up.", actor);
-  }
-}
-
-/// A condition that inflicts damage every turn.
-class PoisonCondition : Condition {
-  protected override void onUpdate(Action action) {
-    // TODO: Apply resistances. If resistance lowers intensity to zero, end
-    // condition and log message.
-
-    if (!actor.takeDamage(action, intensity, new Noun("the poison"))) {
-      actor.log("{1} [are|is] hurt by poison!", actor);
-    }
-  }
-
-  protected override void onDeactivate() {
-    actor.log("{1} [are|is] no longer poisoned.", actor);
-  }
-}
-
-/// A condition that impairs vision.
-public class BlindnessCondition : Condition {
-  protected override void onDeactivate() {
-    actor.log("{1} can see clearly again.", actor);
-    if (actor == actor.game.hero) actor.game.stage.heroVisibilityChanged();
-  }
-}
-
-/// A condition that provides resistance to an element.
-public class ResistCondition : Condition {
-  public Element _element;
-
-  public ResistCondition(Element element)
-  {
-    this._element = element;
-  }
-
-  protected override void onDeactivate() {
-    actor.log("{1} feel[s] susceptible to $_element.", actor);
-  }
-}
-
-/// A condition that provides non-visual perception of nearby monsters.
-public class PerceiveCondition : Condition {
-  protected override void onDeactivate() {
-    actor.log("{1} no longer perceive[s] monsters.", actor);
+    condition.activate(oldDuration + duration / 2, intensity);
+    onIntensify();
+    return ActionResult.success;
   }
 }

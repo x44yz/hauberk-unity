@@ -411,7 +411,7 @@ public class Hero : Actor {
     _fury -= fury;
   }
 
-  void regenerateFocus(int focus) {
+  public void regenerateFocus(int focus) {
     // The longer the hero goes without losing focus, the more quickly it
     // regenerates.
     var scale = Mathf.Clamp(_turnsSinceLostFocus + 1, 1, 8) / 4;
@@ -541,16 +541,16 @@ public class Hero : Actor {
     return false;
   }
 
-  public int experienceLevel(int experience) {
+  public static int experienceLevel(int experience) {
     for (var level = 1; level <= Hero.maxLevel; level++) {
-        if (experience < experienceLevelCost(level)) 
+        if (experience < Hero.experienceLevelCost(level)) 
           return level - 1;
     }
     return Hero.maxLevel;
   }
 
   /// Returns how much experience is needed to reach [level].
-  int experienceLevelCost(int level) {
+  public static int experienceLevelCost(int level) {
       if (level > Hero.maxLevel) throw new System.ArgumentOutOfRangeException("level", level.ToString());
       return (int)(Mathf.Pow(level - 1, 3)) * 1000;
   }

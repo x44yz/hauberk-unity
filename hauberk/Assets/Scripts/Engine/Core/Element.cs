@@ -31,17 +31,18 @@ public class Element
     /// element hits a tile or `null` if this element has no effect.
     public Func<Vec, Hit, num, int, Action> floorAction;
 
-    Element(string name, string abbreviation, double experience)
+    public Element(string name, string abbreviation, double experience,
+        bool emanates = false, string destroyMessage = "",
+        System.Func<int, Action> attack = null,
+        System.Func<Vec, Hit, num, int, Action> floor = null)
     {
         this.name = name;
         this.abbreviation = abbreviation;
         this.experience = experience;
-        this.emanates = false;
-        this.destroyMessage = "";
-        // Action? Function(int damage)? attack,
-        // Action? Function(Vec pos, Hit hit, num distance, int fuel)? floor})
-        // : attackAction = attack ?? ((_) => null),
-        // floorAction = floor ?? ((_, __, ___, ____) => null);
+        this.emanates = emanates;
+        this.destroyMessage = destroyMessage;
+        attackAction = attack ?? ((_) => null);
+        floorAction = floor ?? ((_, __, ___, ____) => null);
     }
 
     string toString() => name;
