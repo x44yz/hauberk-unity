@@ -6,21 +6,21 @@ using UnityEngine;
 /// Static class containing all of the [TileType]s.
 class Tiles {
 
-// Note: Not using lambdas for these because that prevents [Tiles.openDoor] and
-// [Tiles.closedDoor] from having their types inferred.
-public static Action _closeDoor(Vec pos) => new CloseDoorAction(pos, Tiles.closedDoor);
+  // Note: Not using lambdas for these because that prevents [Tiles.openDoor] and
+  // [Tiles.closedDoor] from having their types inferred.
+  public static Action _closeDoor(Vec pos) => new CloseDoorAction(pos, Tiles.closedDoor);
 
-public static Action _openDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openDoor);
+  public static Action _openDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openDoor);
 
-public static Action _closeSquareDoor(Vec pos) =>
-    new CloseDoorAction(pos, Tiles.closedSquareDoor);
+  public static Action _closeSquareDoor(Vec pos) =>
+      new CloseDoorAction(pos, Tiles.closedSquareDoor);
 
-public static Action _openSquareDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openSquareDoor);
+  public static Action _openSquareDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openSquareDoor);
 
-public static Action _closeBarredDoor(Vec pos) =>
-    new CloseDoorAction(pos, Tiles.closedBarredDoor);
+  public static Action _closeBarredDoor(Vec pos) =>
+      new CloseDoorAction(pos, Tiles.closedBarredDoor);
 
-public static Action _openBarredDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openBarredDoor);
+  public static Action _openBarredDoor(Vec pos) => new OpenDoorAction(pos, Tiles.openBarredDoor);
 
   // Temporary tile types used during stage generation.
 
@@ -243,7 +243,7 @@ public static Action _openBarredDoor(Vec pos) => new OpenDoorAction(pos, Tiles.o
 
   /// The amount of heat required for [tile] to catch fire or 0 if the tile
   /// cannot be ignited.
-  static int ignition(TileType tile) => _ignition.ContainsKey(tile) ? _ignition[tile] : 0;
+  public static int ignition(TileType tile) => _ignition.ContainsKey(tile) ? _ignition[tile] : 0;
 
   public static Dictionary<TileType, int> _ignition = new Dictionary<TileType, int>(){
     {openDoor, 30},
@@ -276,7 +276,7 @@ public static Action _openBarredDoor(Vec pos) => new OpenDoorAction(pos, Tiles.o
   };
 
   /// How long [tile] burns before going out.
-  static int fuel(TileType tile) => _fuel.ContainsKey(tile) ? _fuel[tile] : 0;
+  public static int fuel(TileType tile) => _fuel.ContainsKey(tile) ? _fuel[tile] : 0;
 
   public static Dictionary<TileType, int> _fuel = new Dictionary<TileType, int>() {
     {openDoor, 70},
@@ -310,21 +310,21 @@ public static Action _openBarredDoor(Vec pos) => new OpenDoorAction(pos, Tiles.o
 
   /// What types [tile] can turn into when it finishes burning.
   static List<TileType> burnResult(TileType tile) {
-    if (_burnTypes.containsKey(tile)) return _burnTypes[tile]!;
+    if (_burnTypes.ContainsKey(tile)) return _burnTypes[tile]!;
 
-    return [burntFloor, burntFloor2];
+    return new List<TileType>(){burntFloor, burntFloor2};
   }
 
-  public static _burnTypes = {
-    bridge: [water],
-    grass: [dirt, dirt2],
-    tallGrass: [dirt, dirt2],
-    tree: [dirt, dirt2],
-    treeAlt1: [dirt, dirt2],
-    treeAlt2: [dirt, dirt2],
-    candle: [tableCenter],
+  public static Dictionary<TileType, List<TileType>> _burnTypes = new Dictionary<TileType, List<TileType>>(){
+    {bridge, new List<TileType>(){water}},
+    {grass, new List<TileType>(){dirt, dirt2}},
+    {tallGrass, new List<TileType>(){dirt, dirt2}},
+    {tree, new List<TileType>(){dirt, dirt2}},
+    {treeAlt1, new List<TileType>(){dirt, dirt2}},
+    {treeAlt2, new List<TileType>(){dirt, dirt2}},
+    {candle, new List<TileType>(){tableCenter}},
     // TODO: This doesn't handle spiderwebs on other floors.
-    spiderweb: [flagstoneFloor]
+    {spiderweb, new List<TileType>(){flagstoneFloor}}
   };
 }
 
@@ -339,10 +339,11 @@ class _TileBuilder {
 
   public _TileBuilder(string name, object ch, Color fore, Color? back) 
   {
-    back ??= darkerCoolGray;
-    var charCode = ch is int ? ch : (ch as string).codeUnitAt(0);
+    back ??= Hues.darkerCoolGray;
+    var charCode = ch is int ? ch : (ch as string)[0];
 
-    return _TileBuilder._(name, Glyph.fromCharCode(charCode, fore, back));
+    this.name = name;
+    glyphs = new List<Glyph>(){Glyph.fromDynamic(charCode, fore, back)};
   }
 
   public _TileBuilder(string name, Glyph glyph)
@@ -354,7 +355,7 @@ class _TileBuilder {
   public _TileBuilder blend(double amount, Color fore, Color back) {
     for (var i = 0; i < glyphs.Count; i++) {
       var glyph = glyphs[i];
-      glyphs[i] = Glyph.fromCharCode(glyph.char, glyph.fore.blend(fore, amount),
+      glyphs[i] = new Glyph(glyph._char, glyph.fore.blend(fore, amount),
           glyph.back.blend(back, amount));
     }
 
@@ -362,14 +363,14 @@ class _TileBuilder {
   }
 
   public _TileBuilder animate(int count, double maxMix, Color fore, Color back) {
-    var glyph = glyphs.first;
+    var glyph = glyphs[0];
     for (var i = 1; i < count; i++) {
       var mixedFore =
-          glyph.fore.blend(fore, lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.fore.blend(fore, MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
       var mixedBack =
-          glyph.back.blend(back, lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.back.blend(back, MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
 
-      glyphs.add(Glyph.fromCharCode(glyph.char, mixedFore, mixedBack));
+      glyphs.Add(new Glyph(glyph._char, mixedFore, mixedBack));
     }
 
     return this;
@@ -408,11 +409,18 @@ class _TileBuilder {
   public TileType water() => _motility(Motility.fly | Motility.swim);
 
   public TileType _motility(Motility motility) {
-    return new TileType(name, glyphs.length == 1 ? glyphs.first : glyphs, motility,
-        portal: _portal,
-        emanation: _emanation,
-        onClose: _onClose,
-        onOpen: _onOpen);
+    if (glyphs.Count == 1)
+        return new TileType(name, glyphs[0], motility,
+          portal: _portal,
+          emanation: _emanation,
+          onClose: _onClose,
+          onOpen: _onOpen);
+    else
+        return new TileType(name, glyphs, motility,
+            portal: _portal,
+            emanation: _emanation,
+            onClose: _onClose,
+            onOpen: _onOpen);
   }
 }
 

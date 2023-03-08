@@ -16,7 +16,7 @@ class ResourceSet<T> where T : class {
 
   IEnumerable<T> all => _resources.Values.ToList().Select((resource) => resource.obj);
 
-  void add(T obj, string name = null, int? depth = null, 
+  public void add(T obj, string name = null, int? depth = null, 
     double? frequency = null, string tags = null)
   {
     _add(obj, name, depth, depth, frequency, frequency, tags);

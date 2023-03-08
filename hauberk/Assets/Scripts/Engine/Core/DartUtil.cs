@@ -75,7 +75,7 @@ public class Color {
         this.b = b;
     }
 
-  int hashCode => r.GetHashCode() ^ g.GetHashCode() ^ b.GetHashCode();
+  public int hashCode => r.GetHashCode() ^ g.GetHashCode() ^ b.GetHashCode();
 
   public static bool operator ==(Color a, object other) {
     if (other is Color) {
@@ -96,7 +96,7 @@ public class Color {
         (int)UnityEngine.Mathf.Clamp(b + other.b * fractionOther, 0, 255));
   }
 
-  Color blend(Color other, double fractionOther) {
+  public Color blend(Color other, double fractionOther) {
     var fractionThis = 1.0 - fractionOther;
     return new Color(
         (int)(r * fractionThis + other.r * fractionOther),
@@ -108,37 +108,48 @@ public class Color {
       blend(other, percentOther / 100);
 }
 
-// class Glyph {
-//   /// The empty glyph: a clear glyph using the default background color
-//   /// [Color.BLACK].
-//   public static Color clear = Glyph.fromCharCode(CharCode.space);
+class Glyph {
+  /// The empty glyph: a clear glyph using the default background color
+  /// [Color.BLACK].
+  public static Glyph clear = new Glyph(32); // space code
 
-//   final int char;
-//   final Color fore;
-//   final Color back;
+  public int _char;
+  public Color fore;
+  public Color back;
 
-//   Glyph(String char, [Color? fore, Color? back])
-//       : char = char.codeUnits[0],
-//         fore = fore != null ? fore : Color.white,
-//         back = back != null ? back : Color.black;
+  public Glyph(string ch, Color fore = null, Color back = null)
+  {
+    this._char = ch[0];
+    this.fore = fore != null ? fore : Color.white;
+    this.back = back != null ? back : Color.black;
+  }
 
-//   const Glyph.fromCharCode(this.char, [Color? fore, Color? back])
-//       : fore = fore != null ? fore : Color.white,
-//         back = back != null ? back : Color.black;
 
-//   factory Glyph.fromDynamic(Object charOrCharCode, [Color? fore, Color? back]) {
-//     if (charOrCharCode is String) return Glyph(charOrCharCode, fore, back);
-//     return Glyph.fromCharCode(charOrCharCode as int, fore, back);
-//   }
+  public Glyph(int ch, Color fore = null, Color back = null)
+  {
+    this._char = ch;
+    this.fore = fore != null ? fore : Color.white;
+    this.back = back != null ? back : Color.black;
+  }
 
-//   int get hashCode => char.hashCode ^ fore.hashCode ^ back.hashCode;
+  public static Glyph fromDynamic(object charOrCharCode, Color fore = null, Color back = null) {
+    if (charOrCharCode is string) return new Glyph(charOrCharCode as string, fore, back);
+    return new Glyph((int)charOrCharCode, fore, back);
+  }
 
-//   operator ==(Object other) {
-//     if (other is Glyph) {
-//       return char == other.char && fore == other.fore && back == other.back;
-//     }
+  int hashCode => _char.GetHashCode() ^ fore.hashCode ^ back.hashCode;
 
-//     return false;
-//   }
-// }
+  public static bool operator ==(Glyph a, object other) {
+    if (other is Glyph) {
+      var b = other as Glyph;
+      return a._char == b._char && a.fore == b.fore && a.back == b.back;
+    }
+
+    return false;
+  }
+
+  public static bool operator !=(Glyph a, object other) {
+    return !(a == other);
+  }
+}
 

@@ -212,7 +212,7 @@ public class Rng {
     }
   }
 
-  int taper(int start, int chanceOfIncrement) {
+  public int taper(int start, int chanceOfIncrement) {
     while (oneIn(chanceOfIncrement)) start++;
     return start;
   }

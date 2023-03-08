@@ -110,7 +110,7 @@ public class TileType {
 
     public bool isWalkable => canEnter(Motility.walk);
 
-    TileType(string name, object appearance, Motility motility,
+    public TileType(string name, object appearance, Motility motility,
         int emanation = 0, TilePortal portal = null, 
         Func<Vec, Action> onClose = null, Func<Vec, Action> onOpen = null)
     {
