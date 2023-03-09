@@ -18,12 +18,12 @@ class _BaseBuilder {
   /// Percent chance of objects in the current category breaking when thrown.
   public int? _breakage;
 
-  void stack(int stack) {
+  public void stack(int stack) {
     _maxStack = stack;
   }
 
   /// Makes items in the category throwable.
-  void toss(int? damage, Element? element, int? range, int? breakage) {
+  public void toss(int? damage = null, Element? element = null, int? range = null, int? breakage = null) {
     _tossDamage = damage;
     _tossElement = element;
     _tossRange = range;
@@ -34,7 +34,7 @@ class _BaseBuilder {
     _tossUse = use;
   }
 
-  void destroy(Element element, int chance, int? fuel) {
+  public void destroy(Element element, int chance, int? fuel) {
     _destroyChance[element] = chance;
     // TODO: Per-element fuel.
     _fuel = fuel;
@@ -88,7 +88,7 @@ static string[] tagEquipSlots = new string[]{
     this._verb = _verb;
   }
 
-  void tag(string tagPath) {
+  public void tag(string tagPath) {
     // Define the tag path and store the leaf tag which is what gets used by
     // the item types.
     Items.types.defineTags($"item/{tagPath}");
@@ -115,7 +115,7 @@ static string[] tagEquipSlots = new string[]{
     Affixes.defineItemTag(tagPath);
   }
 
-  void treasure() {
+  public void treasure() {
     _isTreasure = true;
   }
 
@@ -162,7 +162,7 @@ public static _ItemBuilder item(string name, Color color,
 
   /// Sets the item's minimum depth to [from]. If [to] is given, then the item
   /// has the given depth range. Otherwise, its max is [Option.maxDepth].
-  void depth(int from, int? to) {
+  public void depth(int from, int? to = null) {
     _minDepth = from;
     _maxDepth = to ?? Option.maxDepth;
   }
@@ -194,7 +194,7 @@ public static _ItemBuilder item(string name, Color color,
     _use = new ItemUse(description, createAction);
   }
 
-  void food(int amount) {
+  public void food(int amount) {
     use($"Provides {amount} turns of food.", () => new EatAction(amount));
   }
 
@@ -280,7 +280,7 @@ public static _ItemBuilder item(string name, Color color,
     tossUse((pos) => FlowFromAction(attack, pos, motility));
   }
 
-  void lightSource(int level, int? range) {
+  public void lightSource(int level, int? range) {
     _emanation = level;
 
     if (range != null) {
@@ -409,16 +409,16 @@ public static _AffixBuilder affix(string name, double frequency) {
   /// Sets the affix's minimum depth to [from]. If [to] is given, then the
   /// affix has the given depth range. Otherwise, its max range is
   /// [Option.maxDepth].
-  void depth(int from, int to = Option.maxDepth) {
+  public void depth(int from, int to = Option.maxDepth) {
     _minDepth = from;
     _maxDepth = to;
   }
 
-  void heft(double scale) {
+  public void heft(double scale) {
     _heftScale = scale;
   }
 
-  void weight(int bonus) {
+  public void weight(int bonus) {
     _weightBonus = bonus;
   }
 
@@ -426,27 +426,27 @@ public static _AffixBuilder affix(string name, double frequency) {
     _strikeBonus = bonus;
   }
 
-  void damage(double? scale, int? bonus) {
+  public void damage(double? scale = null, int? bonus = null) {
     _damageScale = scale;
     _damageBonus = bonus;
   }
 
-  void brand(Element element, int resist = 1) {
+  public void brand(Element element, int resist = 1) {
     _brand = element;
 
     // By default, branding also grants resistance.
     _resists[element] = resist;
   }
 
-  void armor(int armor) {
+  public void armor(int armor) {
     _armor = armor;
   }
 
-  void resist(Element element, int power = 1) {
+  public void resist(Element element, int power = 1) {
     _resists[element] = power;
   }
 
-  void strength(int bonus) {
+  public void strength(int bonus) {
     _statBonuses[Stat.strength] = bonus;
   }
 
@@ -454,19 +454,19 @@ public static _AffixBuilder affix(string name, double frequency) {
     _statBonuses[Stat.agility] = bonus;
   }
 
-  void fortitude(int bonus) {
+  public void fortitude(int bonus) {
     _statBonuses[Stat.fortitude] = bonus;
   }
 
-  void intellect(int bonus) {
+  public void intellect(int bonus) {
     _statBonuses[Stat.intellect] = bonus;
   }
 
-  void will(int bonus) {
+  public void will(int bonus) {
     _statBonuses[Stat.will] = bonus;
   }
 
-  void price(int bonus, double scale) {
+  public void price(int bonus, double scale) {
     _priceBonus = bonus;
     _priceScale = scale;
   }

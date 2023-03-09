@@ -58,7 +58,7 @@ class OpenBarrelAction : _OpenTileAction {
   int _maxDepthEmptyChance => 10;
 
   // TODO: More sophisticated drop.
-  public override Drop _createDrop() => parseDrop("food", depth: game.depth);
+  public override Drop _createDrop() => DropUtils.parseDrop("food", depth: game.depth);
 }
 
 /// Open a chest and place its drops.
@@ -77,9 +77,9 @@ class OpenChestAction : _OpenTileAction {
   int _maxDepthEmptyChance => 2;
 
   // TODO: Drop more than one item sometimes.
-  public override Drop _createDrop() => dropOneOf({
-        parseDrop("treasure", depth: game.depth): 0.5,
-        parseDrop("magic", depth: game.depth): 0.2,
-        parseDrop("equipment", depth: game.depth): 0.3
+  public override Drop _createDrop() => DropUtils.dropOneOf(new Dictionary<Drop, double>(){
+        {DropUtils.parseDrop("treasure", depth: game.depth), 0.5},
+        {DropUtils.parseDrop("magic", depth: game.depth), 0.2},
+        {DropUtils.parseDrop("equipment", depth: game.depth), 0.3}
       });
 }

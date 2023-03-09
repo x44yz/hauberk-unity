@@ -5,6 +5,10 @@ using TossItemUse = System.Func<Vec, Action>;
 using AddItem = System.Action<Item>;
 
 public abstract class Drop {
+    public Drop()
+    {
+    }
+
     public abstract void dropItem(int depth, AddItem addItem);
 }
 

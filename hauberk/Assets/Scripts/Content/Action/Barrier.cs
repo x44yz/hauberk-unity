@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// Creates a swath of damage that radiates out from a point.
-class BarrierAction extends Action with ElementActionMixin {
+class BarrierAction : Action {
   /// The center of the barrier.
-  final Vec _center;
+  public Vec _center;
 
-  final double _h;
-  final double _v;
+  public double _h;
+  public double _v;
 
-  final Hit _hit;
+  public Hit _hit;
 
   /// The tiles that have already been touched by the effect. Used to make sure
   /// we don't hit the same tile multiple times.
-  final _hitTiles = <Vec>{};
+  public List<Vec> _hitTiles = new List<Vec>{};
 
   /// The barrier incrementally spreads outward. This is how far we currently
   /// are.
-  var _distance = 0.0;
+  double _distance = 0.0;
 
   /// Whether the barrier has hit a wall in the positive direction.
   bool _goingPositive = true;
@@ -26,28 +26,38 @@ class BarrierAction extends Action with ElementActionMixin {
   /// Whether the barrier has hit a wall in the negative direction.
   bool _goingNegative = true;
 
-  bool get isImmediate => false;
+  public override bool isImmediate => false;
+
+  public ElementActionMixin _elementMixin = null;
 
   /// Creates a [BarrierAction] radiating from [from] perpendicular to a line
   /// from there to [to]. It applies [hit] to each touched tile.
-  factory BarrierAction(Vec from, Vec to, Hit hit) {
+  public static BarrierAction create(Vec from, Vec to, Hit hit) {
     // The barrier spreads out perpendicular to the line from the actor to the
     // target. Swapping the coordinates does a 90° rotation.
     var offset = from - to;
-    var h = -offset.y.toDouble();
-    var v = offset.x.toDouble();
+    var h = (double)-offset.y;
+    var v = (double)offset.x;
 
     // Normalize to unit distance.
     var length = offset.length;
     h /= length;
     v /= length;
 
-    return BarrierAction._(to, h, v, hit);
+    return new BarrierAction(to, h, v, hit);
   }
 
-  BarrierAction._(this._center, this._h, this._v, this._hit);
+  BarrierAction(Vec _center, double _h, double _v, Hit _hit)
+  {
+      this._center = _center;
+      this._h = _h;
+      this._v = _v;
+      this._hit = _hit;
 
-  ActionResult onPerform() {
+      _elementMixin = new ElementActionMixin(this);
+  }
+
+  public override ActionResult onPerform() {
     while (_distance < 6.0) {
       var madeProgress = false;
 
@@ -56,13 +66,14 @@ class BarrierAction extends Action with ElementActionMixin {
 
         bool tryOffset(double h, double v) {
           var offset =
-              Vec((_h * _distance + h).round(), (_v * _distance + v).round());
+              new Vec(Mathf.RoundToInt((float)(_h * _distance + h)), Mathf.RoundToInt((float)(_v * _distance + v)));
           var pos = _center + offset * sign;
           if (!game.stage[pos].isFlyable) return false;
 
-          if (_hitTiles.add(pos)) {
+          if (_hitTiles.Contains(pos) == false) {
+            _hitTiles.Add(pos);
             // TODO: Tune fuel.
-            hitTile(_hit, pos, _distance, rng.range(30, 40));
+            _elementMixin.hitTile(_hit, pos, _distance, Rng.rng.range(30, 40));
             madeProgress = true;
           }
 

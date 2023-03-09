@@ -111,7 +111,7 @@ public class Color {
 class Glyph {
   /// The empty glyph: a clear glyph using the default background color
   /// [Color.BLACK].
-  public static Glyph clear = new Glyph(32); // space code
+  public static Glyph clear = new Glyph(CharCode.Space);
 
   public int _char;
   public Color fore;
@@ -153,3 +153,14 @@ class Glyph {
   }
 }
 
+public class CharCode
+{
+  public const int space = 0x0020;
+  public const int latinCapitalLetterCWithCedilla = 0x00c7;
+  public const int latinSmallLetterUWithDiaeresis = 0x00fc;
+  public const int centSign = 0x00a2;
+  public const int dollarSign = 0x0024;
+  public const int notSign = 0x00ac;
+  public const int vulgarFractionOneQuarter = 0x00bc;
+  public const int invertedExclamationMark = 0x00a1;
+}

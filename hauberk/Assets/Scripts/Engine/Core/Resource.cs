@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-class ResourceSet<T> where T : class {
+public class ResourceSet<T> where T : class {
   public Dictionary<string, _Tag<T>> _tags = new Dictionary<string, _Tag<T>>();
   public Dictionary<string, _Resource<T>> _resources = new Dictionary<string, _Resource<T>>();
 
@@ -107,7 +107,7 @@ class ResourceSet<T> where T : class {
   }
 
   /// Gets the names of the tags for the resource with [name].
-  IEnumerable<string> getTags(string name) {
+  public IEnumerable<string> getTags(string name) {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     // return new List<string>().Add(resource._tags.ToList((tag) => tag.name);
@@ -133,7 +133,7 @@ class ResourceSet<T> where T : class {
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  T tryChoose(int depth, string tag = null, bool includeParents = true) {
+  public T tryChoose(int depth, string tag = null, bool includeParents = true) {
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
 
@@ -226,7 +226,7 @@ class ResourceSet<T> where T : class {
   }
 }
 
-class _Resource<T> {
+public class _Resource<T> {
   public T obj;
   public int startDepth;
   public int endDepth;
@@ -297,7 +297,7 @@ class _Resource<T> {
   }
 }
 
-class _Tag<T> {
+public class _Tag<T> {
   public string name;
   public _Tag<T> parent;
 
@@ -323,7 +323,7 @@ class _Tag<T> {
 }
 
 /// Uniquely identifies a query.
-class _QueryKey {
+public class _QueryKey {
   public string name;
   public int depth;
 
@@ -362,7 +362,7 @@ class _QueryKey {
 /// [ResourceSet.tryChooseMatching] with the same arguments.
 ///
 /// This caches that state.
-class _ResourceQuery<T> where T : class {
+public class _ResourceQuery<T> where T : class {
   public int depth;
   public List<_Resource<T>> resources;
   public List<double> chances;

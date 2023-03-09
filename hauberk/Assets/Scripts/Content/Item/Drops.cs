@@ -1,31 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AddItem = System.Action<Item>;
 
-Drop parseDrop(String name, {int? depth, int? affixChance}) {
-  // See if we're parsing a drop for a single item type.
-  var itemType = Items.types.tryFind(name);
-  if (itemType != null) return _ItemDrop(itemType, depth, affixChance);
+public static class DropUtils {
+    public static Drop parseDrop(string name, int? depth = null, int? affixChance = null) {
+        // See if we're parsing a drop for a single item type.
+        var itemType = Items.types.tryFind(name);
+        if (itemType != null) return new _ItemDrop(itemType, depth, affixChance);
 
-  // Otherwise, it's a tag name.
-  return _TagDrop(name, depth, affixChance);
-}
+        // Otherwise, it's a tag name.
+        return new _TagDrop(name, depth, affixChance);
+    }
 
-/// Creates a [Drop] that has a [chance]% chance of dropping [drop].
-Drop percentDrop(int chance, String drop, [int? depth, int? affixChance]) {
-  return _PercentDrop(
-      chance, parseDrop(drop, depth: depth, affixChance: affixChance));
-}
+    /// Creates a [Drop] that has a [chance]% chance of dropping [drop].
+    public static Drop percentDrop(int chance, string drop, int? depth = null, int? affixChance = null) {
+        return new _PercentDrop(
+            chance, parseDrop(drop, depth: depth, affixChance: affixChance));
+    }
 
-/// Creates a [Drop] that drops all of [drops].
-Drop dropAllOf(List<Drop> drops) => _AllOfDrop(drops);
+    /// Creates a [Drop] that drops all of [drops].
+    public static Drop dropAllOf(List<Drop> drops) => new _AllOfDrop(drops);
 
-/// Creates a [Drop] that drops one of [drops] based on their frequency.
-Drop dropOneOf(Map<Drop, double> drops) => _OneOfDrop(drops);
+    /// Creates a [Drop] that drops one of [drops] based on their frequency.
+    public static Drop dropOneOf(Dictionary<Drop, double> drops) => new _OneOfDrop(drops);
 
-Drop repeatDrop(int count, Object drop, [int? depth]) {
-  if (drop is String) drop = parseDrop(drop, depth: depth);
-  return _RepeatDrop(count, drop as Drop);
+    public static Drop repeatDrop(int count, object drop, int? depth = null) {
+        if (drop is string) drop = parseDrop((string)drop, depth: depth);
+        return new _RepeatDrop(count, drop as Drop);
+    }
 }
 
 /// Drops an item of a given type.
@@ -40,14 +43,14 @@ class _ItemDrop : Drop {
   /// Modifier to the apply to the percent chance of adding an affix.
   public int? _affixChance;
 
-  _ItemDrop(ItemType _type, int? _depth, int? _affixChance)
+  public _ItemDrop(ItemType _type, int? _depth, int? _affixChance)
   {
     this._type = _type;
     this._depth = _depth;
     this._affixChance = _affixChance;
   }
 
-  void dropItem(int depth, AddItem addItem) {
+  public override void dropItem(int depth, AddItem addItem) {
     addItem(Affixes.createItem(_type, _depth ?? depth, _affixChance));
   }
 }
@@ -65,7 +68,7 @@ class _TagDrop : Drop {
   /// Modifier to the apply to the percent chance of adding an affix.
   public int? _affixChance;
 
-  _TagDrop(string _tag, int? _depth, int? _affixChance)
+  public _TagDrop(string _tag, int? _depth, int? _affixChance)
   {
     this._tag = _tag;
     this._depth = _depth;
@@ -85,13 +88,13 @@ class _PercentDrop : Drop {
   public int _chance;
   public Drop _drop;
 
-  _PercentDrop(int _chance, Drop _drop)
+  public _PercentDrop(int _chance, Drop _drop)
   {
     this._chance = _chance; 
     this._drop = _drop;
   }
 
-  void dropItem(int depth, AddItem addItem) {
+  public override void dropItem(int depth, AddItem addItem) {
     if (Rng.rng.range(100) >= _chance) return;
     _drop.dropItem(depth, addItem);
   }
@@ -101,12 +104,12 @@ class _PercentDrop : Drop {
 class _AllOfDrop : Drop {
   public List<Drop> _drops;
 
-  _AllOfDrop(List<Drop> _drops)
+  public _AllOfDrop(List<Drop> _drops)
   {
     this._drops = _drops;
   }
 
-  void dropItem(int depth, AddItem addItem) {
+  public override void dropItem(int depth, AddItem addItem) {
     foreach (var drop in _drops) {
       drop.dropItem(depth, addItem);
     }
@@ -117,7 +120,7 @@ class _AllOfDrop : Drop {
 class _OneOfDrop : Drop {
   public ResourceSet<Drop> _drop = new ResourceSet<Drop>();
 
-  _OneOfDrop(Dictionary<Drop, double> drops) {
+  public _OneOfDrop(Dictionary<Drop, double> drops) {
     foreach (var kv in drops)
     {
         // TODO: Allow passing in depth?
@@ -139,7 +142,7 @@ class _RepeatDrop : Drop {
   public int _count;
   public Drop _drop;
 
-  _RepeatDrop(int _count, Drop _drop)
+  public _RepeatDrop(int _count, Drop _drop)
   {
     this._count = _count;
     this._drop = _drop;
