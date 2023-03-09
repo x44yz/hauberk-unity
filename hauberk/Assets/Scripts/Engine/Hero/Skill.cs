@@ -12,9 +12,9 @@ public abstract class Skill : System.IComparable<Skill> {
 
   public int _sortOrder = _nextSortOrder++;
 
-  public string  name;
+  public virtual string  name => "";
 
-  string  description;
+  public virtual string  description => "";
 
   /// The name shown when using the skill.
   ///
@@ -27,7 +27,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public abstract string gainMessage(int level);
 
   /// Message displayed when the hero first discovers this skill.
-  public string  discoverMessage;
+  public virtual string  discoverMessage => "";
 
   public virtual int maxLevel => 0;
 
@@ -43,7 +43,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public abstract int onCalculateLevel(HeroSave hero, int points);
 
   /// Called when the hero takes damage.
-  public void takeDamage(Hero hero, int damage) {}
+  public virtual void takeDamage(Hero hero, int damage) {}
 
   /// Called the first time the hero has seen a monster of [breed].
   public void seeBreed(Hero hero, Breed breed) {}
@@ -60,7 +60,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
 
   /// Modifies the hero's base armor.
-  public int modifyArmor(HeroSave hero, int level, int armor) => armor;
+  public virtual int modifyArmor(HeroSave hero, int level, int armor) => armor;
 
   /// Gives the skill a chance to add new defenses to the hero.
   public Defense? getDefense(Hero hero, int level) => null;
@@ -157,10 +157,10 @@ public abstract class DirectionSkill : UsableSkill {
 ///
 /// The underlying data used to track progress in disciplines is stored in the
 /// hero's [Lore].
-abstract class Discipline : Skill {
+public abstract class Discipline : Skill {
   public override string  gainMessage(int level) => $"You have reached level {level} in {name}.";
 
-  string  discoverMessage => $"{1} can begin training in {name}.";
+  public override string  discoverMessage => $"{1} can begin training in {name}.";
 
   public abstract string  levelDescription(int level);
 
@@ -293,7 +293,7 @@ public class SkillSet {
   /// Gets the current points in [skill] or 0 if the skill isn't known.
   public int points(Skill skill) => _points.ContainsKey(skill) ? _points[skill] : 0;
 
-  void earnPoints(Skill skill, int points) {
+  public void earnPoints(Skill skill, int points) {
     points += this.points(skill);
     _points[skill] = points;
   }

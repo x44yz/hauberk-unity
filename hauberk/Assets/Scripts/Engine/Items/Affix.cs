@@ -31,28 +31,28 @@ public class Affix
   public double priceScale;
 
   public Affix(string name, string displayName,
-      double heftScale = 1.0,
-      int weightBonus = 0,
-      int strikeBonus = 0,
-      double damageScale = 1.0,
-      int damageBonus = 1,
-      Element brand = null,
-      int armor = 0,
-      int priceBonus = 0,
-      double priceScale = 1.0)
+      double? heftScale,
+      int? weightBonus,
+      int? strikeBonus,
+      double? damageScale,
+      int? damageBonus,
+      Element? brand,
+      int? armor,
+      int? priceBonus,
+      double? priceScale)
     {
       this.name = name;
       this.displayName = displayName;
 
-      this.heftScale = heftScale;
-      this.weightBonus = weightBonus;
-      this.strikeBonus = strikeBonus;
-      this.damageScale = damageScale;
-      this.damageBonus = damageBonus;
+      this.heftScale = heftScale ?? 1.0;
+      this.weightBonus = weightBonus ?? 0;
+      this.strikeBonus = strikeBonus ?? 0;
+      this.damageScale = damageScale ?? 1.0;
+      this.damageBonus = damageBonus ?? 1;
       this.brand = brand ?? Element.none;
-      this.armor = armor;
-      this.priceBonus = priceBonus;
-      this.priceScale = priceScale;
+      this.armor = armor ?? 0;
+      this.priceBonus = priceBonus ?? 0;
+      this.priceScale = priceScale ?? 1.0;
     }
 
   public int resistance(Element element)

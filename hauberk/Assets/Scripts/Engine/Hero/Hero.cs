@@ -516,7 +516,7 @@ public class Hero : Actor {
 
   /// Ensures the hero has discovered [skill] and logs if it is the first time
   /// it's been seen.
-  void discoverSkill(Skill skill) {
+  public void discoverSkill(Skill skill) {
     if (save.heroClass.proficiency(skill) == 0.0) return;
 
     if (!skills.discover(skill)) return;
@@ -524,7 +524,7 @@ public class Hero : Actor {
     game.log.gain(skill.discoverMessage, this);
   }
 
-  void refreshSkill(Skill skill) {
+  public void refreshSkill(Skill skill) {
     var level = skill.calculateLevel(save);
     if (skills.gain(skill, level)) {
       game.log.gain(skill.gainMessage(level), this);

@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TossItemUse = System.Func<Vec, Action>;
 
 class _BaseBuilder {
   public List<Skill> _skills = new List<Skill>();
   public Dictionary<Element, int> _destroyChance = new Dictionary<Element, int>();
 
-  int? _maxStack;
-  Element? _tossElement;
-  int? _tossDamage;
-  int? _tossRange;
-  TossItemUse? _tossUse;
-  int? _emanation;
-  int? _fuel;
+  public int? _maxStack;
+  public Element? _tossElement;
+  public int? _tossDamage;
+  public int? _tossRange;
+  public TossItemUse? _tossUse;
+  public int? _emanation;
+  public int? _fuel;
 
   /// Percent chance of objects in the current category breaking when thrown.
-  int? _breakage;
+  public int? _breakage;
 
   void stack(int stack) {
     _maxStack = stack;
@@ -40,7 +41,7 @@ class _BaseBuilder {
   }
 
   void skill(string skill) {
-    _skills.add(Skills.find(skill));
+    _skills.Add(Skills.find(skill));
   }
 
   void skills(List<string> skills) {
@@ -51,8 +52,8 @@ class _BaseBuilder {
 class _CategoryBuilder : _BaseBuilder {
 
     public static _CategoryBuilder _category;
-    _CategoryBuilder category(int glyph, string verb = null, int? stack = null) {
-        finishItem();
+    public static _CategoryBuilder category(int glyph, string verb = null, int? stack = null) {
+        _ItemBuilder.finishItem();
 
         _category = new _CategoryBuilder(glyph, verb);
         _category._maxStack = stack;
@@ -64,11 +65,11 @@ class _CategoryBuilder : _BaseBuilder {
   public int _glyph;
   public string? _verb;
 
-  string? _equipSlot;
-  string? _weaponType;
+  public string? _equipSlot;
+  public string? _weaponType;
     public string _tag;
-  bool _isTreasure = false;
-  bool _isTwoHanded = false;
+  public bool _isTreasure = false;
+  public bool _isTwoHanded = false;
 
 static string[] tagEquipSlots = new string[]{
       "hand",
@@ -148,6 +149,8 @@ public static _ItemBuilder item(string name, Color color,
   // TODO: Instead of late final, initialize these in item() instead of depth().
   public int _minDepth;
   public int _maxDepth;
+
+  public static _CategoryBuilder _category => _CategoryBuilder._category;
 
   _ItemBuilder(string _name, Color _color, double _frequency, int _price)
   {
@@ -277,76 +280,76 @@ public static _ItemBuilder item(string name, Color color,
     tossUse((pos) => FlowFromAction(attack, pos, motility));
   }
 
-  void lightSource(required int level, int? range) {
+  void lightSource(int level, int? range) {
     _emanation = level;
 
     if (range != null) {
       use("Illuminates out to a range of $range.",
-          () => new IlluminateSelfAction(range));
+          () => new IlluminateSelfAction(range.Value));
     }
   }
 
     public static void finishItem() {
-    var builder = _item;
-    if (builder == null) return;
+      var builder = _item;
+      if (builder == null) return;
 
-    var appearance = Glyph.fromCharCode(_category._glyph, builder._color);
+      var appearance = new Glyph(_category._glyph, builder._color);
 
-    Toss? toss;
-    var tossDamage = builder._tossDamage ?? _category._tossDamage;
-    if (tossDamage != null) {
-        var noun = Noun("the ${builder._name.toLowerCase()}");
-        var verb = "hits";
-        if (_category._verb != null) {
-        verb = Log.conjugate(_category._verb!, Pronoun.it);
-        }
+      Toss? toss = null;
+      var tossDamage = builder._tossDamage ?? _category._tossDamage;
+      if (tossDamage != null) {
+          var noun = new Noun("the ${builder._name.toLowerCase()}");
+          var verb = "hits";
+          if (_category._verb != null) {
+            verb = Log.conjugate(_category._verb!, Pronoun.it);
+          }
 
-        var range = builder._tossRange ?? _category._tossRange;
-        assert(range != null);
-        var element =
-            builder._tossElement ?? _category._tossElement ?? Element.none;
-        var use = builder._tossUse ?? _category._tossUse;
-        var breakage = _category._breakage ?? builder._breakage ?? 0;
+          var range = builder._tossRange ?? _category._tossRange;
+          DartUtils.assert(range != null);
+          var element =
+              builder._tossElement ?? _category._tossElement ?? Element.none;
+          var use = builder._tossUse ?? _category._tossUse;
+          var breakage = _category._breakage ?? builder._breakage ?? 0;
 
-        var tossAttack = Attack(noun, verb, tossDamage, range, element);
-        toss = Toss(breakage, tossAttack, use);
-    }
+          var tossAttack = new Attack(noun, verb, tossDamage.Value, range.Value, element);
+          toss = new Toss(breakage, tossAttack, use);
+      }
 
-    var itemType = ItemType(
-        builder._name,
-        appearance,
-        builder._minDepth,
-        _sortIndex++,
-        _category._equipSlot,
-        _category._weaponType,
-        builder._use,
-        builder._attack,
-        toss,
-        builder._defense,
-        builder._armor ?? 0,
-        builder._price,
-        builder._maxStack ?? _category._maxStack ?? 1,
-        weight: builder._weight ?? 0,
-        heft: builder._heft ?? 0,
-        emanation: builder._emanation ?? _category._emanation,
-        fuel: builder._fuel ?? _category._fuel,
-        treasure: _category._isTreasure,
-        twoHanded: _category._isTwoHanded);
+      var itemType = new ItemType(
+          builder._name,
+          appearance,
+          builder._minDepth,
+          _sortIndex++,
+          _category._equipSlot,
+          _category._weaponType,
+          builder._use,
+          builder._attack,
+          toss,
+          builder._defense,
+          builder._armor ?? 0,
+          builder._price,
+          builder._maxStack ?? _category._maxStack ?? 1,
+          weight: builder._weight ?? 0,
+          heft: builder._heft ?? 0,
+          emanation: builder._emanation ?? _category._emanation,
+          fuel: builder._fuel ?? _category._fuel,
+          treasure: _category._isTreasure,
+          twoHanded: _category._isTwoHanded);
 
-    itemType.destroyChance.addAll(_category._destroyChance);
-    itemType.destroyChance.addAll(builder._destroyChance);
+      foreach (var kv in _category._destroyChance) itemType.destroyChance.Add(kv.Key, kv.Value);
+      foreach (var kv in builder._destroyChance) itemType.destroyChance.Add(kv.Key, kv.Value);
 
-    itemType.skills.addAll(_category._skills);
-    itemType.skills.addAll(builder._skills);
+      itemType.skills.AddRange(_category._skills);
+      itemType.skills.AddRange(builder._skills);
 
-    Items.types.addRanged(itemType,
-        name: itemType.name,
-        start: builder._minDepth,
-        end: builder._maxDepth,
-        startFrequency: builder._frequency,
-        tags: _category._tag);
+      Items.types.addRanged(itemType,
+          name: itemType.name,
+          start: builder._minDepth,
+          end: builder._maxDepth,
+          startFrequency: builder._frequency,
+          tags: _category._tag);
 
-    _item = null;
+      _item = null;
     }
 }
 
@@ -495,8 +498,10 @@ public static _AffixBuilder affix(string name, double frequency) {
         priceBonus: builder._priceBonus,
         priceScale: builder._priceScale);
 
-    builder._resists.forEach(affix.resist);
-    builder._statBonuses.forEach(affix.setStatBonus);
+    foreach (var kv in builder._resists)
+      affix.resist(kv.Key, kv.Value);
+    foreach (var kv in builder._statBonuses)
+      affix.setStatBonus(kv.Key, kv.Value);
 
     affixes.addRanged(affix,
         name: fullName,

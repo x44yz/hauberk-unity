@@ -32,7 +32,7 @@ public class Lighting {
     /// The levels are tuned higher-level echelons where each value corresponds
     /// to a "nice-looking" increasing radius of light. Changing the attenuation
     /// values below will likely require these to be re-tuned.
-    static int emanationForLevel(int level) {
+    public static int emanationForLevel(int level) {
     switch (level) {
         case 1:
         // Only the tile itself.

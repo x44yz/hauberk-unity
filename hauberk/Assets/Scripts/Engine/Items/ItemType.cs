@@ -120,7 +120,7 @@ public class ItemType {
     /// The [Skill]s discovered when picking up an item of this type.
     public List<Skill> skills = new List<Skill>();
 
-    ItemType(
+    public ItemType(
         string quantifiableName,
         object appearance,
         int depth,

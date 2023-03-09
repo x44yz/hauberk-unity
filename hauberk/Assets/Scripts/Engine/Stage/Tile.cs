@@ -183,7 +183,7 @@ public class Tile {
             Mathf.Clamp(_appliedEmanation + offset, 0, Lighting.floorMax);
     }
 
-    void maxEmanation(int amount) {
+    public void maxEmanation(int amount) {
         _appliedEmanation = Mathf.Max(_appliedEmanation, amount);
     }
 

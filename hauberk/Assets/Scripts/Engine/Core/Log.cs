@@ -15,7 +15,7 @@ public class Log {
   public static string singular(string text) => _categorize(text, isFirst: true);
 
   /// Conjugates the verb pattern in [text] to agree with [pronoun].
-  static string conjugate(string text, Pronoun pronoun) {
+  public static string conjugate(string text, Pronoun pronoun) {
     var isFirst = pronoun == Pronoun.you || pronoun == Pronoun.they;
     return _categorize(text, isFirst: isFirst);
   }
