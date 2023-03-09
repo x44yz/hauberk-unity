@@ -18,7 +18,7 @@ class Skills {
                 new Archery(),
                 new AxeMastery(),
                 new ClubMastery(),
-                SpearMastery(),
+                new SpearMastery(),
                 Swordfighting(),
                 WhipMastery(),
 

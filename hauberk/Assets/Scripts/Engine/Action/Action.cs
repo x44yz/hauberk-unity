@@ -202,22 +202,22 @@ class FuryAction : Action {
 // TODO: Use this for more actions.
 /// For multi-step actions, lets you define one using a `sync*` function and
 /// `yield` instead of building the state machine manually.
-abstract class GeneratorActionMixin {
+class GeneratorActionMixin {
   /// Start the generator the first time through.
-  public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
+  // public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
 
-  ActionResult onPerform() {
-    // If it reaches the end, it succeeds.
-    if (!_iterator.MoveNext()) return ActionResult.success;
+  // public override ActionResult onPerform() {
+  //   // If it reaches the end, it succeeds.
+  //   if (!_iterator.MoveNext()) return ActionResult.success;
 
-    return _iterator.Current;
-  }
+  //   return _iterator.Current;
+  // }
 
   /// Wait a single frame.
-  ActionResult waitOne() => ActionResult.notDone;
+  public ActionResult waitOne() => ActionResult.notDone;
 
   /// Wait [frames] frames.
-  IEnumerable<ActionResult> wait(int frames)
+  public IEnumerable<ActionResult> wait(int frames)
   {
     var rt = new List<ActionResult>();
     for (int i = 0; i < frames; ++i)
@@ -225,5 +225,5 @@ abstract class GeneratorActionMixin {
     return rt;
   }
 
-  public abstract IEnumerable<ActionResult> onGenerate();
+  // public abstract IEnumerable<ActionResult> onGenerate();
 }

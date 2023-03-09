@@ -19,7 +19,7 @@ public class Item : Noun, System.IComparable<Item>
         this.suffix = suffix;
     }
 
-    object appearance => type.appearance;
+    public object appearance => type.appearance;
 
     bool canEquip => equipSlot != null;
     public string equipSlot => type.equipSlot;
