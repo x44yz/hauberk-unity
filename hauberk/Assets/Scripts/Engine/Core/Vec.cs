@@ -110,8 +110,15 @@ public class VecBase
 
     /// The eight Vecs surrounding this one to the north, south, east, and west
     /// and points in between.
-    // List<Vec> neighbors =>
-    //     [for (var direction in Direction.all) this + direction];
+    public List<Vec> neighbors {
+        get {
+            var rt = new List<Vec>();
+            foreach (var direction in Direction.all)
+                rt.Add(this + direction);
+            return rt;
+        }
+    }
+        
 
     // /// The four Vecs surrounding this one to the north, south, east, and west.
     // List<Vec> cardinalNeighbors =>

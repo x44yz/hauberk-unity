@@ -4,12 +4,12 @@ using UnityEngine;
 using num = System.Double;
 using System.Linq;
 
-public abstract class ElementActionMixin : ActionMixin {
+public class ElementActionMixin : ActionMixin {
    public ElementActionMixin(Action action) : base(action)
   {
   }
 
-  void hitTile(Hit hit, Vec pos, num distance, int fuel = 0) {
+  public void hitTile(Hit hit, Vec pos, num distance, int fuel = 0) {
     // Open tiles if the given motility lets us go through them.
     var tile = game.stage[pos];
     if (tile.type.canOpen) {

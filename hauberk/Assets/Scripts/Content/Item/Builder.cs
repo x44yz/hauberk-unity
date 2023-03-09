@@ -198,7 +198,7 @@ public static _ItemBuilder item(string name, Color color,
   void detection(List<DetectType> types, int? range) {
     // TODO: Hokey. Do something more general if more DetectTypes are added.
     var typeDescription = "exits and items";
-    if (types.length == 1) {
+    if (types.Count == 1) {
       if (types[0] == DetectType.exit) {
         typeDescription = "exits";
       } else {

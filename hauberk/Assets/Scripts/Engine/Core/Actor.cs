@@ -56,14 +56,14 @@ public abstract class Actor : Noun
     }
   }
 
-  int x {
+  public int x {
     get { return pos.x; }
     set {
         pos = new Vec(value, y);
     }
   }
 
-  int y {
+  public int y {
     get { return pos.y; }
     set {
         pos = new Vec(x, value);

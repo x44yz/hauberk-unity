@@ -61,7 +61,7 @@ public class Rect : IEnumerable<Vec>
   ///     '-+--------'    |
   ///       |             |
   ///       '-------------'
-  static Rect intersect(Rect a, Rect b) 
+  public static Rect intersect(Rect a, Rect b) 
   {
     var left = Mathf.Max(a.left, b.left);
     var right = Mathf.Min(a.right, b.right);
