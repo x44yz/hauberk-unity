@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class BattleHardening : Discipline {
+public class BattleHardening : Discipline {
   public override int maxLevel => 40;
 
   public override string description => "Years of taking hits have turned your skin as hard as cured leather.";

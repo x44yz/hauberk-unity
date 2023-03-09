@@ -17,7 +17,7 @@ abstract class LosAction : Action {
   }
 
   /// Override this to provide the range of the line.
-  int range;
+  public virtual int range => 0;
 
   public override bool isImmediate => false;
 

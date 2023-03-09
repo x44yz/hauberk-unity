@@ -20,7 +20,7 @@ public abstract class Skill : System.IComparable<Skill> {
   ///
   /// By default, this is the same as the name of the skill, but it differs
   /// for some.
-  string  useName => name;
+  public virtual string  useName => name;
 
   // TODO: Different messages for gain and lose?
   /// Message displayed when the hero reaches [level] in the skill.
@@ -37,7 +37,7 @@ public abstract class Skill : System.IComparable<Skill> {
   */
 
   /// Determines what level [hero] has in this skill.
-  public int calculateLevel(HeroSave hero) =>
+  public virtual int calculateLevel(HeroSave hero) =>
       onCalculateLevel(hero, hero.skills.points(this));
 
   public abstract int onCalculateLevel(HeroSave hero, int points);
@@ -46,34 +46,34 @@ public abstract class Skill : System.IComparable<Skill> {
   public virtual void takeDamage(Hero hero, int damage) {}
 
   /// Called the first time the hero has seen a monster of [breed].
-  public void seeBreed(Hero hero, Breed breed) {}
+  public virtual void seeBreed(Hero hero, Breed breed) {}
 
   /// Called when the hero kills [monster].
-  public void killMonster(Hero hero, Action action, Monster monster) {}
+  public virtual void killMonster(Hero hero, Action action, Monster monster) {}
 
   /// Called when the hero is dual-wielding two weapons.
-  public void dualWield(Hero hero) {}
+  public virtual void dualWield(Hero hero) {}
 
   // TODO: Rename to "modifyHit".
   /// Gives the skill a chance to modify the [hit] the [hero] is about to
   /// perform on [monster].
-  public void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
+  public virtual void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
 
   /// Modifies the hero's base armor.
   public virtual int modifyArmor(HeroSave hero, int level, int armor) => armor;
 
   /// Gives the skill a chance to add new defenses to the hero.
-  public Defense? getDefense(Hero hero, int level) => null;
+  public virtual Defense? getDefense(Hero hero, int level) => null;
 
   /// Gives the skill a chance to adjust the [heftModifier] applied to the base
   /// heft of a weapon.
-  public double modifyHeft(Hero hero, int level, double heftModifier) => heftModifier;
+  public virtual double modifyHeft(Hero hero, int level, double heftModifier) => heftModifier;
 
   /// Gives the skill a chance to modify the hit the hero is about to receive.
 // TODO: Not currently used.
 //  void modifyDefense(Hit hit) {}
 
-  public int CompareTo(Skill other) => _sortOrder.CompareTo(other._sortOrder);
+  public virtual int CompareTo(Skill other) => _sortOrder.CompareTo(other._sortOrder);
 }
 
 /// Additional interface for active skills that expose a command the player

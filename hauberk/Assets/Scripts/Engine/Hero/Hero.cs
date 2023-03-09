@@ -226,7 +226,7 @@ public class Hero : Actor {
     return hits;
   }
 
-  Hit createRangedHit() {
+  public Hit createRangedHit() {
     var weapons = equipment.weapons;
     var i = weapons.FindIndex((weapon) => weapon.attack!.isRanged);
     DartUtils.assert(i != -1, "Should have ranged weapon equipped.");

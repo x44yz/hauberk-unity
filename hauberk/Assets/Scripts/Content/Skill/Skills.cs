@@ -11,13 +11,13 @@ class Skills {
         {
             m_all = new List<Skill>(){
             // Disciplines.
-                BattleHardening(),
-                DualWield(),
+                new BattleHardening(),
+                new DualWield(),
 
                 // Masteries.
-                Archery(),
-                AxeMastery(),
-                ClubMastery(),
+                new Archery(),
+                new AxeMastery(),
+                new ClubMastery(),
                 SpearMastery(),
                 Swordfighting(),
                 WhipMastery(),
