@@ -10,7 +10,7 @@ public class Item : Noun, System.IComparable<Item>
     public Affix prefix;
     public Affix suffix;
 
-    public Item(ItemType type, int _count, Affix prefix, Affix suffix)
+    public Item(ItemType type, int _count, Affix prefix = null, Affix suffix = null)
         :base("")
     {
         this.type = type;

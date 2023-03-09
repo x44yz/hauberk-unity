@@ -32,7 +32,7 @@ public class VecBase
     /// Vec. Also known as Chebyshev distance.
     public int kingLength => Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
 
-    int lengthSquared => x * x + y * y;
+    public int lengthSquared => x * x + y * y;
 
     /// The Cartesian length of the vector.
     ///

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 class Affixes {
-  static final prefixes = ResourceSet<Affix>();
-  static final suffixes = ResourceSet<Affix>();
+  public static ResourceSet<Affix> prefixes = new ResourceSet<Affix>();
+  public static ResourceSet<Affix> suffixes = new ResourceSet<Affix>();
 
   /// Creates a new [Item] of [itemType] and chooses affixes for it.
   static Item createItem(ItemType itemType, int droppedDepth,
-      [int? affixChance]) {
-    affixChance ??= 0;
+      int affixChance = 0) {
 
     // Only equipped items have affixes.
-    if (itemType.equipSlot == null) return Item(itemType, 1);
+    if (itemType.equipSlot == null) 
+      return new Item(itemType, 1);
 
     // Calculate the effective depth of the item for generating affixes. This
     // affects both the chances of having an affix at all, and which affixes it
@@ -35,11 +35,11 @@ class Affixes {
       // boost as the hero gets deeper in the dungeon. Otherwise, near 100, the
       // boost ends up pushing almost everything past 100 since most equipment
       // has a lower starting depth.
-      var weight = lerpDouble(droppedDepth, 1, 100, 0.5, 0.0);
-      affixDepth -= rng.round(outOfDepth * weight);
+      var weight = MathUtils.lerpDouble(droppedDepth, 1, 100, 0.5, 0.0);
+      affixDepth -= Rng.rng.round(outOfDepth * weight);
     }
 
-    affixDepth = affixDepth.clamp(1, 100);
+    affixDepth = Mathf.Clamp(affixDepth, 1, 100);
 
     // This generates a curve that starts around 1% and slowly ramps upwards.
     var chance = 0.008 * affixDepth * affixDepth + 0.05 * affixDepth + 0.1;
@@ -48,29 +48,29 @@ class Affixes {
     // because it increases the odds of *an* affix, but not the odds of
     // multiple.
     var affixes = 0;
-    if (rng.float(100.0) < chance + affixChance) affixes++;
+    if (Rng.rng.rfloat(100.0) < chance + affixChance) affixes++;
 
     // Make dual-affix items rarer since they are more powerful (they only take
     // a single equipment slot) and also look kind of funny.
-    if (rng.float(100.0) < chance && rng.oneIn(5)) affixes++;
+    if (Rng.rng.rfloat(100.0) < chance && Rng.rng.oneIn(5)) affixes++;
 
-    if (affixes == 0) return Item(itemType, 1);
+    if (affixes == 0) return new Item(itemType, 1);
 
     var prefix = _chooseAffix(prefixes, itemType, affixDepth);
     var suffix = _chooseAffix(suffixes, itemType, affixDepth);
 
     if (affixes == 1 && prefix != null && suffix != null) {
-      if (rng.oneIn(2)) {
+      if (Rng.rng.oneIn(2)) {
         prefix = null;
       } else {
         suffix = null;
       }
     }
 
-    return Item(itemType, 1, prefix, suffix);
+    return new Item(itemType, 1, prefix, suffix);
   }
 
-  static Affix find(String name) {
+  static Affix find(string name) {
     var type = prefixes.tryFind(name);
     if (type != null) return type;
 
@@ -534,7 +534,7 @@ class Affixes {
       ..brand(Elements.spirit, resist: 2);
   }
 
-  static void defineItemTag(String tag) {
+  public static void defineItemTag(string tag) {
     prefixes.defineTags(tag);
     suffixes.defineTags(tag);
   }

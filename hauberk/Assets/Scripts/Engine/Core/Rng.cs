@@ -108,7 +108,7 @@ public class Rng {
   ///
   /// For example, `round(3.2)` has a 20% chance of returning 3, and an 80%
   /// chance of returning 4.
-  int round(double value) {
+  public int round(double value) {
     var result = Math.Floor(value);
     if ((float)(1.0) < value - result) result++;
     return (int)result;

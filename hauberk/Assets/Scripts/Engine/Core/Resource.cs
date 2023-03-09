@@ -22,7 +22,7 @@ class ResourceSet<T> where T : class {
     _add(obj, name, depth, depth, frequency, frequency, tags);
   }
 
-  void addRanged(T obj,
+  public void addRanged(T obj,
       string name = null,
       int? start = null,
       int? end = null,
@@ -62,7 +62,7 @@ class ResourceSet<T> where T : class {
   /// Given a string like "a/b/c d/e" defines tags for "a", "b", "c", "d", and
   /// "e" (if not already defined) and wires them up such that "c"'s parent is
   /// "b", "b"'s is "a", and "e"'s parent is "d".
-  void defineTags(string paths) {
+  public void defineTags(string paths) {
     foreach (var path in paths.Split(' ')) 
     {
       _Tag<T> parent = null;
@@ -81,14 +81,14 @@ class ResourceSet<T> where T : class {
   }
 
   /// Returns the resource with [name].
-  T find(string name) {
+  public T find(string name) {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     return resource.obj;
   }
 
   /// Returns the resource with [name], if any, or else `null`.
-  T tryFind(string name) {
+  public T tryFind(string name) {
     var resource = _resources[name];
     if (resource == null) return default(T);
     return resource.obj;
@@ -170,7 +170,7 @@ class ResourceSet<T> where T : class {
   /// For example, given tag path "equipment/weapon/sword", if [tags] is
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
-  T tryChooseMatching(int depth, IEnumerable<string> tags) {
+  public T tryChooseMatching(int depth, IEnumerable<string> tags) {
     var tagObjects = tags.Select((name) => {
       var tag = _tags[name];
       if (tag == null) throw new System.Exception($"Unknown tag \"{name}.");

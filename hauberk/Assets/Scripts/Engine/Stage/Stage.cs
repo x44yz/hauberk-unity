@@ -171,7 +171,7 @@ public class Stage {
 
     /// Iterates over every item on the stage and returns the item and its
     /// position.
-    void forEachItem(System.Action<Item, Vec> callback) {
+    public void forEachItem(System.Action<Item, Vec> callback) {
         foreach (var kv in _itemsByTile)
         {
             var pos = kv.Key;

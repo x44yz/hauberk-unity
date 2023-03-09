@@ -49,7 +49,7 @@ public class ItemType {
     /// The singular name of the item type: "Sword", "Scroll of Disappearing".
     ///
     /// This is used to identify the item type in drops, affixes, etc.
-    string name => Log.singular(quantifiableName);
+    public string name => Log.singular(quantifiableName);
 
     public object appearance;
 

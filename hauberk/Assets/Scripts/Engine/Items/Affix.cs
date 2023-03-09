@@ -30,7 +30,7 @@ public class Affix
   public int priceBonus;
   public double priceScale;
 
-  Affix(string name, string displayName,
+  public Affix(string name, string displayName,
       double heftScale = 1.0,
       int weightBonus = 0,
       int strikeBonus = 0,
@@ -62,7 +62,7 @@ public class Affix
     return val;
   }
 
-  void resist(Element element, int power) {
+  public void resist(Element element, int power) {
     _resists[element] = power;
   }
 
@@ -73,7 +73,7 @@ public class Affix
     return val;
   }
 
-  void setStatBonus(Stat stat, int bonus) {
+  public void setStatBonus(Stat stat, int bonus) {
     _statBonuses[stat] = bonus;
   }
 

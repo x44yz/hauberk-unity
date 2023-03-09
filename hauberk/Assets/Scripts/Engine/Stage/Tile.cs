@@ -189,7 +189,7 @@ public class Tile {
 
     bool _isExplored = false;
 
-    bool isExplored => _isExplored;
+    public bool isExplored => _isExplored;
 
     /// Marks this tile as explored if the hero can see it and hasn't previously
     /// explored it.
@@ -225,7 +225,7 @@ public class Tile {
 
     public bool isClosedDoor => type.motility == Motility.door;
 
-    TilePortal? portal => type.portal;
+    public TilePortal? portal => type.portal;
 
     public bool canEnter(Motility motility) => type.canEnter(motility);
 }

@@ -8,7 +8,13 @@ abstract class LosAction : Action {
   public Vec _lastPos;
 
     private IEnumerator<Vec> m_los = null;
-  public IEnumerator<Vec> _los => m_los ?? _initIterator();
+  public IEnumerator<Vec> _los {
+    get {
+      if (m_los == null)
+        m_los = _initIterator();
+      return m_los;
+    }
+  }
 
   /// Override this to provide the range of the line.
   int range;
