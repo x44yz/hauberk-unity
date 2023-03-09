@@ -163,4 +163,22 @@ public class CharCode
   public const int notSign = 0x00ac;
   public const int vulgarFractionOneQuarter = 0x00bc;
   public const int invertedExclamationMark = 0x00a1;
+  public const int vulgarFractionOneHalf = 0x00bd;
+  public const int latinSmallLetterAWithGrave = 0x00e0;
+  public const int latinSmallLetterAWithDiaeresis = 0x00e4;
+  public const int latinSmallLetterAWithCircumflex = 0x00e2;
+  public const int latinSmallLetterEWithGrave = 0x00e8;
+  public const int latinSmallLetterEWithDiaeresis = 0x00eb;
+  public const int latinSmallLetterEWithCircumflex = 0x00ea;
+  public const int latinSmallLetterCWithCedilla = 0x00e7;
+  public const int reversedNotSign = 0x2310;
+  public const int invertedQuestionMark = 0x00bf;
+  public const int masculineOrdinalIndicator = 0x00ba;
+  public const int feminineOrdinalIndicator = 0x00aa;
+  public const int latinCapitalLetterNWithTilde = 0x00d1;
+  public const int latinSmallLetterNWithTilde = 0x00f1;
+  public const int latinSmallLetterUWithAcute = 0x00fa;
+  public const int latinSmallLetterOWithAcute = 0x00f3;
+  public const int latinSmallLetterAWithAcute = 0x00e1;
+  public const int latinSmallLetterIWithAcute = 0x00ed;
 }

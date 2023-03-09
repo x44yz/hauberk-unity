@@ -34,18 +34,18 @@ class _BaseBuilder {
     _tossUse = use;
   }
 
-  public void destroy(Element element, int chance, int? fuel) {
+  public void destroy(Element element, int chance, int? fuel = null) {
     _destroyChance[element] = chance;
     // TODO: Per-element fuel.
     _fuel = fuel;
   }
 
-  void skill(string skill) {
+  public void skill(string skill) {
     _skills.Add(Skills.find(skill));
   }
 
-  void skills(List<string> skills) {
-    _skills.addAll(skills.map(Skills.find));
+  public void skills(List<string> skills) {
+    _skills.AddRange(skills.Select(x => Skills.find(x)));
   }
 }
 
@@ -119,7 +119,7 @@ static string[] tagEquipSlots = new string[]{
     _isTreasure = true;
   }
 
-  void twoHanded() {
+  public void twoHanded() {
     _isTwoHanded = true;
   }
 }
@@ -177,12 +177,12 @@ public static _ItemBuilder item(string name, Color color,
     _weight = weight;
   }
 
-  void weapon(int damage, int heft, Element? element) {
+  public void weapon(int damage, int heft, Element? element = null) {
     _attack = new Attack(null, _category._verb!, damage, 0, element);
     _heft = heft;
   }
 
-  void ranged(string noun,
+  public void ranged(string noun,
     int heft, int damage, int range) 
     {
     _attack = new Attack(new Noun(noun), "pierce[s]", damage, range);
@@ -198,7 +198,7 @@ public static _ItemBuilder item(string name, Color color,
     use($"Provides {amount} turns of food.", () => new EatAction(amount));
   }
 
-  void detection(List<DetectType> types, int? range) {
+  public void detection(List<DetectType> types, int? range = null) {
     // TODO: Hokey. Do something more general if more DetectTypes are added.
     var typeDescription = "exits and items";
     if (types.Count == 1) {
@@ -217,17 +217,17 @@ public static _ItemBuilder item(string name, Color color,
     use($"{description}.", () => new DetectAction(types, range));
   }
 
-  void perception(int duration = 5, int distance = 16) {
+  public void perception(int duration = 5, int distance = 16) {
     // TODO: Better description.
     use("Perceive monsters.", () => new PerceiveAction(duration, distance));
   }
 
-  void resistSalve(Element element) {
+  public void resistSalve(Element element) {
     use($"Grantes resistance to {element} for 40 turns.",
         () => new ResistAction(40, element));
   }
 
-  void mapping(int distance, bool illuminate = false) {
+  public void mapping(int distance, bool illuminate = false) {
     var description =
         "Imparts knowledge of the dungeon up to $distance steps from the hero.";
     if (illuminate) {
@@ -237,25 +237,25 @@ public static _ItemBuilder item(string name, Color color,
     use(description, () => new MappingAction(distance, illuminate: illuminate));
   }
 
-  void haste(int amount, int duration) {
+  public void haste(int amount, int duration) {
     use("Raises speed by $amount for $duration turns.",
         () => new HasteAction(amount, duration));
   }
 
-  void teleport(int distance) {
+  public void teleport(int distance) {
     use("Attempts to teleport up to $distance steps away.",
         () => new TeleportAction(distance));
   }
 
   // TODO: Take list of conditions to cure?
-  void heal(int amount, bool curePoison = false) {
+  public void heal(int amount, bool curePoison = false) {
     use("Instantly heals $amount lost health.",
         () => new HealAction(amount, curePoison: curePoison));
   }
 
   /// Sets a use and toss use that creates an expanding ring of elemental
   /// damage.
-  void ball(Element element, string noun, string verb, int damage,
+  public void ball(Element element, string noun, string verb, int damage,
       int range = 3) {
     var attack = new Attack(new Noun(noun), verb, damage, range, element);
 
@@ -266,7 +266,7 @@ public static _ItemBuilder item(string name, Color color,
   }
 
   /// Sets a use and toss use that creates a flow of elemental damage.
-  void flow(Element element, string noun, string verb, int damage,
+  public void flow(Element element, string noun, string verb, int damage,
       int range = 5, bool fly = false) {
     var attack = new Attack(new Noun(noun), verb, damage, range, element);
 
@@ -277,7 +277,7 @@ public static _ItemBuilder item(string name, Color color,
         $"Unleashes a flow of {element} that inflicts {damage} damage out to " +
         $"{range} steps from the hero.",
         () => new FlowSelfAction(attack, motility));
-    tossUse((pos) => FlowFromAction(attack, pos, motility));
+    tossUse((pos) => new FlowFromAction(attack, pos, motility));
   }
 
   public void lightSource(int level, int? range) {
