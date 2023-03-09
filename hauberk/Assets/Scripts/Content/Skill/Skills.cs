@@ -19,30 +19,30 @@ class Skills {
                 new AxeMastery(),
                 new ClubMastery(),
                 new SpearMastery(),
-                Swordfighting(),
-                WhipMastery(),
+                new Swordfighting(),
+                new WhipMastery(),
 
                 // Slays.
-                SlayDiscipline("Animals", "animal"),
-                SlayDiscipline("Bugs", "bug"),
-                SlayDiscipline("Dragons", "dragon"),
-                SlayDiscipline("Fae Folk", "fae"),
-                SlayDiscipline("Goblins", "goblin"),
-                SlayDiscipline("Humans", "human"),
-                SlayDiscipline("Jellies", "jelly"),
-                SlayDiscipline("Kobolds", "kobold"),
-                SlayDiscipline("Plants", "plant"),
-                SlayDiscipline("Saurians", "saurian"),
-                SlayDiscipline("Undead", "undead"),
+                new SlayDiscipline("Animals", "animal"),
+                new SlayDiscipline("Bugs", "bug"),
+                new SlayDiscipline("Dragons", "dragon"),
+                new SlayDiscipline("Fae Folk", "fae"),
+                new SlayDiscipline("Goblins", "goblin"),
+                new SlayDiscipline("Humans", "human"),
+                new SlayDiscipline("Jellies", "jelly"),
+                new SlayDiscipline("Kobolds", "kobold"),
+                new SlayDiscipline("Plants", "plant"),
+                new SlayDiscipline("Saurians", "saurian"),
+                new SlayDiscipline("Undead", "undead"),
 
                 // Spells.
                 // Divination.
-                SenseItems(),
+                new SenseItems(),
 
                 // Conjuring.
-                Flee(),
-                Escape(),
-                Disappear(),
+                new Flee(),
+                new Escape(),
+                new Disappear(),
 
                 // Sorcery.
                 Icicle(),

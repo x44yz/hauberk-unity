@@ -206,7 +206,7 @@ public abstract class Discipline : Skill {
 abstract class Spell : Skill {
   public override string  gainMessage(int level) => $"{1} have learned the spell {name}.";
 
-  string  discoverMessage => $"{1} are not wise enough to cast {name}.";
+  public override string discoverMessage => $"{1} are not wise enough to cast {name}.";
 
   /// Spells are not leveled.
   public override int maxLevel => 1;
