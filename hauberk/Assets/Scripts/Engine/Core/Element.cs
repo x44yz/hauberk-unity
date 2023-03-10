@@ -45,5 +45,5 @@ public class Element
         floorAction = floor ?? ((_, __, ___, ____) => null);
     }
 
-    string toString() => name;
+    string ToString() => name;
 }

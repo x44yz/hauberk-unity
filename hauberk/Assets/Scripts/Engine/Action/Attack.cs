@@ -24,5 +24,5 @@ class AttackAction : Action
 
     public override double noise => Sound.attackNoise;
 
-    string toString() => "$actor attacks $defender";
+    string ToString() => "$actor attacks $defender";
 }

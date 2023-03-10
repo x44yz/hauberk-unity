@@ -379,5 +379,5 @@ public class EventType {
     this._name = _name;
   }
 
-  string toString() => _name;
+  string ToString() => _name;
 }

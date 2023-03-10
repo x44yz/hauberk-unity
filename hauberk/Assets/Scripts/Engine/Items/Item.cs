@@ -236,7 +236,7 @@ public class Item : Noun, System.IComparable<Item>
         return clone(count);
     }
 
-    public override string toString() => nounText;
+    public override string ToString() => nounText;
 
     void _applyAffixes(System.Action<Affix> callback) {
         if (prefix != null) callback(prefix!);

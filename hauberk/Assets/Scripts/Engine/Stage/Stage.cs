@@ -266,5 +266,5 @@ public class Stage {
     /// [Sound.maxDistance].
     public double heroVolume(Vec pos) => _sound.heroVolume(pos);
 
-    double volumeBetween(Vec from, Vec to) => _sound.volumeBetween(from, to);
+    public double volumeBetween(Vec from, Vec to) => _sound.volumeBetween(from, to);
 }

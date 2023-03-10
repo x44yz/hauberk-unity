@@ -110,7 +110,7 @@ public class Breed {
 
   public string description;
 
-  Breed(string _name, Pronoun pronoun, object appearance, List<Attack> attacks, 
+  public Breed(string _name, Pronoun pronoun, object appearance, List<Attack> attacks, 
       List<Move> moves,
       Drop drop, SpawnLocation location, Motility motility,
       int depth,
@@ -220,7 +220,7 @@ public class Breed {
     }
   }
 
-  Monster spawn(Game game, Vec pos, Monster parent = null) {
+  public Monster spawn(Game game, Vec pos, Monster parent = null) {
     var generation = 1;
     if (parent != null) generation = parent.generation + 1;
 
@@ -249,7 +249,7 @@ public class Breed {
     return breeds;
   }
 
-  string toString() => name;
+  string ToString() => name;
 }
 
 // TODO: Should this affect how the monster moves during the game too?
@@ -309,6 +309,11 @@ public class BreedFlags {
 
   }
 
+  public static BreedFlags fromSet(List<string> names) {
+    var kk = new HashSet<string>(names);
+    return fromSet(kk);
+  }
+
   public static BreedFlags fromSet(HashSet<string> names) {
     //names = names.toSet();
 
@@ -327,7 +332,7 @@ public class BreedFlags {
     return flags;
   }
 
-  string toString() {
+  string ToString() {
       List<string> rt = new List<string>();
         if (berzerk) rt.Add("berzerk");
         if (cowardly) rt.Add("cowardly");

@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using num = System.Double;
+using System.Text.RegularExpressions;
 
 public static class _MBaseBuilderUtils
 {
-    public static RegExp collapseNewlines = new RegExp("\n\s*");
+    public static Regex collapseNewlines = new Regex("\n\\s*");
 
     public static Dictionary<Element, List<string>> _elementText = new Dictionary<Element, List<string>>(){
         {Elements.air, new List<string>{"the wind", "buffets"}},
@@ -83,7 +84,8 @@ public static class _MBaseBuilderUtils
     }
 
     public static void describe(string description) {
-        description = description.replaceAll(collapseNewlines, " ");
+        // description = description.replaceAll(collapseNewlines, " ");
+        description = Regex.Replace(description, collapseNewlines.ToString(), " ");
         _builder!._description = description;
     }
 }
@@ -95,10 +97,10 @@ public class _MBaseBuilder {
 
   // Default to walking.
   // TODO: Are there monsters that cannot walk?
-  Motility _motility = Motility.walk;
+  public Motility _motility = Motility.walk;
 
   // TODO: Get this working again.
-  SpawnLocation? _location;
+  public SpawnLocation? _location;
 
   /// The default speed for breeds in the current family. If the breed
   /// specifies a speed, it offsets the family's speed.
@@ -114,17 +116,17 @@ public class _MBaseBuilder {
   public List<string> _groups = new List<string>();
 
   // TODO: Make flags strongly typed here too?
-  public string? _flags;
+  public string _flags;
 
-  int? _countMin;
-  int? _countMax;
+  public int? _countMin;
+  public int? _countMax;
 
-  TileType? _stain;
+  public TileType? _stain;
 
-  int? _emanationLevel;
+  public int? _emanationLevel;
 
-  int? _vision;
-  int? _hearing;
+  public int? _vision;
+  public int? _hearing;
 
   public _MBaseBuilder(double? _frequency)
   {
@@ -267,31 +269,31 @@ public class _BreedBuilder : _MBaseBuilder {
   // TODO: Figure out some strategy for which of these parameters have defaults
   // and which don't.
 
-  void heal(num rate = 5, int amount) =>
+  void heal(num rate = 5, int amount = 0) =>
       _addMove(new HealMove(rate, amount));
 
-  void arrow(num rate = 5, int damage) =>
+  void arrow(num rate = 5, int damage = 0) =>
       _bolt("the arrow", "hits", Element.none,
           rate: rate, damage: damage, range: 8);
 
-  void whip(num rate = 5, int damage, int range = 2) =>
+  void whip(num rate = 5, int damage = 0, int range = 2) =>
       _bolt(null, "whips", Element.none,
           rate: rate, damage: damage, range: range);
 
   void bolt(Element element,
       num rate, int damage, int range) {
-    _bolt(_elementText[element]![0], _elementText[element]![1], element,
+    _bolt(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
 
-  void windBolt(num rate = 5, int damage) =>
+  void windBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.air, rate: rate, damage: damage, range: 8);
 
-  void stoneBolt(num rate = 5, int damage) =>
+  void stoneBolt(num rate = 5, int damage = 0) =>
       _bolt("the stone", "hits", Elements.earth,
           rate: rate, damage: damage, range: 8);
 
-  void waterBolt(num rate = 5, int damage) =>
+  void waterBolt(num rate = 5, int damage = 0) =>
       _bolt("the jet", "splashes", Elements.water,
           rate: rate, damage: damage, range: 8);
 
@@ -299,30 +301,30 @@ public class _BreedBuilder : _MBaseBuilder {
       _bolt("the spark", "zaps", Elements.lightning,
           rate: rate, damage: damage, range: range);
 
-  void iceBolt(num rate = 5, int damage, int range = 8) =>
+  void iceBolt(num rate = 5, int damage = 0, int range = 8) =>
       _bolt("the ice", "freezes", Elements.cold,
           rate: rate, damage: damage, range: range);
 
-  void fireBolt(num rate = 5, int damage) =>
+  void fireBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.fire, rate: rate, damage: damage, range: 8);
 
-  void lightningBolt(num rate = 5, int damage) =>
+  void lightningBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.lightning, rate: rate, damage: damage, range: 10);
 
-  void acidBolt(num rate = 5, int damage, int range = 8) =>
+  void acidBolt(num rate = 5, int damage = 0, int range = 8) =>
       bolt(Elements.acid, rate: rate, damage: damage, range: range);
 
-  void darkBolt(num rate = 5, int damage) =>
+  void darkBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.dark, rate: rate, damage: damage, range: 10);
 
-  void lightBolt(num rate = 5, int damage) =>
+  void lightBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.light, rate: rate, damage: damage, range: 10);
 
-  void poisonBolt(num rate = 5, int damage) =>
+  void poisonBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.poison, rate: rate, damage: damage, range: 8);
 
-  void cone(Element element, num? rate = null, int damage, int? range = null) {
-    _cone(_elementText[element]![0], _elementText[element]![1], element,
+  void cone(Element element, num? rate = null, int damage = 0, int? range = null) {
+    _cone(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
 
@@ -350,7 +352,7 @@ public class _BreedBuilder : _MBaseBuilder {
   void missive(Missive missive, num rate = 5) =>
       _addMove(new MissiveMove(missive, rate));
 
-  void howl(num rate = 10, int range = 10, string? verb) =>
+  void howl(num rate = 10, int range = 10, string verb = null) =>
       _addMove(new HowlMove(rate, range, verb));
 
   void haste(num rate = 5, int duration = 10, int speed = 1) =>
@@ -359,7 +361,7 @@ public class _BreedBuilder : _MBaseBuilder {
   void teleport(num rate = 10, int range = 10) =>
       _addMove(new TeleportMove(rate, range));
 
-  void spawn(num rate = 10, bool? preferStraight) =>
+  void spawn(num rate = 10, bool? preferStraight = null) =>
       _addMove(new SpawnMove(rate, preferStraight: preferStraight));
 
   void amputate(string body, string part, string message) =>
@@ -376,37 +378,40 @@ public class _BreedBuilder : _MBaseBuilder {
     rate ??= 5;
     range ??= 10;
 
-    _addMove(new ConeMove(rate, new Attack(new Noun(noun), verb, damage, range, element)));
+    _addMove(new ConeMove(rate.Value, new Attack(new Noun(noun), verb, damage, range.Value, element)));
   }
 
   void _addMove(Move move) {
     _moves.Add(move);
   }
 
+  public _FamilyBuilder _family => _MBaseBuilderUtils._family;
+
   public Breed build() {
-    var flags = {
-      // TODO: Use ?. and ...?.
-      if (_family._flags != null) ..._family._flags!.split(" "),
-      if (_flags != null) ..._flags!.split(" "),
-    };
+    List<string> flags = new List<string>(){};
+    // TODO: Use ?. and ...?.
+    if (_family._flags != null)
+        flags.AddRange(_family._flags!.Split(' '));
+    if (_flags != null)
+        flags.AddRange(_flags!.Split(' '));
 
     var dodge = _dodge ?? _family._dodge;
-    if (flags.contains("immobile")) dodge = 0;
+    if (flags.Contains("immobile")) dodge = 0;
 
-    Spawn? minions;
-    if (_minions.length == 1) {
+    Spawn? minions = null;
+    if (_minions.Count == 1) {
       minions = _minions[0];
-    } else if (_minions.length > 1) {
-      minions = spawnAll(_minions);
+    } else if (_minions.Count > 1) {
+      minions = SpawnUtils.spawnAll(_minions);
     }
 
-    var breed = Breed(
+    var breed = new Breed(
         _name,
         _pronoun ?? Pronoun.it,
         _appearance,
         _attacks,
         _moves,
-        dropAllOf(_drops),
+        DropUtils.dropAllOf(_drops),
         _location ?? _family._location ?? SpawnLocation.anywhere,
         _family._motility | _motility,
         depth: _depth,
@@ -425,11 +430,11 @@ public class _BreedBuilder : _MBaseBuilder {
         flags: BreedFlags.fromSet(flags),
         description: _description);
 
-    breed.defenses.addAll(_family._defenses);
-    breed.defenses.addAll(_defenses);
+    breed.defenses.AddRange(_family._defenses);
+    breed.defenses.AddRange(_defenses);
 
-    breed.groups.addAll(_family._groups);
-    breed.groups.addAll(_groups);
+    breed.groups.AddRange(_family._groups);
+    breed.groups.AddRange(_groups);
 
     return breed;
   }

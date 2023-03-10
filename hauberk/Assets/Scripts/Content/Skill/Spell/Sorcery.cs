@@ -57,7 +57,7 @@ class FireBarrier : Spell {
 
   Action onGetTargetAction(Game game, int level, Vec target) {
     var attack = new Attack(new Noun("the fire"), "burn", damage, range, Elements.fire);
-    return new BarrierAction(game.hero.pos, target, attack.createHit());
+    return BarrierAction.create(game.hero.pos, target, attack.createHit());
   }
 }
 

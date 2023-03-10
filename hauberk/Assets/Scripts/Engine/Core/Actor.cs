@@ -328,5 +328,5 @@ public abstract class Actor : Noun
     game.log.message(message, noun1, noun2, noun3);
   }
 
-  public override string toString() => nounText;
+  public override string ToString() => nounText;
 }

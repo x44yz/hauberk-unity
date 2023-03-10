@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// Creates a swath of damage that radiates out from a point.
-class BarrierAction : Action {
+public class BarrierAction : Action {
   /// The center of the barrier.
   public Vec _center;
 
@@ -47,7 +47,7 @@ class BarrierAction : Action {
     return new BarrierAction(to, h, v, hit);
   }
 
-  BarrierAction(Vec _center, double _h, double _v, Hit _hit)
+  public BarrierAction(Vec _center, double _h, double _v, Hit _hit)
   {
       this._center = _center;
       this._h = _h;

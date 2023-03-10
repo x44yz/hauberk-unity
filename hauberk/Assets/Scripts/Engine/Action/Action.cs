@@ -20,7 +20,7 @@ public abstract class Action
   // always have an actor. It's only a few like burning floors that don't.
   public Actor actor => _actor;
 
-  Monster monster => _actor as Monster;
+  public Monster monster => _actor as Monster;
 
   public Hero hero => _actor as Hero;
 

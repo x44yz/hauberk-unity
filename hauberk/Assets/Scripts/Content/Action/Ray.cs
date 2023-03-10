@@ -154,7 +154,7 @@ class RingFromAction : Action {
   public Attack _attack;
   public Vec _pos;
 
-  RingFromAction(Attack _attack, Vec _pos)
+  public RingFromAction(Attack _attack, Vec _pos)
   {
     this._attack = _attack;
     this._pos = _pos;

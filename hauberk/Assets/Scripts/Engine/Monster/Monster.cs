@@ -47,7 +47,7 @@ public class Monster : Actor {
 
   public bool isAfraid => _state is AfraidState;
 
-  bool isAsleep => _state is AsleepState;
+  public bool isAsleep => _state is AsleepState;
 
   public bool isAwake => _state is AwakeState;
 
@@ -133,7 +133,7 @@ public class Monster : Actor {
   ///
   /// Does not take into account if there are other [Actor]s between the monster
   /// and the target.
-  bool canView(Vec target) {
+  public bool canView(Vec target) {
     // Walk to the target.
     foreach (var step in new Line(pos, target)) {
       if (step == target) return true;
@@ -147,7 +147,7 @@ public class Monster : Actor {
   ///
   /// Does take into account if there are other [Actor]s between the monster
   /// and the target.
-  bool canTarget(Vec target) {
+  public bool canTarget(Vec target) {
     // Walk to the target.
     foreach (var step in new Line(pos, target)) {
       if (step == target) return true;
@@ -312,7 +312,7 @@ public class Monster : Actor {
   }
 
   /// Adds an audible signal at [volume] to the monster's alertness.
-  void hear(double volume) {
+  public void hear(double volume) {
     _alertness += volume * breed.hearing;
     _alertness = Mathf.Clamp((float)_alertness, 0.0f, _maxAlertness);
   }

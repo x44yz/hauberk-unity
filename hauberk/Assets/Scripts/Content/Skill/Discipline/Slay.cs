@@ -13,7 +13,7 @@ class SlayDiscipline : Discipline {
   public override string description => "TODO: Implement description.";
 
   public override string discoverMessage =>
-      "{1} are eager to learn to slay ${_displayName.toLowerCase()}.";
+      $"{1} are eager to learn to slay {_displayName.ToLower()}.";
 
   public override string name => $"Slay {_displayName}";
 

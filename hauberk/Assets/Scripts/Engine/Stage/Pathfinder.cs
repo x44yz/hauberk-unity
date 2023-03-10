@@ -24,7 +24,7 @@ class Path {
     this.cost = cost;
   }
 
-  string toString() => "$startDirection pos:$pos cost:$cost";
+  string ToString() => "$startDirection pos:$pos cost:$cost";
 }
 
 /// An abstract class encapsulating the core A* search algorithm.

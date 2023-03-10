@@ -45,7 +45,7 @@ abstract class _OpenTileAction : Action {
 
 /// Open a barrel and place its drops.
 class OpenBarrelAction : _OpenTileAction {
-  OpenBarrelAction(Vec pos) : base(pos)
+  public OpenBarrelAction(Vec pos) : base(pos)
   {
   }
 
@@ -63,7 +63,7 @@ class OpenBarrelAction : _OpenTileAction {
 
 /// Open a chest and place its drops.
 class OpenChestAction : _OpenTileAction {
-  OpenChestAction(Vec pos) : base(pos)
+  public OpenChestAction(Vec pos) : base(pos)
   {
 
   }

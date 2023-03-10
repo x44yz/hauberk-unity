@@ -21,7 +21,7 @@ public abstract class Move {
   /// The experience gained by killing a [Monster] with this move.
   ///
   /// This should take the power of the move into account, but not its rate.
-  public num experience;
+  public virtual num experience => 0.0;
 
   public Move(num rate)
   {
@@ -30,11 +30,11 @@ public abstract class Move {
 
   /// Returns `true` if the monster would reasonably perform this move right
   /// now during its turn.
-  public bool shouldUse(Monster monster) => true;
+  public virtual bool shouldUse(Monster monster) => true;
 
   /// Returns `true` if the monster would reasonably perform this move in
   /// response to taking [damage].
-  public bool shouldUseOnDamage(Monster monster, int damage) => false;
+  public virtual bool shouldUseOnDamage(Monster monster, int damage) => false;
 
   /// Called when the [Monster] has selected this move. Returns an [Action] that
   /// performs the move.
@@ -56,7 +56,7 @@ abstract class RangedMove : Move {
 
   public override int range => attack.range;
 
-  RangedMove(num rate, Attack attack) 
+  public RangedMove(num rate, Attack attack) 
     : base(rate)
   {
     this.attack = attack;

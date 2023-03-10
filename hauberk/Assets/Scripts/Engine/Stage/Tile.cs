@@ -64,7 +64,7 @@ public class Motility {
 
     public bool overlaps(Motility other) => (_bitMask & other._bitMask) != 0;
 
-    string toString() => _bitMask.ToString();
+    string ToString() => _bitMask.ToString();
 }
 
 /// Enum-like class for tiles that transport the hero: dungeon entrance, exit,
@@ -77,7 +77,7 @@ public class TilePortal {
     this.name = name;
   }
 
-  string  toString() => name;
+  string  ToString() => name;
 }
 
 public class TileType {

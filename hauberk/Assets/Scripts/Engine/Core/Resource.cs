@@ -96,7 +96,7 @@ public class ResourceSet<T> where T : class {
 
   /// Returns whether the resource with [name] has [tagName] as one of its
   /// immediate tags or one of their parents.
-  bool hasTag(string name, string tagName) {
+  public bool hasTag(string name, string tagName) {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
 
@@ -316,7 +316,7 @@ public class _Tag<T> {
     return false;
   }
 
-  string toString() {
+  string ToString() {
     if (parent == null) return name;
     return $"{parent}/{name}";
   }
@@ -343,7 +343,7 @@ public class _QueryKey {
     return !(a == other);
   }
 
-  public string toString() => $"{name} ({depth})";
+  public string ToString() => $"{name} ({depth})";
 }
 
 /// A stored query that let us quickly choose a random weighted resource for
@@ -401,7 +401,7 @@ public class _ResourceQuery<T> where T : class {
   }
 
   void dump(_QueryKey key) {
-    DartUtils.print(key.toString());
+    DartUtils.print(key.ToString());
     for (var i = 0; i < resources.Count; i++) {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];

@@ -206,7 +206,7 @@ public class VecBase
     /// coordinate translated by [y].
     Vec offsetY(int y) => new Vec(x, this.y + y);
 
-    string toString() => $"{x}, {y}";
+    string ToString() => $"{x}, {y}";
 }
 
 /// A two-dimensional point.
