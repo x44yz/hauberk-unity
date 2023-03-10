@@ -30,12 +30,12 @@ public static class _MBaseBuilderUtils
     public static _FamilyBuilder _family;
 
     public static _FamilyBuilder family(string character,
-        double? frequency,
-        int? meander,
-        int? speed,
-        int? dodge,
-        int? tracking,
-        string? flags) 
+        double? frequency = null,
+        int? meander = null,
+        int? speed = null,
+        int? dodge = null,
+        int? tracking = null,
+        string flags = null) 
     {
         finishBreed();
 
@@ -71,7 +71,7 @@ public static class _MBaseBuilderUtils
 
     // TODO: Move more named params into builder methods?
     public static _BreedBuilder breed(string name, int depth, Color color, int health,
-        double? frequency, int speed = 0, int? dodge = null, int? meander = null) {
+        double? frequency = null, int speed = 0, int? dodge = null, int? meander = null) {
         finishBreed();
 
         var glyph = new Glyph(_family._character, color);
@@ -133,12 +133,12 @@ public class _MBaseBuilder {
     this._frequency = _frequency;
   }
 
-  void flags(string flags) {
+  public void flags(string flags) {
     // TODO: Allow negated flags.
     _flags = flags;
   }
 
-  void emanate(int level) {
+  public void emanate(int level) {
     _emanationLevel = level;
   }
 
@@ -147,15 +147,15 @@ public class _MBaseBuilder {
     _hearing = hear;
   }
 
-  void preferWall() {
+  public void preferWall() {
     _location = SpawnLocation.wall;
   }
 
-  void preferCorner() {
+  public void preferCorner() {
     _location = SpawnLocation.corner;
   }
 
-  void preferOpen() {
+  public void preferOpen() {
     _location = SpawnLocation.open;
   }
 
@@ -170,27 +170,27 @@ public class _MBaseBuilder {
     }
   }
 
-  void stain(TileType type) {
+  public void stain(TileType type) {
     _stain = type;
   }
 
-  void fly() {
+  public void fly() {
     _motility |= Motility.fly;
   }
 
-  void swim() {
+  public void swim() {
     _motility |= Motility.swim;
   }
 
-  void openDoors() {
+  public void openDoors() {
     _motility |= Motility.door;
   }
 
-  void defense(int amount, string message) {
+  public void defense(int amount, string message) {
     _defenses.Add(new Defense(amount, message));
   }
 
-  void groups(string names) {
+  public void groups(string names) {
     _groups.AddRange(names.Split(' '));
   }
 }
@@ -258,25 +258,25 @@ public class _BreedBuilder : _MBaseBuilder {
     _drops.Add(drop);
   }
 
-  void he() {
+  public void he() {
     _pronoun = Pronoun.he;
   }
 
-  void she() {
+  public void she() {
     _pronoun = Pronoun.she;
   }
 
   // TODO: Figure out some strategy for which of these parameters have defaults
   // and which don't.
 
-  void heal(num rate = 5, int amount = 0) =>
+  public void heal(num rate = 5, int amount = 0) =>
       _addMove(new HealMove(rate, amount));
 
-  void arrow(num rate = 5, int damage = 0) =>
+  public void arrow(num rate = 5, int damage = 0) =>
       _bolt("the arrow", "hits", Element.none,
           rate: rate, damage: damage, range: 8);
 
-  void whip(num rate = 5, int damage = 0, int range = 2) =>
+  public void whip(num rate = 5, int damage = 0, int range = 2) =>
       _bolt(null, "whips", Element.none,
           rate: rate, damage: damage, range: range);
 
@@ -286,44 +286,44 @@ public class _BreedBuilder : _MBaseBuilder {
         rate: rate, damage: damage, range: range);
   }
 
-  void windBolt(num rate = 5, int damage = 0) =>
+  public void windBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.air, rate: rate, damage: damage, range: 8);
 
-  void stoneBolt(num rate = 5, int damage = 0) =>
+  public void stoneBolt(num rate = 5, int damage = 0) =>
       _bolt("the stone", "hits", Elements.earth,
           rate: rate, damage: damage, range: 8);
 
-  void waterBolt(num rate = 5, int damage = 0) =>
+  public void waterBolt(num rate = 5, int damage = 0) =>
       _bolt("the jet", "splashes", Elements.water,
           rate: rate, damage: damage, range: 8);
 
-  void sparkBolt(num rate, int damage, int range = 6) =>
+  public void sparkBolt(num rate, int damage, int range = 6) =>
       _bolt("the spark", "zaps", Elements.lightning,
           rate: rate, damage: damage, range: range);
 
-  void iceBolt(num rate = 5, int damage = 0, int range = 8) =>
+  public void iceBolt(num rate = 5, int damage = 0, int range = 8) =>
       _bolt("the ice", "freezes", Elements.cold,
           rate: rate, damage: damage, range: range);
 
-  void fireBolt(num rate = 5, int damage = 0) =>
+  public void fireBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.fire, rate: rate, damage: damage, range: 8);
 
-  void lightningBolt(num rate = 5, int damage = 0) =>
+  public void lightningBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.lightning, rate: rate, damage: damage, range: 10);
 
-  void acidBolt(num rate = 5, int damage = 0, int range = 8) =>
+  public void acidBolt(num rate = 5, int damage = 0, int range = 8) =>
       bolt(Elements.acid, rate: rate, damage: damage, range: range);
 
-  void darkBolt(num rate = 5, int damage = 0) =>
+  public void darkBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.dark, rate: rate, damage: damage, range: 10);
 
-  void lightBolt(num rate = 5, int damage = 0) =>
+  public void lightBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.light, rate: rate, damage: damage, range: 10);
 
   void poisonBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.poison, rate: rate, damage: damage, range: 8);
 
-  void cone(Element element, num? rate = null, int damage = 0, int? range = null) {
+  public void cone(Element element, num? rate = null, int damage = 0, int? range = null) {
     _cone(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
@@ -331,40 +331,40 @@ public class _BreedBuilder : _MBaseBuilder {
   void windCone(num rate, int damage, int? range) =>
       cone(Elements.air, rate: rate, damage: damage, range: range);
 
-  void fireCone(num rate, int damage, int? range) =>
+  public void fireCone(num rate, int damage, int? range = null) =>
       cone(Elements.fire, rate: rate, damage: damage, range: range);
 
-  void iceCone(num rate, int damage, int? range) =>
+  public void iceCone(num rate, int damage, int? range = null) =>
       cone(Elements.cold, rate: rate, damage: damage, range: range);
 
-  void lightningCone(num rate, int damage, int? range) =>
+  public void lightningCone(num rate, int damage, int? range = null) =>
       cone(Elements.lightning, rate: rate, damage: damage, range: range);
 
-  void lightCone(num rate, int damage, int? range) =>
+  public void lightCone(num rate, int damage, int? range = null) =>
       cone(Elements.light, rate: rate, damage: damage, range: range);
 
-  void darkCone(num rate, int damage, int? range) =>
+  public void darkCone(num rate, int damage, int? range = null) =>
       cone(Elements.dark, rate: rate, damage: damage, range: range);
 
   void waterCone(num rate, int damage, int? range) =>
       cone(Elements.water, rate: rate, damage: damage, range: range);
 
-  void missive(Missive missive, num rate = 5) =>
+  public void missive(Missive missive, num rate = 5) =>
       _addMove(new MissiveMove(missive, rate));
 
-  void howl(num rate = 10, int range = 10, string verb = null) =>
+  public void howl(num rate = 10, int range = 10, string verb = null) =>
       _addMove(new HowlMove(rate, range, verb));
 
-  void haste(num rate = 5, int duration = 10, int speed = 1) =>
+  public void haste(num rate = 5, int duration = 10, int speed = 1) =>
       _addMove(new HasteMove(rate, duration, speed));
 
-  void teleport(num rate = 10, int range = 10) =>
+  public void teleport(num rate = 10, int range = 10) =>
       _addMove(new TeleportMove(rate, range));
 
-  void spawn(num rate = 10, bool? preferStraight = null) =>
+  public void spawn(num rate = 10, bool? preferStraight = null) =>
       _addMove(new SpawnMove(rate, preferStraight: preferStraight));
 
-  void amputate(string body, string part, string message) =>
+  public void amputate(string body, string part, string message) =>
       _addMove(new AmputateMove(new BreedRef(body), new BreedRef(part), message));
 
   void _bolt(string? noun, string verb, Element element,

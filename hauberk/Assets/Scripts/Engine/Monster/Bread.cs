@@ -10,7 +10,7 @@ using System.Text;
 class BreedRef {
   public static List<BreedRef> _unresolved = new List<BreedRef>();
 
-  static void resolve(Func<string, Breed> resolver) {
+  public static void resolve(Func<string, Breed> resolver) {
     foreach (var _ref in _unresolved) {
       _ref._breed = resolver(_ref._name);
     }
