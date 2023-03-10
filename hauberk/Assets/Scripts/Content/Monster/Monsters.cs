@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class Monsters {
   public static ResourceSet<Breed> breeds = new ResourceSet<Breed>();
 
-  static void initialize() {
+  public static void initialize() {
     // Define the tag path and store the leaf tag which is what gets used by
     // the item types.
     var groups = new string[]{

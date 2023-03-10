@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class Items {
     public static ResourceSet<ItemType> types = new ResourceSet<ItemType>();
 
-  static void initialize() {
+  public static void initialize() {
     types.defineTags("item");
 
     litter();

@@ -10,7 +10,7 @@ public class Shop {
 
     public string name;
 
-    Shop(string name, Drop _drop)
+    public Shop(string name, Drop _drop)
     {
         this.name = name;
         this._drop = _drop;

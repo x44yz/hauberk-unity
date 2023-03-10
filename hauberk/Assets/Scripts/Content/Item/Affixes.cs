@@ -84,7 +84,7 @@ class Affixes {
     return affixes.tryChooseMatching(depth, Items.types.getTags(itemType.name));
   }
 
-  static void initialize() {
+  public static void initialize() {
     _elven();
     _dwarven();
     _resists();
