@@ -20,9 +20,9 @@ class BreedRef {
 
   public string _name;
   public Breed _breed;
-  Breed breed => _breed;
+  public Breed breed => _breed;
 
-  BreedRef(string name) {
+  public BreedRef(string name) {
     this._name = name;
     _unresolved.Add(this);
   }

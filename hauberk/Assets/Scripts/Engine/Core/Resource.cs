@@ -114,7 +114,7 @@ public class ResourceSet<T> where T : class {
     return resource._tags.ToList().Select(tag => tag.name);
   }
 
-  bool tagExists(string tagName) => _tags.ContainsKey(tagName);
+  public bool tagExists(string tagName) => _tags.ContainsKey(tagName);
 
   /// Chooses a random resource in [tag] for [depth].
   ///
