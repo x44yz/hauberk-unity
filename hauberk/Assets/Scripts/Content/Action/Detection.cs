@@ -106,6 +106,6 @@ class DetectAction : Action {
     var distances = distanceMap.Keys.ToList();
     distances.Sort((a, b) => b.CompareTo(a));
 
-    return distances.Map((distance) => distanceMap[distance]!).toList();
+    return distances.Select((distance) => distanceMap[distance]!).ToList();
   }
 }
