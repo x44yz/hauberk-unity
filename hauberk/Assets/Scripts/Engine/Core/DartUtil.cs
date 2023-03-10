@@ -111,7 +111,7 @@ public class Color {
 class Glyph {
   /// The empty glyph: a clear glyph using the default background color
   /// [Color.BLACK].
-  public static Glyph clear = new Glyph(CharCode.Space);
+  public static Glyph clear = new Glyph(CharCode.space);
 
   public int _char;
   public Color fore;
@@ -181,4 +181,13 @@ public class CharCode
   public const int latinSmallLetterOWithAcute = 0x00f3;
   public const int latinSmallLetterAWithAcute = 0x00e1;
   public const int latinSmallLetterIWithAcute = 0x00ed;
+  public const int latinSmallLetterIWithGrave = 0x00ec;
+  public const int latinCapitalLetterEWithAcute = 0x00c9;
+  public const int latinSmallLetterOWithCircumflex = 0x00f4;
+  public const int latinSmallLetterOWithDiaeresis = 0x00f6;
+  public const int latinSmallLetterOWithGrave = 0x00f2;
+  public const int latinCapitalLetterAe = 0x00c6;
+  public const int latinCapitalLetterAWithRingAbove = 0x00c5;
+  public const int latinSmallLetterAe = 0x00e6;
+  public const int latinCapitalLetterAWithDiaeresis = 0x00c4;
 }

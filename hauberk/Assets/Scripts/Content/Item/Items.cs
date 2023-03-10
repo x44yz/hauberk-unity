@@ -31,6 +31,6 @@ public partial class Items {
     // CharCode.latinSmallLetterIWithDiaeresis // ring
     // CharCode.latinSmallLetterIWithCircumflex // wand
 
-    finishItem();
+    _ItemBuilder.finishItem();
   }
 }

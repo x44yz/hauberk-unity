@@ -45,11 +45,11 @@ class Skills {
                 new Disappear(),
 
                 // Sorcery.
-                Icicle(),
-                BrilliantBeam(),
-                Windstorm(),
-                FireBarrier(),
-                TidalWave(),
+                new Icicle(),
+                new BrilliantBeam(),
+                new Windstorm(),
+                new FireBarrier(),
+                new TidalWave(),
             };
         }
         return m_all;

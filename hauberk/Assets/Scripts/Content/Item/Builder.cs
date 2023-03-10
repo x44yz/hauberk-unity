@@ -167,12 +167,12 @@ public static _ItemBuilder item(string name, Color color,
     _maxDepth = to ?? Option.maxDepth;
   }
 
-  void defense(int amount, string message) {
+  public void defense(int amount, string message) {
     DartUtils.assert(_defense == null);
     _defense = new Defense(amount, message);
   }
 
-  void armor(int armor, int? weight) {
+  public void armor(int armor, int? weight = null) {
     _armor = armor;
     _weight = weight;
   }
