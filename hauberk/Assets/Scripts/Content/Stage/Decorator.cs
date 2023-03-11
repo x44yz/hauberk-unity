@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-class Decorator {
+public class Decorator {
   public Architect _architect;
   public Vec _heroPos;
 
@@ -45,7 +46,7 @@ class Decorator {
     _paintTiles();
 
     // TODO: Should this happen before or after painting?
-    yield* _placeDecor();
+    rt.AddRange(_placeDecor());
 
     // Place stairs.
     // TODO: Choose more interesting places for them.
@@ -69,8 +70,10 @@ class Decorator {
     // monsters, the hero can end up surrounded by monsters.
     _heroPos = _stage.findOpenTile();
 
-    yield* _spawnMonsters();
-    yield* _dropItems();
+    rt.AddRange(_spawnMonsters());
+    rt.AddRange(_dropItems());
+
+    return rt;
   }
 
   /// Marks doorway tiles on the endpoints of passages.
@@ -116,7 +119,7 @@ class Decorator {
 
       foreach (var neighbor in doorway.cardinalNeighbors) {
         if (_stage[neighbor].type == Tiles.doorway) {
-          _stage[rng.oneIn(2) ? doorway : neighbor].type = Tiles.passage;
+          _stage[Rng.rng.oneIn(2) ? doorway : neighbor].type = Tiles.passage;
         }
       }
     }
@@ -125,37 +128,39 @@ class Decorator {
   /// Turn the temporary tiles into real tiles based on each architecutre's
   /// painters.
   void _paintTiles() {
-    foreach (var entry in _tilesByArchitecture.entries) {
-      var architecture = entry.key;
+    foreach (var entry in _tilesByArchitecture) {
+      var architecture = entry.Key;
       var paintStyle = PaintStyle.rock;
       if (architecture != null) {
         paintStyle = architecture.paintStyle;
       }
 
-      var painter = Painter(this, _architect, architecture);
-      for (var pos in entry.value) {
+      var painter = new Painter(this, _architect, architecture);
+      foreach (var pos in entry.Value) {
         painter.setTile(pos, paintStyle.paintTile(painter, pos));
       }
     }
   }
 
-  public Iterable<string> _placeDecor() sync* {
-    for (var entry in _tilesByArchitecture.entries) {
-      var architecture = entry.key;
+  public IEnumerable<string> _placeDecor() {
+    var rt = new List<string>();
+
+    foreach (var entry in _tilesByArchitecture) {
+      var architecture = entry.Key;
       if (architecture == null) continue;
 
       // Shuffle the tiles so that when we pick the first matching tile, it
       // isn't biased.
-      var tiles = entry.value.toList();
-      rng.shuffle(tiles);
+      var tiles = entry.Value.ToList();
+      Rng.rng.shuffle(tiles);
 
       // TODO: Let the paint style affect the decor too. So, for example, the
       // decor places a table and the paint style changes the material of it.
-      var painter = Painter(this, _architect, architecture);
+      var painter = new Painter(this, _architect, architecture);
 
       var decorTiles =
-          rng.round(tiles.length * architecture.style.decorDensity);
-      decorTiles = rng.float(decorTiles * 0.8, decorTiles * 1.2).ceil();
+          Rng.rng.round(tiles.Count * architecture.style.decorDensity);
+      decorTiles = Mathf.CeilToInt((float)Rng.rng.rfloat(decorTiles * 0.8, decorTiles * 1.2));
 
       var tries = 0;
       while (tries++ < decorTiles && painter.paintedCount < decorTiles) {
@@ -163,7 +168,7 @@ class Decorator {
             Decor.choose(_architect.depth, architecture.style.decorTheme);
         if (decor == null) continue;
 
-        for (var i = 0; i < tiles.length; i++) {
+        for (var i = 0; i < tiles.Count; i++) {
           var tile = tiles[i];
           if (!decor.canPlace(painter, tile)) continue;
 
@@ -173,56 +178,59 @@ class Decorator {
           // often. In particular, this avoids problems in cases where a decor
           // can be placed on top of itself (like moss) and where it would keep
           // hitting the same tile over and over.
-          var j = rng.range(i, tiles.length);
+          var j = Rng.rng.range(i, tiles.Count);
           tiles[i] = tiles[j];
           tiles[j] = tile;
 
-          yield "Placed decor";
+          rt.Add("Placed decor");
           break;
         }
       }
     }
+    return rt;
   }
 
-  public Iterable<string> _spawnMonsters() sync* {
+  public IEnumerable<string> _spawnMonsters() {
+    var rt = new List<string>();
+
     // Let the architectures that control their own monsters go.
-    var spawned = <Architecture>{};
-    for (var architecture in _tilesByArchitecture.keys) {
+    var spawned = new List<Architecture>{};
+    foreach (var architecture in _tilesByArchitecture.Keys.ToList()) {
       if (architecture == null) continue;
 
-      var painter = Painter(this, _architect, architecture);
+      var painter = new Painter(this, _architect, architecture);
       if (architecture.spawnMonsters(painter)) {
-        spawned.add(architecture);
+        spawned.Add(architecture);
       }
     }
 
     // Build a density map for where monsters should spawn.
-    var densityMap = DensityMap(_stage.width, _stage.height);
+    var densityMap = new DensityMap(_stage.width, _stage.height);
     Debug.densityMap = densityMap;
 
-    var flow = MotilityFlow(_stage, _heroPos, Motility.all, avoidActors: false);
+    var flow = new MotilityFlow(_stage, _heroPos, Motility.all, avoidActors: false);
 
-    for (var pos in _stage.bounds.inflate(-1)) {
+    foreach (var pos in _stage.bounds.inflate(-1)) {
       var architecture = _architect.ownerAt(pos);
       if (architecture == null) continue;
-      if (spawned.contains(architecture)) continue;
+      if (spawned.Contains(architecture)) continue;
 
       var distance = flow.costAt(pos);
       if (distance == null) continue;
       if (distance < 10) continue;
 
-      var density = 4 + math.sqrt(distance - 10);
-      densityMap[pos] = (density * architecture.style.monsterDensity).toInt();
+      var density = 4 + Math.Sqrt(distance.Value - 10);
+      densityMap[pos] = (int)(density * architecture.style.monsterDensity);
     }
 
     // Try spawn as many monsters as needed to reach a total experience value
     // based on the number of open tiles. (In other words, each tile the player
     // explores nets some average expected amount of experience.)
-    var experiencePerTile = 2.0 + math.pow(_architect.depth - 1, 2.0) * 0.2;
+    var experiencePerTile = 2.0 + Math.Pow(_architect.depth - 1, 2.0) * 0.2;
     var goalExperience = densityMap.possibleTiles * experiencePerTile;
 
     // Add some randomness so some stages are worth more than others.
-    goalExperience += rng.float(goalExperience * 0.2);
+    goalExperience += Rng.rng.rfloat(goalExperience * 0.2);
 
     var totalExperience = 0;
 
@@ -236,7 +244,7 @@ class Decorator {
       // group. That way, there is some bleed and foreshadowing between
       // architectures.
       var architecture = _architect.ownerAt(pos)!;
-      var group = rng.item(architecture.style.monsterGroups);
+      var group = Rng.rng.item(architecture.style.monsterGroups);
       var breed = Monsters.breeds.tryChoose(_architect.depth, tag: group)!;
 
       // Don't place a breed whose motility doesn't match the tile.
@@ -246,18 +254,20 @@ class Decorator {
       if (!_canSpawn(breed)) continue;
 
       var experience = _spawnMonster(densityMap, pos, breed);
-      yield "Spawned monster";
+      rt.Add("Spawned monster");
 
       totalExperience += experience;
     }
 
     Debug.densityMap = null;
+
+    return rt;
   }
 
-  Breed chooseBreed(int depth, {string? tag, bool? includeParentTags}) {
+  Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
     while (true) {
       var breed = Monsters.breeds
-          .tryChoose(depth, tag: tag, includeParents: includeParentTags)!;
+          .tryChoose(depth, tag: tag, includeParents: includeParentTags.Value)!;
 
       if (_canSpawn(breed)) return breed;
     }
@@ -267,10 +277,10 @@ class Decorator {
   ///
   /// Returns `false` if [breed] is a unique that's already been killed or
   /// spawned.
-  bool _canSpawn(Breed breed) {
+  public bool _canSpawn(Breed breed) {
     if (!breed.flags.unique) return true;
     if (_architect.lore.slain(breed) > 0) return false;
-    if (_spawnedUniques.contains(breed)) return false;
+    if (_spawnedUniques.Contains(breed)) return false;
 
     return true;
   }
@@ -280,14 +290,14 @@ class Decorator {
   }
 
   int _spawnMonster(DensityMap? density, Vec pos, Breed breed) {
-    var isCorpse = !breed.flags.unique && rng.oneIn(10);
+    var isCorpse = !breed.flags.unique && Rng.rng.oneIn(10);
 
     var experience = 0;
     void spawn(Breed breed, Vec pos) {
       if (_architect.stage.actorAt(pos) != null) return;
       if (!_canSpawn(breed)) return;
 
-      if (breed.flags.unique) _spawnedUniques.add(breed);
+      if (breed.flags.unique) _spawnedUniques.Add(breed);
 
       if (isCorpse) {
         _architect.stage.placeDrops(pos, breed.motility, breed.drop);
@@ -314,12 +324,12 @@ class Decorator {
     // TODO: Hack. Flow doesn't include the starting tile, so handle it here.
     spawn(breeds[0], pos);
 
-    for (var breed in breeds.skip(1)) {
+    foreach (var b in breeds.Skip(1)) {
       // TODO: Hack. Need to create a new flow each iteration because it doesn't
       // handle actors being placed while the flow is being used -- it still
       // thinks those tiles are available. Come up with a better way to place
       // the monsters.
-      var flow = new MotilityFlow(_architect.stage, pos, breed.motility);
+      var flow = new MotilityFlow(_architect.stage, pos, b.motility);
 
       // TODO: Ideally, this would follow the location preference of the breed
       // too, even for minions of different breeds.
@@ -329,7 +339,7 @@ class Decorator {
       // If there are no open tiles, discard the remaining monsters.
       if (here == new Vec(-1, -1)) break;
 
-      spawn(breed, here);
+      spawn(b, here);
     }
 
     return experience;
@@ -354,15 +364,15 @@ class Decorator {
 //    }
 //  }
 
-  Iterable<string> _dropItems() sync* {
+  IEnumerable<string> _dropItems() {
     // Build a density map for where items should drop.
-    var densityMap = DensityMap(_stage.width, _stage.height);
+    var densityMap = new DensityMap(_stage.width, _stage.height);
     Debug.densityMap = densityMap;
 
-    var flow = MotilityFlow(_stage, _heroPos, Motility.doorAndWalk,
+    var flow = new MotilityFlow(_stage, _heroPos, Motility.doorAndWalk,
         avoidActors: false);
 
-    for (var pos in _stage.bounds.inflate(-1)) {
+    foreach (var pos in _stage.bounds.inflate(-1)) {
       var architecture = _architect.ownerAt(pos);
       if (architecture == null) continue;
 
@@ -375,10 +385,10 @@ class Decorator {
       // TODO: Increase density in an area right around the hero so there's a
       // chance of finding something as soon as they show up.
 
-      var density = 10 + math.sqrt(distance + 1);
+      var density = 10 + Math.Sqrt(distance.Value + 1);
       // TODO: Increase density if we go past articulation points, secret doors,
       // strong monsters, etc.
-      densityMap[pos] = (density * architecture.style.itemDensity).toInt();
+      densityMap[pos] = (int)(density * architecture.style.itemDensity);
     }
 
     // Try to drop as many items as needed to reach a total price value based
@@ -425,46 +435,60 @@ class DensityMap {
   public Array2D<int> _density;
   int _total = 0;
 
-  DensityMap(int width, int height) : _density = Array2D(width, height, 0);
+  public DensityMap(int width, int height) {
 
-  int operator [](Vec pos) => _density[pos];
+    _density = new Array2D<int>(width, height, 0);
+  } 
 
-  void operator []=(Vec pos, int value) {
-    var old = _density[pos];
-    _total = _total - old + value;
-    _density[pos] = value;
+  public int this[Vec pos] 
+  {
+    get { return _density[pos]; }
+    set { 
+          var old = _density[pos];
+      _total = _total - old + value;
+      _density[pos] = value;
 
-    if (old == 0 && value > 0) _possibleTiles++;
-    if (old > 0 && value == 0) _possibleTiles--;
+      if (old == 0 && value > 0) _possibleTiles++;
+      if (old > 0 && value == 0) _possibleTiles--;
+    }
   }
 
+  // public void this[Vec pos]=(int value) {
+  //   var old = _density[pos];
+  //   _total = _total - old + value;
+  //   _density[pos] = value;
+
+  //   if (old == 0 && value > 0) _possibleTiles++;
+  //   if (old > 0 && value == 0) _possibleTiles--;
+  // }
+
   /// The number of tiles whose density is non-zero.
-  int get possibleTiles => _possibleTiles;
+  public int possibleTiles => _possibleTiles;
   int _possibleTiles = 0;
 
   /// Picks a random tile from the map, weighed by the density of each tile.
   ///
   /// Returns `null` if no tiles have any density.
-  Vec? choose() {
+  public Vec? choose() {
     if (_total == 0) return null;
 
-    var n = rng.range(_total);
-    for (var pos in _density.bounds) {
+    var n = Rng.rng.range(_total);
+    foreach (var pos in _density.bounds) {
       var density = _density[pos];
       if (n < density) return pos;
       n -= density;
     }
 
-    throw AssertionError("Unreachable.");
+    throw new SystemException("Unreachable.");
   }
 
-  void reduceAround(Stage stage, Vec start, Motility motility, int range) {
+  public void reduceAround(Stage stage, Vec start, Motility motility, int range) {
     this[start] = 0;
 
-    var flow = MotilityFlow(stage, start, motility, maxDistance: range);
-    for (var pos in flow.reachable) {
+    var flow = new MotilityFlow(stage, start, motility, maxDistance: range);
+    foreach (var pos in flow.reachable) {
       var scale = flow.costAt(pos)! / range;
-      this[pos] = (this[pos] * scale).toInt();
+      this[pos] = (int)(this[pos] * scale);
     }
   }
 }

@@ -231,7 +231,7 @@ public class Breed {
   ///
   /// Each item in the list represents a breed that should spawn a single
   /// monster. Takes into account this breed's count and minions.
-  List<Breed> spawnAll() {
+  public List<Breed> spawnAll() {
     var breeds = new List<Breed>();
 
     // This breed.

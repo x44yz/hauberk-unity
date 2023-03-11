@@ -4,7 +4,7 @@ using System.Linq;
 
 /// The procedural interface exposed by [Decorator] to let a [PaintStyle]
 /// modify the stage.
-class Painter {
+public class Painter {
   public Decorator _decorator;
   public Architect _architect;
   public Architecture? _architecture;
@@ -21,7 +21,7 @@ class Painter {
 
   List<Vec> ownedTiles => _decorator.tilesFor(_architecture);
 
-  int paintedCount => _painted;
+  public int paintedCount => _painted;
 
   int depth => _architect.depth;
 
@@ -51,58 +51,60 @@ class Painter {
 
 /// Each style is a custom "look" that translates the semantic temporary
 /// tiles into specific concrete tile types.
-class PaintStyle {
-  static public rock = PaintStyle();
-  static public flagstone = PaintStyle(
-      floor: [Tiles.flagstoneFloor],
-      wall: [Tiles.flagstoneWall],
+public class PaintStyle {
+  static public PaintStyle rock = new PaintStyle();
+  static public PaintStyle flagstone = new PaintStyle(
+      floor: new List<TileType>{Tiles.flagstoneFloor},
+      wall: new List<TileType>{Tiles.flagstoneWall},
       closedDoor: Tiles.closedDoor,
       openDoor: Tiles.openDoor);
-  static public granite = PaintStyle(
-      floor: [Tiles.graniteFloor],
-      wall: [Tiles.graniteWall],
+  static public PaintStyle granite = new PaintStyle(
+      floor: new List<TileType>{Tiles.graniteFloor},
+      wall: new List<TileType>{Tiles.graniteWall},
       closedDoor: Tiles.closedSquareDoor);
-  static public stoneJail = PaintStyle(closedDoor: Tiles.closedBarredDoor);
+  static public PaintStyle stoneJail = new PaintStyle(closedDoor: Tiles.closedBarredDoor);
 
-  static public Map<TileType, List<TileType>> _defaultTypes = {
-    Tiles.solidWet: [Tiles.water],
-    Tiles.passageWet: [Tiles.bridge]
+  static public Dictionary<TileType, List<TileType>> _defaultTypes = new Dictionary<TileType, List<TileType>>(){
+    {Tiles.solidWet, new List<TileType>{Tiles.water}},
+    {Tiles.passageWet, new List<TileType>{Tiles.bridge}}
   };
 
-  static public List<TileType> _defaultWalls = [
+  static public List<TileType> _defaultWalls = new List<TileType>(){
     Tiles.granite1,
     Tiles.granite2,
     Tiles.granite3
-  ];
+  };
 
   public List<TileType>? _floor;
   public List<TileType>? _wall;
   public TileType? _closedDoor;
   public TileType? _openDoor;
 
-  PaintStyle(
-      {List<TileType>? floor,
-      List<TileType>? wall,
-      TileType? closedDoor,
-      TileType? openDoor})
-      : _floor = floor,
-        _wall = wall,
-        _closedDoor = closedDoor,
-        _openDoor = openDoor;
+  public PaintStyle(
+      List<TileType>? floor = null,
+      List<TileType>? wall = null,
+      TileType? closedDoor = null,
+      TileType? openDoor = null)
+  {
+      _floor = floor;
+      _wall = wall;
+      _closedDoor = closedDoor;
+      _openDoor = openDoor;
+  }
 
-  TileType paintTile(Painter painter, Vec pos) {
+  public TileType paintTile(Painter painter, Vec pos) {
     var tile = painter.getTile(pos);
 
     if (tile == Tiles.open || tile == Tiles.passage) return _floorTile();
 
     if (tile == Tiles.solid) {
-      if (_wall != null) return rng.item(_wall!);
-      return rng.item(_defaultWalls);
+      if (_wall != null) return Rng.rng.item(_wall!);
+      return Rng.rng.item(_defaultWalls);
     }
 
     if (tile == Tiles.doorway) {
       if (_closedDoor != null && _openDoor != null) {
-        switch (rng.range(6)) {
+        switch (Rng.rng.range(6)) {
           case 0:
             return _openDoor!;
           case 1:
@@ -119,13 +121,13 @@ class PaintStyle {
       }
     }
 
-    if (_defaultTypes.containsKey(tile)) return rng.item(_defaultTypes[tile]!);
+    if (_defaultTypes.ContainsKey(tile)) return Rng.rng.item(_defaultTypes[tile]!);
 
     return tile;
   }
 
   TileType _floorTile() {
-    if (_floor != null) return rng.item(_floor!);
+    if (_floor != null) return Rng.rng.item(_floor!);
 
     return Tiles.flagstoneFloor;
   }

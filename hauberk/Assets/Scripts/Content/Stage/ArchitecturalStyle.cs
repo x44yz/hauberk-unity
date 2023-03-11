@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class ArchitecturalStyle {
+public class ArchitecturalStyle {
   public static ResourceSet<ArchitecturalStyle> styles = new ResourceSet<ArchitecturalStyle>();
 
   public static void initialize() {

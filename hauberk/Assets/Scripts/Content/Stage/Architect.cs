@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 // TODO: Consider regions that are randomly placed blobs in the middle too.
-class Region {
+public class Region {
   public string name;
 
   /// Cover the whole stage.
@@ -26,7 +26,7 @@ class Region {
 }
 
 /// The main class that orchestrates painting and populating the stage.
-class Architect {
+public class Architect {
   static Array2D<Architecture?>? debugOwners;
 
   public Lore lore;
@@ -211,7 +211,7 @@ class Architect {
     }
   }
 
-  Iterable<string> _addShortcuts(List<Vec> unownedPassages) sync* {
+  Iterable<string> _addShortcuts(List<Vec> unownedPassages) {
     var possibleStarts = new List<_Path>{};
     for (var pos in stage.bounds.inflate(-1)) {
       if (!_isOpenAt(pos)) continue;
@@ -401,7 +401,7 @@ class _Path {
 
 /// Each architecture is a separate algorithm and some tuning parameters for it
 /// that generates part of a stage.
-abstract class Architecture {
+public abstract class Architecture {
   public Architect _architect;
   public ArchitecturalStyle _style;
   public Region _region;
@@ -410,15 +410,15 @@ abstract class Architecture {
 
   int depth => _architect.depth;
 
-  Rect bounds => _architect.stage.bounds;
+  public Rect bounds => _architect.stage.bounds;
 
-  int width => _architect.stage.width;
+  public int width => _architect.stage.width;
 
-  int height => _architect.stage.height;
+  public int height => _architect.stage.height;
 
-  Region region => _region;
+  public Region region => _region;
 
-  PaintStyle paintStyle => PaintStyle.rock;
+  public PaintStyle paintStyle => PaintStyle.rock;
 
   /// Gets the ratio of carved tiles to carvable tiles.
   ///
@@ -430,7 +430,7 @@ abstract class Architecture {
     }
   }
 
-  ArchitecturalStyle style => _style;
+  public ArchitecturalStyle style => _style;
 
   void bind(ArchitecturalStyle style, Architect architect, Region region) {
     _architect = architect;
@@ -440,7 +440,7 @@ abstract class Architecture {
 
   /// Override this if the architecture wants to handle spawning monsters in its
   /// tiles itself.
-  bool spawnMonsters(Painter painter) => false;
+  public bool spawnMonsters(Painter painter) => false;
 
   /// Sets the tile at [x], [y] to [tile] and owned by this architecture.
   ///
@@ -449,9 +449,9 @@ abstract class Architecture {
       _architect._carve(this, x, y, tile);
 
   /// Whether this architecture can carve the tile at [pos].
-  bool canCarve(Vec pos) => _architect._canCarve(this, pos);
+  public bool canCarve(Vec pos) => _architect._canCarve(this, pos);
 
-  void placeWater(Vec pos) {
+  public void placeWater(Vec pos) {
     _architect.stage[pos].type = Tiles.unformedWet;
     _architect._owners[pos] = this;
 

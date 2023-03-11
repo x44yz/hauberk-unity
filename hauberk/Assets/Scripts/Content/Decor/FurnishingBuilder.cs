@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-abstract partial class Decor {
-  enum Symmetry {
+public abstract partial class Decor {
+  public enum Symmetry {
     none,
     mirrorHorizontal,
     mirrorVertical,
@@ -89,19 +90,19 @@ abstract partial class Decor {
   public static Cell require(TileType type) => new Cell(require: type);
 
   public static void furnishing(
-      double? frequency, Symmetry? symmetry, string template) {
+      double? frequency = null, Symmetry? symmetry = null, string template = null) {
     _furnishingFrequency = frequency;
     symmetry ??= Symmetry.none;
 
-    var lines = template.Split("\n").map((line) => line.trim()).toList();
+    var lines = template.Split('\n').Select((line) => line.Trim()).ToList();
     _singleFurnishing(lines);
 
     if (symmetry == Symmetry.mirrorHorizontal ||
         symmetry == Symmetry.mirrorBoth) {
-      var mirrorLines = lines.toList();
-      for (var i = 0; i < lines.length; i++) {
+      var mirrorLines = lines.ToList();
+      for (var i = 0; i < lines.Count; i++) {
         mirrorLines[i] = _mapString(
-            string.fromCharCodes(lines[i].codeUnits.reversed),
+            new string(lines[i].Reverse().ToArray()),
             _mirrorCharHorizontal);
       }
 
@@ -109,9 +110,9 @@ abstract partial class Decor {
     }
 
     if (symmetry == Symmetry.mirrorVertical || symmetry == Symmetry.mirrorBoth) {
-      var mirrorLines = lines.toList();
-      for (var i = 0; i < lines.length; i++) {
-        mirrorLines[lines.length - i - 1] =
+      var mirrorLines = lines.ToList();
+      for (var i = 0; i < lines.Count; i++) {
+        mirrorLines[lines.Count - i - 1] =
             _mapString(lines[i], _mirrorCharVertical);
       }
 
@@ -121,10 +122,10 @@ abstract partial class Decor {
     if (symmetry == Symmetry.mirrorBoth ||
         symmetry == Symmetry.rotate180 ||
         symmetry == Symmetry.rotate90) {
-      var mirrorLines = lines.toList();
-      for (var i = 0; i < lines.length; i++) {
-        mirrorLines[lines.length - i - 1] = _mapString(
-            string.fromCharCodes(lines[i].codeUnits.reversed), _mirrorCharBoth);
+      var mirrorLines = lines.ToList();
+      for (var i = 0; i < lines.Count; i++) {
+        mirrorLines[lines.Count - i - 1] = _mapString(
+            new string(lines[i].Reverse().ToArray()), _mirrorCharBoth);
       }
 
       _singleFurnishing(mirrorLines);
@@ -132,22 +133,22 @@ abstract partial class Decor {
 
     if (symmetry == Symmetry.rotate90) {
       // Rotate 90°.
-      var rotateLines = <string>[];
-      for (var x = 0; x < lines[0].length; x++) {
-        var buffer = StringBuffer();
-        for (var y = 0; y < lines.length; y++) {
-          buffer.write(_rotateChar90(lines[y][x]));
+      var rotateLines = new List<string>{};
+      for (var x = 0; x < lines[0].Length; x++) {
+        var buffer = new StringBuilder();
+        for (var y = 0; y < lines.Count; y++) {
+          buffer.Append(_rotateChar90(lines[y][x].ToString()));
         }
-        rotateLines.add(buffer.toString());
+        rotateLines.Add(buffer.ToString());
       }
 
       _singleFurnishing(rotateLines);
 
       // Rotate 270° by mirroring the 90°.
-      var mirrorLines = rotateLines.toList();
-      for (var i = 0; i < rotateLines.length; i++) {
-        mirrorLines[rotateLines.length - i - 1] = _mapString(
-            string.fromCharCodes(rotateLines[i].codeUnits.reversed),
+      var mirrorLines = rotateLines.ToList();
+      for (var i = 0; i < rotateLines.Count; i++) {
+        mirrorLines[rotateLines.Count - i - 1] = _mapString(
+            new string(rotateLines[i].Reverse().ToArray()),
             _mirrorCharBoth);
       }
 
@@ -155,21 +156,21 @@ abstract partial class Decor {
     }
   }
 
-  public static string _mapString(string input, string Function(string) map) {
-    var buffer = StringBuffer();
-    for (var i = 0; i < input.length; i++) {
-      buffer.write(map(input[i]));
+  public static string _mapString(string input, System.Func<string, string> map) {
+    var buffer = new StringBuilder();
+    for (var i = 0; i < input.Length; i++) {
+      buffer.Append(map(input[i].ToString()));
     }
-    return buffer.toString();
+    return buffer.ToString();
   }
 
   public static string _mirrorCharBoth(string input) =>
       _mirrorCharHorizontal(_mirrorCharVertical(input));
 
   public static string _mirrorCharHorizontal(string input) {
-    for (var mirror in _mirrorHorizontal) {
-      var index = mirror.indexOf(input);
-      if (index != -1) return mirror[1 - index];
+    foreach (var mirror in _mirrorHorizontal) {
+      var index = mirror.IndexOf(input);
+      if (index != -1) return mirror[1 - index].ToString();
     }
 
     // Tile doesn't change.
@@ -177,9 +178,9 @@ abstract partial class Decor {
   }
 
   public static string _mirrorCharVertical(string input) {
-    for (var mirror in _mirrorVertical) {
-      var index = mirror.indexOf(input);
-      if (index != -1) return mirror[1 - index];
+    foreach (var mirror in _mirrorVertical) {
+      var index = mirror.IndexOf(input);
+      if (index != -1) return mirror[1 - index].ToString();
     }
 
     // Tile doesn't change.
@@ -187,9 +188,9 @@ abstract partial class Decor {
   }
 
   public static string _rotateChar90(string input) {
-    for (var rotate in _rotate) {
-      var index = rotate.indexOf(input);
-      if (index != -1) return rotate[(index + 1) % 4];
+    foreach (var rotate in _rotate) {
+      var index = rotate.IndexOf(input);
+      if (index != -1) return rotate[(index + 1) % 4].ToString();
     }
 
     // Tile doesn't change.
@@ -198,24 +199,24 @@ abstract partial class Decor {
 
   public static void _singleFurnishing(List<string> lines) {
     var cells =
-        Array2D<Cell>(lines.first.length, lines.length, Cell.uninitialized);
-    for (var y = 0; y < lines.length; y++) {
-      for (var x = 0; x < lines.first.length; x++) {
-        var char = lines[y][x];
+        new Array2D<Cell>(lines.First().Length, lines.Count, Cell.uninitialized);
+    for (var y = 0; y < lines.Count; y++) {
+      for (var x = 0; x < lines.First().Length; x++) {
+        var _char = lines[y][x].ToString();
         Cell cell;
-        if (_categoryCells != null && _categoryCells!.containsKey(char)) {
-          cell = _categoryCells![char]!;
-        } else if (_applyCells.containsKey(char)) {
-          cell = _applyCells[char]!;
+        if (_categoryCells != null && _categoryCells!.ContainsKey(_char)) {
+          cell = _categoryCells![_char]!;
+        } else if (_applyCells.ContainsKey(_char)) {
+          cell = _applyCells[_char]!;
         } else {
-          cell = _requireCells[char]!;
+          cell = _requireCells[_char]!;
         }
 
-        cells.set(x, y, cell);
+        cells._set(x, y, cell);
       }
     }
 
-    var furnishing = Furnishing(cells);
+    var furnishing = new Furnishing(cells);
     Decor.all.add(furnishing,
         frequency: _categoryFrequency ?? _furnishingFrequency ?? 1.0,
         tags: _themes);

@@ -1,9 +1,7 @@
-import 'dart:collection';
-
-import 'package:piecemeal/piecemeal.dart';
-
-import '../../engine.dart';
-import '../tiles.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 /// An incrementally-updated breadth-first search distance map.
 ///
@@ -11,8 +9,8 @@ import '../tiles.dart';
 /// the tiles that need to be updated are recalculated. This is much faster
 /// when filling in passages during level generation.
 class Reachability {
-  static const _unknown = -2;
-  static const _unreachable = -1;
+  public const int _unknown = -2;
+  public const int _unreachable = -1;
 
   public Stage stage;
   public Vec _start;
@@ -22,15 +20,20 @@ class Reachability {
 
   /// The number of unfillable tiles that are currently reachable.
   int _reachedOpenCount = 0;
-  int get reachedOpenCount => _reachedOpenCount;
+  int reachedOpenCount => _reachedOpenCount;
 
-  List<_FillStep> _beforeFill = const [];
+  List<_FillStep> _beforeFill = new List<_FillStep>();
 
-  Reachability(this.stage, this._start)
-      : _distances = Array2D<int>(stage.width, stage.height, _unknown),
-        _affected = VecSet(stage.width, stage.height) {
+  Reachability(Stage stage, Vec _start)
+  {
+    this.stage = stage;
+    this._start = _start;
+
+    _distances = new Array2D<int>(stage.width, stage.height, _unknown);
+    _affected = new VecSet(stage.width, stage.height);
+
     _setDistance(_start, 0);
-    _process([_start]);
+    _process(new List<Vec>(){_start});
   }
 
   bool isReachable(Vec pos) => _distances[pos] >= 0;
@@ -40,17 +43,17 @@ class Reachability {
   /// Mark the tile at [pos] as being solid and recalculate the distances of
   /// any affected tiles.
   void fill(Vec pos) {
-    var queue = Queue<Vec>();
+    var queue = new Queue<Vec>();
     _affected.clear();
     queue.add(pos);
     _affected.add(pos);
 
     _beforeFill = [_FillStep(pos, _distances[pos])];
 
-    while (queue.isNotEmpty) {
-      var pos = queue.removeFirst();
+    while (queue.Count > 0) {
+      var pos = queue.Dequeue();
       var distance = _distances[pos];
-      for (var neighbor in pos.cardinalNeighbors) {
+      foreach (var neighbor in pos.cardinalNeighbors) {
         var neighborDistance = _distances[neighbor];
         if (neighborDistance == _unreachable) continue;
 
@@ -141,7 +144,7 @@ class Reachability {
   }
 
   /// Update the distances of all unknown tiles reachable from [starting].
-  void _process(Iterable<Vec> starting) {
+  void _process(List<Vec> starting) {
     var frontier = BucketQueue<Vec>();
 
     for (var pos in starting) {

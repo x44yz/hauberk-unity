@@ -121,13 +121,25 @@ public class VecBase
         
 
     // /// The four Vecs surrounding this one to the north, south, east, and west.
-    // List<Vec> cardinalNeighbors =>
-    //     [for (var direction in Direction.cardinal) this + direction];
+    public List<Vec> cardinalNeighbors {
+        get {
+            var rt = new List<Vec>();
+            foreach (var direction in Direction.cardinal) 
+                rt.Add(this + direction);
+            return rt;
+        }
+    }
 
     // /// The four Vecs surrounding this one to the northeast, southeast, southwest,
     // /// and northwest.
-    // List<Vec> intercardinalNeighbors =>
-    //     [for (var direction in Direction.intercardinal) this + direction];
+    List<Vec> intercardinalNeighbors {
+        get {
+            var rt = new List<Vec>();
+            foreach (var direction in Direction.intercardinal) 
+                rt.Add(this + direction);
+            return rt;
+        }
+    }
 
      /// Scales this Vec by [other].
     public static Vec operator *(VecBase a, int other) => new Vec(a.x * other, a.y * other);

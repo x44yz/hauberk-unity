@@ -24,7 +24,7 @@ class Debug {
   /// The current density map being used.
   ///
   /// Typed as Object? so that this library isn't coupled to the UI.
-  static Object? densityMap;
+  public static object? densityMap;
 
   static public Dictionary<Monster, _MonsterLog> _monsters = new Dictionary<Monster, _MonsterLog>();
 

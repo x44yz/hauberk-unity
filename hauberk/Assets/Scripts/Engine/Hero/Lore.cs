@@ -98,7 +98,7 @@ public class Lore {
   }
 
   /// The number of monsters of [breed] that the hero has killed.
-  int slain(Breed breed)
+  public int slain(Breed breed)
   {
     int val = 0;
     _slainBreeds.TryGetValue(breed, out val);

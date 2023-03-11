@@ -159,7 +159,7 @@ class Furnishing : Decor {
 
   public Array2D<Cell> _cells;
 
-  Furnishing(Array2D<Cell> _cells)
+  public Furnishing(Array2D<Cell> _cells)
   {
     this._cells = _cells;
   }
@@ -191,7 +191,7 @@ class Furnishing : Decor {
   }
 }
 
-class Cell {
+public class Cell {
   static public Cell uninitialized = new Cell();
 
   public TileType? _apply;

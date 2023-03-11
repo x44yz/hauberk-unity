@@ -251,7 +251,7 @@ public class Stage {
     // TODO: This is hackish and may fail to terminate.
     // TODO: Consider flyable tiles for flying monsters.
     /// Selects a random passable tile that does not have an [Actor] on it.
-    Vec findOpenTile() {
+    public Vec findOpenTile() {
         while (true) {
             var pos = Rng.rng.vecInRect(bounds);
 
