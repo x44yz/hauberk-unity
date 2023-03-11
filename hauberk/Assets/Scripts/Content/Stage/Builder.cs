@@ -1,12 +1,6 @@
-import 'architect.dart';
-import 'architectural_style.dart';
-import 'catacomb.dart';
-import 'cavern.dart';
-import 'dungeon.dart';
-import 'keep.dart';
-import 'lake.dart';
-import 'pit.dart';
-import 'river.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 void _addStyle(string name,
     {int start = 1,

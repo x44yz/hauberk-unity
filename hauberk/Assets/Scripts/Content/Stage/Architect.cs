@@ -304,7 +304,7 @@ public class Architect {
     // the shortcut is worth adding.
     var longLength = passageLength * 2 + Rng.rng.range(8, 16);
 
-    var pathfinder = _LengthPathfinder(stage, from, to, longLength);
+    var pathfinder = new _LengthPathfinder(stage, from, to, longLength);
 
     // If there is an existing path that's short enough, this isn't a shortcut.
     return !pathfinder.search();
@@ -418,7 +418,7 @@ public abstract class Architecture {
 
   public Region region => _region;
 
-  public PaintStyle paintStyle => PaintStyle.rock;
+  public virtual PaintStyle paintStyle => PaintStyle.rock;
 
   /// Gets the ratio of carved tiles to carvable tiles.
   ///

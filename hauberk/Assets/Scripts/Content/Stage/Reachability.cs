@@ -45,14 +45,14 @@ class Reachability {
   void fill(Vec pos) {
     var queue = new Queue<Vec>();
     _affected.clear();
-    queue.add(pos);
+    queue.Enqueue(pos);
     _affected.add(pos);
 
-    _beforeFill = [_FillStep(pos, _distances[pos])];
+    _beforeFill = new List<_FillStep>(){new _FillStep(pos, _distances[pos])};
 
     while (queue.Count > 0) {
-      var pos = queue.Dequeue();
-      var distance = _distances[pos];
+      var pos2 = queue.Dequeue();
+      var distance = _distances[pos2];
       foreach (var neighbor in pos.cardinalNeighbors) {
         var neighborDistance = _distances[neighbor];
         if (neighborDistance == _unreachable) continue;
@@ -66,10 +66,10 @@ class Reachability {
         // Ignore tiles that we can get to from another path.
         if (_hasOtherPath(neighbor)) continue;
 
-        queue.add(neighbor);
+        queue.Enqueue(neighbor);
         _affected.add(neighbor);
 
-        _beforeFill.add(_FillStep(neighbor, neighborDistance));
+        _beforeFill.Add(new _FillStep(neighbor, neighborDistance));
       }
     }
 
@@ -77,39 +77,39 @@ class Reachability {
     _setDistance(pos, _unreachable);
 
     var border = _findBorder(pos);
-    if (border.isEmpty) {
+    if (border.Count == 0) {
       // There are no other border tiles that are reachable, so the whole
       // affected area has been cut off.
-      for (var pos in _affected) {
-        _setDistance(pos, _unreachable);
+      foreach (var pos2 in _affected) {
+        _setDistance(pos2, _unreachable);
       }
     } else {
       // Clear the distances for the affected tiles.
-      for (var here in _affected) {
+      foreach (var here in _affected) {
         _setDistance(here, _unknown);
       }
 
       _setDistance(pos, _unreachable);
 
       // Recalculate the affected tiles.
-      _process(border);
+      _process(border.ToList());
     }
   }
 
   /// Revert the previous call to [fill].
   void undoFill() {
-    for (var step in _beforeFill) {
+    foreach (var step in _beforeFill) {
       _setDistance(step.pos, step.distance);
     }
 
-    _beforeFill = const [];
+    _beforeFill = new List<_FillStep>();
   }
 
   // Returns true if there is a path to [pos] that doesn't go through an
   // affected tile.
   bool _hasOtherPath(Vec pos) {
     var distance = _distances[pos];
-    for (var neighbor in pos.cardinalNeighbors) {
+    foreach (var neighbor in pos.cardinalNeighbors) {
       if (!stage.bounds.contains(neighbor)) continue;
 
       // If there is an unaffected neighbor whose distance is one step shorter
@@ -125,17 +125,17 @@ class Reachability {
 
   /// Find all of the tiles around the affected tiles that do have a distance.
   /// We'll recalculate the affected tiles using paths from those.
-  Set<Vec> _findBorder(Vec start) {
-    var border = <Vec>{};
-    for (var here in _affected) {
+  HashSet<Vec> _findBorder(Vec start) {
+    var border = new HashSet<Vec>{};
+    foreach (var here in _affected) {
       // Don't consider the initial filled tile.
       // TODO: This is kind of hokey. Would be better to eliminate pos from
       // affected set.
       if (here == start) continue;
 
-      for (var neighbor in here.cardinalNeighbors) {
+      foreach (var neighbor in here.cardinalNeighbors) {
         if (_distances[neighbor] >= 0 && !_affected.contains(neighbor)) {
-          border.add(neighbor);
+          border.Add(neighbor);
         }
       }
     }
@@ -145,9 +145,9 @@ class Reachability {
 
   /// Update the distances of all unknown tiles reachable from [starting].
   void _process(List<Vec> starting) {
-    var frontier = BucketQueue<Vec>();
+    var frontier = new BucketQueue<Vec>();
 
-    for (var pos in starting) {
+    foreach (var pos in starting) {
       frontier.add(pos, _distances[pos]);
     }
 
@@ -158,7 +158,7 @@ class Reachability {
       var parentDistance = _distances[pos];
 
       // Propagate to neighboring tiles.
-      for (var here in pos.cardinalNeighbors) {
+      foreach (var here in pos.cardinalNeighbors) {
         if (!_distances.bounds.contains(here)) continue;
 
         // Ignore tiles we've already reached.
@@ -191,5 +191,9 @@ class _FillStep {
   public Vec pos;
   public int distance;
 
-  _FillStep(this.pos, this.distance);
+  public _FillStep(Vec pos, int distance)
+  {
+    this.pos = pos;
+    this.distance = distance;
+  }
 }

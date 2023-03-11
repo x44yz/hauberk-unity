@@ -1,11 +1,10 @@
-import 'package:piecemeal/piecemeal.dart';
-
-import 'architect.dart';
-import 'blob.dart';
-import 'painter.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 /// Places a single blob filled with monsters.
-class Pit extends Architecture {
+class Pit : Architecture {
   public string _monsterGroup;
 
   /// The minimum chamber size.
@@ -14,13 +13,17 @@ class Pit extends Architecture {
   /// The maximum chamber size.
   public int _maxSize;
 
-  public List<Vec> _monsterTiles = [];
+  public List<Vec> _monsterTiles = new List<Vec>();
 
-  PaintStyle get paintStyle => PaintStyle.stoneJail;
+  public override PaintStyle paintStyle => PaintStyle.stoneJail;
 
-  Pit(this._monsterGroup, {int? minSize, int? maxSize})
-      : _minSize = minSize ?? 12,
-        _maxSize = maxSize ?? 24;
+  Pit(string _monsterGroup, int? minSize = null, int? maxSize = null)
+  {
+    this._monsterGroup = _monsterGroup;
+
+    _minSize = minSize ?? 12;
+    _maxSize = maxSize ?? 24;
+  }
 
   Iterable<string> build() sync* {
     for (var i = 0; i < 20; i++) {
