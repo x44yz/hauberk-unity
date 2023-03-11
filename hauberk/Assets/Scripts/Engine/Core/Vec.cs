@@ -200,11 +200,11 @@ public class VecBase
 
     /// Returns a new [Vec] whose coordinates are this one's but with the X
     /// coordinate translated by [x].
-    Vec offsetX(int x) => new Vec(this.x + x, y);
+    public Vec offsetX(int x) => new Vec(this.x + x, y);
 
     /// Returns a new [Vec] whose coordinates are this one's but with the Y
     /// coordinate translated by [y].
-    Vec offsetY(int y) => new Vec(x, this.y + y);
+    public Vec offsetY(int y) => new Vec(x, this.y + y);
 
     string ToString() => $"{x}, {y}";
 }

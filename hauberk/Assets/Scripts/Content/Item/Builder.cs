@@ -146,7 +146,7 @@ public static _ItemBuilder item(string name, Color color,
   int? _heft;
   int? _armor;
 
-  // TODO: Instead of late final, initialize these in item() instead of depth().
+  // TODO: Instead of late public, initialize these in item() instead of depth().
   public int _minDepth;
   public int _maxDepth;
 

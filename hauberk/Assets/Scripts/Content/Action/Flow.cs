@@ -10,7 +10,7 @@ class FlowAction : Action {
   public Hit _hit;
 
   public Flow _flow;
-  // TODO: Make this late final?
+  // TODO: Make this late public?
   List<Vec>? _tiles;
 
   public Motility _motility;

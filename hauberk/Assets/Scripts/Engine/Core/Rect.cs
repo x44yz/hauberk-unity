@@ -100,7 +100,7 @@ public class Rect : IEnumerable<Vec>
   public Vec bottomLeft => new Vec(left, bottom);
   public Vec bottomRight => new Vec(right, bottom);
 
-  Vec center => new Vec((left + right) / 2, (top + bottom) / 2);
+  public Vec center => new Vec((left + right) / 2, (top + bottom) / 2);
 
   int area => size.area;
 
@@ -212,7 +212,7 @@ public class Rect : IEnumerable<Vec>
   }
 
   /// Iterates over the points along the edge of the Rect.
-  IEnumerable<Vec> trace() {
+  public IEnumerable<Vec> trace() {
     if ((width > 1) && (height > 1)) {
       // TODO(bob): Implement an iterator class here if building the list is
       // slow.

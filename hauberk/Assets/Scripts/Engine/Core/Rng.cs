@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// A singleton instance of Rng globally available.
-// final Rng rng = Rng(DateTime.now().millisecondsSinceEpoch);
+// public Rng rng = Rng(DateTime.now().millisecondsSinceEpoch);
 
 /// The Random Number God: deliverer of good and ill fortune alike.
 public class Rng {
@@ -121,7 +121,7 @@ public class Rng {
   ///
   /// This may not preserve the order of items in the list, but is faster than
   /// [takeOrdered].
-  T take<T>(List<T> items) {
+  public T take<T>(List<T> items) {
     var index = rng.range(items.Count);
     var result = items[index];
 

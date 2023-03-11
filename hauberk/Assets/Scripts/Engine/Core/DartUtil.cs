@@ -16,6 +16,17 @@ public static class DartUtils
     {
         UnityEngine.Debug.Log(s);
     }
+
+    public static T2 putIfAbsent<T1, T2>(this Dictionary<T1, T2> map, T1 k) where T2 : new()
+    {
+      if (map.ContainsKey(k) == false)
+        map[k] = new T2();
+      return map[k];
+    }
+
+    public static bool isOdd(this int k) {
+      return k % 2 == 1;
+    }
 }
 
 public class Color {

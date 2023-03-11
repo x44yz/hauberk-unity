@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Use this for more things.
-// - Monsters that have a "final form" when killed.
+// - Monsters that have a "public form" when killed.
 // - Werewolves and other shapeshifters.
 /// Turns the monster into [Breed].
 class PolymorphAction : Action {
