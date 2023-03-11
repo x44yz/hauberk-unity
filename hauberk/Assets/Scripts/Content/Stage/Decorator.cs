@@ -25,7 +25,7 @@ class Decorator {
   Stage _stage => _architect.stage;
 
   /// Gets the list of tiles owned by [architecture].
-  List<Vec> tilesFor(Architecture? architecture) =>
+  public List<Vec> tilesFor(Architecture? architecture) =>
       _tilesByArchitecture[architecture]!;
 
   public IEnumerable<string> decorate() {
@@ -74,7 +74,7 @@ class Decorator {
   }
 
   /// Marks doorway tiles on the endpoints of passages.
-  void _findDoorways() {
+  public void _findDoorways() {
     var doorways = new List<Vec>{};
     foreach (var pos in _stage.bounds.inflate(-1)) {
       var tile = _stage[pos].type;
@@ -139,7 +139,7 @@ class Decorator {
     }
   }
 
-  Iterable<string> _placeDecor() sync* {
+  public Iterable<string> _placeDecor() sync* {
     for (var entry in _tilesByArchitecture.entries) {
       var architecture = entry.key;
       if (architecture == null) continue;
@@ -184,7 +184,7 @@ class Decorator {
     }
   }
 
-  Iterable<string> _spawnMonsters() sync* {
+  public Iterable<string> _spawnMonsters() sync* {
     // Let the architectures that control their own monsters go.
     var spawned = <Architecture>{};
     for (var architecture in _tilesByArchitecture.keys) {

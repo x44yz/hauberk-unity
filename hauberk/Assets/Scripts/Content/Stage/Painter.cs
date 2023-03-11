@@ -1,9 +1,6 @@
-import 'package:piecemeal/piecemeal.dart';
-
-import '../../engine.dart';
-import '../tiles.dart';
-import 'architect.dart';
-import 'decorator.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// The procedural interface exposed by [Decorator] to let a [PaintStyle]
 /// modify the stage.
@@ -13,31 +10,36 @@ class Painter {
   public Architecture? _architecture;
   int _painted = 0;
 
-  Painter(this._decorator, this._architect, this._architecture);
+  public Painter(Decorator _decorator, Architect _architect, Architecture _architecture)
+  {
+    this._decorator = _decorator;
+    this._architect = _architect;
+    this._architecture = _architecture;
+  }
 
-  Rect get bounds => _architect.stage.bounds;
+  public Rect bounds => _architect.stage.bounds;
 
-  List<Vec> get ownedTiles => _decorator.tilesFor(_architecture);
+  List<Vec> ownedTiles => _decorator.tilesFor(_architecture);
 
-  int get paintedCount => _painted;
+  int paintedCount => _painted;
 
-  int get depth => _architect.depth;
+  int depth => _architect.depth;
 
-  bool ownsTile(Vec pos) => _architect.ownerAt(pos) == _architecture;
+  public bool ownsTile(Vec pos) => _architect.ownerAt(pos) == _architecture;
 
-  TileType getTile(Vec pos) {
+  public TileType getTile(Vec pos) {
     return _architect.stage[pos].type;
   }
 
-  void setTile(Vec pos, TileType type) {
-    assert(_architect.ownerAt(pos) == _architecture);
+  public void setTile(Vec pos, TileType type) {
+    DartUtils.assert(_architect.ownerAt(pos) == _architecture);
     _architect.stage[pos].type = type;
     _painted++;
   }
 
   bool hasActor(Vec pos) => _architect.stage.actorAt(pos) != null;
 
-  Breed chooseBreed(int depth, {string? tag, bool? includeParentTags}) {
+  Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
     return _decorator.chooseBreed(depth,
         tag: tag, includeParentTags: includeParentTags);
   }
