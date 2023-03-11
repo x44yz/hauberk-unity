@@ -34,7 +34,7 @@ class Architect {
   public int depth;
   public Array2D<Architecture?> _owners;
 
-  int _carvedTiles = 0;
+  public int _carvedTiles = 0;
 
   Architect(Lore lore, Stage stage, int depth)
   {
@@ -87,12 +87,12 @@ class Architect {
     // Fill in the remaining fillable tiles and keep everything connected.
     var unownedPassages = new List<Vec>{};
 
-    yield* _fillPassages(unownedPassages);
-    yield* _addShortcuts(unownedPassages);
-    yield* _claimPassages(unownedPassages);
+    rt.AddRange(_fillPassages(unownedPassages));
+    rt.AddRange(_addShortcuts(unownedPassages));
+    rt.AddRange(_claimPassages(unownedPassages));
 
     var decorator = new Decorator(this);
-    yield* decorator.decorate();
+    rt.AddRange(decorator.decorate());
 
     placeHero(decorator.heroPos);
 
@@ -102,17 +102,17 @@ class Architect {
   public Architecture? ownerAt(Vec pos) => _owners[pos];
 
   /// Marks the tile at [x], [y] as open floor for [architecture].
-  void _carve(Architecture architecture, int x, int y, TileType? tile) {
-    assert(_owners.get(x, y) == null || _owners.get(x, y) == architecture);
-    assert(stage.get(x, y).type == Tiles.unformed);
+  public void _carve(Architecture architecture, int x, int y, TileType? tile) {
+    DartUtils.assert(_owners._get(x, y) == null || _owners._get(x, y) == architecture);
+    DartUtils.assert(stage.get(x, y).type == Tiles.unformed);
 
     stage.get(x, y).type = tile ?? Tiles.open;
     _carvedTiles++;
 
     // Claim all neighboring dry tiles too. This way the architecture can paint
     // the surrounding solid tiles however it wants.
-    _owners.set(x, y, architecture);
-    for (var dir in Direction.all) {
+    _owners._set(x, y, architecture);
+    foreach (var dir in Direction.all) {
       var here = dir.offset(x, y);
       if (_owners.bounds.contains(here) &&
           stage[here].type != Tiles.unformedWet) {
@@ -121,7 +121,7 @@ class Architect {
     }
   }
 
-  bool _canCarve(Architecture architecture, Vec pos) {
+  public bool _canCarve(Architecture architecture, Vec pos) {
     if (!stage.bounds.contains(pos)) return false;
 
     // Can't already be in use.
@@ -136,7 +136,7 @@ class Architect {
     // solid tiles between two open tiles of different architectures, one owned
     // by each. That way, if they style their walls differently, one doesn't
     // bleed into the other.
-    for (var here in pos.neighbors) {
+    foreach (var here in pos.neighbors) {
       if (!stage.bounds.contains(here)) continue;
 
       if (stage[here].type == Tiles.unformedWet) continue;
@@ -172,12 +172,12 @@ class Architect {
       }
     }
 
-    rng.shuffle(unformed);
+    Rng.rng.shuffle(unformed);
 
     var reachability = Reachability(stage, start);
 
     var count = 0;
-    for (var pos in unformed) {
+    foreach (var pos in unformed) {
       var tile = stage[pos];
 
       // We may have already processed it.
@@ -189,7 +189,7 @@ class Architect {
       } else if (tile.type == Tiles.unformedWet) {
         tile.type = Tiles.solidWet;
       } else {
-        assert(tile.type == Tiles.solid || tile.type == Tiles.solidWet,
+        DartUtils.assert(tile.type == Tiles.solid || tile.type == Tiles.solidWet,
             "Unexpected tile type.");
       }
 
@@ -212,7 +212,7 @@ class Architect {
   }
 
   Iterable<string> _addShortcuts(List<Vec> unownedPassages) sync* {
-    var possibleStarts = <_Path>[];
+    var possibleStarts = new List<_Path>{};
     for (var pos in stage.bounds.inflate(-1)) {
       if (!_isOpenAt(pos)) continue;
 
@@ -234,12 +234,12 @@ class Architect {
       }
     }
 
-    rng.shuffle(possibleStarts);
+    Rng.rng.shuffle(possibleStarts);
 
     var shortcuts = 0;
 
     // TODO: Vary this?
-    var maxShortcuts = rng.range(5, 40);
+    var maxShortcuts = Rng.rng.range(5, 40);
 
     for (var path in possibleStarts) {
       if (!_tryShortcut(unownedPassages, path.pos, path.dir)) continue;
@@ -259,11 +259,11 @@ class Architect {
   bool _tryShortcut(List<Vec> unownedPassages, Vec start, Direction heading) {
     // A shortcut can start here, so try to walk it until it hits another open
     // area.
-    var tiles = <Vec>[];
+    var tiles = new List<Vec>{};
     var pos = start + heading;
 
     while (true) {
-      tiles.add(pos);
+      tiles.Add(pos);
 
       var next = pos + heading;
       if (!stage.bounds.contains(next)) return false;
@@ -286,7 +286,7 @@ class Architect {
       if (!_isSolidAt(next + heading.rotateRight90)) return false;
 
       // Don't make shortcuts that are too long.
-      if (rng.percent(tiles.length * 10)) return false;
+      if (Rng.rng.percent(tiles.Count * 10)) return false;
 
       // TODO: Consider having the path turn randomly.
 
@@ -302,7 +302,7 @@ class Architect {
   bool _isShortcut(Vec from, Vec to, int passageLength) {
     // If the current path from [from] to [to] is this long or longer, then
     // the shortcut is worth adding.
-    var longLength = passageLength * 2 + rng.range(8, 16);
+    var longLength = passageLength * 2 + Rng.rng.range(8, 16);
 
     var pathfinder = _LengthPathfinder(stage, from, to, longLength);
 
@@ -320,12 +320,12 @@ class Architect {
     } else if (tile.type == Tiles.solidWet) {
       tile.type = Tiles.passageWet;
     } else {
-      assert(false, "Unexpected tile type.");
+      DartUtils.assert(false, "Unexpected tile type.");
     }
 
     var owner = _owners[pos];
     if (owner == null) {
-      unownedPassages.add(pos);
+      unownedPassages.Add(pos);
     } else {
       // The passage is within the edge of an architecture, so extend the
       // boundary around it too.
@@ -367,7 +367,7 @@ class Architect {
   /// Claims any neighboring tiles of [pos] for [owner] if they don't already
   /// have an owner.
   void _claimNeighbors(Vec pos, Architecture owner) {
-    for (var neighbor in pos.neighbors) {
+    foreach (var neighbor in pos.neighbors) {
       if (_owners[neighbor] == null) _owners[neighbor] = owner;
     }
   }
@@ -392,39 +392,45 @@ class _Path {
   public Vec pos;
   public Direction dir;
 
-  _Path(this.pos, this.dir);
+  _Path(Vec pos, Direction dir)
+  {
+    this.pos = pos;
+    this.dir = dir;
+  }
 }
 
 /// Each architecture is a separate algorithm and some tuning parameters for it
 /// that generates part of a stage.
 abstract class Architecture {
-  late public Architect _architect;
-  late public ArchitecturalStyle _style;
-  late public Region _region;
+  public Architect _architect;
+  public ArchitecturalStyle _style;
+  public Region _region;
 
-  public IEnumerable<string> build();
+  public abstract IEnumerable<string> build();
 
-  int get depth => _architect.depth;
+  int depth => _architect.depth;
 
-  Rect get bounds => _architect.stage.bounds;
+  Rect bounds => _architect.stage.bounds;
 
-  int get width => _architect.stage.width;
+  int width => _architect.stage.width;
 
-  int get height => _architect.stage.height;
+  int height => _architect.stage.height;
 
-  Region get region => _region;
+  Region region => _region;
 
-  PaintStyle get paintStyle => PaintStyle.rock;
+  PaintStyle paintStyle => PaintStyle.rock;
 
   /// Gets the ratio of carved tiles to carvable tiles.
   ///
   /// This tells you how much of the stage has been opened up by architectures.
-  double get carvedDensity {
-    var possible = (width - 2) * (height - 2);
-    return _architect._carvedTiles / possible;
+  double carvedDensity {
+    get {
+      var possible = (width - 2) * (height - 2);
+      return _architect._carvedTiles / possible;
+    }
   }
 
-  ArchitecturalStyle get style => _style;
+  ArchitecturalStyle style => _style;
 
   void bind(ArchitecturalStyle style, Architect architect, Region region) {
     _architect = architect;
@@ -439,7 +445,7 @@ abstract class Architecture {
   /// Sets the tile at [x], [y] to [tile] and owned by this architecture.
   ///
   /// If [tile] is omitted, uses [Tiles.open].
-  void carve(int x, int y, [TileType? tile]) =>
+  void carve(int x, int y, TileType? tile) =>
       _architect._carve(this, x, y, tile);
 
   /// Whether this architecture can carve the tile at [pos].
@@ -454,7 +460,7 @@ abstract class Architecture {
 
   /// Marks the tile at [pos] as not allowing a passage to be dug through it.
   void preventPassage(Vec pos) {
-    assert(_architect._owners[pos] == null ||
+    DartUtils.assert(_architect._owners[pos] == null ||
         _architect._owners[pos] == this ||
         _architect.stage[pos].type == Tiles.unformedWet);
 
@@ -469,25 +475,32 @@ abstract class Architecture {
 ///
 /// Returns `true` if it can find an existing path shorter or as short as the
 /// given max length.
-class _LengthPathfinder extends Pathfinder<bool> {
+class _LengthPathfinder : Pathfinder<bool> {
   public int _maxLength;
 
-  _LengthPathfinder(Stage stage, Vec start, Vec end, this._maxLength)
-      : super(stage, start, end);
+  _LengthPathfinder(Stage stage, Vec start, Vec end, int _maxLength)
+      : base(stage, start, end)
+      {
+        this._maxLength = _maxLength;
+      }
 
-  bool? processStep(Path path) {
-    if (path.length >= _maxLength) return false;
-
-    return null;
+  public override bool processStep(Path path, out bool result) {
+    if (path.length >= _maxLength)
+    {
+      result = false;
+      return true;
+    }
+    result = true;
+    return false;
   }
 
-  bool reachedGoal(Path path) => true;
+  public override bool reachedGoal(Path path) => true;
 
-  int? stepCost(Vec pos, Tile tile) {
+  public override int? stepCost(Vec pos, Tile tile) {
     if (tile.canEnter(Motility.doorAndWalk)) return 1;
 
     return null;
   }
 
-  bool unreachableGoal() => false;
+  public override bool unreachableGoal() => false;
 }

@@ -78,8 +78,8 @@ abstract class Pathfinder<T> {
       // See: https://www.redblobgames.com/pathfinding/a-star/implementation.html#algorithm
       if (!explored.Add(path.pos)) continue;
 
-      var result = processStep(path);
-      if (result != null) return result;
+      var ok = processStep(path, out T result);
+      if (ok) return result;
 
       // Find the steps we can take.
       foreach (var dir in Direction.all) {
@@ -124,7 +124,7 @@ int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
   /// If the pathfinder wants to immediately stop processing and return a value,
   /// this should return a non-`null` value. Otherwise, return `null` and the
   /// pathfinder will continue.
-  public abstract T processStep(Path path);
+  public abstract bool processStep(Path path, out T result);
 
   /// Called when the pathfinder has found a [path] to the end point.
   ///

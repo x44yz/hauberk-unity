@@ -15,7 +15,7 @@ class Decorator {
   /// don't spawn the same unique more than once.
   public List<Breed> _spawnedUniques = new List<Breed>{};
 
-  Decorator(Architect _architect)
+  public Decorator(Architect _architect)
   {
     this._architect = _architect;
   }
@@ -28,7 +28,7 @@ class Decorator {
   List<Vec> tilesFor(Architecture? architecture) =>
       _tilesByArchitecture[architecture]!;
 
-  IEnumerable<string> decorate() {
+  public IEnumerable<string> decorate() {
     var rt = new List<string>();
 
     _findDoorways();

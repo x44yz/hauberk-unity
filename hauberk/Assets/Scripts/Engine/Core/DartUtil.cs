@@ -27,6 +27,11 @@ public static class DartUtils
     public static bool isOdd(this int k) {
       return k % 2 == 1;
     }
+
+    public static bool isEmpty<T>(this List<T> k)
+    {
+      return k.Count == 0;
+    }
 }
 
 public class Color {

@@ -1,6 +1,6 @@
-import 'dart:math' as math;
-
-import 'package:piecemeal/piecemeal.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// Uses an iterated cellular automata to generate organic blob-like shapes.
 ///

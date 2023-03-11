@@ -196,7 +196,7 @@ public class VecBase
 
     /// Returns a new [Vec] whose coordinates are this one's translated by [x] and
     /// [y].
-    Vec offset(int x, int y) => new Vec(this.x + x, this.y + y);
+    public Vec offset(int x, int y) => new Vec(this.x + x, this.y + y);
 
     /// Returns a new [Vec] whose coordinates are this one's but with the X
     /// coordinate translated by [x].
