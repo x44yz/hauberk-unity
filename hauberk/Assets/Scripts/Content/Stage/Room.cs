@@ -16,7 +16,7 @@ using System.Linq;
 /// Base class for architectures that work with [Room]s.
 abstract class RoomArchitecture : Architecture {
   /// Determines whether [room] can be placed on the stage at [x], [y].
-  bool canPlaceRoom(Array2D<RoomTile> room, int x, int y) {
+  public bool canPlaceRoom(Array2D<RoomTile> room, int x, int y) {
     foreach (var pos in room.bounds) {
       var here = pos.offset(x, y);
       var tile = room[pos];
@@ -31,7 +31,7 @@ abstract class RoomArchitecture : Architecture {
 
 /// Generates random rooms.
 class Room {
-  static Array2D<RoomTile> create(int depth) {
+  public static Array2D<RoomTile> create(int depth) {
     // TODO: Instead of picking from these randomly, different architectural
     // styles should prefer certain room shapes.
     // TODO: More room shapes:

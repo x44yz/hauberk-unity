@@ -365,6 +365,8 @@ public class Decorator {
 //  }
 
   IEnumerable<string> _dropItems() {
+    var rt = new List<string>();
+
     // Build a density map for where items should drop.
     var densityMap = new DensityMap(_stage.width, _stage.height);
     Debug.densityMap = densityMap;
@@ -401,7 +403,7 @@ public class Decorator {
     var goalPrice = densityMap.possibleTiles * pricePerTile;
 
     // Add some randomness so some stages are worth more than others.
-    goalPrice += rng.float(goalPrice * 0.2);
+    goalPrice += Rng.rng.rfloat(goalPrice * 0.2);
 
     var totalPrice = 0;
 
@@ -416,18 +418,20 @@ public class Decorator {
 
       var items =
           _architect.stage.placeDrops(pos, Motility.walk, floorDrop.drop);
-      for (var item in items) {
+      foreach (var item in items) {
         // Give worthless items a little price so we don't clutter too many of
         // them.
-        totalPrice += math.max(item.price, 1);
+        totalPrice += Math.Max(item.price, 1);
       }
 
       densityMap.reduceAround(_stage, pos, Motility.doorAndWalk, 3);
 
-      yield "Spawned item";
+      rt.Add("Spawned item");
     }
 
     Debug.densityMap = null;
+
+    return rt;
   }
 }
 

@@ -1,12 +1,9 @@
-import 'dart:math' as math;
-
-import 'package:piecemeal/piecemeal.dart';
-
-import '../../engine.dart';
-import 'architect.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// Uses a cellular automata to carve out rounded open cavernous areas.
-class Cavern extends Architecture {
+class Cavern : Architecture {
   // TODO: Fields to tune density distribution, thresholds, and number of
   // rounds of smoothing.
 

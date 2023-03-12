@@ -1,22 +1,25 @@
-import 'package:piecemeal/piecemeal.dart';
-
-import 'architect.dart';
-import 'painter.dart';
-import 'room.dart';
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 // TODO: There's a lot of copy/paste between this and Catacomb. Decide if it's
 // worth trying to refactor and share some code.
 
 /// Places a number of random rooms.
-class Dungeon extends RoomArchitecture {
+class Dungeon : RoomArchitecture {
   /// How much open space it tries to carve.
   public double _density;
 
-  PaintStyle get paintStyle => PaintStyle.flagstone;
+  public override PaintStyle paintStyle => PaintStyle.flagstone;
 
-  Dungeon({double? density}) : _density = density ?? 0.3;
+  Dungeon(double? density = null) 
+  {
+    _density = density ?? 0.3;
+  }
 
-  Iterable<string> build() sync* {
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
     var failed = 0;
     while (carvedDensity < _density && failed < 100) {
       var room = Room.create(depth);
@@ -30,48 +33,56 @@ class Dungeon extends RoomArchitecture {
         var yMin = 1;
         var yMax = height - room.height;
 
-        switch (region) {
-          case Region.everywhere:
+        if (region == Region.everywhere)
             // Do nothing.
-            break;
-          case Region.n:
-            yMax = height ~/ 2 - room.height;
-            break;
-          case Region.ne:
-            xMin = width ~/ 2;
-            yMax = height ~/ 2 - room.height;
-            break;
-          case Region.e:
-            xMin = width ~/ 2;
-            break;
-          case Region.se:
-            xMin = width ~/ 2;
-            yMin = height ~/ 2;
-            break;
-          case Region.s:
-            yMin = height ~/ 2;
-            break;
-          case Region.sw:
-            xMax = width ~/ 2 - room.width;
-            yMin = height ~/ 2;
-            break;
-          case Region.w:
-            xMax = width ~/ 2 - room.width;
-            break;
-          case Region.nw:
-            xMax = width ~/ 2 - room.width;
-            yMax = height ~/ 2 - room.height;
-            break;
+          {
+          }
+        else if (region == Region.n)
+        {
+            yMax = height / 2 - room.height;
+        }
+
+        else if (region == Region.ne)
+        {
+            xMin = width / 2;
+            yMax = height / 2 - room.height;
+        }
+        else if (region == Region.e)
+        {
+            xMin = width / 2;
+        }
+        else if (region == Region.se)
+        {
+            xMin = width / 2;
+            yMin = height / 2;
+        }
+        else if (region == Region.s)
+        {
+            yMin = height / 2;
+        }
+        else if (region == Region.sw)
+        {
+            xMax = width / 2 - room.width;
+            yMin = height / 2;
+        }
+        else if (region == Region.w)
+        {
+            xMax = width / 2 - room.width;
+        }
+        else if (region == Region.nw)
+        {
+            xMax = width / 2 - room.width;
+            yMax = height / 2 - room.height;
         }
 
         // TODO: Instead of purely random, it would be good if it tried to
         // place rooms as far from other rooms as possible to maximize passage
         // length and more evenly distribute them.
-        var x = rng.range(xMin, xMax);
-        var y = rng.range(yMin, yMax);
+        var x = Rng.rng.range(xMin, xMax);
+        var y = Rng.rng.range(yMin, yMax);
 
         if (_tryPlaceRoom(room, x, y)) {
-          yield "room";
+          rt.Add("room");
           placed = true;
           break;
         }
@@ -79,12 +90,14 @@ class Dungeon extends RoomArchitecture {
 
       if (!placed) failed++;
     }
+
+    return rt;
   }
 
   bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y) {
     if (!canPlaceRoom(room, x, y)) return false;
 
-    for (var pos in room.bounds) {
+    foreach (var pos in room.bounds) {
       var here = pos.offset(x, y);
       var tile = room[pos];
 

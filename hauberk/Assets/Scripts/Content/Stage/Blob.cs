@@ -6,7 +6,7 @@ using System.Linq;
 ///
 /// Note that this may generate unconnected regions.
 class Blob {
-  static Array2D<bool> make(int size) {
+  public static Array2D<bool> make(int size) {
     Array2D<bool>? blob = null;
 
     if (size >= 64) {

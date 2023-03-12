@@ -408,7 +408,7 @@ public abstract class Architecture {
 
   public abstract IEnumerable<string> build();
 
-  int depth => _architect.depth;
+  public int depth => _architect.depth;
 
   public Rect bounds => _architect.stage.bounds;
 
@@ -423,7 +423,7 @@ public abstract class Architecture {
   /// Gets the ratio of carved tiles to carvable tiles.
   ///
   /// This tells you how much of the stage has been opened up by architectures.
-  double carvedDensity {
+  public double carvedDensity {
     get {
       var possible = (width - 2) * (height - 2);
       return _architect._carvedTiles / possible;
@@ -445,7 +445,7 @@ public abstract class Architecture {
   /// Sets the tile at [x], [y] to [tile] and owned by this architecture.
   ///
   /// If [tile] is omitted, uses [Tiles.open].
-  void carve(int x, int y, TileType? tile) =>
+  public void carve(int x, int y, TileType? tile = null) =>
       _architect._carve(this, x, y, tile);
 
   /// Whether this architecture can carve the tile at [pos].
@@ -459,7 +459,7 @@ public abstract class Architecture {
   }
 
   /// Marks the tile at [pos] as not allowing a passage to be dug through it.
-  void preventPassage(Vec pos) {
+  public void preventPassage(Vec pos) {
     DartUtils.assert(_architect._owners[pos] == null ||
         _architect._owners[pos] == this ||
         _architect.stage[pos].type == Tiles.unformedWet);

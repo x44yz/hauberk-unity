@@ -64,7 +64,7 @@ class FloorDrops {
     // TODO: Other stuff.
   }
 
-  static FloorDrop choose(int depth) => _floorDrops.tryChoose(depth)!;
+  public static FloorDrop choose(int depth) => _floorDrops.tryChoose(depth)!;
 }
 
 class FloorDrop {

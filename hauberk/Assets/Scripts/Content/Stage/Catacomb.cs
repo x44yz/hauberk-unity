@@ -1,12 +1,9 @@
-import 'dart:math' as math;
-
-import 'package:piecemeal/piecemeal.dart';
-
-import 'architect.dart';
-import 'blob.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// Places a number of random blobs.
-class Catacomb extends Architecture {
+class Catacomb : Architecture {
   /// How much open space it tries to carve.
   public double _density;
 
@@ -16,27 +13,32 @@ class Catacomb extends Architecture {
   /// The maximum chamber size.
   public int _maxSize;
 
-  Catacomb({double? density, int? minSize, int? maxSize})
-      : _density = density ?? 0.3,
-        _minSize = minSize ?? 8,
-        _maxSize = maxSize ?? 32;
+  Catacomb(double? density = null, int? minSize = null, int? maxSize = null)
+  {
+      _density = density ?? 0.3;
+      _minSize = minSize ?? 8;
+      _maxSize = maxSize ?? 32;
+  }
 
-  Iterable<string> build() sync* {
+
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
     // Don't try to make chambers bigger than the stage.
-    var maxSize = _maxSize.toDouble();
-    maxSize = math.min(maxSize, height.toDouble());
-    maxSize = math.min(maxSize, width.toDouble());
-    maxSize = math.sqrt(maxSize);
+    var maxSize = (double)_maxSize;
+    maxSize = Math.Min(maxSize, height);
+    maxSize = Math.Min(maxSize, width);
+    maxSize = Math.Sqrt(maxSize);
 
     // Make sure the size range isn't backwards.
-    var minSize = math.sqrt(_minSize);
-    minSize = math.min(minSize, maxSize);
+    var minSize = Math.Sqrt(_minSize);
+    minSize = Math.Min(minSize, maxSize);
 
     var failed = 0;
     while (carvedDensity < _density && failed < 100) {
       // Square the size to skew the distribution so that larges ones are
       // rarer than smaller ones.
-      var size = math.pow(rng.float(minSize, maxSize), 2.0).toInt();
+      var size = (int)Math.Pow(Rng.rng.rfloat(minSize, maxSize), 2.0);
       var cave = Blob.make(size);
 
       var placed = false;
@@ -50,48 +52,55 @@ class Catacomb extends Architecture {
         var yMin = 1;
         var yMax = height - cave.height;
 
-        switch (region) {
-          case Region.everywhere:
+        if (region == Region.everywhere)
+        {
             // Do nothing.
-            break;
-          case Region.n:
-            yMax = height ~/ 2 - cave.height;
-            break;
-          case Region.ne:
-            xMin = width ~/ 2;
-            yMax = height ~/ 2 - cave.height;
-            break;
-          case Region.e:
-            xMin = width ~/ 2;
-            break;
-          case Region.se:
-            xMin = width ~/ 2;
-            yMin = height ~/ 2;
-            break;
-          case Region.s:
-            yMin = height ~/ 2;
-            break;
-          case Region.sw:
-            xMax = width ~/ 2 - cave.width;
-            yMin = height ~/ 2;
-            break;
-          case Region.w:
-            xMax = width ~/ 2 - cave.width;
-            break;
-          case Region.nw:
-            xMax = width ~/ 2 - cave.width;
-            yMax = height ~/ 2 - cave.height;
-            break;
+        }
+        else if (region == Region.n)
+        {
+            yMax = height / 2 - cave.height;
+        }
+        else if (region == Region.ne)
+        {
+            xMin = width / 2;
+            yMax = height / 2 - cave.height;
+        }
+        else if (region == Region.e)
+        {
+            xMin = width / 2;
+        }
+        else if (region == Region.se)
+        {
+            xMin = width / 2;
+            yMin = height / 2;
+        }
+        else if (region == Region.s)
+        {
+            yMin = height / 2;
+        }
+        else if (region == Region.sw)
+        {
+            xMax = width / 2 - cave.width;
+            yMin = height / 2;
+        }
+        else if (region == Region.w)
+        {
+            xMax = width / 2 - cave.width;
+        }
+        else if (region == Region.nw)
+        {
+            xMax = width / 2 - cave.width;
+            yMax = height / 2 - cave.height;
         }
 
         if (xMin >= xMax) continue;
         if (yMin >= yMax) continue;
 
-        var x = rng.range(xMin, xMax);
-        var y = rng.range(yMin, yMax);
+        var x = Rng.rng.range(xMin, xMax);
+        var y = Rng.rng.range(yMin, yMax);
 
         if (_tryPlaceCave(cave, x, y)) {
-          yield "cave";
+          rt.Add("cave");
           placed = true;
           break;
         }
@@ -99,16 +108,18 @@ class Catacomb extends Architecture {
 
       if (!placed) failed++;
     }
+
+    return rt;
   }
 
   bool _tryPlaceCave(Array2D<bool> cave, int x, int y) {
-    for (var pos in cave.bounds) {
+    foreach (var pos in cave.bounds) {
       if (cave[pos]) {
         if (!canCarve(pos.offset(x, y))) return false;
       }
     }
 
-    for (var pos in cave.bounds) {
+    foreach (var pos in cave.bounds) {
       if (cave[pos]) carve(pos.x + x, pos.y + y);
     }
 
