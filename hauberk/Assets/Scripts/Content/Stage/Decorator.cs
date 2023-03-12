@@ -285,7 +285,7 @@ public class Decorator {
     return true;
   }
 
-  void spawnMonster(Vec pos, Breed breed) {
+  public void spawnMonster(Vec pos, Breed breed) {
     _spawnMonster(null, pos, breed);
   }
 

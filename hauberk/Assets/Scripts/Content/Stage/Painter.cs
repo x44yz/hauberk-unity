@@ -19,11 +19,11 @@ public class Painter {
 
   public Rect bounds => _architect.stage.bounds;
 
-  List<Vec> ownedTiles => _decorator.tilesFor(_architecture);
+  public List<Vec> ownedTiles => _decorator.tilesFor(_architecture);
 
   public int paintedCount => _painted;
 
-  int depth => _architect.depth;
+  public int depth => _architect.depth;
 
   public bool ownsTile(Vec pos) => _architect.ownerAt(pos) == _architecture;
 
@@ -39,12 +39,12 @@ public class Painter {
 
   bool hasActor(Vec pos) => _architect.stage.actorAt(pos) != null;
 
-  Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
+  public Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
     return _decorator.chooseBreed(depth,
         tag: tag, includeParentTags: includeParentTags);
   }
 
-  void spawnMonster(Vec pos, Breed breed) {
+  public void spawnMonster(Vec pos, Breed breed) {
     _decorator.spawnMonster(pos, breed);
   }
 }

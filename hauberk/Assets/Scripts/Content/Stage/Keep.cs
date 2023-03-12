@@ -1,15 +1,11 @@
-import 'dart:math' as math;
-
-import 'package:piecemeal/piecemeal.dart';
-
-import '../../engine.dart';
-import 'architect.dart';
-import 'painter.dart';
-import 'room.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 /// Places a number of connected rooms.
-class Keep extends RoomArchitecture {
-  static JunctionSet? debugJunctions;
+class Keep : RoomArchitecture {
+  public static JunctionSet? debugJunctions;
 
   public JunctionSet _junctions;
 
@@ -17,7 +13,7 @@ class Keep extends RoomArchitecture {
 
   int? _maxRooms;
 
-  factory Keep([int? maxRooms]) {
+  public static Keep create(int? maxRooms = null) {
     if (maxRooms != null) {
       // TODO: For now, small keeps always pack rooms in densely. Have
       // different styles of keep for different monsters?
@@ -29,13 +25,18 @@ class Keep extends RoomArchitecture {
     }
   }
 
-  Keep._(this._maxRooms, TakeFrom takeFrom)
-      : _junctions = JunctionSet(takeFrom);
+  Keep(int _maxRooms, TakeFrom takeFrom)
+  {
+    this._maxRooms = _maxRooms;
+    _junctions = JunctionSet(takeFrom);
+  }
 
   // TODO: Different paint styles for different monsters.
-  PaintStyle get paintStyle => PaintStyle.granite;
+  public override PaintStyle paintStyle => PaintStyle.granite;
 
-  Iterable<string> build() sync* {
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
     debugJunctions = _junctions;
 
     // If we are covering the whole area, attempt to place multiple rooms.
@@ -47,21 +48,23 @@ class Keep extends RoomArchitecture {
     }
 
     for (var i = 0; i < startingRooms; i++) {
-      yield* _growRooms();
+      rt.Add(_growRooms());
     }
+
+    return rt;
   }
 
   bool spawnMonsters(Painter painter) {
     var tiles = painter.ownedTiles
-        .where((pos) => painter.getTile(pos).isWalkable)
-        .toList();
-    rng.shuffle(tiles);
+        .Where((pos) => painter.getTile(pos).isWalkable)
+        .ToList();
+    Rng.rng.shuffle(tiles);
 
-    for (var pos in tiles) {
+    foreach (var pos in tiles) {
       // TODO: Make this tunable?
-      if (!rng.oneIn(20)) continue;
+      if (!Rng.rng.oneIn(20)) continue;
 
-      var group = rng.item(style.monsterGroups);
+      var group = Rng.rng.item(style.monsterGroups);
       var breed = painter.chooseBreed(painter.depth, tag: group);
       painter.spawnMonster(pos, breed);
     }
@@ -69,8 +72,10 @@ class Keep extends RoomArchitecture {
     return true;
   }
 
-  Iterable<string> _growRooms() sync* {
-    if (!_tryPlaceStartingRoom()) return;
+  IEnumerable<string> _growRooms() {
+    var rt = new List<string>();
+
+    if (!_tryPlaceStartingRoom()) return rt;
 
     // Expand outward from it.
     while (_junctions.isNotEmpty) {
@@ -81,16 +86,18 @@ class Keep extends RoomArchitecture {
       if (!canCarve(junction.position + junction.direction)) continue;
 
       if (_tryAttachRoom(junction)) {
-        yield "Room";
+        rt.Add("Room");
 
         _placedRooms++;
         if (_maxRooms != null && _placedRooms >= _maxRooms!) break;
       } else {
         // Couldn't place the room, but maybe try the junction again.
         // TODO: Make tunable.
-        if (junction.tries < 5) _junctions.add(junction);
+        if (junction.tries < 5) _junctions.Add(junction);
       }
     }
+
+    return rt;
   }
 
   bool _tryPlaceStartingRoom() {
@@ -110,17 +117,17 @@ class Keep extends RoomArchitecture {
     var yMin = 1;
     var yMax = height - room.height - 1;
 
-    switch (region) {
-      case Region.nw:
-      case Region.n:
-      case Region.ne:
-        yMax = math.max(1, (height * 0.25).toInt() - room.height);
-        break;
-      case Region.sw:
-      case Region.s:
-      case Region.se:
-        yMin = (height * 0.75).toInt();
-        break;
+    if (region == Region.nw ||
+      region == Region.n ||
+      region == Region.ne)
+      {
+        yMax = Math.Max(1, (int)(height * 0.25) - room.height);
+      }
+    else if (region == Region.sw ||
+      region == Region.s ||
+      region == Region.se)
+    {
+        yMin = (int)(height * 0.75);
     }
 
     switch (region) {
@@ -246,7 +253,7 @@ class Junction {
   public Direction direction;
 
   /// How many times we've tried to place something at this junction.
-  int tries = 0;
+  public int tries = 0;
 
   Junction(this.position, this.direction);
 }
@@ -260,7 +267,7 @@ class JunctionSet {
 
   JunctionSet(this._takeFrom);
 
-  bool get isNotEmpty => _junctions.isNotEmpty;
+  public bool isNotEmpty => _junctions.isNotEmpty;
 
   Junction? operator [](Vec pos) => _byPosition[pos];
 
@@ -271,7 +278,7 @@ class JunctionSet {
     _junctions.add(junction);
   }
 
-  Junction takeNext() {
+  public Junction takeNext() {
     Junction junction;
     switch (_takeFrom) {
       case TakeFrom.newest:
