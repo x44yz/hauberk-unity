@@ -141,5 +141,89 @@ namespace Malison
     public const int backslash = 220;
     public const int rightBracket = 221;
     public const int apostrophe = 222;
+
+    public static UnityEngine.KeyCode toUnityKeyCode(int key)
+    {
+      if (key == KeyCode.delete) return UnityEngine.KeyCode.Delete;
+      else if (key == tab) return UnityEngine.KeyCode.Tab;
+      else if (key == enter) return UnityEngine.KeyCode.Return;
+      else if (key == shift) return UnityEngine.KeyCode.LeftShift;
+      else if (key == control) return UnityEngine.KeyCode.LeftControl;
+      else if (key == option) return UnityEngine.KeyCode.LeftWindows;
+      else if (key == escape) return UnityEngine.KeyCode.Escape;
+      else if (key == space) return UnityEngine.KeyCode.Space;
+      else if (key == left) return UnityEngine.KeyCode.LeftArrow;
+      else if (key == up) return UnityEngine.KeyCode.UpArrow;
+      else if (key == right) return UnityEngine.KeyCode.RightArrow;
+      else if (key == down) return UnityEngine.KeyCode.DownArrow;
+      else if (key == zero) return UnityEngine.KeyCode.Alpha0;
+      else if (key == one) return UnityEngine.KeyCode.Alpha1;
+      else if (key == two) return UnityEngine.KeyCode.Alpha2;
+      else if (key == three) return UnityEngine.KeyCode.Alpha3;
+      else if (key == four) return UnityEngine.KeyCode.Alpha4;
+      else if (key == five) return UnityEngine.KeyCode.Alpha5;
+      else if (key == six) return UnityEngine.KeyCode.Alpha6;
+      else if (key == seven) return UnityEngine.KeyCode.Alpha7;
+      else if (key == eight) return UnityEngine.KeyCode.Alpha8;
+      else if (key == nine) return UnityEngine.KeyCode.Alpha9;
+      else if (key == a) return UnityEngine.KeyCode.A;
+      else if (key == b) return UnityEngine.KeyCode.B;
+      else if (key == c) return UnityEngine.KeyCode.C;
+      else if (key == d) return UnityEngine.KeyCode.D;
+      else if (key == e) return UnityEngine.KeyCode.E;
+      else if (key == f) return UnityEngine.KeyCode.F;
+      else if (key == g) return UnityEngine.KeyCode.G;
+      else if (key == h) return UnityEngine.KeyCode.H;
+      else if (key == i) return UnityEngine.KeyCode.I;
+      else if (key == j) return UnityEngine.KeyCode.J;
+      else if (key == k) return UnityEngine.KeyCode.K;
+      else if (key == l) return UnityEngine.KeyCode.L;
+      else if (key == m) return UnityEngine.KeyCode.M;
+      else if (key == n) return UnityEngine.KeyCode.N;
+      else if (key == o) return UnityEngine.KeyCode.O;
+      else if (key == p) return UnityEngine.KeyCode.P;
+      else if (key == q) return UnityEngine.KeyCode.Q;
+      else if (key == r) return UnityEngine.KeyCode.R;
+      else if (key == s) return UnityEngine.KeyCode.S;
+      else if (key == t) return UnityEngine.KeyCode.T;
+      else if (key == u) return UnityEngine.KeyCode.U;
+      else if (key == v) return UnityEngine.KeyCode.V;
+      else if (key == w) return UnityEngine.KeyCode.W;
+      else if (key == x) return UnityEngine.KeyCode.X;
+      else if (key == y) return UnityEngine.KeyCode.Y;
+      else if (key == z) return UnityEngine.KeyCode.Z;
+      else if (key == numpad0) return UnityEngine.KeyCode.Keypad0;
+      else if (key == numpad1) return UnityEngine.KeyCode.Keypad1;
+      else if (key == numpad2) return UnityEngine.KeyCode.Keypad2;
+      else if (key == numpad3) return UnityEngine.KeyCode.Keypad3;
+      else if (key == numpad4) return UnityEngine.KeyCode.Keypad4;
+      else if (key == numpad5) return UnityEngine.KeyCode.Keypad5;
+      else if (key == numpad6) return UnityEngine.KeyCode.Keypad6;
+      else if (key == numpad7) return UnityEngine.KeyCode.Keypad7;
+      else if (key == numpad8) return UnityEngine.KeyCode.Keypad8;
+      else if (key == numpad9) return UnityEngine.KeyCode.Keypad9;
+      // else if (key == numpadClear) return UnityEngine.KeyCode
+      // else if (key == numpadMultiply) return UnityEngine.KeyCode
+      // else if (key == numpadAdd) return UnityEngine.KeyCode
+      // else if (key == numpadSubtract) return UnityEngine.KeyCode
+      // else if (key == numpadDecimal) return UnityEngine.KeyCode
+      // else if (key == numpadDivide) return UnityEngine.KeyCode
+      // else if (key == numpadEquals) return UnityEngine.KeyCode
+      // else if (key == numpadEnter) return UnityEngine.KeyCode
+      // else if (key == semicolon) return UnityEngine.KeyCode
+      // else if (key == equals) return UnityEngine.KeyCode
+      // else if (key == comma) return UnityEngine.KeyCode
+      // else if (key == hyphen) return UnityEngine.KeyCode
+      // else if (key == period) return UnityEngine.KeyCode
+      // else if (key == slash) return UnityEngine.KeyCode
+      // else if (key == backtick) return UnityEngine.KeyCode
+      // else if (key == leftBracket) return UnityEngine.KeyCode
+      // else if (key == backslash) return UnityEngine.KeyCode
+      // else if (key == rightBracket) return UnityEngine.KeyCode
+      // else if (key == apostrophe) return UnityEngine.KeyCode
+      else
+        UnityEngine.Debug.Log("not implement key > " + key);
+      return UnityEngine.KeyCode.None;
+    }
   }
 }

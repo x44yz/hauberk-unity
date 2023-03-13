@@ -182,19 +182,33 @@ namespace Malison
       // Firefox uses 59 for semicolon.
       // if (keyCode == 59) keyCode = KeyCode.semicolon;
 
-      var input =
-          keyPress.find(UnityEngine.even, shift: , alt: event.altKey);
+      foreach (var kv in keyPress._bindings)
+      {
+        if (UnityEngine.Input.GetKeyDown(KeyCode.toUnityKeyCode(kv.Key.charCode)))
+        {
+          var input =
+              keyPress.find(kv.Key.charCode, 
+              shift: UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.LeftShift), 
+              alt: UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.LeftAlt));
 
-      var screen = _screens.last;
-      if (input != null) {
-        // Bound keys are always consumed, even if the screen doesn't use it.
-        event.preventDefault();
-        if (screen.handleInput(input)) return;
+          var screen = _screens[_screens.Count - 1];
+          if (input != null) {
+            // Bound keys are always consumed, even if the screen doesn't use it.
+            // event.preventDefault();
+            if (screen.handleInput(input)) return;
+          }
+        }
       }
 
-      if (screen.keyDown(keyCode, shift: event.shiftKey, alt: event.altKey)) {
-        event.preventDefault();
-      }
+
+
+      // if (screen.keyDown(keyCode, shift: event.shiftKey, alt: event.altKey)) {
+      //   event.preventDefault();
+      // }
+      // if (screen.keyDown())
+      // {
+
+      // }
     }
 
     void _keyUp(html.KeyboardEvent event) {
@@ -290,7 +304,7 @@ namespace Malison
     ///
     /// If this returns `false` (the default), then the lower-level [keyDown]
     /// method will be called.
-    bool handleInput(T input) => false;
+    public bool handleInput(T input) => false;
 
     bool keyDown(int keyCode, {required bool shift, required bool alt}) => false;
 
