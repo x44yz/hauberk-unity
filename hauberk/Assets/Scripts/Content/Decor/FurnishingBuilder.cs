@@ -94,7 +94,7 @@ public abstract partial class Decor {
     _furnishingFrequency = frequency;
     symmetry ??= Symmetry.none;
 
-    var lines = template.Split('\n').Select((line) => line.Trim()).ToList();
+    var lines = template.Trim().Split('\n').Select((line) => line.Trim()).ToList();
     _singleFurnishing(lines);
 
     if (symmetry == Symmetry.mirrorHorizontal ||

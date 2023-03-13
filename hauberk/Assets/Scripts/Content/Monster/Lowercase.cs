@@ -131,7 +131,7 @@ public partial class Monsters
             f.defense(10, "{2} [is|are] deflected by its scales.");
             f.preferOpen();
 // 
-            var dragon = _MBaseBuilderUtils.breed("juvenile $name dragon", 46 + i * 2, youngColor, 150 + i * 20);
+            var dragon = _MBaseBuilderUtils.breed($"juvenile {name} dragon", 46 + i * 2, youngColor, 150 + i * 20);
                 dragon.attack("bite[s]", 20 + i * 2);
                 dragon.attack("claw[s]", 15 + i);
                 dragon.drop("treasure", count: 2 + i / 2);
@@ -148,7 +148,7 @@ public partial class Monsters
             f.defense(20, "{2} [is|are] deflected by its scales.");
             f.preferOpen();
 // 
-            dragon = _MBaseBuilderUtils.breed("$name dragon", 50 + i * 2, adultColor, 350 + i * 50);
+            dragon = _MBaseBuilderUtils.breed($"{name} dragon", 50 + i * 2, adultColor, 350 + i * 50);
             dragon.attack("bite[s]", 30 + i * 2);
             dragon.attack("claw[s]", 25 + i);
             dragon.drop("treasure", count: 5 + i / 2);

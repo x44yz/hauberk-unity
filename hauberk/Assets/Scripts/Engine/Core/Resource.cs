@@ -87,9 +87,12 @@ public class ResourceSet<T> where T : class {
 
   /// Returns the resource with [name], if any, or else `null`.
   public T tryFind(string name) {
-    var resource = _resources[name];
-    if (resource == null) return default(T);
-    return resource.obj;
+    if (_resources.ContainsKey(name))
+    {
+      var resource = _resources[name];
+      if (resource != null) return resource.obj;
+    }
+    return default(T);
   }
 
   /// Returns whether the resource with [name] has [tagName] as one of its
