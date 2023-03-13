@@ -12,7 +12,7 @@ namespace Malison
       _bindings[new _KeyBinding(keyCode, shift: shift, alt: alt)] = input;
     }
 
-    T? find(int keyCode, bool shift = false, bool alt = false) {
+    public T find(int keyCode, bool shift = false, bool alt = false) {
       return _bindings[new _KeyBinding(keyCode, shift: shift, alt: alt)];
     }
   }

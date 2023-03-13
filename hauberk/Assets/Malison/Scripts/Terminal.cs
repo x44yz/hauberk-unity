@@ -6,13 +6,13 @@ namespace Malison
   /// A virtual console terminal that can be written onto.
   abstract class Terminal {
     /// The number of columns of characters.
-    int width;
+    public int width;
 
     /// The number of rows of characters.
-    int height;
+    public int height;
 
     /// The number of columns and rows.
-    Vec size;
+    public Vec size;
 
     /// The default foreground color used when a color is not specified.
     Color foreColor = Color.white;

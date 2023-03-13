@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Malison
 {
   /// A [RenderableTerminal] that draws to a canvas element using a browser font.
-  class CanvasTerminal extends RenderableTerminal {
-    final Display _display;
+  class CanvasTerminal : RenderableTerminal {
+    public Display _display;
 
-    final Font _font;
-    final html.CanvasElement _canvas;
-    final html.CanvasRenderingContext2D _context;
+    public Font _font;
+    public html.CanvasElement _canvas;
+    public html.CanvasRenderingContext2D _context;
 
     /// The drawing scale, used to adapt to Retina displays.
-    final int _scale = html.window.devicePixelRatio.toInt();
+    public int _scale = html.window.devicePixelRatio.toInt();
 
     Vec get size => _display.size;
     int get width => _display.width;
@@ -78,12 +79,12 @@ namespace Malison
 
   /// Describes a font used by [CanvasTerminal].
   class Font {
-    final String family;
-    final int size;
-    final int charWidth;
-    final int lineHeight;
-    final int x;
-    final int y;
+    public String family;
+    public int size;
+    public int charWidth;
+    public int lineHeight;
+    public int x;
+    public int y;
 
     Font(this.family,
         {required this.size,

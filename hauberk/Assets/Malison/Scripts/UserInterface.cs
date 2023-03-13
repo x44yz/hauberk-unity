@@ -1,10 +1,5 @@
-import 'dart:async';
-import 'dart:html' as html;
-
-import 'package:piecemeal/piecemeal.dart';
-
-import 'key_bindings.dart';
-import 'terminal.dart';
+using System;
+using System.Collections.Generic;
 
 namespace Malison
 {
@@ -18,32 +13,28 @@ namespace Malison
   /// which screens can use to map raw keypresses to something higher-level.
   class UserInterface<T> {
     /// Keyboard bindings for key press events.
-    final keyPress = KeyBindings<T>();
+    public KeyBindings<T> keyPress = new KeyBindings<T>();
 
-    final List<Screen<T>> _screens = [];
+    public List<Screen<T>> _screens = new List<Screen<T>>();
     RenderableTerminal? _terminal;
     bool _dirty = true;
-
-    StreamSubscription<html.KeyboardEvent>? _keyDownSubscription;
-    StreamSubscription<html.KeyboardEvent>? _keyUpSubscription;
 
     /// Whether or not the UI is listening for keyboard events.
     ///
     /// Initially off.
-    bool get handlingInput => _keyDownSubscription != null;
+    bool _handlingInput = false;
+    bool handlingInput 
+    {
+      get { return _handlingInput; }
+      set {
+        if (value == _handlingInput) return;
+        _handlingInput = value;
 
-    set handlingInput(bool value) {
-      if (value == handlingInput) return;
-
-      if (value) {
-        _keyDownSubscription = html.document.body!.onKeyDown.listen(_keyDown);
-        _keyUpSubscription = html.document.body!.onKeyUp.listen(_keyUp);
-      } else {
-        _keyDownSubscription?.cancel();
-        _keyDownSubscription = null;
-
-        _keyUpSubscription?.cancel();
-        _keyUpSubscription = null;
+        if (value) {
+          MalisonUnity.Inst.onKeyUpdate = onKeyUpdate;
+        } else {
+          MalisonUnity.Inst.onKeyUpdate = null;
+        }
       }
     }
 
@@ -55,19 +46,26 @@ namespace Malison
     /// If you want to manually refresh the UI yourself when you know it needs
     /// to be updated -- maybe your game is explicitly turn-based -- you can
     /// leave this off.
-    bool get running => _running;
     bool _running = false;
+    bool running
+    {
+      get { return _running; }
+      set {
+        if (value == _running) return;
 
-    set running(bool value) {
-      if (value == _running) return;
-
-      _running = value;
-      if (_running) {
-        html.window.requestAnimationFrame(_tick);
+        _running = value;
+        if (_running) {
+          MalisonUnity.Inst.onUpdate = _tick;
+        } else {
+          MalisonUnity.Inst.onUpdate = null;
+        }
       }
     }
 
-    UserInterface([this._terminal]);
+    UserInterface(RenderableTerminal _terminal)
+    {
+      this._terminal = _terminal;
+    }
 
     void setTerminal(RenderableTerminal terminal) {
       var resized = terminal != null &&
@@ -80,14 +78,15 @@ namespace Malison
 
       // If the terminal size changed, let the screens known.
       if (resized) {
-        for (var screen in _screens) screen.resize(terminal.size);
+        foreach (var screen in _screens)
+          screen.resize(terminal.size);
       }
     }
 
     /// Pushes [screen] onto the top of the stack.
     void push(Screen<T> screen) {
       screen._bind(this);
-      _screens.add(screen);
+      _screens.Add(screen);
       _render();
     }
 
@@ -95,10 +94,11 @@ namespace Malison
     ///
     /// The next screen down is activated. If [result] is given, it is passed to
     /// the new active screen's [activate] method.
-    void pop([Object? result]) {
-      var screen = _screens.removeLast();
+    void pop(object? result) {
+      var screen = _screens[_screens.Count - 1];
+      _screens.RemoveAt(_screens.Count - 1);
       screen._unbind();
-      _screens[_screens.length - 1].activate(screen, result);
+      _screens[_screens.Count - 1].activate(screen, result);
       _render();
     }
 
@@ -106,11 +106,12 @@ namespace Malison
     ///
     /// This is equivalent to a [pop] followed by a [push].
     void goTo(Screen<T> screen) {
-      var old = _screens.removeLast();
+      var old = _screens[_screens.Count - 1];
+      _screens.RemoveAt(_screens.Count - 1);
       old._unbind();
 
       screen._bind(this);
-      _screens.add(screen);
+      _screens.Add(screen);
       _render();
     }
 
@@ -122,62 +123,67 @@ namespace Malison
       // Don't use a for-in loop here so that we don't run into concurrent
       // modification exceptions if a screen is added or removed during a call to
       // update().
-      for (var i = 0; i < _screens.length; i++) {
+      for (var i = 0; i < _screens.Count; i++) {
         _screens[i].update();
       }
       if (_dirty) _render();
     }
 
-    void _keyDown(html.KeyboardEvent event) {
-      var keyCode = event.keyCode;
+    void onKeyUpdate()
+    {
+      _keyDown();
+    }
 
-      // If the keypress happened on the numpad, translate the keyCode.
-      if (event.location == 3) {
-        switch (keyCode) {
-          case KeyCode.zero:
-            keyCode = KeyCode.numpad0;
-            break;
-          case KeyCode.one:
-            keyCode = KeyCode.numpad1;
-            break;
-          case KeyCode.two:
-            keyCode = KeyCode.numpad2;
-            break;
-          case KeyCode.three:
-            keyCode = KeyCode.numpad3;
-            break;
-          case KeyCode.four:
-            keyCode = KeyCode.numpad4;
-            break;
-          case KeyCode.five:
-            keyCode = KeyCode.numpad5;
-            break;
-          case KeyCode.six:
-            keyCode = KeyCode.numpad6;
-            break;
-          case KeyCode.seven:
-            keyCode = KeyCode.numpad7;
-            break;
-          case KeyCode.eight:
-            keyCode = KeyCode.numpad8;
-            break;
-          case KeyCode.nine:
-            keyCode = KeyCode.numpad9;
-            break;
-          case KeyCode.equals:
-            keyCode = KeyCode.numpadEquals;
-            break;
-          case KeyCode.enter:
-            keyCode = KeyCode.numpadEnter;
-            break;
-        }
-      }
+    void _keyDown() {
+      // var keyCode = event.keyCode;
+
+      // // If the keypress happened on the numpad, translate the keyCode.
+      // if (event.location == 3) {
+      //   switch (keyCode) {
+      //     case KeyCode.zero:
+      //       keyCode = KeyCode.numpad0;
+      //       break;
+      //     case KeyCode.one:
+      //       keyCode = KeyCode.numpad1;
+      //       break;
+      //     case KeyCode.two:
+      //       keyCode = KeyCode.numpad2;
+      //       break;
+      //     case KeyCode.three:
+      //       keyCode = KeyCode.numpad3;
+      //       break;
+      //     case KeyCode.four:
+      //       keyCode = KeyCode.numpad4;
+      //       break;
+      //     case KeyCode.five:
+      //       keyCode = KeyCode.numpad5;
+      //       break;
+      //     case KeyCode.six:
+      //       keyCode = KeyCode.numpad6;
+      //       break;
+      //     case KeyCode.seven:
+      //       keyCode = KeyCode.numpad7;
+      //       break;
+      //     case KeyCode.eight:
+      //       keyCode = KeyCode.numpad8;
+      //       break;
+      //     case KeyCode.nine:
+      //       keyCode = KeyCode.numpad9;
+      //       break;
+      //     case KeyCode.equals:
+      //       keyCode = KeyCode.numpadEquals;
+      //       break;
+      //     case KeyCode.enter:
+      //       keyCode = KeyCode.numpadEnter;
+      //       break;
+      //   }
+      // }
 
       // Firefox uses 59 for semicolon.
-      if (keyCode == 59) keyCode = KeyCode.semicolon;
+      // if (keyCode == 59) keyCode = KeyCode.semicolon;
 
       var input =
-          keyPress.find(keyCode, shift: event.shiftKey, alt: event.altKey);
+          keyPress.find(UnityEngine.even, shift: , alt: event.altKey);
 
       var screen = _screens.last;
       if (input != null) {
@@ -204,7 +210,7 @@ namespace Malison
     }
 
     /// Called every animation frame while the UI's game loop is running.
-    void _tick(num time) {
+    void _tick(float dt) {
       refresh();
 
       if (_running) html.window.requestAnimationFrame(_tick);
@@ -254,7 +260,7 @@ namespace Malison
     bool get isTransparent => false;
 
     /// Binds this screen to [ui].
-    void _bind(UserInterface<T> ui) {
+    public void _bind(UserInterface<T> ui) {
       assert(_ui == null);
       _ui = ui;
 
@@ -262,7 +268,7 @@ namespace Malison
     }
 
     /// Unbinds this screen from the [ui] that owns it.
-    void _unbind() {
+    public void _unbind() {
       assert(_ui != null);
       _ui = null;
     }
@@ -293,14 +299,14 @@ namespace Malison
     /// Called when the screen above this one ([popped]) has been popped and this
     /// screen is now the top-most screen. If a value was passed to [pop()], it
     /// will be passed to this as [result].
-    void activate(Screen<T> popped, Object? result) {}
+    public void activate(Screen<T> popped, Object? result) {}
 
-    void update() {}
+    public void update() {}
 
     void render(Terminal terminal) {}
 
     /// Called when the [UserInterface] has been bound to a new terminal with a
     /// different size while this [Screen] is present.
-    void resize(Vec size) {}
+    public void resize(Vec size) {}
   }
 }
