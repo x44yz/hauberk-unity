@@ -32,19 +32,19 @@ namespace Malison
     Vec size => _display.size;
 
     /// Creates a new terminal using a built-in DOS-like font.
-    factory RetroTerminal.dos(int width, int height,
+    public static RetroTerminal dos(int width, int height,
             [html.CanvasElement? canvas]) =>
         RetroTerminal(width, height, "packages/malison/dos.png",
             canvas: canvas, charWidth: 9, charHeight: 16);
 
     /// Creates a new terminal using a short built-in DOS-like font.
-    factory RetroTerminal.shortDos(int width, int height,
+    public static RetroTerminal shortDos(int width, int height,
             [html.CanvasElement? canvas]) =>
         RetroTerminal(width, height, "packages/malison/dos-short.png",
             canvas: canvas, charWidth: 9, charHeight: 13);
 
     /// Creates a new terminal using a font image at [imageUrl].
-    factory RetroTerminal(int width, int height, String imageUrl,
+    public static RetroTerminal create(int width, int height, String imageUrl,
         {html.CanvasElement? canvas,
         required int charWidth,
         required int charHeight,
@@ -65,19 +65,21 @@ namespace Malison
         html.document.body!.append(canvas);
       }
 
-      var display = Display(width, height);
+      var display = new Display(width, height);
 
       return RetroTerminal._(display, charWidth, charHeight, canvas,
           html.ImageElement(src: imageUrl), scale);
     }
 
-    RetroTerminal._(this._display, this._charWidth, this._charHeight,
+    RetroTerminal(this._display, this._charWidth, this._charHeight,
         html.CanvasElement canvas, this._font, this._scale)
-        : _context = canvas.context2D {
-      _font.onLoad.listen((_) {
-        _imageLoaded = true;
-        render();
-      });
+    {
+      _context = canvas.context2D {
+        _font.onLoad.listen((_) {
+          _imageLoaded = true;
+          render();
+        });
+      }
     }
 
     void drawGlyph(int x, int y, Glyph glyph) {
@@ -94,7 +96,7 @@ namespace Malison
         char = unicodeMap[char] ?? char;
 
         var sx = (char % 32) * _charWidth;
-        var sy = (char ~/ 32) * _charHeight;
+        var sy = (char / 32) * _charHeight;
 
         // Fill the background.
         _context.fillStyle = glyph.back.cssColor;
@@ -120,7 +122,7 @@ namespace Malison
     }
 
     Vec pixelToChar(Vec pixel) =>
-        Vec(pixel.x ~/ _charWidth, pixel.y ~/ _charHeight);
+        Vec(pixel.x / _charWidth, pixel.y / _charHeight);
 
     html.CanvasElement _getColorFont(Color color) {
       var cached = _fontColorCache[color];
