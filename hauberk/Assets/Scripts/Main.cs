@@ -7,7 +7,7 @@ public class Main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // var content = createContent();
+        var content = GameContent.createContent();
 
         // _addFont("8x8", 8);
         // _addFont("8x10", 8, 10);

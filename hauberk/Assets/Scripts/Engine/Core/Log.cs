@@ -225,6 +225,8 @@ public class Log {
   /// [isFirst] is `false` and [text] doesn't have any formatting.
   static string _categorize(string text,
       bool isFirst, bool force = false) {
+    UnityEngine.Debug.Log($"_categorize:{text} - {isFirst} - {force}");
+
     var optionalSuffix = new Regex("\\[(\\w+?)\\]");
     var irregular = new Regex("\\[([^|]+)\\|([^\\]]+)\\]");
 
@@ -234,7 +236,7 @@ public class Log {
     // Handle words with optional suffixes like `close[s]` and `sword[s]`.
     while (true) {
       var match = optionalSuffix.Match(text);
-      if (match == null) break;
+      if (match == null || match.Success == false) break;
 
       var before = text.Substring(0, match.Index);
       var after = text.Substring(match.Index + match.Length);
@@ -243,7 +245,7 @@ public class Log {
         text = $"{before}{after}";
       } else {
         // Include the optional part.
-        string m1 = match.Value;
+        string m1 = match.Value.Substring(1, match.Length - 2);
         text = $"{before}{m1}{after}";
       }
     }
@@ -251,21 +253,22 @@ public class Log {
     // Handle irregular words like `[are|is]` and `sta[ff|aves]`.
     while (true) {
       var match = irregular.Match(text);
-      if (match == null) break;
+      if (match == null || match.Success == false) break;
 
       var before = text.Substring(0, match.Index);
       var after = text.Substring(match.Index + match.Length);
       if (isFirst) {
         // Use the first form.
-        string m1 = match.Value.Substring(0, match.Value.IndexOf('|'));
+        string m1 = match.Value.Substring(1, match.Value.IndexOf('|') - 1);
         text = $"{before}{m1}{after}";
       } else {
         // Use the second form.
-        string m2 = match.Value.Substring(match.Value.IndexOf('|'));
+        string m2 = match.Value.Substring(match.Value.IndexOf('|') + 1, match.Length - match.Value.IndexOf('|') - 2);
         text = $"{before}{m2}{after}";
       }
     }
 
+    UnityEngine.Debug.Log($"_categorize:{text} done");
     return text;
   }
 }

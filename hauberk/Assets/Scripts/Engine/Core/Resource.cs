@@ -69,12 +69,10 @@ public class ResourceSet<T> where T : class {
       _Tag<T> tag = null;
       var names = path.Split('/');
       foreach (var name in names) {
-        tag = _tags[name];
-        if (tag == null) {
+        if (_tags.TryGetValue(name, out tag) == false) {
           tag = new _Tag<T>(name, parent);
           _tags[name] = tag;
         }
-
         parent = tag;
       }
     }
