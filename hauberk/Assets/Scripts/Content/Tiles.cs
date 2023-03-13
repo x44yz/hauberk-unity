@@ -343,7 +343,7 @@ class _TileBuilder {
     var charCode = ch is int ? ch : (ch as string)[0];
 
     this.name = name;
-    glyphs = new List<Glyph>(){Glyph.fromDynamic(charCode, fore, back)};
+    glyphs = new List<Glyph>(){Glyph.fromDynamic(charCode.ToString(), fore, back)};
   }
 
   public _TileBuilder(string name, Glyph glyph)

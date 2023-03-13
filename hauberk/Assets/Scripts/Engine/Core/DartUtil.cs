@@ -165,7 +165,8 @@ class Glyph {
   }
 
   public static Glyph fromDynamic(object charOrCharCode, Color fore = null, Color back = null) {
-    if (charOrCharCode is string) return new Glyph(charOrCharCode as string, fore, back);
+    if (charOrCharCode is string) 
+      return new Glyph(charOrCharCode.ToString(), fore, back);
     return new Glyph((int)charOrCharCode, fore, back);
   }
 
