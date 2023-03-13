@@ -13,7 +13,7 @@ public class Race {
   /// level for each stat.
   public Dictionary<Stat, int> stats;
 
-  Race(string name, string description, Dictionary<Stat, int> stats)
+  public Race(string name, string description, Dictionary<Stat, int> stats)
   {
     this.name = name;
     this.description = description;

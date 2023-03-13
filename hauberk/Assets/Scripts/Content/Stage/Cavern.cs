@@ -7,28 +7,30 @@ class Cavern : Architecture {
   // TODO: Fields to tune density distribution, thresholds, and number of
   // rounds of smoothing.
 
-  Iterable<string> build() sync* {
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
     // True is wall, false is floor, null is untouchable tiles that belong to
     // other architectures.
-    var cells1 = Array2D<bool?>(width, height, null);
-    var cells2 = Array2D<bool?>(width, height, null);
+    var cells1 = new Array2D<bool?>(width, height, null);
+    var cells2 = new Array2D<bool?>(width, height, null);
 
-    for (var pos in cells1.bounds) {
+    foreach (var pos in cells1.bounds) {
       if (!canCarve(pos)) continue;
-      cells1[pos] = rng.float(1.0) < _density(region, pos);
+      cells1[pos] = Rng.rng.rfloat(1.0) < _density(region, pos);
     }
 
     for (var i = 0; i < 4; i++) {
-      for (var pos in cells1.bounds) {
+      foreach (var pos in cells1.bounds) {
         // Don't touch unavailable cells.
         if (cells1[pos] == null) continue;
 
         var walls = 0;
-        for (var here in pos.neighbors) {
+        foreach (var here in pos.neighbors) {
           if (!cells1.bounds.contains(here) || cells1[here] != false) walls++;
         }
 
-        if (cells1[pos]!) {
+        if (cells1[pos]!.Value) {
           // Survival threshold.
           cells2[pos] = walls >= 3;
         } else {
@@ -40,48 +42,56 @@ class Cavern : Architecture {
       var temp = cells1;
       cells1 = cells2;
       cells2 = temp;
-      yield "Round";
+      rt.Add("Round");
     }
 
-    for (var pos in cells1.bounds) {
+    foreach (var pos in cells1.bounds) {
       if (cells1[pos] == false) carve(pos.x, pos.y);
     }
+
+    return rt;
   }
 
   double _density(Region region, Vec pos) {
     // TODO: Vary density randomly some.
-    const min = 0.3;
-    const max = 0.7;
+    double min = 0.3;
+    double max = 0.7;
 
-    switch (region) {
-      case Region.everywhere:
+    if (region == Region.everywhere)
         return 0.45;
-      case Region.n:
-        return lerpDouble(pos.y, 0, height, min, max);
-      case Region.ne:
-        var distance = math.max(width - pos.x - 1, pos.y);
-        var range = math.min(width, height);
-        return lerpDouble(distance, 0, range, min, max);
-      case Region.e:
-        return lerpDouble(pos.x, 0, width, min, max);
-      case Region.se:
-        var distance = math.max(width - pos.x - 1, height - pos.y - 1);
-        var range = math.min(width, height);
-        return lerpDouble(distance, 0, range, min, max);
-      case Region.s:
-        return lerpDouble(pos.y, 0, height, max, min);
-      case Region.sw:
-        var distance = math.max(pos.x, height - pos.y - 1);
-        var range = math.min(width, height);
-        return lerpDouble(distance, 0, range, min, max);
-      case Region.w:
-        return lerpDouble(pos.x, 0, width, max, min);
-      case Region.nw:
-        var distance = math.max(pos.x, pos.y);
-        var range = math.min(width, height);
-        return lerpDouble(distance, 0, range, min, max);
+    else if (region == Region.n)
+        return MathUtils.lerpDouble(pos.y, 0, height, min, max);
+    else if (region == Region.ne)
+    {
+        var distance = Math.Max(width - pos.x - 1, pos.y);
+        var range = Math.Min(width, height);
+        return MathUtils.lerpDouble(distance, 0, range, min, max);
+    }
+    else if (region ==  Region.e)
+        return MathUtils.lerpDouble(pos.x, 0, width, min, max);
+    else if (region ==  Region.se)
+    {
+        var distance = Math.Max(width - pos.x - 1, height - pos.y - 1);
+        var range = Math.Min(width, height);
+        return MathUtils.lerpDouble(distance, 0, range, min, max);
+    }
+    else if (region ==  Region.s)
+        return MathUtils.lerpDouble(pos.y, 0, height, max, min);
+    else if (region ==  Region.sw)
+    {
+        var distance = Math.Max(pos.x, height - pos.y - 1);
+        var range = Math.Min(width, height);
+        return MathUtils.lerpDouble(distance, 0, range, min, max);
+    }
+    else if (region ==  Region.w)
+        return MathUtils.lerpDouble(pos.x, 0, width, max, min);
+    else if (region ==  Region.nw)
+    {
+        var distance = Math.Max(pos.x, pos.y);
+        var range = Math.Min(width, height);
+        return MathUtils.lerpDouble(distance, 0, range, min, max);
     }
 
-    throw AssertionError("Unreachable.");
+    throw new System.Exception("Unreachable.");
   }
 }

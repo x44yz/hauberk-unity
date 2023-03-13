@@ -37,7 +37,7 @@ public class Painter {
     _painted++;
   }
 
-  bool hasActor(Vec pos) => _architect.stage.actorAt(pos) != null;
+  public bool hasActor(Vec pos) => _architect.stage.actorAt(pos) != null;
 
   public Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
     return _decorator.chooseBreed(depth,

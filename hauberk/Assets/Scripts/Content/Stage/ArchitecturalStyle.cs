@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArchitecturalStyle {
+public partial class ArchitecturalStyle {
   public static ResourceSet<ArchitecturalStyle> styles = new ResourceSet<ArchitecturalStyle>();
 
   public static void initialize() {
@@ -79,19 +79,26 @@ public class ArchitecturalStyle {
   public System.Func<Architecture> _factory;
   public bool canFill;
 
-  ArchitecturalStyle(
-      this.name,
-      this.decorTheme,
+  public ArchitecturalStyle(
+      string name,
+      string decorTheme,
       double? decorDensity,
-      this.monsterGroups,
+      List<string> monsterGroups,
       double? monsterDensity,
       double? itemDensity,
-      this._factory,
-      {bool? canFill})
-      : decorDensity = decorDensity ?? 0.1,
-        monsterDensity = monsterDensity ?? 1.0,
-        itemDensity = itemDensity ?? 1.0,
+      System.Func<Architecture> _factory,
+      bool? canFill = null)
+    {
+      this.name = name;
+      this.decorTheme = decorTheme;
+      this.monsterGroups = monsterGroups;
+      this._factory = _factory;
+
+        decorDensity = decorDensity ?? 0.1;
+        monsterDensity = monsterDensity ?? 1.0;
+        itemDensity = itemDensity ?? 1.0;
         canFill = canFill ?? true;
+    }
 
   public Architecture create(Architect architect, Region region) {
     var architecture = _factory();

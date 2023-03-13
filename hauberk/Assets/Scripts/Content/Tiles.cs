@@ -309,7 +309,7 @@ class Tiles {
   };
 
   /// What types [tile] can turn into when it finishes burning.
-  static List<TileType> burnResult(TileType tile) {
+  public static List<TileType> burnResult(TileType tile) {
     if (_burnTypes.ContainsKey(tile)) return _burnTypes[tile]!;
 
     return new List<TileType>(){burntFloor, burntFloor2};

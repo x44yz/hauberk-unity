@@ -117,6 +117,13 @@ public class Rng {
   /// Gets a random item from the given list.
   public T item<T>(List<T> items) => items[range(items.Count)];
 
+  public T item<T>(Array items){
+    var rt = new List<T>();
+    foreach (var k in items)
+      rt.Add((T)k);
+    return item<T>(rt);
+  }
+
   /// Removes a random item from the given list.
   ///
   /// This may not preserve the order of items in the list, but is faster than

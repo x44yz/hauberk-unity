@@ -7,7 +7,7 @@ using System.Linq;
 // items that are dropped.
 
 abstract partial class Decor {
-  static void initialize() {
+  public static void initialize() {
     all.defineTags("built/room/dungeon");
     all.defineTags("built/room/keep");
     all.defineTags("catacomb");

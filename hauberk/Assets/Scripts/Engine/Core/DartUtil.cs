@@ -37,6 +37,17 @@ public static class DartUtils
     {
       return k.Count > 0;
     }
+
+    // https://api.dart.dev/stable/2.19.4/dart-core/Iterable/firstWhere.html
+    public static T firstWhere<T>(this List<T> list, System.Func<T, bool> test, System.Func<T> orElse)
+    {
+      foreach (var k in list)
+      {
+        if (test(k))
+          return k;
+      }
+      return orElse == null ? default(T) : orElse();
+    }
 }
 
 public class Color {

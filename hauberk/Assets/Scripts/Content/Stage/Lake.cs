@@ -1,23 +1,28 @@
-import 'package:piecemeal/piecemeal.dart';
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
-import 'architect.dart';
-import 'blob.dart';
 
 /// Uses a cellular automata to carve out rounded open cavernous areas.
-class Lake extends Architecture {
-  Iterable<string> build() sync* {
-    var lakeCount = rng.inclusive(1, 2);
+class Lake : Architecture {
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
+    var lakeCount = Rng.rng.inclusive(1, 2);
     for (var i = 0; i < lakeCount; i++) {
-      _placeLake(Blob.make(rng.range(16, 32)));
-      yield "Placing lake";
+      _placeLake(Blob.make(Rng.rng.range(16, 32)));
+      rt.Add("Placing lake");
     }
+
+    return rt;
   }
 
   void _placeLake(Array2D<bool> lake) {
-    var x = rng.range(0, width - lake.width);
-    var y = rng.range(0, height - lake.height);
+    var x = Rng.rng.range(0, width - lake.width);
+    var y = Rng.rng.range(0, height - lake.height);
 
-    for (var pos in lake.bounds) {
+    foreach (var pos in lake.bounds) {
       if (lake[pos]) placeWater(pos.offset(x, y));
     }
   }

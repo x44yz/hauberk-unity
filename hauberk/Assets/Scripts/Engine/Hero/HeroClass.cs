@@ -13,7 +13,7 @@ public class HeroClass {
   /// Generates items a hero of this class should start with.
   public Drop startingItems;
 
-  HeroClass(string name, string description, Dictionary<Skill, double> _proficiency, Drop startingItems)
+  public HeroClass(string name, string description, Dictionary<Skill, double> _proficiency, Drop startingItems)
   {
     this.name = name;
     this.description = description;

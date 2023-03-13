@@ -13,7 +13,7 @@ class Catacomb : Architecture {
   /// The maximum chamber size.
   public int _maxSize;
 
-  Catacomb(double? density = null, int? minSize = null, int? maxSize = null)
+  public Catacomb(double? density = null, int? minSize = null, int? maxSize = null)
   {
       _density = density ?? 0.3;
       _minSize = minSize ?? 8;

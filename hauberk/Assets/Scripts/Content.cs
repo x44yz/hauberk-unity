@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 class GameContent : Content {
     public static Content createContent() {
@@ -17,49 +18,52 @@ class GameContent : Content {
         return new GameContent();
     }
 
-  Iterable<string> buildStage(
-      Lore lore, Stage stage, int depth, Function(Vec) placeHero) {
-    if (depth == 0) return Town(stage).buildStage(placeHero);
-    return Architect(lore, stage, depth).buildStage(placeHero);
+  public override IEnumerable<string> buildStage(
+      Lore lore, Stage stage, int depth, System.Action<Vec> placeHero) {
+    if (depth == 0) return new Town(stage).buildStage(placeHero);
+    return new Architect(lore, stage, depth).buildStage(placeHero);
   }
 
-  Affix findAffix(string name) => Affixes.find(name);
-  Breed? tryFindBreed(string name) => Monsters.breeds.tryFind(name);
-  ItemType? tryFindItem(string name) => Items.types.tryFind(name);
-  Skill findSkill(string name) => Skills.find(name);
+  public override Affix findAffix(string name) => Affixes.find(name);
+  public override Breed? tryFindBreed(string name) => Monsters.breeds.tryFind(name);
+  public override ItemType? tryFindItem(string name) => Items.types.tryFind(name);
+  public override Skill findSkill(string name) => Skills.find(name);
 
-  Iterable<Breed> get breeds => Monsters.breeds.all;
-  List<HeroClass> get classes => Classes.all;
-  Iterable<Element> get elements => Elements.all;
-  Iterable<ItemType> get items => Items.types.all;
-  List<Race> get races => Races.all;
-  Iterable<Skill> get skills => Skills.all;
-  Map<string, Shop> get shops => Shops.all;
+  List<Breed> breeds => Monsters.breeds.all.ToList();
+  List<HeroClass> classes => Classes.all;
+  public new List<Element> elements => Elements.all;
+  List<ItemType> items => Items.types.all.ToList();
+  List<Race> races => Races.all;
+  public new List<Skill> skills => Skills.all;
+  Dictionary<string, Shop> shops => Shops.all;
 
-  HeroSave createHero(string name, [Race? race, HeroClass? heroClass]) {
+  public override HeroSave createHero(string name, Race? race = null, HeroClass? heroClass = null) {
     race ??= Races.human;
     heroClass ??= Classes.adventurer;
 
-    var hero = HeroSave(name, race, heroClass);
+    var hero = new HeroSave(name, race, heroClass);
 
-    var initialItems = {
-      "Mending Salve": 3,
-      "Scroll of Sidestepping": 2,
-      "Tallow Candle": 4,
-      "Loaf of Bread": 5
+    var initialItems = new Dictionary<string, int>(){
+      {"Mending Salve", 3},
+      {"Scroll of Sidestepping", 2},
+      {"Tallow Candle", 4},
+      {"Loaf of Bread", 5}
     };
 
-    initialItems.forEach((type, amount) {
-      hero.inventory.tryAdd(Item(Items.types.find(type), amount));
-    });
+    foreach (var kv in initialItems) {
+      var type = kv.Key;
+      var amount = kv.Value;
 
-    heroClass.startingItems.dropItem(1, hero.inventory.tryAdd);
+      hero.inventory.tryAdd(new Item(Items.types.find(type), amount));
+    };
+
+    heroClass.startingItems.dropItem(1, hero.inventory._tryAdd);
 
     // TODO: Instead of giving the player access to all shops at once, consider
     // letting the rescue shopkeepers from the dungeon to unlock better and
     // better shops over time.
     // Populate the shops.
-    for (var shop in shops.values) {
+    foreach (var shop in shops.Values) {
       hero.shops[shop] = shop.create();
     }
 
@@ -68,7 +72,7 @@ class GameContent : Content {
 
   // TODO: Putting this right here in content is kind of lame. Is there a
   // better place for it?
-  Action? updateSubstance(Stage stage, Vec pos) {
+  public override Action? updateSubstance(Stage stage, Vec pos) {
     // TODO: More interactions:
     // fire:
     // - burns fuel (amount) and goes out when it hits zero
@@ -113,17 +117,17 @@ class GameContent : Content {
           // If the floor itself burns, change its type. If it's only burning
           // because of items on it, don't.
           if (Tiles.ignition(tile.type) > 0) {
-            tile.type = rng.item(Tiles.burnResult(tile.type));
+            tile.type = Rng.rng.item(Tiles.burnResult(tile.type));
           }
 
           stage.floorEmanationChanged();
         } else {
-          return BurningFloorAction(pos);
+          return new BurningFloorAction(pos);
         }
       } else if (tile.element == Elements.poison) {
         _spreadPoison(stage, pos, tile);
 
-        if (tile.substance > 0) return PoisonedFloorAction(pos);
+        if (tile.substance > 0) return new PoisonedFloorAction(pos);
       }
 
       // TODO: Cold.
@@ -160,10 +164,10 @@ class GameContent : Content {
 
     // TODO: Subtract neighboring cold?
 
-    if (fire <= rng.range(50 + ignition)) return false;
+    if (fire <= Rng.rng.range(50 + ignition)) return false;
 
     var fuel = Tiles.fuel(tile.type);
-    tile.substance = rng.range(fuel ~/ 2, fuel);
+    tile.substance = Rng.rng.range(fuel / 2, fuel);
     tile.element = Elements.fire;
     stage.floorEmanationChanged();
     return true;
@@ -191,9 +195,9 @@ class GameContent : Content {
     neighbor(0, 1);
 
     // Round down so that poison gradually decays.
-    poison = (poison / open).round();
+    poison = Mathf.RoundToInt(poison / open);
 
     tile.element = Elements.poison;
-    tile.substance = (poison - 1).clamp(0, 255);
+    tile.substance = Mathf.Clamp(poison - 1, 0, 255);
   }
 }

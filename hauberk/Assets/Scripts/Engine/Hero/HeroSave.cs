@@ -94,7 +94,7 @@ public class HeroSave
         }
     }
 
-    HeroSave(string name, Race race, HeroClass heroClass)
+    public HeroSave(string name, Race race, HeroClass heroClass)
     {
         this.name = name;
         this.heroClass = heroClass;

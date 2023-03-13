@@ -12,7 +12,7 @@ class Dungeon : RoomArchitecture {
 
   public override PaintStyle paintStyle => PaintStyle.flagstone;
 
-  Dungeon(double? density = null) 
+  public Dungeon(double? density = null) 
   {
     _density = density ?? 0.3;
   }

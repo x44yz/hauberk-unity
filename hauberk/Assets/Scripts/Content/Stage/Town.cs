@@ -6,12 +6,12 @@ using System.Linq;
 class Town {
   public Stage stage;
 
-  Town(Stage stage)
+  public Town(Stage stage)
   {
     this.stage = stage;
   }
 
-  IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
+  public IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
     var rt = new List<string>();
 
     foreach (var pos in stage.bounds) {

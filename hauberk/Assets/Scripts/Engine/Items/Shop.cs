@@ -16,7 +16,7 @@ public class Shop {
         this._drop = _drop;
     }
 
-    Inventory create() {
+    public Inventory create() {
         var inventory = new Inventory(ItemLocation.shop(name), capacity);
         update(inventory);
         return inventory;

@@ -25,7 +25,7 @@ public class VecBase
     /// Gets the rook length of the Vec, which is the number of squares a rook on
     /// a chessboard would need to move from (0, 0) to reach the endpoint of the
     /// Vec. Also known as Manhattan or taxicab distance.
-    int rookLength => Mathf.Abs(x) + Mathf.Abs(y);
+    public int rookLength => Mathf.Abs(x) + Mathf.Abs(y);
 
     /// Gets the king length of the Vec, which is the number of squares a king on
     /// a chessboard would need to move from (0, 0) to reach the endpoint of the

@@ -72,7 +72,7 @@ class Affixes {
     return new Item(itemType, 1, prefix, suffix);
   }
 
-  static Affix find(string name) {
+  public static Affix find(string name) {
     var type = prefixes.tryFind(name);
     if (type != null) return type;
 

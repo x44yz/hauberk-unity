@@ -36,7 +36,7 @@ public class Architect {
 
   public int _carvedTiles = 0;
 
-  Architect(Lore lore, Stage stage, int depth)
+  public Architect(Lore lore, Stage stage, int depth)
   {
     this.lore = lore;
     this.stage = stage;
@@ -45,7 +45,7 @@ public class Architect {
     debugOwners = _owners;
   }
 
-  IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
+  public IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
     var rt = new List<string>();
     // Initialize the stage with an edge of solid and everything else open but
     // fillable.
@@ -150,13 +150,15 @@ public class Architect {
 
   /// Takes all of the remaining fillable tiles and fills them randomly with
   /// solid tiles or open tiles, making sure to preserve reachability.
-  Iterable<string> _fillPassages(List<Vec> unownedPassages) sync* {
+  IEnumerable<string> _fillPassages(List<Vec> unownedPassages) {
+    var rt = new List<string>();
+
     var openCount = 0;
     var start = Vec.zero;
     var startDistance = 99999;
 
-    var unformed = <Vec>[];
-    for (var pos in stage.bounds.inflate(-1)) {
+    var unformed = new List<Vec>{};
+    foreach (var pos in stage.bounds.inflate(-1)) {
       var tile = stage[pos].type;
       if (tile == Tiles.open) {
         openCount++;
@@ -168,13 +170,13 @@ public class Architect {
           startDistance = distance;
         }
       } else if (!_isFormed(tile)) {
-        unformed.add(pos);
+        unformed.Add(pos);
       }
     }
 
     Rng.rng.shuffle(unformed);
 
-    var reachability = Reachability(stage, start);
+    var reachability = new Reachability(stage, start);
 
     var count = 0;
     foreach (var pos in unformed) {
@@ -207,16 +209,20 @@ public class Architect {
       }
 
       // Yielding is slow, so don't do it often.
-      if (count++ % 20 == 0) yield "$pos";
+      if (count++ % 20 == 0) rt.Add($"{pos}");
     }
+
+    return rt;
   }
 
-  Iterable<string> _addShortcuts(List<Vec> unownedPassages) {
+  IEnumerable<string> _addShortcuts(List<Vec> unownedPassages) {
+    var rt = new List<string>();
+
     var possibleStarts = new List<_Path>{};
-    for (var pos in stage.bounds.inflate(-1)) {
+    foreach (var pos in stage.bounds.inflate(-1)) {
       if (!_isOpenAt(pos)) continue;
 
-      for (var dir in Direction.cardinal) {
+      foreach (var dir in Direction.cardinal) {
         // Needs to be in an open area going into a solid area, like:
         //
         //     .#
@@ -230,7 +236,7 @@ public class Architect {
         if (!_isSolidAt(pos + dir.rotateRight45)) continue;
         if (!_isOpenAt(pos + dir.rotateRight90)) continue;
 
-        possibleStarts.add(_Path(pos, dir));
+        possibleStarts.Add(new _Path(pos, dir));
       }
     }
 
@@ -241,13 +247,15 @@ public class Architect {
     // TODO: Vary this?
     var maxShortcuts = Rng.rng.range(5, 40);
 
-    for (var path in possibleStarts) {
+    foreach (var path in possibleStarts) {
       if (!_tryShortcut(unownedPassages, path.pos, path.dir)) continue;
 
-      yield "Shortcut";
+      rt.Add("Shortcut");
       shortcuts++;
       if (shortcuts >= maxShortcuts) break;
     }
+
+    return rt;
   }
 
   /// Tries to place a shortcut from [start] going towards [heading].
@@ -269,9 +277,9 @@ public class Architect {
       if (!stage.bounds.contains(next)) return false;
 
       if (_isOpenAt(next)) {
-        if (_isShortcut(start, next, tiles.length)) {
-          for (var pos in tiles) {
-            _makePassage(unownedPassages, pos);
+        if (_isShortcut(start, next, tiles.Count)) {
+          foreach (var pos2 in tiles) {
+            _makePassage(unownedPassages, pos2);
           }
           return true;
         }
@@ -338,44 +346,48 @@ public class Architect {
   /// This works by finding the passage tiles that have a neighboring owner and
   /// spreading that owner to this one. It does that repeatedly until all tiles
   /// are claimed.
-  Iterable<string> _claimPassages(List<Vec> unownedPassages) sync* {
+  IEnumerable<string> _claimPassages(List<Vec> unownedPassages) {
+    var rt = new List<string>();
+
     while (true) {
-      var stillUnowned = <Vec>[];
-      for (var pos in unownedPassages) {
-        var neighbors = <Architecture>[];
-        for (var neighbor in pos.neighbors) {
+      var stillUnowned = new List<Vec>{};
+      foreach (var pos in unownedPassages) {
+        var neighbors = new List<Architecture>{};
+        foreach (var neighbor in pos.neighbors) {
           var owner = _owners[neighbor];
-          if (owner != null) neighbors.add(owner);
+          if (owner != null) neighbors.Add(owner);
         }
 
-        if (neighbors.isNotEmpty) {
-          var owner = rng.item(neighbors);
+        if (neighbors.isNotEmpty<Architecture>()) {
+          var owner = Rng.rng.item(neighbors);
           _owners[pos] = owner;
           _claimNeighbors(pos, owner);
         } else {
-          stillUnowned.add(pos);
+          stillUnowned.Add(pos);
         }
       }
 
-      if (stillUnowned.isEmpty) break;
+      if (stillUnowned.isEmpty<Vec>()) break;
       unownedPassages = stillUnowned;
 
-      yield "Claim";
+      rt.Add("Claim");
     }
+
+    return rt;
   }
 
   /// Claims any neighboring tiles of [pos] for [owner] if they don't already
   /// have an owner.
-  void _claimNeighbors(Vec pos, Architecture owner) {
+  public void _claimNeighbors(Vec pos, Architecture owner) {
     foreach (var neighbor in pos.neighbors) {
       if (_owners[neighbor] == null) _owners[neighbor] = owner;
     }
   }
 
-  bool _isFormed(TileType type) =>
+  public bool _isFormed(TileType type) =>
       type != Tiles.unformed && type != Tiles.unformedWet;
 
-  bool _isOpenAt(Vec pos) {
+  public bool _isOpenAt(Vec pos) {
     var type = stage[pos].type;
     return type == Tiles.open ||
         type == Tiles.passage ||
@@ -392,7 +404,7 @@ class _Path {
   public Vec pos;
   public Direction dir;
 
-  _Path(Vec pos, Direction dir)
+  public _Path(Vec pos, Direction dir)
   {
     this.pos = pos;
     this.dir = dir;
@@ -432,7 +444,7 @@ public abstract class Architecture {
 
   public ArchitecturalStyle style => _style;
 
-  void bind(ArchitecturalStyle style, Architect architect, Region region) {
+  public void bind(ArchitecturalStyle style, Architect architect, Region region) {
     _architect = architect;
     _style = style;
     _region = region;
@@ -440,7 +452,7 @@ public abstract class Architecture {
 
   /// Override this if the architecture wants to handle spawning monsters in its
   /// tiles itself.
-  public bool spawnMonsters(Painter painter) => false;
+  public virtual bool spawnMonsters(Painter painter) => false;
 
   /// Sets the tile at [x], [y] to [tile] and owned by this architecture.
   ///
@@ -478,7 +490,7 @@ public abstract class Architecture {
 class _LengthPathfinder : Pathfinder<bool> {
   public int _maxLength;
 
-  _LengthPathfinder(Stage stage, Vec start, Vec end, int _maxLength)
+  public _LengthPathfinder(Stage stage, Vec start, Vec end, int _maxLength)
       : base(stage, start, end)
       {
         this._maxLength = _maxLength;

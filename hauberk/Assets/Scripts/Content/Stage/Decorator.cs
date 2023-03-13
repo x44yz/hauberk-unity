@@ -21,9 +21,9 @@ public class Decorator {
     this._architect = _architect;
   }
 
-  Vec heroPos => _heroPos;
+  public Vec heroPos => _heroPos;
 
-  Stage _stage => _architect.stage;
+  public Stage _stage => _architect.stage;
 
   /// Gets the list of tiles owned by [architecture].
   public List<Vec> tilesFor(Architecture? architecture) =>
@@ -264,7 +264,7 @@ public class Decorator {
     return rt;
   }
 
-  Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
+  public Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null) {
     while (true) {
       var breed = Monsters.breeds
           .tryChoose(depth, tag: tag, includeParents: includeParentTags.Value)!;
@@ -334,7 +334,7 @@ public class Decorator {
       // TODO: Ideally, this would follow the location preference of the breed
       // too, even for minions of different breeds.
       var here =
-          flow.reachable.firstWhere((_) => true, orElse: () => Vec(-1, -1));
+          flow.reachable.firstWhere((_) => true, orElse: () => new Vec(-1, -1));
 
       // If there are no open tiles, discard the remaining monsters.
       if (here == new Vec(-1, -1)) break;

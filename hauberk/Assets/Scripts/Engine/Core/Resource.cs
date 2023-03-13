@@ -14,7 +14,7 @@ public class ResourceSet<T> where T : class {
 
   bool isNotEmpty => _resources.Count != 0;
 
-  IEnumerable<T> all => _resources.Values.ToList().Select((resource) => resource.obj);
+  public IEnumerable<T> all => _resources.Values.ToList().Select((resource) => resource.obj);
 
   public void add(T obj, string name = null, int? depth = null, 
     double? frequency = null, string tags = null)

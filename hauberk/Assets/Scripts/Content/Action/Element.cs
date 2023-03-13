@@ -101,7 +101,7 @@ class BurningFloorAction : Action {
 
   public DestroyActionMixin _destroyMixin;
 
-  BurningFloorAction(Vec _pos)
+  public BurningFloorAction(Vec _pos)
   {
     this._pos = _pos;
     _destroyMixin = new DestroyActionMixin(this);
@@ -181,7 +181,7 @@ class PoisonedFloorAction : Action {
   public Vec _pos;
 
     public DestroyActionMixin _destroyMixin;
-  PoisonedFloorAction(Vec _pos)
+  public PoisonedFloorAction(Vec _pos)
   {
     this._pos = _pos;
     _destroyMixin = new DestroyActionMixin(this);

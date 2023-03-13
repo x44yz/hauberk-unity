@@ -229,7 +229,7 @@ public class Game
 public abstract class Content {
   // TODO: Temp. Figure out where dungeon generator lives.
   // TODO: Using a callback to set the hero position is kind of hokey.
-  public abstract List<string> buildStage(
+  public abstract IEnumerable<string> buildStage(
       Lore lore, Stage stage, int depth, Action<Vec> placeHero);
 
   public abstract Affix findAffix(string name);

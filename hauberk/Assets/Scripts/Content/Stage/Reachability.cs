@@ -20,11 +20,11 @@ class Reachability {
 
   /// The number of unfillable tiles that are currently reachable.
   int _reachedOpenCount = 0;
-  int reachedOpenCount => _reachedOpenCount;
+  public int reachedOpenCount => _reachedOpenCount;
 
   List<_FillStep> _beforeFill = new List<_FillStep>();
 
-  Reachability(Stage stage, Vec _start)
+  public Reachability(Stage stage, Vec _start)
   {
     this.stage = stage;
     this._start = _start;
@@ -36,13 +36,13 @@ class Reachability {
     _process(new List<Vec>(){_start});
   }
 
-  bool isReachable(Vec pos) => _distances[pos] >= 0;
+  public bool isReachable(Vec pos) => _distances[pos] >= 0;
 
   int distanceAt(Vec pos) => _distances[pos];
 
   /// Mark the tile at [pos] as being solid and recalculate the distances of
   /// any affected tiles.
-  void fill(Vec pos) {
+  public void fill(Vec pos) {
     var queue = new Queue<Vec>();
     _affected.clear();
     queue.Enqueue(pos);
@@ -97,7 +97,7 @@ class Reachability {
   }
 
   /// Revert the previous call to [fill].
-  void undoFill() {
+  public void undoFill() {
     foreach (var step in _beforeFill) {
       _setDistance(step.pos, step.distance);
     }

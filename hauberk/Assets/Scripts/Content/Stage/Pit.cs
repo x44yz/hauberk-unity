@@ -17,7 +17,7 @@ class Pit : Architecture {
 
   public override PaintStyle paintStyle => PaintStyle.stoneJail;
 
-  Pit(string _monsterGroup, int? minSize = null, int? maxSize = null)
+  public Pit(string _monsterGroup, int? minSize = null, int? maxSize = null)
   {
     this._monsterGroup = _monsterGroup;
 
@@ -25,37 +25,41 @@ class Pit : Architecture {
     _maxSize = maxSize ?? 24;
   }
 
-  Iterable<string> build() sync* {
+  public override IEnumerable<string> build() {
+    var rt = new List<string>();
+
     for (var i = 0; i < 20; i++) {
-      var size = rng.range(_minSize, _maxSize);
+      var size = Rng.rng.range(_minSize, _maxSize);
       var cave = Blob.make(size);
 
       var bounds = _tryPlaceCave(cave, this.bounds);
       if (bounds != null) {
-        yield "pit";
+        rt.Add("pit");
 
-        for (var pos in cave.bounds) {
+        foreach (var pos in cave.bounds) {
           if (cave[pos]) {
-            _monsterTiles.add(pos + bounds.topLeft);
+            _monsterTiles.Add(pos + bounds.topLeft);
           }
         }
 
-        yield* _placeAntechambers(bounds);
-        return;
+        rt.AddRange(_placeAntechambers(bounds));
+        return rt;
       }
     }
+
+    return rt;
   }
 
   bool spawnMonsters(Painter painter) {
     // Boost the depth some.
-    var depth = (painter.depth * rng.float(1.0, 1.4)).ceil();
+    var depth = Mathf.CeilToInt((float)(painter.depth * Rng.rng.rfloat(1.0, 1.4)));
 
-    for (var pos in _monsterTiles) {
+    foreach (var pos in _monsterTiles) {
       if (!painter.getTile(pos).isWalkable) continue;
 
       // Leave a ring of open tiles around the edge of the pit.
       var openNeighbors = true;
-      for (var neighbor in pos.neighbors) {
+      foreach (var neighbor in pos.neighbors) {
         if (!painter.getTile(neighbor).isWalkable) {
           openNeighbors = false;
           break;
@@ -78,11 +82,11 @@ class Pit : Architecture {
     if (bounds.height < cave.height) return null;
 
     for (var j = 0; j < 200; j++) {
-      var x = rng.range(bounds.left, bounds.right - cave.width);
-      var y = rng.range(bounds.top, bounds.bottom - cave.height);
+      var x = Rng.rng.range(bounds.left, bounds.right - cave.width);
+      var y = Rng.rng.range(bounds.top, bounds.bottom - cave.height);
 
       if (_tryPlaceCaveAt(cave, x, y)) {
-        return Rect(x, y, cave.width, cave.height);
+        return new Rect(x, y, cave.width, cave.height);
       }
     }
 
@@ -91,13 +95,13 @@ class Pit : Architecture {
 
   // TODO: Copied from Cavern.
   bool _tryPlaceCaveAt(Array2D<bool> cave, int x, int y) {
-    for (var pos in cave.bounds) {
+    foreach (var pos in cave.bounds) {
       if (cave[pos]) {
         if (!canCarve(pos.offset(x, y))) return false;
       }
     }
 
-    for (var pos in cave.bounds) {
+    foreach (var pos in cave.bounds) {
       if (cave[pos]) carve(pos.x + x, pos.y + y);
     }
 
@@ -106,9 +110,11 @@ class Pit : Architecture {
 
   /// Try to place a few small caves around the main pit. This gives some
   /// foreshadowing that the hero is about to enter a pit.
-  Iterable<string> _placeAntechambers(Rect pitBounds) sync* {
+  IEnumerable<string> _placeAntechambers(Rect pitBounds) {
+    var rt = new List<string>();
+
     for (var i = 0; i < 8; i++) {
-      var size = rng.range(6, 10);
+      var size = Rng.rng.range(6, 10);
       var cave = Blob.make(size);
 
       var allowed = Rect.leftTopRightBottom(
@@ -118,7 +124,9 @@ class Pit : Architecture {
           pitBounds.bottom + cave.height);
       allowed = Rect.intersect(allowed, bounds.inflate(-1));
 
-      if (_tryPlaceCave(cave, allowed) != null) yield "antechamber";
+      if (_tryPlaceCave(cave, allowed) != null) rt.Add("antechamber");
     }
+
+    return rt;
   }
 }

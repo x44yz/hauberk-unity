@@ -38,17 +38,19 @@ class MonsterPathfinder : Pathfinder<Direction> {
         this._monster = _monster;
       }
 
-  public override Direction? processStep(Path path) {
+  public override bool processStep(Path path, out Direction result) {
     if (_nearest == null ||
         heuristic(path.pos, end) < heuristic(_nearest!.pos, end)) {
       _nearest = path;
     }
 
     if (path.length >= _monster.breed.tracking) {
-      return _nearest!.startDirection;
+      result = _nearest!.startDirection;
+      return true;
     }
 
-    return null;
+    result = Direction.none;
+    return false;
   }
 
   /// A simple heuristic would just be the kingLength. The problem is that
