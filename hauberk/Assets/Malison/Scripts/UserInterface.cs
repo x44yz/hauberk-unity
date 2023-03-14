@@ -11,7 +11,7 @@ namespace Malison
   ///
   /// In addition, the interface can define a number of global [KeyBindings]
   /// which screens can use to map raw keypresses to something higher-level.
-  class UserInterface<T> {
+  public class UserInterface<T> {
     /// Keyboard bindings for key press events.
     public KeyBindings<T> keyPress = new KeyBindings<T>();
 
@@ -23,7 +23,7 @@ namespace Malison
     ///
     /// Initially off.
     bool _handlingInput = false;
-    bool handlingInput 
+    public bool handlingInput 
     {
       get { return _handlingInput; }
       set {
@@ -47,7 +47,7 @@ namespace Malison
     /// to be updated -- maybe your game is explicitly turn-based -- you can
     /// leave this off.
     bool _running = false;
-    bool running
+    public bool running
     {
       get { return _running; }
       set {
@@ -62,12 +62,12 @@ namespace Malison
       }
     }
 
-    UserInterface(RenderableTerminal _terminal)
+    public UserInterface(RenderableTerminal _terminal = null)
     {
       this._terminal = _terminal;
     }
 
-    void setTerminal(RenderableTerminal terminal) {
+    public void setTerminal(RenderableTerminal terminal) {
       var resized = terminal != null &&
           (_terminal == null ||
               _terminal!.width != terminal.width ||
@@ -84,7 +84,7 @@ namespace Malison
     }
 
     /// Pushes [screen] onto the top of the stack.
-    void push(Screen<T> screen) {
+    public void push(Screen<T> screen) {
       screen._bind(this);
       _screens.Add(screen);
       _render();
@@ -119,7 +119,7 @@ namespace Malison
       _dirty = true;
     }
 
-    void refresh() {
+    public void refresh() {
       // Don't use a for-in loop here so that we don't run into concurrent
       // modification exceptions if a screen is added or removed during a call to
       // update().
@@ -258,13 +258,13 @@ namespace Malison
     }
   }
 
-  class Screen<T> {
+  public class Screen<T> {
     UserInterface<T>? _ui;
 
     /// The [UserInterface] this screen is bound to.
     ///
     /// Throws an exception if the screen is not currently bound to an interface.
-    UserInterface<T> ui => _ui!;
+    public UserInterface<T> ui => _ui!;
 
     /// Whether this screen is bound to a [UserInterface].
     ///
@@ -294,7 +294,7 @@ namespace Malison
     ///
     /// Call this during [update] to indicate that a subsequent call to [render]
     /// is needed.
-    void dirty() {
+    public void dirty() {
       // If we aren't bound (yet), just do nothing. The screen will be dirtied
       // when it gets bound.
       if (_ui == null) return;
@@ -307,23 +307,23 @@ namespace Malison
     ///
     /// If this returns `false` (the default), then the lower-level [keyDown]
     /// method will be called.
-    public bool handleInput(T input) => false;
+    public virtual bool handleInput(T input) => false;
 
-    bool keyDown(int keyCode, bool shift, bool alt) => false;
+    public virtual bool keyDown(int keyCode, bool shift, bool alt) => false;
 
-    bool keyUp(int keyCode, bool shift, bool alt) => false;
+    public virtual bool keyUp(int keyCode, bool shift, bool alt) => false;
 
     /// Called when the screen above this one ([popped]) has been popped and this
     /// screen is now the top-most screen. If a value was passed to [pop()], it
     /// will be passed to this as [result].
-    public void activate(Screen<T> popped, Object? result) {}
+    public virtual void activate(Screen<T> popped, Object? result) {}
 
-    public void update() {}
+    public virtual void update() {}
 
-    public void render(Terminal terminal) {}
+    public virtual void render(Terminal terminal) {}
 
     /// Called when the [UserInterface] has been bound to a new terminal with a
     /// different size while this [Screen] is present.
-    public void resize(Vec size) {}
+    public virtual void resize(Vec size) {}
   }
 }

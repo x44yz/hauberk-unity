@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using num = System.Double;
 using System.Text.RegularExpressions;
+using Malison;
 
 public static class _MBaseBuilderUtils
 {
@@ -70,7 +71,7 @@ public static class _MBaseBuilderUtils
     }
 
     // TODO: Move more named params into builder methods?
-    public static _BreedBuilder breed(string name, int depth, Color color, int health,
+    public static _BreedBuilder breed(string name, int depth, Malison.Color color, int health,
         double? frequency = null, int speed = 0, int? dodge = null, int? meander = null) {
         finishBreed();
 

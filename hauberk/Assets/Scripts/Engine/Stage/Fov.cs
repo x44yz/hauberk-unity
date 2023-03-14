@@ -199,7 +199,7 @@ class _Shadow {
     this.end = end;
   }
 
-  string ToString() => $"({start}-{end})";
+  public override string ToString() => $"({start}-{end})";
 
   public bool contains(_Shadow projection) {
     return (start <= projection.start) && (end >= projection.end);

@@ -119,7 +119,7 @@ class _MonsterLog {
     if (log.Count > 10) log.Dequeue();
   }
 
-  public string ToString() {
+  public override string ToString() {
     var buffer = new StringBuilder();
 
     buffer.Append(monster.breed.name);

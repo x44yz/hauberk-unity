@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TossItemUse = System.Func<Vec, Action>;
+using Malison;
 
 class _BaseBuilder {
   public List<Skill> _skills = new List<Skill>();

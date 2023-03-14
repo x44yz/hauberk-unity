@@ -112,7 +112,7 @@ public class Direction : Vec {
         }
     }
 
-    public string ToString() {
+    public override string ToString() {
         if (this == none) return "none";
         else if (this == n) return "n";
         else if (this == ne) return "ne";

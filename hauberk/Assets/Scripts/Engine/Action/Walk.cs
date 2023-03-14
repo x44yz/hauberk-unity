@@ -69,7 +69,7 @@ public class WalkAction : Action {
     return succeed();
   }
 
-  string ToString() => $"{actor} walks {dir}";
+  public override string ToString() => $"{actor} walks {dir}";
 }
 
 class OpenDoorAction : Action {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Malison
 {
-  class KeyBindings<T> {
+  public class KeyBindings<T> {
     /// The high-level inputs and the low level keyboard bindings that are mapped
     /// to them.
     public Dictionary<_KeyBinding, T> _bindings = new Dictionary<_KeyBinding, T>();
 
-    void bind(T input, int keyCode, bool shift = false, bool alt = false) {
+    public void bind(T input, int keyCode, bool shift = false, bool alt = false) {
       _bindings[new _KeyBinding(keyCode, shift: shift, alt: alt)] = input;
     }
 
@@ -19,7 +19,7 @@ namespace Malison
 
   /// Defines a specific key input (character code and modifier keys) that can be
   /// bound to a higher-level input in the application domain.
-  class _KeyBinding {
+  public class _KeyBinding {
     /// The character code this is bound to.
     public int charCode;
 

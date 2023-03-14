@@ -77,5 +77,5 @@ public class Affix
     _statBonuses[stat] = bonus;
   }
 
-  string ToString() => name;
+  public override string ToString() => name;
 }

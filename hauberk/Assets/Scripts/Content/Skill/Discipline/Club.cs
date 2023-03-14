@@ -76,6 +76,6 @@ class BashAction : MasteryAction {
     return doneIf(_step > 10);
   }
 
-  string ToString() => $"{actor} bashes {_dir}";
+  public override string ToString() => $"{actor} bashes {_dir}";
 }
 

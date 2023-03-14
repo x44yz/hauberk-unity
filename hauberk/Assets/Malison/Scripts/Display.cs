@@ -39,7 +39,7 @@ namespace Malison
     public Array2D<Glyph> _glyphs;
 
     /// The glyphs that have been modified since the last call to [render].
-    public Array2D<Glyph?> _changedGlyphs;
+    public Array2D<Glyph> _changedGlyphs;
 
     public int width => _glyphs.width;
     public int height => _glyphs.height;

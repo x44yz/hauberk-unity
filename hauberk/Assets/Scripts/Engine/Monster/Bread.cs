@@ -249,7 +249,7 @@ public class Breed {
     return breeds;
   }
 
-  string ToString() => name;
+  public override string ToString() => name;
 }
 
 // TODO: Should this affect how the monster moves during the game too?
@@ -332,7 +332,7 @@ public class BreedFlags {
     return flags;
   }
 
-  string ToString() {
+  public override string ToString() {
       List<string> rt = new List<string>();
         if (berzerk) rt.Add("berzerk");
         if (cowardly) rt.Add("cowardly");

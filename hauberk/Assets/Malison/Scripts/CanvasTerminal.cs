@@ -19,7 +19,7 @@ namespace Malison
     public override int width => _display.width;
     public override int height => _display.height;
 
-   CanvasTerminal create(int width, int height, Font font) {
+   public static CanvasTerminal create(int width, int height, Font font) {
       var display = new Display(width, height);
 
       // If not given a canvas, create one and add it to the page.
@@ -86,7 +86,7 @@ namespace Malison
     public int x;
     public int y;
 
-    Font(string family,
+    public Font(string family,
         int size,
         int w,
         int h,

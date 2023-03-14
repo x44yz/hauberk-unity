@@ -165,5 +165,5 @@ public class ItemType {
         isTwoHanded = twoHanded ?? false;
     }
 
-    string ToString() => name;
+    public override string ToString() => name;
 }

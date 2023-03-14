@@ -379,5 +379,5 @@ public class EventType {
     this._name = _name;
   }
 
-  string ToString() => _name;
+  public override string ToString() => _name;
 }

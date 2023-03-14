@@ -24,5 +24,5 @@ class HealMove : Move {
     return new HealAction(_amount);
   }
 
-  string ToString() => $"Heal {_amount} rate: {rate}";
+  public override string ToString() => $"Heal {_amount} rate: {rate}";
 }

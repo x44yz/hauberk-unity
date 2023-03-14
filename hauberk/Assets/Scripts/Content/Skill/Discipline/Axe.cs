@@ -83,5 +83,5 @@ class SweepAction : MasteryAction {
     return rt;
   }
 
-  public string ToString() => "$actor slashes {_dir}";
+  public override string ToString() => $"{actor} slashes {_dir}";
 }

@@ -42,5 +42,5 @@ class AmputateMove : Move {
   public override Action onGetAction(Monster monster) =>
       new AmputateAction(_body.breed, _part.breed, _message);
 
-  string ToString() => $"Amputate {_body.breed.name} + {_part.breed.name}";
+  public override string ToString() => $"Amputate {_body.breed.name} + {_part.breed.name}";
 }

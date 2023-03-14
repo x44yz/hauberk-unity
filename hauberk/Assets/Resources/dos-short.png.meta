@@ -1,0 +1,6180 @@
+fileFormatVersion: 2
+guid: a6fcd3563049e3a4c9b47cfa9c587597
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 653658745465615374
+    second: dos-short_0
+  - first:
+      213: 1679445898467833351
+    second: dos-short_1
+  - first:
+      213: -4194319959276850000
+    second: dos-short_2
+  - first:
+      213: 3624338497038388074
+    second: dos-short_3
+  - first:
+      213: 9034693371233120259
+    second: dos-short_4
+  - first:
+      213: 1472127058911475828
+    second: dos-short_5
+  - first:
+      213: -3408647297658163466
+    second: dos-short_6
+  - first:
+      213: -210132824564610732
+    second: dos-short_7
+  - first:
+      213: 5996237797459845399
+    second: dos-short_8
+  - first:
+      213: 1546803924251115829
+    second: dos-short_9
+  - first:
+      213: 6170250146892935627
+    second: dos-short_10
+  - first:
+      213: -3994698270596233559
+    second: dos-short_11
+  - first:
+      213: 3065500861260020743
+    second: dos-short_12
+  - first:
+      213: -5003765571405093439
+    second: dos-short_13
+  - first:
+      213: -4668354687177018518
+    second: dos-short_14
+  - first:
+      213: -3403927114778637658
+    second: dos-short_15
+  - first:
+      213: 6434887359820984603
+    second: dos-short_16
+  - first:
+      213: -6307670686201364349
+    second: dos-short_17
+  - first:
+      213: 620947099610558387
+    second: dos-short_18
+  - first:
+      213: 2025448873677726541
+    second: dos-short_19
+  - first:
+      213: 4344094448894091371
+    second: dos-short_20
+  - first:
+      213: 2554835720030122958
+    second: dos-short_21
+  - first:
+      213: -5110288547573991114
+    second: dos-short_22
+  - first:
+      213: -3165850240663898539
+    second: dos-short_23
+  - first:
+      213: 1251625554344494712
+    second: dos-short_24
+  - first:
+      213: 6414420440414956445
+    second: dos-short_25
+  - first:
+      213: 7501615605388325299
+    second: dos-short_26
+  - first:
+      213: 7527890386238232922
+    second: dos-short_27
+  - first:
+      213: -4695601766250075818
+    second: dos-short_28
+  - first:
+      213: 3229282169735270495
+    second: dos-short_29
+  - first:
+      213: -5870574449104629847
+    second: dos-short_30
+  - first:
+      213: -3311465420179024913
+    second: dos-short_31
+  - first:
+      213: 1979027472584518383
+    second: dos-short_32
+  - first:
+      213: -726182041806925769
+    second: dos-short_33
+  - first:
+      213: 9144202804342265403
+    second: dos-short_34
+  - first:
+      213: -2155821509900060419
+    second: dos-short_35
+  - first:
+      213: 7510429534700407587
+    second: dos-short_36
+  - first:
+      213: -5326920304930877947
+    second: dos-short_37
+  - first:
+      213: -5760352364307009081
+    second: dos-short_38
+  - first:
+      213: -4771181369102857811
+    second: dos-short_39
+  - first:
+      213: -7190328687569580294
+    second: dos-short_40
+  - first:
+      213: -6893843595161684216
+    second: dos-short_41
+  - first:
+      213: 6232344198459905053
+    second: dos-short_42
+  - first:
+      213: 2462430898209191091
+    second: dos-short_43
+  - first:
+      213: 7203805824631561106
+    second: dos-short_44
+  - first:
+      213: -2762299676268987971
+    second: dos-short_45
+  - first:
+      213: 4559395322357574409
+    second: dos-short_46
+  - first:
+      213: 7473075014600917398
+    second: dos-short_47
+  - first:
+      213: 6430015438488606649
+    second: dos-short_48
+  - first:
+      213: 8897328886123488732
+    second: dos-short_49
+  - first:
+      213: -2813108902528141600
+    second: dos-short_50
+  - first:
+      213: 4855265944057226305
+    second: dos-short_51
+  - first:
+      213: 7972483713508178077
+    second: dos-short_52
+  - first:
+      213: 4952434482240402019
+    second: dos-short_53
+  - first:
+      213: 8877010480408833710
+    second: dos-short_54
+  - first:
+      213: -7638048337991140131
+    second: dos-short_55
+  - first:
+      213: 1313758504788139387
+    second: dos-short_56
+  - first:
+      213: -5531188635064787645
+    second: dos-short_57
+  - first:
+      213: 8617772286174712735
+    second: dos-short_58
+  - first:
+      213: 7669205705987700469
+    second: dos-short_59
+  - first:
+      213: 2589024518802149299
+    second: dos-short_60
+  - first:
+      213: -529248993716908625
+    second: dos-short_61
+  - first:
+      213: 7740688998579306284
+    second: dos-short_62
+  - first:
+      213: -7778974746542116295
+    second: dos-short_63
+  - first:
+      213: -8858068440241123606
+    second: dos-short_64
+  - first:
+      213: 6330482968042769696
+    second: dos-short_65
+  - first:
+      213: -2947772817526206710
+    second: dos-short_66
+  - first:
+      213: 3901942188971845292
+    second: dos-short_67
+  - first:
+      213: 2387046311786523550
+    second: dos-short_68
+  - first:
+      213: 6278901585727904059
+    second: dos-short_69
+  - first:
+      213: 937716977638285695
+    second: dos-short_70
+  - first:
+      213: 510640098285495876
+    second: dos-short_71
+  - first:
+      213: 2060961789476976403
+    second: dos-short_72
+  - first:
+      213: -8940965329607963649
+    second: dos-short_73
+  - first:
+      213: 6381343373663213503
+    second: dos-short_74
+  - first:
+      213: 1245470733663414075
+    second: dos-short_75
+  - first:
+      213: -3693279771295575338
+    second: dos-short_76
+  - first:
+      213: 2183410882193015863
+    second: dos-short_77
+  - first:
+      213: -591975884100539144
+    second: dos-short_78
+  - first:
+      213: 4147076936769249608
+    second: dos-short_79
+  - first:
+      213: 6186156031700547337
+    second: dos-short_80
+  - first:
+      213: 1188877198255693618
+    second: dos-short_81
+  - first:
+      213: -8656084966215129529
+    second: dos-short_82
+  - first:
+      213: 5250257983982269683
+    second: dos-short_83
+  - first:
+      213: 6934236346181042987
+    second: dos-short_84
+  - first:
+      213: 8507307659649665938
+    second: dos-short_85
+  - first:
+      213: 1816406199327125231
+    second: dos-short_86
+  - first:
+      213: -8612011464475297234
+    second: dos-short_87
+  - first:
+      213: -884333273848681847
+    second: dos-short_88
+  - first:
+      213: 8261115443784360406
+    second: dos-short_89
+  - first:
+      213: 7057616672689372252
+    second: dos-short_90
+  - first:
+      213: -5582407311061690200
+    second: dos-short_91
+  - first:
+      213: -7215695546528686734
+    second: dos-short_92
+  - first:
+      213: -8851613620710547541
+    second: dos-short_93
+  - first:
+      213: 5623335139664969899
+    second: dos-short_94
+  - first:
+      213: 1804185581328614207
+    second: dos-short_95
+  - first:
+      213: -1505042154037734165
+    second: dos-short_96
+  - first:
+      213: -2010361584215277633
+    second: dos-short_97
+  - first:
+      213: -4594129247334472429
+    second: dos-short_98
+  - first:
+      213: 8561454657987756936
+    second: dos-short_99
+  - first:
+      213: 3705423865636755416
+    second: dos-short_100
+  - first:
+      213: 1530554815091985108
+    second: dos-short_101
+  - first:
+      213: 6104794046201693433
+    second: dos-short_102
+  - first:
+      213: -3524018739256664136
+    second: dos-short_103
+  - first:
+      213: -1120319201520548972
+    second: dos-short_104
+  - first:
+      213: -8930347164623952380
+    second: dos-short_105
+  - first:
+      213: 6493932990177186282
+    second: dos-short_106
+  - first:
+      213: 4975891527161697281
+    second: dos-short_107
+  - first:
+      213: -8802726320770988544
+    second: dos-short_108
+  - first:
+      213: -8750393854387197017
+    second: dos-short_109
+  - first:
+      213: -9106916277997513787
+    second: dos-short_110
+  - first:
+      213: 8922505558754913840
+    second: dos-short_111
+  - first:
+      213: 107429021187176507
+    second: dos-short_112
+  - first:
+      213: 5914167453026346175
+    second: dos-short_113
+  - first:
+      213: 8677053930900906293
+    second: dos-short_114
+  - first:
+      213: 5168211533721912463
+    second: dos-short_115
+  - first:
+      213: 448735554195412169
+    second: dos-short_116
+  - first:
+      213: 636914728808738201
+    second: dos-short_117
+  - first:
+      213: 5486564484705037373
+    second: dos-short_118
+  - first:
+      213: 1831834173266934399
+    second: dos-short_119
+  - first:
+      213: -3641744533791616934
+    second: dos-short_120
+  - first:
+      213: 8610744394985887877
+    second: dos-short_121
+  - first:
+      213: -1926203893904229312
+    second: dos-short_122
+  - first:
+      213: 8744260481309656743
+    second: dos-short_123
+  - first:
+      213: 1579896451875225185
+    second: dos-short_124
+  - first:
+      213: 7319806019574900847
+    second: dos-short_125
+  - first:
+      213: -2740482500442575690
+    second: dos-short_126
+  - first:
+      213: -3476414714484296524
+    second: dos-short_127
+  - first:
+      213: -6092983573577374163
+    second: dos-short_128
+  - first:
+      213: 678145868980285219
+    second: dos-short_129
+  - first:
+      213: -7582800865331918542
+    second: dos-short_130
+  - first:
+      213: 3155771166255888832
+    second: dos-short_131
+  - first:
+      213: -7382196896239292395
+    second: dos-short_132
+  - first:
+      213: -2355704568499564722
+    second: dos-short_133
+  - first:
+      213: 3135533662988318760
+    second: dos-short_134
+  - first:
+      213: -3400618605865704355
+    second: dos-short_135
+  - first:
+      213: 8412685068936391567
+    second: dos-short_136
+  - first:
+      213: 7749755190231877492
+    second: dos-short_137
+  - first:
+      213: 418922805356411829
+    second: dos-short_138
+  - first:
+      213: 2261513517439689028
+    second: dos-short_139
+  - first:
+      213: 1868372741028336643
+    second: dos-short_140
+  - first:
+      213: 1194130491340671221
+    second: dos-short_141
+  - first:
+      213: -1154421417584711578
+    second: dos-short_142
+  - first:
+      213: -3648264711431637666
+    second: dos-short_143
+  - first:
+      213: -8771817722075989568
+    second: dos-short_144
+  - first:
+      213: 2552409203174534226
+    second: dos-short_145
+  - first:
+      213: -557816008697757151
+    second: dos-short_146
+  - first:
+      213: 3382630923110533043
+    second: dos-short_147
+  - first:
+      213: 7980912971704640822
+    second: dos-short_148
+  - first:
+      213: -670283934120179961
+    second: dos-short_149
+  - first:
+      213: 8490149903019317632
+    second: dos-short_150
+  - first:
+      213: -2121323829231121196
+    second: dos-short_151
+  - first:
+      213: -2053053496302603878
+    second: dos-short_152
+  - first:
+      213: 8349830405556213550
+    second: dos-short_153
+  - first:
+      213: -2184956124564001452
+    second: dos-short_154
+  - first:
+      213: -6829612958983452313
+    second: dos-short_155
+  - first:
+      213: 7564120389123613254
+    second: dos-short_156
+  - first:
+      213: 7558112978081054470
+    second: dos-short_157
+  - first:
+      213: -6549213387972028293
+    second: dos-short_158
+  - first:
+      213: -4541057015912473668
+    second: dos-short_159
+  - first:
+      213: 7430532859617022152
+    second: dos-short_160
+  - first:
+      213: 8099283600678458261
+    second: dos-short_161
+  - first:
+      213: 6371098779883239533
+    second: dos-short_162
+  - first:
+      213: 7902293408384226151
+    second: dos-short_163
+  - first:
+      213: 213704623608246430
+    second: dos-short_164
+  - first:
+      213: 7662750605500064611
+    second: dos-short_165
+  - first:
+      213: 8471976252415830388
+    second: dos-short_166
+  - first:
+      213: 7528289670485930357
+    second: dos-short_167
+  - first:
+      213: -8906023874674356061
+    second: dos-short_168
+  - first:
+      213: -7571125778114310458
+    second: dos-short_169
+  - first:
+      213: -9200658273396671979
+    second: dos-short_170
+  - first:
+      213: 2175268686190968733
+    second: dos-short_171
+  - first:
+      213: -3661361679819323988
+    second: dos-short_172
+  - first:
+      213: -8341410039478798234
+    second: dos-short_173
+  - first:
+      213: -5538556080483043451
+    second: dos-short_174
+  - first:
+      213: 3258071213010041146
+    second: dos-short_175
+  - first:
+      213: -334936246880184605
+    second: dos-short_176
+  - first:
+      213: -8488405658847187999
+    second: dos-short_177
+  - first:
+      213: -7166424809454026345
+    second: dos-short_178
+  - first:
+      213: 609586579259071494
+    second: dos-short_179
+  - first:
+      213: 3562562204989704769
+    second: dos-short_180
+  - first:
+      213: -1013756932619615350
+    second: dos-short_181
+  - first:
+      213: -901050521839435725
+    second: dos-short_182
+  - first:
+      213: -151397222632092631
+    second: dos-short_183
+  - first:
+      213: 999916900920188096
+    second: dos-short_184
+  - first:
+      213: 4289509463979943476
+    second: dos-short_185
+  - first:
+      213: -1171421739363645756
+    second: dos-short_186
+  - first:
+      213: 3942807447152192400
+    second: dos-short_187
+  - first:
+      213: -9047201436716767764
+    second: dos-short_188
+  - first:
+      213: 2314897514691582561
+    second: dos-short_189
+  - first:
+      213: 8310942001380183733
+    second: dos-short_190
+  - first:
+      213: 175830400792228755
+    second: dos-short_191
+  - first:
+      213: 2357477537117384516
+    second: dos-short_192
+  - first:
+      213: 4212703911269972423
+    second: dos-short_193
+  - first:
+      213: 8217557053410279046
+    second: dos-short_194
+  - first:
+      213: -5627353246980193128
+    second: dos-short_195
+  - first:
+      213: -5207300052086373026
+    second: dos-short_196
+  - first:
+      213: 4061154739532770959
+    second: dos-short_197
+  - first:
+      213: 2453902354382191050
+    second: dos-short_198
+  - first:
+      213: 8351798661536348778
+    second: dos-short_199
+  - first:
+      213: -8807330336039084175
+    second: dos-short_200
+  - first:
+      213: -6837440041110323388
+    second: dos-short_201
+  - first:
+      213: 5698639626888917359
+    second: dos-short_202
+  - first:
+      213: 157210923499032021
+    second: dos-short_203
+  - first:
+      213: 9201773410280408910
+    second: dos-short_204
+  - first:
+      213: -3942246697184926720
+    second: dos-short_205
+  - first:
+      213: 4398751944361151562
+    second: dos-short_206
+  - first:
+      213: -4994970485188838123
+    second: dos-short_207
+  - first:
+      213: 6178390772957987185
+    second: dos-short_208
+  - first:
+      213: 7641594293379210890
+    second: dos-short_209
+  - first:
+      213: -3729571056285176796
+    second: dos-short_210
+  - first:
+      213: -2050126685169285581
+    second: dos-short_211
+  - first:
+      213: 2223450248354257413
+    second: dos-short_212
+  - first:
+      213: 5135759341203097279
+    second: dos-short_213
+  - first:
+      213: -4452068883405175319
+    second: dos-short_214
+  - first:
+      213: 8540572252231278506
+    second: dos-short_215
+  - first:
+      213: -3577526532442138893
+    second: dos-short_216
+  - first:
+      213: 8434573882097678855
+    second: dos-short_217
+  - first:
+      213: 5823197657359099126
+    second: dos-short_218
+  - first:
+      213: -8036563367243591523
+    second: dos-short_219
+  - first:
+      213: 5522533673855558691
+    second: dos-short_220
+  - first:
+      213: -7287011336676481911
+    second: dos-short_221
+  - first:
+      213: -2049595474875424387
+    second: dos-short_222
+  - first:
+      213: -5662990352290634734
+    second: dos-short_223
+  - first:
+      213: 8662354724146945876
+    second: dos-short_224
+  - first:
+      213: -4544824755017451535
+    second: dos-short_225
+  - first:
+      213: 2421216177992594191
+    second: dos-short_226
+  - first:
+      213: 1379437836265257958
+    second: dos-short_227
+  - first:
+      213: -2491945002943259184
+    second: dos-short_228
+  - first:
+      213: 6694388338450400562
+    second: dos-short_229
+  - first:
+      213: 453000492575450037
+    second: dos-short_230
+  - first:
+      213: -8920539506778037393
+    second: dos-short_231
+  - first:
+      213: 2626941149391645485
+    second: dos-short_232
+  - first:
+      213: 9141915973900880561
+    second: dos-short_233
+  - first:
+      213: -4207142516946279933
+    second: dos-short_234
+  - first:
+      213: -5273573518802264620
+    second: dos-short_235
+  - first:
+      213: 2215277913303042439
+    second: dos-short_236
+  - first:
+      213: -7330978998767991364
+    second: dos-short_237
+  - first:
+      213: 3990717818696223462
+    second: dos-short_238
+  - first:
+      213: -8400504543799746058
+    second: dos-short_239
+  - first:
+      213: -5827933729435832963
+    second: dos-short_240
+  - first:
+      213: -721394571922798624
+    second: dos-short_241
+  - first:
+      213: -4020132641804483912
+    second: dos-short_242
+  - first:
+      213: 5170358718350364347
+    second: dos-short_243
+  - first:
+      213: 3831900665274958252
+    second: dos-short_244
+  - first:
+      213: 6560838542597424839
+    second: dos-short_245
+  - first:
+      213: -3039023059959278767
+    second: dos-short_246
+  - first:
+      213: 7745056319556524452
+    second: dos-short_247
+  - first:
+      213: 668993960226815130
+    second: dos-short_248
+  - first:
+      213: -1492558294534609472
+    second: dos-short_249
+  - first:
+      213: -6703002635813939945
+    second: dos-short_250
+  - first:
+      213: 1584438592220346294
+    second: dos-short_251
+  - first:
+      213: -8992246780628707863
+    second: dos-short_252
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: dos-short_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e043ecf6a23421900800000000000000
+      internalID: 653658745465615374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70679a585279e4710800000000000000
+      internalID: 1679445898467833351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_2
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b4f8f03838cac5c0800000000000000
+      internalID: -4194319959276850000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_3
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6b0fb519ac3c4230800000000000000
+      internalID: 3624338497038388074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_4
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3003de6d0cda16d70800000000000000
+      internalID: 9034693371233120259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_5
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 478b8aaa2cb0e6410800000000000000
+      internalID: 1472127058911475828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_6
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fe6d72b75d02b0d0800000000000000
+      internalID: -3408647297658163466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_7
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4594d243f45751df0800000000000000
+      internalID: -210132824564610732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_8
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7116d52e18ae63350800000000000000
+      internalID: 5996237797459845399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_9
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5310b2a49f9577510800000000000000
+      internalID: 1546803924251115829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_10
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc1fad431d121a550800000000000000
+      internalID: 6170250146892935627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_11
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a68e34761bff88c0800000000000000
+      internalID: -3994698270596233559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_12
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70cbe06aac8da8a20800000000000000
+      internalID: 3065500861260020743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_13
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c5e11159bd0f8ab0800000000000000
+      internalID: -5003765571405093439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_14
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a63b841652ca63fb0800000000000000
+      internalID: -4668354687177018518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_15
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aa8c4ae252d2c0d0800000000000000
+      internalID: -3403927114778637658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_16
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b11f7c3d5ff4d4950800000000000000
+      internalID: 6434887359820984603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_17
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 380c2dc2ee6a678a0800000000000000
+      internalID: -6307670686201364349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_18
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bfa890e81c0e9800800000000000000
+      internalID: 620947099610558387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_19
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d43a642f407db1c10800000000000000
+      internalID: 2025448873677726541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_20
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b602411a2e2594c30800000000000000
+      internalID: 4344094448894091371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_21
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec3ffdf1d89947320800000000000000
+      internalID: 2554835720030122958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_22
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 639fa1634ab9419b0800000000000000
+      internalID: -5110288547573991114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_23
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 556b421caf3a014d0800000000000000
+      internalID: -3165850240663898539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_24
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 876418e6fcaae5110800000000000000
+      internalID: 1251625554344494712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_25
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9b20fec769940950800000000000000
+      internalID: 6414420440414956445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_26
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b1b2b8d5a71b1860800000000000000
+      internalID: 7501615605388325299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_27
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a59decbfb60787860800000000000000
+      internalID: 7527890386238232922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_28
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 659a7fb621fd5deb0800000000000000
+      internalID: -4695601766250075818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_29
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f50d29e1607b0dc20800000000000000
+      internalID: 3229282169735270495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_30
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 91
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9af42a564a7878ea0800000000000000
+      internalID: -5870574449104629847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_31
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe35d38cebf4b02d0800000000000000
+      internalID: -3311465420179024913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_32
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: feaa320400be67b10800000000000000
+      internalID: 1979027472584518383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_33
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73094dbc7451ce5f0800000000000000
+      internalID: -726182041806925769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_34
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3693f2a00cb6ee70800000000000000
+      internalID: 9144202804342265403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_35
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df8b24f32cbf412e0800000000000000
+      internalID: -2155821509900060419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_36
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32b8b6eaed76a3860800000000000000
+      internalID: 7510429534700407587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_37
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50e87c5b43af216b0800000000000000
+      internalID: -5326920304930877947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_38
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c136685b0e1f00b0800000000000000
+      internalID: -5760352364307009081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_39
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da989a7d2db59cdb0800000000000000
+      internalID: -4771181369102857811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_40
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afe4d179722d63c90800000000000000
+      internalID: -7190328687569580294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_41
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 807394d76c52450a0800000000000000
+      internalID: -6893843595161684216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_42
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d145b23370cbd7650800000000000000
+      internalID: 6232344198459905053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_43
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b474bbfadf4c2220800000000000000
+      internalID: 2462430898209191091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_44
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29bdd08ea3f09f360800000000000000
+      internalID: 7203805824631561106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_45
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db97fc864175aa9d0800000000000000
+      internalID: -2762299676268987971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_46
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90b63b393e9364f30800000000000000
+      internalID: 4559395322357574409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_47
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6918229b122b5b760800000000000000
+      internalID: 7473075014600917398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_48
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b7146f39f00c3950800000000000000
+      internalID: 6430015438488606649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_49
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd5663b5b79a97b70800000000000000
+      internalID: 8897328886123488732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_50
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e6325e8b54d5f8d0800000000000000
+      internalID: -2813108902528141600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_51
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 144259dd6ae516340800000000000000
+      internalID: 4855265944057226305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_52
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d98fd3982b3f3ae60800000000000000
+      internalID: 7972483713508178077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_53
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 362b5572ce49ab440800000000000000
+      internalID: 4952434482240402019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_54
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eae2030eff9713b70800000000000000
+      internalID: 8877010480408833710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_55
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddc76c43183300690800000000000000
+      internalID: -7638048337991140131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_56
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7d9b8646686b3210800000000000000
+      internalID: 1313758504788139387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_57
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34d194ded354d33b0800000000000000
+      internalID: -5531188635064787645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_58
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9356a04c3a789770800000000000000
+      internalID: 8617772286174712735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_59
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f6bbc6d4fd7e6a60800000000000000
+      internalID: 7669205705987700469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_60
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bf8af525101ee320800000000000000
+      internalID: 2589024518802149299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_61
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 78
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fad45c328dab7a8f0800000000000000
+      internalID: -529248993716908625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_62
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2ff71dd1a37c6b60800000000000000
+      internalID: 7740688998579306284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_63
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9327f9bcea78b0490800000000000000
+      internalID: -7778974746542116295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_64
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aee44578fa1d11580800000000000000
+      internalID: -8858068440241123606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_65
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02d89d618b46ad750800000000000000
+      internalID: 6330482968042769696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_66
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0f4ccc8d386717d0800000000000000
+      internalID: -2947772817526206710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_67
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca6e6cb5fbb762630800000000000000
+      internalID: 3901942188971845292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_68
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9b217439fd702120800000000000000
+      internalID: 2387046311786523550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_69
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b39d2f4a9b3232750800000000000000
+      internalID: 6278901585727904059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_70
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f71abf77f90730d00800000000000000
+      internalID: 937716977638285695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_71
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 446a062c678261700800000000000000
+      internalID: 510640098285495876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_72
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 317bd6df3d10a9c10800000000000000
+      internalID: 2060961789476976403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_73
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffb42ab676f4be380800000000000000
+      internalID: -8940965329607963649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_74
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb71df01df51f8850800000000000000
+      internalID: 6381343373663213503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_75
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b372722980dc84110800000000000000
+      internalID: 1245470733663414075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_76
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d29ac7ad95debcc0800000000000000
+      internalID: -3693279771295575338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_77
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73446df01a80d4e10800000000000000
+      internalID: 2183410882193015863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_78
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fce690e111e8c7f0800000000000000
+      internalID: -591975884100539144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_79
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 841a85870806d8930800000000000000
+      internalID: 4147076936769249608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_80
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 907b6aa9224a9d550800000000000000
+      internalID: 6186156031700547337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_81
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23f979b438dbf7010800000000000000
+      internalID: 1188877198255693618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_82
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 746e52bc5986fd780800000000000000
+      internalID: -8656084966215129529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_83
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f4fb62c1d9acd840800000000000000
+      internalID: 5250257983982269683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_84
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2349bab73b5b3060800000000000000
+      internalID: 6934236346181042987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_85
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29bc0682e37001670800000000000000
+      internalID: 8507307659649665938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_86
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: feee5b680db253910800000000000000
+      internalID: 1816406199327125231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_87
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2abb52933dfb7880800000000000000
+      internalID: -8612011464475297234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_88
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98ae035a2973ab3f0800000000000000
+      internalID: -884333273848681847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_89
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d1a2431ab065a270800000000000000
+      internalID: 8261115443784360406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_90
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5c368098f0b1f160800000000000000
+      internalID: 7057616672689372252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_91
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a8df90a02e4782b0800000000000000
+      internalID: -5582407311061690200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_92
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27d1acd7123bcdb90800000000000000
+      internalID: -7215695546528686734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_93
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 65
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bafd9805f40c82580800000000000000
+      internalID: -8851613620710547541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_94
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba0c3bc04891a0e40800000000000000
+      internalID: 5623335139664969899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_95
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3349fb2a31c90910800000000000000
+      internalID: 1804185581328614207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_96
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be4979c82240d1be0800000000000000
+      internalID: -1505042154037734165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_97
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbfb1ce5ac2c914e0800000000000000
+      internalID: -2010361584215277633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_98
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31565605acf5e30c0800000000000000
+      internalID: -4594129247334472429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_99
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88349f1a6a560d670800000000000000
+      internalID: 8561454657987756936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_100
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d79885af5f4c6330800000000000000
+      internalID: 3705423865636755416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_101
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4da42debe7f9d3510800000000000000
+      internalID: 1530554815091985108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_102
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f485c627d598b450800000000000000
+      internalID: 6104794046201693433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_103
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bf59c0b0ab281fc0800000000000000
+      internalID: -3524018739256664136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_104
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49381563f93d370f0800000000000000
+      internalID: -1120319201520548972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_105
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4062cab9198011480800000000000000
+      internalID: -8930347164623952380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_106
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae193b2f5a51f1a50800000000000000
+      internalID: 6493932990177186282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_107
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10459550bfaed0540800000000000000
+      internalID: 4975891527161697281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_108
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 006c673dc0f66d580800000000000000
+      internalID: -8802726320770988544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_109
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ab6d78a62b509680800000000000000
+      internalID: -8750393854387197017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_110
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c35cba45ebbd9180800000000000000
+      internalID: -9106916277997513787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_111
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03ee800488b13db70800000000000000
+      internalID: 8922505558754913840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_112
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b38fd66202aad7100800000000000000
+      internalID: 107429021187176507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_113
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb4efc3c6f7531250800000000000000
+      internalID: 5914167453026346175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_114
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5316140c3961b6870800000000000000
+      internalID: 8677053930900906293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_115
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f84429fe10d29b740800000000000000
+      internalID: 5168211533721912463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_116
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c4d7e9eb9a3a3600800000000000000
+      internalID: 448735554195412169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_117
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99debd24296c6d800800000000000000
+      internalID: 636914728808738201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_118
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3c2e1c6451342c40800000000000000
+      internalID: 5486564484705037373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_119
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7a3ff0a97bfb6910800000000000000
+      internalID: 1831834173266934399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_120
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5051ac24ace57dc0800000000000000
+      internalID: -3641744533791616934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_121
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 588d1d2d7628f7770800000000000000
+      internalID: 8610744394985887877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_122
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04c3dd293cfb445e0800000000000000
+      internalID: -1926203893904229312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_123
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a6c2f3249ad95970800000000000000
+      internalID: 8744260481309656743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_124
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16e3cebc37bece510800000000000000
+      internalID: 1579896451875225185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_125
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 52
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f682785facc259560800000000000000
+      internalID: 7319806019574900847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_126
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bc22ff7fa9d7f9d0800000000000000
+      internalID: -2740482500442575690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_127
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b4f83b6c3b41cfc0800000000000000
+      internalID: -3476414714484296524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_128
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2661aac8bf517ba0800000000000000
+      internalID: -6092983573577374163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_129
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32fe77a2312496900800000000000000
+      internalID: 678145868980285219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_130
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 239cd53d9ca74c690800000000000000
+      internalID: -7582800865331918542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_131
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c93a1dd72d8bcb20800000000000000
+      internalID: 3155771166255888832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_132
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5107aa1190b2d8990800000000000000
+      internalID: -7382196896239292395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_133
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4f81de0d2bde4fd0800000000000000
+      internalID: -2355704568499564722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_134
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 828b2b3f047a38b20800000000000000
+      internalID: 3135533662988318760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_135
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d546acc25639ec0d0800000000000000
+      internalID: -3400618605865704355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_136
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8baf257f7cdfb470800000000000000
+      internalID: 8412685068936391567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_137
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 477c20a1949ac8b60800000000000000
+      internalID: 7749755190231877492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_138
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bb3499621050d500800000000000000
+      internalID: 418922805356411829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_139
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 441acb5ef82826f10800000000000000
+      internalID: 2261513517439689028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_140
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3045401eb1bcde910800000000000000
+      internalID: 1868372741028336643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_141
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f8c2d7ea57629010800000000000000
+      internalID: 1194130491340671221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_142
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 668a2cb46dbaaffe0800000000000000
+      internalID: -1154421417584711578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_143
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5536840392ce5dc0800000000000000
+      internalID: -3648264711431637666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_144
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c93f21c14e344680800000000000000
+      internalID: -8771817722075989568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_145
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25ce7a4a5aafb6320800000000000000
+      internalID: 2552409203174534226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_146
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1224b87ab4d3248f0800000000000000
+      internalID: -557816008697757151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_147
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b7414217e481fe20800000000000000
+      internalID: 3382630923110533043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_148
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63523c52016e1ce60800000000000000
+      internalID: 7980912971704640822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_149
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7078d10305ca2b6f0800000000000000
+      internalID: -670283934120179961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_150
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0899843aa5213d570800000000000000
+      internalID: 8490149903019317632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_151
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dc8b11773b8f82e0800000000000000
+      internalID: -2121323829231121196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_152
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a91720009b61283e0800000000000000
+      internalID: -2053053496302603878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_153
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e271fe9b38e80e370800000000000000
+      internalID: 8349830405556213550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_154
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45d6c892bf97da1e0800000000000000
+      internalID: -2184956124564001452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_155
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 769036ad2375831a0800000000000000
+      internalID: -6829612958983452313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_156
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 642a000ea6729f860800000000000000
+      internalID: 7564120389123613254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_157
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 39
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60f7ace75bfc3e860800000000000000
+      internalID: 7558112978081054470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_158
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b78d1b37f158c15a0800000000000000
+      internalID: -6549213387972028293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_159
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbbddbd14bceaf0c0800000000000000
+      internalID: -4541057015912473668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_160
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c01755644e8e1760800000000000000
+      internalID: 7430532859617022152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_161
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5931691e58f666070800000000000000
+      internalID: 8099283600678458261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_162
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d687dd3b590ba6850800000000000000
+      internalID: 6371098779883239533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_163
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76317ad9cf59aad60800000000000000
+      internalID: 7902293408384226151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_164
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e903701193b37f200800000000000000
+      internalID: 213704623608246430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_165
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 363ad33a31f875a60800000000000000
+      internalID: 7662750605500064611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_166
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4796aced381829570800000000000000
+      internalID: 8471976252415830388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_167
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5717e87919bd97860800000000000000
+      internalID: 7528289670485930357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_168
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a013ecd872776480800000000000000
+      internalID: -8906023874674356061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_169
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ce81b5e735fde690800000000000000
+      internalID: -7571125778114310458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_170
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51abe6a2c02b05080800000000000000
+      internalID: -9200658273396671979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_171
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9f7173585b103e10800000000000000
+      internalID: 2175268686190968733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_172
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca5442073fa303dc0800000000000000
+      internalID: -3661361679819323988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_173
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6683df683cb5d3c80800000000000000
+      internalID: -8341410039478798234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_174
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5877a3ed6981323b0800000000000000
+      internalID: -5538556080483043451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_175
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a39b368918ef63d20800000000000000
+      internalID: 3258071213010041146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_176
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e6dd4e02411a5bf0800000000000000
+      internalID: -334936246880184605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_177
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1eb6ffad600233a80800000000000000
+      internalID: -8488405658847187999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_178
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79142faea9ebb8c90800000000000000
+      internalID: -7166424809454026345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_179
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60c159c93cfa57800800000000000000
+      internalID: 609586579259071494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_180
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14ac4ae3373c07130800000000000000
+      internalID: 3562562204989704769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_181
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a834e9ed0796ee1f0800000000000000
+      internalID: -1013756932619615350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_182
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33084190353de73f0800000000000000
+      internalID: -901050521839435725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_183
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92c8805370126edf0800000000000000
+      internalID: -151397222632092631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_184
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ccd144af1b60ed00800000000000000
+      internalID: 999916900920188096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_185
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43663357126678b30800000000000000
+      internalID: 4289509463979943476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_186
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c64f0f62264ebfe0800000000000000
+      internalID: -1171421739363645756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_187
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09b6549bb7aa7b630800000000000000
+      internalID: 3942807447152192400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_188
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce5e7193a32e17280800000000000000
+      internalID: -9047201436716767764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_189
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 26
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16a50a6560b202020800000000000000
+      internalID: 2314897514691582561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_190
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bec32d87b5665370800000000000000
+      internalID: 8310942001380183733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_191
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3937fe361dca07200800000000000000
+      internalID: 175830400792228755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_192
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44f28dd545177b020800000000000000
+      internalID: 2357477537117384516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_193
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c9352f23e7867a30800000000000000
+      internalID: 4212703911269972423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_194
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68e76020a90aa0270800000000000000
+      internalID: 8217557053410279046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_195
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 894ca107900a7e1b0800000000000000
+      internalID: -5627353246980193128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_196
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e55c48c2134fbb7b0800000000000000
+      internalID: -5207300052086373026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_197
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8eaebbf7be1c5830800000000000000
+      internalID: 4061154739532770959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_198
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac9f172a0330e0220800000000000000
+      internalID: 2453902354382191050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_199
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6af47802ac87e370800000000000000
+      internalID: 8351798661536348778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_200
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17f5edcf8b316c580800000000000000
+      internalID: -8807330336039084175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_201
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44f369842888c11a0800000000000000
+      internalID: -6837440041110323388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_202
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f61bda74c82a51f40800000000000000
+      internalID: 5698639626888917359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_203
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dd88f180868e2200800000000000000
+      internalID: 157210923499032021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_204
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e47066fd92443bf70800000000000000
+      internalID: 9201773410280408910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_205
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 004e55d04835a49c0800000000000000
+      internalID: -3942246697184926720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_206
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4c84ba76918b0d30800000000000000
+      internalID: 4398751944361151562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_207
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51d32c6eecc4eaab0800000000000000
+      internalID: -4994970485188838123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_208
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17146b96cad0eb550800000000000000
+      internalID: 6178390772957987185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_209
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8e158ed5856c0a60800000000000000
+      internalID: 7641594293379210890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_210
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42c2b8962e6ed3cc0800000000000000
+      internalID: -3729571056285176796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_211
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3368fe154ac7c83e0800000000000000
+      internalID: -2050126685169285581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_212
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50ad8e478384bde10800000000000000
+      internalID: 2223450248354257413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_213
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb60e4019e1e54740800000000000000
+      internalID: 5135759341203097279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_214
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e5801940f21732c0800000000000000
+      internalID: -4452068883405175319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_215
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaf9dc8a635368670800000000000000
+      internalID: 8540572252231278506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_216
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f65043c2921a5ec0800000000000000
+      internalID: -3577526532442138893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_217
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a383ae140ad0570800000000000000
+      internalID: 8434573882097678855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_218
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f4a6cfaa6720d050800000000000000
+      internalID: 5823197657359099126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_219
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9057807234687090800000000000000
+      internalID: -8036563367243591523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_220
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3242b42ed1bf3ac40800000000000000
+      internalID: 5522533673855558691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_221
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 13
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 984672b2cc55fda90800000000000000
+      internalID: -7287011336676481911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_222
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d716dca56cf5e83e0800000000000000
+      internalID: -2049595474875424387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_223
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 214a04547440961b0800000000000000
+      internalID: -5662990352290634734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_224
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45f943bf9bdd63870800000000000000
+      internalID: 8662354724146945876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_225
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f778cef6f98de0c0800000000000000
+      internalID: -4544824755017451535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_226
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f037da52943e99120800000000000000
+      internalID: 2421216177992594191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_227
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ebf25c476fb42310800000000000000
+      internalID: 1379437836265257958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_228
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ddd1c30935da6dd0800000000000000
+      internalID: -2491945002943259184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_229
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2358ad5b9be37ec50800000000000000
+      internalID: 6694388338450400562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_230
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b369034c81694600800000000000000
+      internalID: 453000492575450037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_231
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6328a5e490e33480800000000000000
+      internalID: -8920539506778037393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_232
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2b6857ae05c47420800000000000000
+      internalID: 2626941149391645485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_233
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bac4de642c9ede70800000000000000
+      internalID: 9141915973900880561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_234
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30269f5db2a3d95c0800000000000000
+      internalID: -4207142516946279933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_235
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dd52e243d080d6b0800000000000000
+      internalID: -5273573518802264620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_236
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 789423d668f3ebe10800000000000000
+      internalID: 2215277913303042439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_237
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb5c59a1171234a90800000000000000
+      internalID: -7330978998767991364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_238
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6eac53e56b0e16730800000000000000
+      internalID: 3990717818696223462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_239
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f1e2cc00a96b6b80800000000000000
+      internalID: -8400504543799746058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_240
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7da57a96250f1fa0800000000000000
+      internalID: -5827933729435832963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_241
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e785ad75771df5f0800000000000000
+      internalID: -721394571922798624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_242
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b28a4f69ae9538c0800000000000000
+      internalID: -4020132641804483912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_243
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbe0e905cddc0c740800000000000000
+      internalID: 5170358718350364347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_244
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca10c405a55ad2530800000000000000
+      internalID: 3831900665274958252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_245
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c60638c4e7cc0b50800000000000000
+      internalID: 6560838542597424839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_246
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15318eed0a833d5d0800000000000000
+      internalID: -3039023059959278767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_247
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a99f8400b7fb7b60800000000000000
+      internalID: 7745056319556524452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_248
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9c733c567eb84900800000000000000
+      internalID: 668993960226815130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_249
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c5a3b7932e594be0800000000000000
+      internalID: -1492558294534609472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_250
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7159dc3ed962af2a0800000000000000
+      internalID: -6703002635813939945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_251
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b7b6b1418e0df510800000000000000
+      internalID: 1584438592220346294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dos-short_252
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 0
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e5d9fb223f153380800000000000000
+      internalID: -8992246780628707863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 4d69d01bc0064484f81ba0d97721cd45
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

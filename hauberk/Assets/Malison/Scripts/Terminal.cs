@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Malison
 {
   /// A virtual console terminal that can be written onto.
-  abstract class Terminal {
+  public abstract class Terminal {
     /// The number of columns of characters.
     public virtual int width => 800;
 
@@ -40,7 +40,7 @@ namespace Malison
 
     /// Writes [text] starting at column [x], row [y] using [fore] as the text
     /// color and [back] as the background color.
-    void writeAt(int x, int y, string text, Color? fore = null, Color? back = null) {
+    public void writeAt(int x, int y, string text, Color? fore = null, Color? back = null) {
       fore ??= foreColor;
       back ??= backColor;
 
@@ -58,14 +58,14 @@ namespace Malison
 
     /// Writes a one-character string consisting of [charCode] at column [x],
     /// row [y] using [fore] as the text color and [back] as the background color.
-    void drawChar(int x, int y, int charCode, Color? fore = null, Color? back = null) {
+    public void drawChar(int x, int y, int charCode, Color? fore = null, Color? back = null) {
       drawGlyph(x, y, new Glyph(charCode, fore, back));
     }
 
     public abstract void drawGlyph(int x, int y, Glyph glyph);
   }
 
-  abstract class RenderableTerminal : Terminal {
+  public abstract class RenderableTerminal : Terminal {
     public abstract void render();
 
     /// Given a point in pixel coordinates, returns the coordinates of the

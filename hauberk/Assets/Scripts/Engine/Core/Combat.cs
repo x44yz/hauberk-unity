@@ -52,7 +52,7 @@ public class Attack {
 
   public Hit createHit() => new Hit(this);
 
-  string ToString() {
+  public override string ToString() {
     var result = damage.ToString();
     if (element != Element.none) result = $"{element} {result}";
     if (range > 0) result += $"@{range}";

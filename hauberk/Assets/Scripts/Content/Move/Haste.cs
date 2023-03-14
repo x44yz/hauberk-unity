@@ -21,5 +21,5 @@ class HasteMove : Move {
 
   public override Action onGetAction(Monster monster) => new HasteAction(_duration, _speed);
 
-  string ToString() => $"Haste {_speed} for {_duration} turns rate: {rate}";
+  public override string ToString() => $"Haste {_speed} for {_duration} turns rate: {rate}";
 }

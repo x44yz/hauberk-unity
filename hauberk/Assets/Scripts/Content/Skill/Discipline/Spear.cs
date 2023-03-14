@@ -87,5 +87,5 @@ class SpearAction : MasteryAction {
     return rt;
   }
 
-  string ToString() => $"{actor} spears {_dir}";
+  public override string ToString() => $"{actor} spears {_dir}";
 }

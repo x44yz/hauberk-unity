@@ -43,5 +43,5 @@ class ConeMove : Move {
   public override Action onGetAction(Monster monster) =>
       RayAction.cone(monster.pos, monster.game.hero.pos, attack.createHit());
 
-  string ToString() => $"Cone {attack} rate: {rate}";
+  public override string ToString() => $"Cone {attack} rate: {rate}";
 }

@@ -317,7 +317,7 @@ public class _Tag<T> {
     return false;
   }
 
-  string ToString() {
+  public override string ToString() {
     if (parent == null) return name;
     return $"{parent}/{name}";
   }
@@ -344,7 +344,7 @@ public class _QueryKey {
     return !(a == other);
   }
 
-  public string ToString() => $"{name} ({depth})";
+  public override string ToString() => $"{name} ({depth})";
 }
 
 /// A stored query that let us quickly choose a random weighted resource for
