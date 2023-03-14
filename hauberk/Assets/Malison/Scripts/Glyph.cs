@@ -51,7 +51,7 @@ namespace Malison
     public int g;
     public int b;
 
-    string cssColor => $"rgb({r}, {g}, {b})";
+    public string cssColor => $"rgb({r}, {g}, {b})";
 
       public Color(int r, int g, int b)
       {

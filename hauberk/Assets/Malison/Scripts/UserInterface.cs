@@ -16,7 +16,7 @@ namespace Malison
     public KeyBindings<T> keyPress = new KeyBindings<T>();
 
     public List<Screen<T>> _screens = new List<Screen<T>>();
-    RenderableTerminal? _terminal;
+    public RenderableTerminal? _terminal;
     bool _dirty = true;
 
     /// Whether or not the UI is listening for keyboard events.
@@ -115,7 +115,7 @@ namespace Malison
       _render();
     }
 
-    void dirty() {
+    public void dirty() {
       _dirty = true;
     }
 
@@ -211,23 +211,26 @@ namespace Malison
       // }
     }
 
-    void _keyUp(html.KeyboardEvent event) {
-      var keyCode = event.keyCode;
+    void _keyUp() {
+      // var keyCode = event.keyCode;
 
       // Firefox uses 59 for semicolon.
-      if (keyCode == 59) keyCode = KeyCode.semicolon;
+      // if (keyCode == 59) keyCode = KeyCode.semicolon;
 
-      var screen = _screens.last;
-      if (screen.keyUp(keyCode, shift: event.shiftKey, alt: event.altKey)) {
-        event.preventDefault();
-      }
+      // var screen = _screens.last;
+      // if (screen.keyUp(keyCode, shift: event.shiftKey, alt: event.altKey)) {
+      //   event.preventDefault();
+      // }
     }
 
     /// Called every animation frame while the UI's game loop is running.
     void _tick(float dt) {
+      if (!_running)
+        return;
+      
       refresh();
 
-      if (_running) html.window.requestAnimationFrame(_tick);
+      // if (_running) html.window.requestAnimationFrame(_tick);
     }
 
     void _render() {
@@ -239,14 +242,14 @@ namespace Malison
 
       // Skip past all of the covered screens.
       int i;
-      for (i = _screens.length - 1; i >= 0; i--) {
+      for (i = _screens.Count - 1; i >= 0; i--) {
         if (!_screens[i].isTransparent) break;
       }
 
       if (i < 0) i = 0;
 
       // Render the top opaque screen and any transparent ones above it.
-      for (; i < _screens.length; i++) {
+      for (; i < _screens.Count; i++) {
         _screens[i].render(terminal);
       }
 
@@ -261,21 +264,21 @@ namespace Malison
     /// The [UserInterface] this screen is bound to.
     ///
     /// Throws an exception if the screen is not currently bound to an interface.
-    UserInterface<T> get ui => _ui!;
+    UserInterface<T> ui => _ui!;
 
     /// Whether this screen is bound to a [UserInterface].
     ///
     /// If this is `false`, then [ui] cannot be accessed.
-    bool get isBound => _ui != null;
+    bool isBound => _ui != null;
 
     /// Whether this screen allows any screens under it to be visible.
     ///
     /// Subclasses can override this. Defaults to `false`.
-    bool get isTransparent => false;
+    public bool isTransparent => false;
 
     /// Binds this screen to [ui].
     public void _bind(UserInterface<T> ui) {
-      assert(_ui == null);
+      DartUtils.assert(_ui == null);
       _ui = ui;
 
       resize(ui._terminal!.size);
@@ -283,7 +286,7 @@ namespace Malison
 
     /// Unbinds this screen from the [ui] that owns it.
     public void _unbind() {
-      assert(_ui != null);
+      DartUtils.assert(_ui != null);
       _ui = null;
     }
 
@@ -306,9 +309,9 @@ namespace Malison
     /// method will be called.
     public bool handleInput(T input) => false;
 
-    bool keyDown(int keyCode, {required bool shift, required bool alt}) => false;
+    bool keyDown(int keyCode, bool shift, bool alt) => false;
 
-    bool keyUp(int keyCode, {required bool shift, required bool alt}) => false;
+    bool keyUp(int keyCode, bool shift, bool alt) => false;
 
     /// Called when the screen above this one ([popped]) has been popped and this
     /// screen is now the top-most screen. If a value was passed to [pop()], it
@@ -317,7 +320,7 @@ namespace Malison
 
     public void update() {}
 
-    void render(Terminal terminal) {}
+    public void render(Terminal terminal) {}
 
     /// Called when the [UserInterface] has been bound to a new terminal with a
     /// different size while this [Screen] is present.

@@ -41,9 +41,9 @@ namespace Malison
     /// The glyphs that have been modified since the last call to [render].
     public Array2D<Glyph?> _changedGlyphs;
 
-    int width => _glyphs.width;
-    int height => _glyphs.height;
-    Vec size => _glyphs.size;
+    public int width => _glyphs.width;
+    public int height => _glyphs.height;
+    public Vec size => _glyphs.size;
 
     public Display(int width, int height)
     {
@@ -52,7 +52,7 @@ namespace Malison
     }
 
     /// Sets the cell at [x], [y], to [glyph].
-    void setGlyph(int x, int y, Glyph glyph) {
+    public void setGlyph(int x, int y, Glyph glyph) {
       if (x < 0) return;
       if (x >= width) return;
       if (y < 0) return;
@@ -67,7 +67,7 @@ namespace Malison
 
     /// Calls [renderGlyph] for every glyph that has changed since the last call
     /// to [render].
-    void render(System.Action<int, int, Glyph> renderGlyph) {
+    public void render(System.Action<int, int, Glyph> renderGlyph) {
       for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
           var glyph = _changedGlyphs._get(x, y);

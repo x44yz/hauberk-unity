@@ -5,19 +5,20 @@ namespace Malison
 {
   /// A terminal that draws to a window within another parent terminal.
   class PortTerminal : Terminal {
-    public int width => size.x;
-    public int height => size.y;
-    public Vec size;
+    public override int width => size.x;
+    public override int height => size.y;
+    public override Vec size => _size;
 
     public int _x;
     public int _y;
+    public Vec _size;
     public Terminal _root;
 
     public PortTerminal(int _x, int _y, Vec size, Terminal _root)
     {
       this._x = _x;
       this._y = _y;
-      this.size = size;
+      this._size = size;
       this._root = _root;
     }
 
