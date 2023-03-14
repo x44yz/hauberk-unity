@@ -9,6 +9,7 @@ namespace Malison
   /// [code page 437][font] font.
   ///
   /// [font]: http://en.wikipedia.org/wiki/Code_page_437
+  // 复古的
   class RetroTerminal : RenderableTerminal {
     public Display _display;
 
@@ -130,7 +131,7 @@ namespace Malison
         }
 
         spr.sprite = MalisonUnity.Inst.sprites[_char];
-        spr.transform.position = new Vector3(x * _charWidth * _scale / 100.0f, y * _charHeight * _scale / 100.0f, spr.transform.position.z);
+        spr.transform.localPosition = new Vector3(x * _charWidth * _scale / 100.0f, y * _charHeight * _scale / 100.0f, 0f);
 
         // var color = _getColorFont(glyph.fore);
         // _context.imageSmoothingEnabled = false;

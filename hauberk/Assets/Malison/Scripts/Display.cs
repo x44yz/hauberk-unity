@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Malison
 {
+  // 重新渲染变更的地方，但是使用 sprite 之后没有该问题
+  // 替换地方
   // typedef void RenderGlyph(int x, int y, Glyph glyph);
 
   /// The "backing store" that a renderable terminal uses to tell which glyphs

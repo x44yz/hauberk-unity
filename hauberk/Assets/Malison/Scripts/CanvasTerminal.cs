@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Malison
 {
+  // TODO:去掉
   /// A [RenderableTerminal] that draws to a canvas element using a browser font.
   class CanvasTerminal : RenderableTerminal {
     public Display _display;
