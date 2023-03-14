@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace Malison
 {
   public class Color {
+    public UnityEngine.Color toUnityColor =>
+      new UnityEngine.Color(r / 255.0f, g / 255.0f, b / 255.0f);
+
     public static Color black = new Color(0, 0, 0);
     public static Color white = new Color(255, 255, 255);
 
@@ -62,16 +65,28 @@ namespace Malison
 
     public int hashCode => r.GetHashCode() ^ g.GetHashCode() ^ b.GetHashCode();
 
-    public static bool operator ==(Color a, object other) {
-      if (other is Color) {
-          var b = other as Color;
-        return a.r == b.r && a.g == b.g && a.b == b.b;
-      }
-      return false;
+    // public static bool operator ==(Color a, object other) {
+    //   if (other == null)
+    //     return false;
+    //   if (other is Color) {
+    //       var b = other as Color;
+    //     return a.r == b.r && a.g == b.g && a.b == b.b;
+    //   }
+    //   return false;
+    // }
+
+    // public static bool operator !=(Color a, object other) {
+    //   return !(a == other);
+    // }
+
+    public bool isEqual(Color other) {
+      if (other == null)
+        return false;
+      return r == other.r && g == other.g && b == other.b;
     }
 
-    public static bool operator !=(Color a, object other) {
-      return !(a == other);
+    public bool isNotEqual(Color other) {
+      return !isEqual(other);
     }
 
     Color add(Color other, float fractionOther = 1.0f) {
@@ -125,17 +140,27 @@ namespace Malison
 
     int hashCode => _char.GetHashCode() ^ fore.hashCode ^ back.hashCode;
 
-    public static bool operator ==(Glyph a, object other) {
-      if (other is Glyph) {
-        var b = other as Glyph;
-        return a._char == b._char && a.fore == b.fore && a.back == b.back;
-      }
+    // public static bool operator ==(Glyph a, object other) {
+    //   if (other is Glyph) {
+    //     var b = other as Glyph;
+    //     return a._char == b._char && a.fore == b.fore && a.back == b.back;
+    //   }
 
-      return false;
+    //   return false;
+    // }
+
+    // public static bool operator !=(Glyph a, object other) {
+    //   return !(a == other);
+    // }
+
+    public bool isEqual(Glyph other) {
+      if (other == null)
+        return false;
+      return _char == other._char && fore.isEqual(other.fore) && back.isEqual(other.back);
     }
 
-    public static bool operator !=(Glyph a, object other) {
-      return !(a == other);
+    public bool isNotEqual(Glyph other) {
+      return !isEqual(other);
     }
   }
 }

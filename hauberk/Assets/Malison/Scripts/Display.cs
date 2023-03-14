@@ -58,7 +58,8 @@ namespace Malison
       if (y < 0) return;
       if (y >= height) return;
 
-      if (_glyphs._get(x, y) != glyph) {
+      var oldGlyph = _glyphs._get(x, y);
+      if (oldGlyph == null || oldGlyph.isNotEqual(glyph)) {
         _changedGlyphs._set(x, y, glyph);
       } else {
         _changedGlyphs._set(x, y, null);

@@ -77,6 +77,9 @@ class MainScreen : Screen<string> {
   }
 
   public override void render(Terminal terminal) {
+    terminal.writeAt(0, 0, "Predefined colors:");
+    return;
+
     terminal.clear();
 
     void colorBar(int y, string name, Malison.Color light, Malison.Color medium, Malison.Color dark) {
@@ -209,7 +212,18 @@ public class TestMalison : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set up the keybindings.
+   
+    }
+
+    public bool init = false;
+
+    void Init()
+    {
+        if (init || MalisonUnity.Inst == null)
+            return;
+        init = true;
+
+             // Set up the keybindings.
         ui.keyPress.bind("next terminal", Malison.KeyCode.tab);
         ui.keyPress.bind("prev terminal", Malison.KeyCode.tab, shift: true);
         ui.keyPress.bind("animate", Malison.KeyCode.space);
@@ -231,6 +245,10 @@ public class TestMalison : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!init)
+            Init();
+
+        if (ui != null)
+            ui._tick(Time.deltaTime);
     }
 }

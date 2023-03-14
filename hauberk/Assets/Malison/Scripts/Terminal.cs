@@ -29,13 +29,14 @@ namespace Malison
     void fill(int x, int y, int width, int height, Color? color = null) {
       color ??= backColor;
 
-      var glyph = new Glyph(CharCode.space, foreColor, color);
+      // var glyph = new Glyph(CharCode.space, foreColor, color);
 
-      for (var py = y; py < y + height; py++) {
-        for (var px = x; px < x + width; px++) {
-          drawGlyph(px, py, glyph);
-        }
-      }
+      // for (var py = y; py < y + height; py++) {
+      //   for (var px = x; px < x + width; px++) {
+      //     drawGlyph(px, py, glyph);
+      //   }
+      // }
+      MalisonUnity.Inst.canvasBg.color = color.toUnityColor;
     }
 
     /// Writes [text] starting at column [x], row [y] using [fore] as the text

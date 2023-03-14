@@ -12,7 +12,7 @@ public class MalisonUnity : MonoBehaviour
   {
 	  get
 		{
-			if (m_Inst = null)
+			if (m_Inst == null)
 			{
         var obj = new GameObject("MalisonUnity");
         m_Inst = obj.AddComponent<MalisonUnity>();
@@ -21,19 +21,27 @@ public class MalisonUnity : MonoBehaviour
 		}
   }
 
-  private void Awake() 
+  public SpriteRenderer canvasBg;
+  public Transform glyphsRoot;
+
+  [Header("RUNTIME")]
+  public Sprite[] sprites;
+
+  void Awake() 
   {
    	if (m_Inst == null)
 		{
 			m_Inst = this;
 		}
-    else
-    {
-      UnityEngine.Debug.LogError("hand exit same ");
-      Destroy(gameObject);
-      return;
-    }
+    // else
+    // {
+    //   UnityEngine.Debug.LogError("hand exit same ");
+    //   Destroy(gameObject);
+    //   return;
+    // }
     DontDestroyOnLoad(this);
+
+    sprites = Resources.LoadAll<Sprite>("dos-short");
   }
 
   public System.Action onKeyUpdate = null;

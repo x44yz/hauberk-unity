@@ -31,9 +31,9 @@ namespace Malison
         _handlingInput = value;
 
         if (value) {
-          MalisonUnity.Inst.onKeyUpdate = onKeyUpdate;
+          // MalisonUnity.Inst.onKeyUpdate = onKeyUpdate;
         } else {
-          MalisonUnity.Inst.onKeyUpdate = null;
+          // MalisonUnity.Inst.onKeyUpdate = null;
         }
       }
     }
@@ -55,9 +55,9 @@ namespace Malison
 
         _running = value;
         if (_running) {
-          MalisonUnity.Inst.onUpdate = _tick;
+          // MalisonUnity.Inst.onUpdate = _tick;
         } else {
-          MalisonUnity.Inst.onUpdate = null;
+          // MalisonUnity.Inst.onUpdate = null;
         }
       }
     }
@@ -224,7 +224,7 @@ namespace Malison
     }
 
     /// Called every animation frame while the UI's game loop is running.
-    void _tick(float dt) {
+    public void _tick(float dt) {
       if (!_running)
         return;
       

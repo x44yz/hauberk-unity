@@ -94,8 +94,13 @@ namespace Malison
       _display.setGlyph(x, y, glyph);
     }
 
+    public Array2D<SpriteRenderer> sprs;
+
     public override void render() {
-      if (!_imageLoaded) return;
+      // if (!_imageLoaded) return;
+
+      if (sprs == null)
+        sprs = new Array2D<SpriteRenderer>(width, height, null);
 
       _display.render((x, y, glyph) => {
         var _char = glyph._char;
@@ -114,6 +119,18 @@ namespace Malison
 
         // Don't bother drawing empty characters.
         if (_char == 0 || _char == CharCode.space) return;
+
+        var spr = sprs._get(x, y);
+        if (spr == null)
+        {
+          var obj = new GameObject($"spr{x}x{y}");
+          obj.transform.SetParent(MalisonUnity.Inst.glyphsRoot);
+          spr = obj.AddComponent<SpriteRenderer>();
+          sprs._set(x, y, spr);
+        }
+
+        spr.sprite = MalisonUnity.Inst.sprites[_char];
+        spr.transform.position = new Vector3(x * _charWidth * _scale / 100.0f, y * _charHeight * _scale / 100.0f, spr.transform.position.z);
 
         // var color = _getColorFont(glyph.fore);
         // _context.imageSmoothingEnabled = false;
