@@ -152,14 +152,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ddb56a7212fdb7468c877f5f1e3cd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 16
+  width: 23
   height: 9
   offX: 0
   offY: 0
+  glyphScale: 4
   init: 0
+  swidth: 1920
+  sheight: 1080
   showDisplay: 1
   displayColor: {r: 0.9622642, g: 0.18761116, b: 0.18761116, a: 1}
-  pixelToUnits: 300
+  pixelToUnits: 600
+  gizmoPos: 0
 --- !u!4 &130101203
 Transform:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ namespace Malison
     // public Map<Color, html.CanvasElement> _fontColorCache = {};
 
     /// The drawing scale, used to adapt to Retina displays.
-    public int _scale;
+    public float _scale;
 
     bool _imageLoaded = false;
 
@@ -41,16 +41,16 @@ namespace Malison
 
     /// Creates a new terminal using a short built-in DOS-like font.
     public static RetroTerminal shortDos(int width, int height
-            /*html.CanvasElement? canvas*/) =>
+            /*html.CanvasElement? canvas*/, float scale) =>
             RetroTerminal.create(width, height, "packages/malison/dos-short.png",
-            /*canvas: canvas,*/ charWidth: 9, charHeight: 13);
+            /*canvas: canvas,*/ charWidth: 9, charHeight: 13, scale: scale);
 
     /// Creates a new terminal using a font image at [imageUrl].
     public static RetroTerminal create(int width, int height, string imageUrl,
         /*html.CanvasElement? canvas,*/
         int charWidth,
         int charHeight,
-        int scale = 1)
+        float scale = 1)
     {
       
       // scale ??= html.window.devicePixelRatio.toInt();
@@ -76,7 +76,7 @@ namespace Malison
     }
 
     RetroTerminal(Display _display, int _charWidth, int _charHeight,
-        /*html.CanvasElement canvas, this._font,*/ int _scale)
+        /*html.CanvasElement canvas, this._font,*/ float _scale)
     {
       this._display = _display;
       this._charWidth = _charWidth;
@@ -132,6 +132,7 @@ namespace Malison
 
         spr.sprite = MalisonUnity.Inst.sprites[_char];
         spr.transform.localPosition = new Vector3(x * _charWidth * _scale / 100.0f, y * _charHeight * _scale / 100.0f, 0f);
+        spr.transform.localScale = Vector3.one * _scale;
 
         // var color = _getColorFont(glyph.fore);
         // _context.imageSmoothingEnabled = false;

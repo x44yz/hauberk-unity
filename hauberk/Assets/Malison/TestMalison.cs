@@ -194,10 +194,14 @@ public class TestMalison : MonoBehaviour
 
     public UserInterface<string> ui = new UserInterface<string>();
 
+    public float glyphScale = 1f;
     /// A few different terminals to choose from.
     public Terminal terminals(int idx) {
+      float scale = Mathf.Min(swidth / (width * 9.0f), sheight / (height * 13.0f));
+      scale = glyphScale;
+
         if (idx == 0) return RetroTerminal.dos(width, height);
-        else if (idx == 1) return RetroTerminal.shortDos(width, height); // 9x13
+        else if (idx == 1) return RetroTerminal.shortDos(width, height, scale); // 9x13
         else if (idx == 2) return CanvasTerminal.create(width, height,
         new Malison.Font("Menlo, Consolas", size: 12, w: 8, h: 14, x: 1, y: 11));
         else if (idx == 3) return CanvasTerminal.create(
@@ -254,9 +258,12 @@ public class TestMalison : MonoBehaviour
             ui._tick(Time.deltaTime);
     }
 
+    public float swidth;
+    public float sheight;
     public bool showDisplay = false;
     public UnityEngine.Color displayColor;
     public float pixelToUnits = 100.0f;
+    public float gizmoPos = -7f;
     private void OnDrawGizmos() {
       if (!showDisplay)
         return;
@@ -269,22 +276,30 @@ public class TestMalison : MonoBehaviour
 
       // 600 / 1 * 2
       // float pixelToUnits = Camera.main.ScreenToWorldPoint
-      var charWidth = (ui._terminal as RetroTerminal)._charWidth;
-      var charHeight = (ui._terminal as RetroTerminal)._charHeight;
+      float charWidth = (ui._terminal as RetroTerminal)._charWidth;
+      float charHeight = (ui._terminal as RetroTerminal)._charHeight;
+      var scale = Mathf.Min(swidth / (ui._terminal.width * charWidth), sheight / (ui._terminal.height * charHeight));
+
+      charWidth *= scale;
+      charHeight *= scale;
+
       var fx = offX - ui._terminal.width * charWidth * 0.5f;
       var fy = ui._terminal.height * charHeight * 0.5f - offY;
       var off = new Vector3(fx / pixelToUnits, fy / pixelToUnits, 0f);
+
+      Gizmos.color = displayColor;
+
       for (int i = 0; i <= ui._terminal.width; ++i)
       {
-          Vector3 bpos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(i * charWidth / pixelToUnits, 0 * charHeight/ pixelToUnits, -7f);
-          Vector3 epos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(i * charWidth/ pixelToUnits, -ui._terminal.height * charHeight/ pixelToUnits, -7f);
+          Vector3 bpos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(i * charWidth / pixelToUnits, 0 * charHeight/ pixelToUnits, gizmoPos);
+          Vector3 epos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(i * charWidth/ pixelToUnits, -ui._terminal.height * charHeight/ pixelToUnits, gizmoPos);
           Gizmos.DrawLine(bpos, epos);
       }
 
       for (int j = 0; j <= ui._terminal.height; ++j)
       {
-          Vector3 bpos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(0 * charWidth/ pixelToUnits, -j * charHeight/ pixelToUnits, -7f);
-          Vector3 epos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(ui._terminal.width * charWidth/ pixelToUnits, -j * charHeight/ pixelToUnits, -7f);
+          Vector3 bpos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(0 * charWidth/ pixelToUnits, -j * charHeight/ pixelToUnits, gizmoPos);
+          Vector3 epos = MalisonUnity.Inst.glyphsRoot.position + off + new Vector3(ui._terminal.width * charWidth/ pixelToUnits, -j * charHeight/ pixelToUnits, gizmoPos);
           Gizmos.DrawLine(bpos, epos);
       }
     }

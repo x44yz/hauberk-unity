@@ -16,8 +16,8 @@ namespace Malison
     /// The drawing scale, used to adapt to Retina displays.
     // public int _scale = html.window.devicePixelRatio.toInt();
 
-    public override Vec size => _display.size;
     public override int width => _display.width;
+    public override Vec size => _display.size;
     public override int height => _display.height;
 
    public static CanvasTerminal create(int width, int height, Font font) {
