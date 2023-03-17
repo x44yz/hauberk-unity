@@ -122,8 +122,8 @@ public partial class Monsters
             var data = kv.Value;
 
             var element = data[0] as Element;
-            var youngColor = data[1] as Malison.Color;
-            var adultColor = data[1] as Malison.Color;
+            var youngColor = (Color)data[1];
+            var adultColor = (Color)data[1];
 // 
             var f = _MBaseBuilderUtils.family("d");
             f.groups("dragon");

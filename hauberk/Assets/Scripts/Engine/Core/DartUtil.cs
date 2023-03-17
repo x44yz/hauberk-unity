@@ -48,6 +48,15 @@ public static class DartUtils
       }
       return orElse == null ? default(T) : orElse();
     }
+
+    public static UnityEngine.Color blend(this UnityEngine.Color color, UnityEngine.Color other, float fractionOther)
+    {
+      var fractionThis = 1.0 - fractionOther;
+      return new UnityEngine.Color(
+          (int)(color.r * fractionThis + other.r * fractionOther),
+          (int)(color.g * fractionThis + other.g * fractionOther),
+          (int)(color.b * fractionThis + other.b * fractionOther));
+    }
 }
 
 // public class Color {

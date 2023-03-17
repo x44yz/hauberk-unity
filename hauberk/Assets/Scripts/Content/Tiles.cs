@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Malison;
+using UnityTerminal;
 
 /// Static class containing all of the [TileType]s.
 class Tiles {
@@ -226,11 +226,11 @@ class Tiles {
   public static TileType shop9 =
       tile("shop entrance", "○", Hues.red).to(TilePortals.shop9).open();
 
-  public static _TileBuilder tile(string name, object ch, Malison.Color fore,
-          Malison.Color back = null) =>
+  public static _TileBuilder tile(string name, object ch, Color fore,
+          Color? back = null) =>
       new _TileBuilder(name, ch, fore, back);
 
-  public static List<TileType> multi(string name, object ch, Malison.Color fore, Malison.Color back,
+  public static List<TileType> multi(string name, object ch, Color fore, Color? back,
       int count, System.Func<_TileBuilder, int, TileType> generate) {
     var result = new List<TileType>();
     for (var i = 0; i < count; i++) {
@@ -337,7 +337,7 @@ class _TileBuilder {
   TilePortal? _portal;
   int _emanation = 0;
 
-  public _TileBuilder(string name, object ch, Malison.Color fore, Malison.Color? back) 
+  public _TileBuilder(string name, object ch, Color fore, Color? back) 
   {
     back ??= Hues.darkerCoolGray;
     var charCode = ch is int ? ch : (ch as string)[0];
@@ -352,23 +352,23 @@ class _TileBuilder {
     glyphs = new List<Glyph>(){glyph};
   }
 
-  public _TileBuilder blend(double amount, Malison.Color fore, Malison.Color back) {
+  public _TileBuilder blend(double amount, Color fore, Color back) {
     for (var i = 0; i < glyphs.Count; i++) {
       var glyph = glyphs[i];
-      glyphs[i] = new Glyph(glyph._char, glyph.fore.blend(fore, amount),
-          glyph.back.blend(back, amount));
+      glyphs[i] = new Glyph(glyph._char, glyph.fore.blend(fore, (float)amount),
+          glyph.back.blend(back, (float)amount));
     }
 
     return this;
   }
 
-  public _TileBuilder animate(int count, double maxMix, Malison.Color fore, Malison.Color back) {
+  public _TileBuilder animate(int count, double maxMix, Color fore, Color back) {
     var glyph = glyphs[0];
     for (var i = 1; i < count; i++) {
       var mixedFore =
-          glyph.fore.blend(fore, MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.fore.blend(fore, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
       var mixedBack =
-          glyph.back.blend(back, MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.back.blend(back, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
 
       glyphs.Add(new Glyph(glyph._char, mixedFore, mixedBack));
     }
