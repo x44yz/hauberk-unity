@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTerminal;
 
 public class Main : MonoBehaviour
 {
+    public RetroCanvas retroCanvas;
+    public int width;
+    public int height;
+
+    [Header("RUNTIME")]
+    // public float terminalScale;
+    public RetroTerminal retroTerminal;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -135,6 +144,14 @@ public class Main : MonoBehaviour
         //     _refreshDebugBoxes();
         //     });
         // }
+
+        Camera.main.orthographicSize = UnityEngine.Screen.height / retroCanvas.pixelToUnits / 2;
+
+        // terminalScale = UnityEngine.Screen.height * 1f / height / 13.0f;
+        retroTerminal = RetroTerminal.ShortDos(width, height, UnityEngine.Screen.width, UnityEngine.Screen.height, retroCanvas);
+        retroTerminal.running = true;
+
+        retroTerminal.Push(new MainMenuScreen(content));
     }
 
     // Update is called once per frame

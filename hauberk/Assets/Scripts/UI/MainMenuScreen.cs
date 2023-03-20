@@ -102,45 +102,54 @@ class MainMenuScreen : UnityTerminal.Screen {
 
   public override void Active(UnityTerminal.Screen popped, object result) 
   {
-    if (popped is ConfirmPopup && result == "delete") {
-      storage.heroes.RemoveAt(selectedHero);
-      if (selectedHero > 0 && selectedHero >= storage.heroes.Count) {
-        selectedHero--;
-      }
-      storage.save();
-      Dirty();
-    }
+    // if (popped is ConfirmPopup && result.Equals("delete")) {
+    //   storage.heroes.RemoveAt(selectedHero);
+    //   if (selectedHero > 0 && selectedHero >= storage.heroes.Count) {
+    //     selectedHero--;
+    //   }
+    //   storage.save();
+    //   Dirty();
+    // }
   }
 
-  void render(Terminal terminal) {
-    // Center everything horizontally.
-    terminal =
-        terminal.rect((terminal.width - 78) / 2, 0, 80, terminal.height);
+  public override void Render()
+  {
+    base.Render();
 
-    terminal.writeAt(
+    // Center everything horizontally.
+    var p = AddPanel((terminal.width - 78) / 2, 0, 80, terminal.height);
+
+    p.WriteAt(
         0,
-        terminal.height - 1,
+        p.height - 1,
         "[L] Select a hero, [↕] Change selection, [N] Create a new hero, [D] Delete hero",
         UIHue.helpText);
 
     // Center the content vertically.
-    terminal =
-        terminal.rect(0, (terminal.height - 40) / 2, terminal.width, 40);
-    for (var y = 0; y < _chars.length; y++) {
-      for (var x = 0; x < _chars[y].length; x++) {
-        var color = _colors[_charColors[y][x]];
-        terminal.writeAt(x + 1, y + 1, _chars[y][x], color);
+    p = AddPanel(0, (terminal.height - 40) / 2, p.width, 40);
+    for (var y = 0; y < _chars.Length; y++) {
+      for (var x = 0; x < _chars[y].Length; x++) {
+        if (_chars[y][x] == CharCode.space)
+          continue;
+        var k = _charColors[y][x].ToString();
+        if (_colors.ContainsKey(k) == false)
+        {
+          UnityEngine.Debug.LogWarning($"not exit key > {y} {x} > " + k + " - " + _chars[y][x].ToString());
+          continue;
+        }
+        var color = _colors[k];
+        p.WriteAt(x + 1, y + 1, _chars[y][x], color);
       }
     }
 
-    terminal.writeAt(10, 18, "Which hero shall you play?", UIHue.text);
+    p.WriteAt(10, 18, "Which hero shall you play?", UIHue.text);
 
-    if (storage.heroes.isEmpty) {
-      terminal.writeAt(
+    if (storage.heroes.Count == 0) {
+      p.WriteAt(
           10, 20, "(No heroes. Please create a new one.)", UIHue.helpText);
     }
 
-    for (var i = 0; i < storage.heroes.length; i++) {
+    for (var i = 0; i < storage.heroes.Count; i++) {
       var hero = storage.heroes[i];
 
       var primary = UIHue.primary;
@@ -149,19 +158,67 @@ class MainMenuScreen : UnityTerminal.Screen {
         primary = UIHue.selection;
         secondary = UIHue.selection;
 
-        terminal.drawChar(
+        p.WriteAt(
             9, 20 + i, CharCode.blackRightPointingPointer, UIHue.selection);
       }
 
-      terminal.writeAt(10, 20 + i, hero.name, primary);
-      terminal.writeAt(30, 20 + i, $"Level {hero.level}", secondary);
-      terminal.writeAt(40, 20 + i, hero.race.name, secondary);
-      terminal.writeAt(50, 20 + i, hero.heroClass.name, secondary);
+      p.WriteAt(10, 20 + i, hero.name, primary);
+      p.WriteAt(30, 20 + i, $"Level {hero.level}", secondary);
+      p.WriteAt(40, 20 + i, hero.race.name, secondary);
+      p.WriteAt(50, 20 + i, hero.heroClass.name, secondary);
     }
   }
 
+  // void render(Terminal terminal) {
+  //   // Center everything horizontally.
+  //   terminal =
+  //       terminal.rect((terminal.width - 78) / 2, 0, 80, terminal.height);
+
+  //   terminal.writeAt(
+  //       0,
+  //       terminal.height - 1,
+  //       "[L] Select a hero, [↕] Change selection, [N] Create a new hero, [D] Delete hero",
+  //       UIHue.helpText);
+
+  //   // Center the content vertically.
+  //   terminal =
+  //       terminal.rect(0, (terminal.height - 40) / 2, terminal.width, 40);
+  //   for (var y = 0; y < _chars.length; y++) {
+  //     for (var x = 0; x < _chars[y].length; x++) {
+  //       var color = _colors[_charColors[y][x]];
+  //       terminal.writeAt(x + 1, y + 1, _chars[y][x], color);
+  //     }
+  //   }
+
+  //   terminal.writeAt(10, 18, "Which hero shall you play?", UIHue.text);
+
+  //   if (storage.heroes.isEmpty) {
+  //     terminal.writeAt(
+  //         10, 20, "(No heroes. Please create a new one.)", UIHue.helpText);
+  //   }
+
+  //   for (var i = 0; i < storage.heroes.length; i++) {
+  //     var hero = storage.heroes[i];
+
+  //     var primary = UIHue.primary;
+  //     var secondary = UIHue.secondary;
+  //     if (i == selectedHero) {
+  //       primary = UIHue.selection;
+  //       secondary = UIHue.selection;
+
+  //       terminal.drawChar(
+  //           9, 20 + i, CharCode.blackRightPointingPointer, UIHue.selection);
+  //     }
+
+  //     terminal.writeAt(10, 20 + i, hero.name, primary);
+  //     terminal.writeAt(30, 20 + i, $"Level {hero.level}", secondary);
+  //     terminal.writeAt(40, 20 + i, hero.race.name, secondary);
+  //     terminal.writeAt(50, 20 + i, hero.heroClass.name, secondary);
+  //   }
+  // }
+
   void _changeSelection(int offset) {
-    selectedHero = (selectedHero + offset) % storage.heroes.length;
-    dirty();
+    selectedHero = (selectedHero + offset) % storage.heroes.Count;
+    Dirty();
   }
 }

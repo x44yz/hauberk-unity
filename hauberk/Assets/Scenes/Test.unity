@@ -329,6 +329,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23775197a2cd65c4cbaa0bc6ed39445e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  retroCanvas: {fileID: 1212139115}
+  width: 80
+  height: 40
 --- !u!4 &789946401
 Transform:
   m_ObjectHideFlags: 0
@@ -341,7 +344,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000288619
 GameObject:
@@ -407,7 +410,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1212139114
 PrefabInstance:
@@ -419,7 +422,7 @@ PrefabInstance:
     - target: {fileID: 4948264291383720644, guid: b4b07d9979f5d884ea33631d8f5aa682,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4948264291383720644, guid: b4b07d9979f5d884ea33631d8f5aa682,
         type: 3}
@@ -478,3 +481,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4b07d9979f5d884ea33631d8f5aa682, type: 3}
+--- !u!114 &1212139115 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4948264291383720643, guid: b4b07d9979f5d884ea33631d8f5aa682,
+    type: 3}
+  m_PrefabInstance: {fileID: 1212139114}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2fe63646fd7028459001f07afda0c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
