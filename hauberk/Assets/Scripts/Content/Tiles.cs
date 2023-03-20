@@ -339,11 +339,19 @@ class _TileBuilder {
 
   public _TileBuilder(string name, object ch, Color fore, Color? back) 
   {
-    back ??= Hues.darkerCoolGray;
-    var charCode = ch is int ? ch : (ch as string)[0];
+    try
+    {
+      UnityEngine.Debug.Log("xx-- tb > " + name + "- " + ch.ToString());
+      back ??= Hues.darkerCoolGray;
+      var charCode = ch is int ? ch : (ch as string)[0];
 
-    this.name = name;
-    glyphs = new List<Glyph>(){Glyph.fromDynamic(charCode.ToString(), fore, back)};
+      this.name = name;
+      glyphs = new List<Glyph>(){new Glyph((char)charCode, fore, back)};
+    }
+    catch (System.Exception ex)
+    {
+      UnityEngine.Debug.Log("xx-- ex > " + ex.ToString());
+    }
   }
 
   public _TileBuilder(string name, Glyph glyph)
@@ -355,7 +363,7 @@ class _TileBuilder {
   public _TileBuilder blend(double amount, Color fore, Color back) {
     for (var i = 0; i < glyphs.Count; i++) {
       var glyph = glyphs[i];
-      glyphs[i] = new Glyph(glyph._char, glyph.fore.blend(fore, (float)amount),
+      glyphs[i] = new Glyph(glyph.ch, glyph.fore.blend(fore, (float)amount),
           glyph.back.blend(back, (float)amount));
     }
 
@@ -370,7 +378,7 @@ class _TileBuilder {
       var mixedBack =
           glyph.back.blend(back, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
 
-      glyphs.Add(new Glyph(glyph._char, mixedFore, mixedBack));
+      glyphs.Add(new Glyph(glyph.ch, mixedFore, mixedBack));
     }
 
     return this;

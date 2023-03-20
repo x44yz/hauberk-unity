@@ -75,7 +75,7 @@ public static class _MBaseBuilderUtils
         double? frequency = null, int speed = 0, int? dodge = null, int? meander = null) {
         finishBreed();
 
-        var glyph = new Glyph(_family._character, color);
+        var glyph = new Glyph(_family._character[0], color);
         var builder = new _BreedBuilder(name, depth, frequency, glyph, health);
         builder._speed = speed;
         builder._dodge = dodge;
