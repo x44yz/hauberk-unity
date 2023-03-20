@@ -30,11 +30,11 @@ class GameContent : Content {
   public override Skill findSkill(string name) => Skills.find(name);
 
   List<Breed> breeds => Monsters.breeds.all.ToList();
-  List<HeroClass> classes => Classes.all;
-  public new List<Element> elements => Elements.all;
+  public override List<HeroClass> classes => Classes.all;
+  public override List<Element> elements => Elements.all;
   List<ItemType> items => Items.types.all.ToList();
-  List<Race> races => Races.all;
-  public new List<Skill> skills => Skills.all;
+  public override List<Race> races => Races.all;
+  public override List<Skill> skills => Skills.all;
   Dictionary<string, Shop> shops => Shops.all;
 
   public override HeroSave createHero(string name, Race? race = null, HeroClass? heroClass = null) {

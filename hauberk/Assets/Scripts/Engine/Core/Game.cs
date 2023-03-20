@@ -242,15 +242,15 @@ public abstract class Content {
 
   List<Breed> breeds;
 
-  List<HeroClass> classes;
+  public virtual List<HeroClass> classes => null;
 
-  public List<Element> elements;
+  public virtual List<Element> elements => null;
 
   List<ItemType> items;
 
-  List<Race> races;
+  public virtual List<Race> races => null;
 
-  public List<Skill> skills;
+  public virtual List<Skill> skills => null;
 
   Dictionary<string, Shop> shops;
 

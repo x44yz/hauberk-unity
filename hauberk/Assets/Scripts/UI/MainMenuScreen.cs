@@ -57,7 +57,16 @@ class MainMenuScreen : UnityTerminal.Screen {
 
   public MainMenuScreen(Content content) 
   {
+    this.content = content;
     storage = new Storage(content);
+  }
+
+  public override void HandleInput()
+  {
+    if (Input.GetKeyDown(KeyCode.N))
+    {
+      terminal.Push(new NewHeroScreen(content, storage));
+    }
   }
 
   // bool handleInput(Input input) {
@@ -92,9 +101,7 @@ class MainMenuScreen : UnityTerminal.Screen {
   //       }
   //       return true;
 
-  //     case KeyCode.n:
-  //       ui.push(NewHeroScreen(content, storage));
-  //       return true;
+
   //   }
 
   //   return false;

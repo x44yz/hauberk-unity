@@ -16,8 +16,6 @@ public class Main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var content = GameContent.createContent();
-
         // _addFont("8x8", 8);
         // _addFont("8x10", 8, 10);
         // _addFont("9x12", 9, 12);
@@ -145,6 +143,8 @@ public class Main : MonoBehaviour
         //     });
         // }
 
+        var content = GameContent.createContent();
+
         Camera.main.orthographicSize = UnityEngine.Screen.height / retroCanvas.pixelToUnits / 2;
 
         // terminalScale = UnityEngine.Screen.height * 1f / height / 13.0f;
@@ -157,6 +157,9 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float dt = Time.deltaTime;
+
+        if (retroTerminal != null)
+            retroTerminal.Tick(dt);
     }
 }
