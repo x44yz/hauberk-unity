@@ -166,30 +166,30 @@ class NewHeroScreen : UnityTerminal.Screen {
   }
 
   void _renderRace(Terminal terminal) {
-    // terminal = terminal.rect(0, 10, 40, 29);
+    var p = new Panel(0, 10, 40, 29);
 
-    // Draw.frame(terminal, 0, 0, terminal.width, terminal.height,
-    //     _field == _Field.race ? UIHue.selection : darkCoolGray);
-    // terminal.writeAt(
-    //     1, 0, "Race", _field == _Field.race ? UIHue.selection : UIHue.text);
+    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h,
+        _field == _Field.race ? UIHue.selection : Hues.darkCoolGray);
+    terminal.WriteAt(p,
+        1, 0, "Race", _field == _Field.race ? UIHue.selection : UIHue.text);
 
-    // var race = content.races[_race];
-    // terminal.writeAt(1, 2, race.name, UIHue.primary);
+    var race = content.races[_race];
+    terminal.WriteAt(p, 1, 2, race.name, UIHue.primary);
 
-    // var y = 4;
-    // for (var line in Log.wordWrap(38, race.description)) {
-    //   terminal.writeAt(1, y, line, UIHue.text);
-    //   y++;
-    // }
+    var y = 4;
+    foreach (var line in Log.wordWrap(38, race.description)) {
+      terminal.WriteAt(p, 1, y, line, UIHue.text);
+      y++;
+    }
 
-    // y = 18;
-    // for (var stat in Stat.all) {
-    //   terminal.writeAt(2, y, stat.name, UIHue.secondary);
-    //   var width = 25 * race.stats[stat]! ~/ 45;
-    //   terminal.writeAt(12, y, " " * width, ash, red);
-    //   terminal.writeAt(12 + width, y, " " * (25 - width), ash, maroon);
-    //   y += 2;
-    // }
+    y = 18;
+    foreach (var stat in Stat.all) {
+      terminal.WriteAt(p, 2, y, stat.name, UIHue.secondary);
+      var width = 25 * race.stats[stat]! / 45;
+      terminal.WriteAt(p, 12, y, new string(' ', width), Hues.ash, Hues.red);
+      terminal.WriteAt(p, 12 + width, y, new string(' ', 25 - width), Hues.ash, Hues.maroon);
+      y += 2;
+    }
   }
 
   void _renderClass(Terminal terminal) {

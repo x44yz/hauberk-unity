@@ -26,21 +26,21 @@ class BoltMove : RangedMove {
     // Don't fire if out of range.
     var toTarget = target - monster.pos;
     if (toTarget > range) {
-      Debug.monsterLog(monster, "bolt move too far");
+      Debugger.monsterLog(monster, "bolt move too far");
       return false;
     }
     if (toTarget < 1.5f) {
-      Debug.monsterLog(monster, "bolt move too close");
+      Debugger.monsterLog(monster, "bolt move too close");
       return false;
     }
 
     // Don't fire a bolt if it's obstructed.
     if (!monster.canTarget(target)) {
-      Debug.monsterLog(monster, "bolt move can't target");
+      Debugger.monsterLog(monster, "bolt move can't target");
       return false;
     }
 
-    Debug.monsterLog(monster, "bolt move OK");
+    Debugger.monsterLog(monster, "bolt move OK");
     return true;
   }
 

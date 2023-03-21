@@ -188,10 +188,10 @@ public class Monster : Actor {
 
     var notice = Math.Max(awareness, _alertness);
 
-    Debug.monsterStat(this, "aware", awareness);
-    Debug.monsterStat(this, "alert", _alertness);
-    Debug.monsterStat(this, "notice", notice);
-    Debug.monsterStat(this, "fear", _fear / _frightenThreshold);
+    Debugger.monsterStat(this, "aware", awareness);
+    Debugger.monsterStat(this, "alert", _alertness);
+    Debugger.monsterStat(this, "notice", notice);
+    Debugger.monsterStat(this, "fear", _fear / _frightenThreshold);
 
     // TODO: If standing in substance, should try to get out if harmful.
 
@@ -251,31 +251,31 @@ public class Monster : Actor {
 
   double _seeHero() {
     if (breed.vision == 0) {
-      Debug.monsterStat(this, "see", 0.0, "sightless");
+      Debugger.monsterStat(this, "see", 0.0, "sightless");
       return 0.0;
     }
 
     var heroPos = game.hero.pos;
     if (!canView(heroPos)) {
-      Debug.monsterStat(this, "see", 0.0, "out of sight");
+      Debugger.monsterStat(this, "see", 0.0, "out of sight");
       return 0.0;
     }
 
     // TODO: Don't check illumination for breeds that see in the dark.
     var illumination = game.stage[heroPos].illumination;
     if (illumination == 0) {
-      Debug.monsterStat(this, "see", 0.0, "hero in dark");
+      Debugger.monsterStat(this, "see", 0.0, "hero in dark");
       return 0.0;
     }
 
     var distance = (heroPos - pos).kingLength;
     if (distance >= breed.vision) {
-      Debug.monsterStat(this, "see", 0.0, "too far");
+      Debugger.monsterStat(this, "see", 0.0, "too far");
       return 0.0;
     }
 
     var visibility = (breed.vision - distance) / breed.vision;
-    Debug.monsterStat(this, "see", illumination * visibility);
+    Debugger.monsterStat(this, "see", illumination * visibility);
     return illumination * visibility;
 
     // TODO: Can the monster see other changes? Other monsters moving?
@@ -283,7 +283,7 @@ public class Monster : Actor {
 
   double _hearHero() {
     if (breed.hearing == 0) {
-      Debug.monsterStat(this, "hear", 0.0, "deaf");
+      Debugger.monsterStat(this, "hear", 0.0, "deaf");
       return 0.0;
     }
 
@@ -292,7 +292,7 @@ public class Monster : Actor {
     // hero's volume level from here and the breed's normalized hearing ability.
     var volume =
         game.stage.heroVolume(pos) * game.hero.lastNoise * breed.hearing / 10;
-    Debug.monsterStat(
+    Debugger.monsterStat(
         this, "hear", volume, "noise ${game.hero.lastNoise}, volume $volume");
     return volume;
   }
@@ -343,7 +343,7 @@ public class Monster : Actor {
     var fear = 100.0 * damage / game.hero.maxHealth;
 
     _modifyFear(-fear);
-    Debug.monsterReason(this, "fear",
+    Debugger.monsterReason(this, "fear",
         "hit for $damage/${game.hero.maxHealth} decrease by $fear");
 
     // Nearby monsters may witness it.
@@ -360,7 +360,7 @@ public class Monster : Actor {
     var fear = 50.0 * damage / maxHealth;
 
     _modifyFear(-fear);
-    Debug.monsterReason(
+    Debugger.monsterReason(
         this, "fear", "witness $damage/$maxHealth decrease by $fear");
   }
 
@@ -375,7 +375,7 @@ public class Monster : Actor {
     if (breed.flags.berzerk) fear *= -3.0;
 
     _modifyFear(fear);
-    Debug.monsterReason(
+    Debugger.monsterReason(
         this, "fear", "hit for $damage/$maxHealth increases by $fear");
 
     // Nearby monsters may witness it.
@@ -408,7 +408,7 @@ public class Monster : Actor {
     }
 
     _modifyFear(fear);
-    Debug.monsterReason(
+    Debugger.monsterReason(
         this, "fear", "witness $damage/$maxHealth increase by $fear");
   }
 

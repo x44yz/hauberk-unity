@@ -48,7 +48,7 @@ public class Log {
     return $"{quantity} {_categorize(text, isFirst: count == 1, force: true)}";
   }
 
-  static List<string> wordWrap(int width, string text) {
+  public static List<string> wordWrap(int width, string text) {
     var lines = new List<string>();
     var start = 0;
     int? wordBreak = null;
@@ -58,7 +58,7 @@ public class Log {
       if (i - start >= width) {
         // No space to break at, so character wrap.
         wordBreak ??= i;
-        lines.Add(text.Substring(start, wordBreak.Value).Trim());
+        lines.Add(text.Substring(start, wordBreak.Value - start).Trim());
         start = wordBreak.Value;
         while (start < text.Length && text[start] == ' ') {
           start++;
@@ -66,7 +66,8 @@ public class Log {
       }
     }
 
-    lines.Add(text.Substring(start, text.Length).Trim());
+    if (start + 1 < text.Length)
+      lines.Add(text.Substring(start, text.Length - start).Trim());
     return lines;
   }
 

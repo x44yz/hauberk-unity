@@ -10,7 +10,7 @@ using System.Linq;
 /// Unlike the rest of the engine, this is static state to make it easier for
 /// the engine to punch debug info all the way to where the UI can get it. It
 /// should not be used outside of a debugging scenario.
-class Debug {
+class Debugger {
   public static bool enabled = true;
 
   /// If true, all monsters are rendered, regardless of in-game visibility.

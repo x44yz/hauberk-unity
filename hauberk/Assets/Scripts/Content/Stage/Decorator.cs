@@ -206,7 +206,7 @@ public class Decorator {
 
     // Build a density map for where monsters should spawn.
     var densityMap = new DensityMap(_stage.width, _stage.height);
-    Debug.densityMap = densityMap;
+    Debugger.densityMap = densityMap;
 
     var flow = new MotilityFlow(_stage, _heroPos, Motility.all, avoidActors: false);
 
@@ -259,7 +259,7 @@ public class Decorator {
       totalExperience += experience;
     }
 
-    Debug.densityMap = null;
+    Debugger.densityMap = null;
 
     return rt;
   }
@@ -369,7 +369,7 @@ public class Decorator {
 
     // Build a density map for where items should drop.
     var densityMap = new DensityMap(_stage.width, _stage.height);
-    Debug.densityMap = densityMap;
+    Debugger.densityMap = densityMap;
 
     var flow = new MotilityFlow(_stage, _heroPos, Motility.doorAndWalk,
         avoidActors: false);
@@ -429,7 +429,7 @@ public class Decorator {
       rt.Add("Spawned item");
     }
 
-    Debug.densityMap = null;
+    Debugger.densityMap = null;
 
     return rt;
   }
