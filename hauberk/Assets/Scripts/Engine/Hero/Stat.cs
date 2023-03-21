@@ -69,12 +69,9 @@ public abstract class StatBase : Property<int>
   public HeroSave _hero;
 
   string name => _stat.name;
-
-  Stat _stat;
-
-  string _gainAdjective;
-
-  string _loseAdjective;
+  public virtual Stat _stat => null;
+  public virtual string _gainAdjective => "";
+  public virtual string _loseAdjective => "";
 
   public override int _modify(int _base) => 
       Mathf.Clamp(_base + _statOffset + _hero.statBonus(_stat), 1, Stat.max);
@@ -106,12 +103,9 @@ public abstract class StatBase : Property<int>
 
 public class Strength : StatBase 
 {
-  Stat _stat => Stat.strength;
-
-  string _gainAdjective => "mighty";
-
-  string _loseAdjective => "weak";
-
+  public override Stat _stat => Stat.strength;
+  public override string _gainAdjective => "mighty";
+  public override string _loseAdjective => "weak";
   int _statOffset => -_hero.weight;
 
   public int maxFury {
@@ -150,11 +144,9 @@ public class Strength : StatBase
 }
 
 public class Agility : StatBase {
-  Stat _stat => Stat.agility;
-
-  string _gainAdjective => "dextrous";
-
-  string _loseAdjective => "clumsy";
+  public override Stat _stat => Stat.agility;
+  public override string _gainAdjective => "dextrous";
+  public override string _loseAdjective => "clumsy";
 
   // TODO: Subtract encumbrance.
 
@@ -177,21 +169,17 @@ public class Agility : StatBase {
 
 // TODO: "Vitality"?
 public class Fortitude : StatBase {
-  Stat _stat => Stat.fortitude;
-
-  string _gainAdjective => "tough";
-
-  string _loseAdjective => "sickly";
+  public override Stat _stat => Stat.fortitude;
+  public override string _gainAdjective => "tough";
+  public override string _loseAdjective => "sickly";
 
   public int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
 }
 
 public class Intellect : StatBase {
-  Stat _stat => Stat.intellect;
-
-  string _gainAdjective => "smart";
-
-  string _loseAdjective => "stupid";
+  public override Stat _stat => Stat.intellect;
+  public override string _gainAdjective => "smart";
+  public override string _loseAdjective => "stupid";
 
   public int maxFocus {
     get {
@@ -207,11 +195,9 @@ public class Intellect : StatBase {
 }
 
 public class Will : StatBase {
-  Stat _stat => Stat.will;
-
-  string _gainAdjective => "driven";
-
-  string _loseAdjective => "foolish";
+  public override Stat _stat => Stat.will;
+  public override string _gainAdjective => "driven";
+  public override string _loseAdjective => "foolish";
 
   /// Scales how much focus is lost when taking damage.
   public double damageFocusScale {

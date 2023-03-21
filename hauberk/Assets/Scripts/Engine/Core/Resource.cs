@@ -194,7 +194,8 @@ public class ResourceSet<T> where T : class {
       string name, int depth, System.Func<_Resource<T>, double> scale) {
     // Reuse a cached query, if possible.
     var key = new _QueryKey(name, depth);
-    var query = _queries[key];
+    var queryKV = _queries.FirstOrDefault(kv => kv.Key.name == name && kv.Key.depth == depth);
+    _ResourceQuery<T> query = queryKV.Value;
     if (query == null) {
       var resources = new List<_Resource<T>>();
       var chances = new List<double>();

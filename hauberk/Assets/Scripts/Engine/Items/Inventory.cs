@@ -75,7 +75,7 @@ public class Inventory : IEnumerable<Item> {
 
   public ItemLocation location;
 
-  public List<Item> _items;
+  public List<Item> _items = new List<Item>();
   public int _capacity;
 
   public bool isEmpty => _items == null || _items.Count == 0;
@@ -95,7 +95,8 @@ public class Inventory : IEnumerable<Item> {
   {
     this.location = location;
     this._capacity = _capacity;
-    this._items = items;
+    if (items != null)
+    this._items.AddRange(items);
   }
 
   /// Creates a new copy of this Inventory. This is done when the [Hero] enters
