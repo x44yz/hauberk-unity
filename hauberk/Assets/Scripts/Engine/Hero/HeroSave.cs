@@ -27,11 +27,11 @@ public class HeroSave
     public Equipment equipment => _equipment;
 
     /// Items in the hero's home.
-    Inventory home => _home;
+    public Inventory home => _home;
     Inventory _home = new Inventory(ItemLocation.home, Option.homeCapacity);
 
     /// Items in the hero's crucible.
-    Inventory crucible => _crucible;
+    public Inventory crucible => _crucible;
     Inventory _crucible = new Inventory(ItemLocation.crucible, Option.crucibleCapacity);
 
     /// The current inventories of all the shops.
@@ -45,7 +45,7 @@ public class HeroSave
     public int gold = Option.heroGoldStart;
 
     /// The lowest depth that the hero has successfully explored and exited.
-    int maxDepth = 0;
+    public int maxDepth = 0;
 
     public Lore lore => _lore;
     Lore _lore;

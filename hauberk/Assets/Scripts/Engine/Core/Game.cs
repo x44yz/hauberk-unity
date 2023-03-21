@@ -240,19 +240,19 @@ public abstract class Content {
 
   public abstract Skill findSkill(string name);
 
-  List<Breed> breeds;
+  public virtual List<Breed> breeds => null;
 
   public virtual List<HeroClass> classes => null;
 
   public virtual List<Element> elements => null;
 
-  List<ItemType> items;
+  public virtual List<ItemType> items => null;
 
   public virtual List<Race> races => null;
 
   public virtual List<Skill> skills => null;
 
-  Dictionary<string, Shop> shops;
+  public virtual Dictionary<string, Shop> shops => null;
 
   public abstract HeroSave createHero(string name, Race race = null, HeroClass heroClass = null);
 

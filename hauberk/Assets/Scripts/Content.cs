@@ -29,13 +29,13 @@ class GameContent : Content {
   public override ItemType? tryFindItem(string name) => Items.types.tryFind(name);
   public override Skill findSkill(string name) => Skills.find(name);
 
-  List<Breed> breeds => Monsters.breeds.all.ToList();
+  public override List<Breed> breeds => Monsters.breeds.all.ToList();
   public override List<HeroClass> classes => Classes.all;
   public override List<Element> elements => Elements.all;
-  List<ItemType> items => Items.types.all.ToList();
+  public override List<ItemType> items => Items.types.all.ToList();
   public override List<Race> races => Races.all;
   public override List<Skill> skills => Skills.all;
-  Dictionary<string, Shop> shops => Shops.all;
+  public override Dictionary<string, Shop> shops => Shops.all;
 
   public override HeroSave createHero(string name, Race? race = null, HeroClass? heroClass = null) {
     race ??= Races.human;

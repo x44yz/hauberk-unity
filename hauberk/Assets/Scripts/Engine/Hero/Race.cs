@@ -124,7 +124,7 @@ public class RaceStats {
   public string name => _race.name;
 
   /// The maximum number of points of [stat] the hero will gain.
-  int max(Stat stat) => _max[stat]!;
+  public int max(Stat stat) => _max[stat]!;
 
   public int valueAtLevel(Stat stat, int level) => _stats[level - 1][stat]!;
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 /// The entrypoint for all persisted save data.
 class Storage {
@@ -256,85 +257,96 @@ class Storage {
   }
 
   public void save() {
-    throw new System.NotImplementedException();
-    // var heroData = <dynamic>[];
-    // for (var hero in heroes) {
-    //   var raceStats = <String, dynamic>{};
-    //   for (var stat in Stat.all) {
-    //     raceStats[stat.name] = hero.race.max(stat);
-    //   }
+    var heroData = new List<object>();
+    foreach (var hero in heroes) {
+      var raceStats = new Dictionary<string, dynamic>{};
+      foreach (var stat in Stat.all) {
+        raceStats[stat.name] = hero.race.max(stat);
+      }
 
-    //   var race = {
-    //     'name': hero.race.name,
-    //     'seed': hero.race.seed,
-    //     'stats': raceStats
-    //   };
+      var race = new Dictionary<string, object>(){
+        {"name", hero.race.name},
+        {"seed", hero.race.seed},
+        {"stats", raceStats}
+      };
 
-    //   var inventory = _saveItems(hero.inventory);
-    //   var equipment = _saveItems(hero.equipment);
-    //   var home = _saveItems(hero.home);
-    //   var crucible = _saveItems(hero.crucible);
+      var inventory = _saveItems(hero.inventory);
+      var equipment = _saveItems(hero.equipment);
+      var home = _saveItems(hero.home);
+      var crucible = _saveItems(hero.crucible);
 
-    //   var shops = <String, dynamic>{};
-    //   hero.shops.forEach((shop, inventory) {
-    //     shops[shop.name] = _saveItems(inventory);
-    //   });
+      var shops = new Dictionary<string, object>{};
+      foreach (var kv in hero.shops) {
+        var shop = kv.Key;
+        shops[shop.name] = _saveItems(kv.Value);
+      };
 
-    //   var skills = <String, dynamic>{};
-    //   for (var skill in hero.skills.discovered) {
-    //     skills[skill.name] = {
-    //       'level': hero.skills.level(skill),
-    //       'points': hero.skills.points(skill)
-    //     };
-    //   }
+      var skills = new Dictionary<string, object>{};
+      foreach (var skill in hero.skills.discovered) {
+        skills[skill.name] = new Dictionary<string, object>(){
+          {"level", hero.skills.level(skill)},
+          {"points", hero.skills.points(skill)}
+        };
+      }
 
-    //   var seen = <String, dynamic>{};
-    //   var slain = <String, dynamic>{};
-    //   var lore = {'seen': seen, 'slain': slain};
-    //   for (var breed in content.breeds) {
-    //     var count = hero.lore.seenBreed(breed);
-    //     if (count != 0) seen[breed.name] = count;
+      var seen = new Dictionary<string, object>{};
+      var slain = new Dictionary<string, object>{};
+      var lore = new Dictionary<string, object>{
+        {"seen", seen},
+        {"slain", slain}
+      };
+      foreach (var breed in content.breeds) {
+        var count = hero.lore.seenBreed(breed);
+        if (count != 0) seen[breed.name] = count;
 
-    //     count = hero.lore.slain(breed);
-    //     if (count != 0) slain[breed.name] = count;
-    //   }
+        count = hero.lore.slain(breed);
+        if (count != 0) slain[breed.name] = count;
+      }
 
-    //   heroData.add({
-    //     'name': hero.name,
-    //     'race': race,
-    //     'class': hero.heroClass.name,
-    //     'inventory': inventory,
-    //     'equipment': equipment,
-    //     'home': home,
-    //     'crucible': crucible,
-    //     'shops': shops,
-    //     'experience': hero.experience,
-    //     'skills': skills,
-    //     'lore': lore,
-    //     'gold': hero.gold,
-    //     'maxDepth': hero.maxDepth
-    //   });
-    // }
+      heroData.Add(new Dictionary<string, object>(){
+        {"name", hero.name},
+        {"race", race},
+        {"class", hero.heroClass.name},
+        {"inventory", inventory},
+        {"equipment", equipment},
+        {"home", home},
+        {"crucible", crucible},
+        {"shops", shops},
+        {"experience", hero.experience},
+        {"skills", skills},
+        {"lore", lore},
+        {"gold", hero.gold},
+        {"maxDepth", hero.maxDepth}
+      });
+    }
 
-    // // TODO: Version.
-    // var data = {'heroes': heroData};
+    // TODO: Version.
+    var data = new Dictionary<string, object>{
+      {"heroes", heroData}
+    };
 
     // html.window.localStorage['heroes'] = json.encode(data);
-    // print('Saved.');
+    var edata = JsonUtility.ToJson(data);
+    PlayerPrefs.SetString("heroes", edata);
+    Debug.Log("Saved.");
   }
 
-  List<Item> _saveItems(List<Item> items) {
-    throw new System.NotImplementedException();
-    // return <dynamic>[for (var item in items) _saveItem(item)];
+  List<Dictionary<string, object>> _saveItems(IEnumerable<Item> items) {
+    var rt = new List<Dictionary<string, object>>();
+    foreach (var item in items)
+      rt.Add(_saveItem(item));
+    return rt;
   }
 
   Dictionary<string, object> _saveItem(Item item) {
-    throw new System.NotImplementedException();
-    // return <String, dynamic>{
-    //   'type': item.type.name,
-    //   'count': item.count,
-    //   if (item.prefix != null) 'prefix': item.prefix!.name,
-    //   if (item.suffix != null) 'suffix': item.suffix!.name,
-    // };
+    var kk = new Dictionary<string, object>{
+      {"type", item.type.name},
+      {"count", item.count},
+    };
+    if (item.prefix != null) 
+      kk["prefix"] = item.prefix!.name;
+    if (item.suffix != null)
+      kk["suffix"] = item.suffix!.name;
+    return kk;
   }
 }
