@@ -57,6 +57,16 @@ public static class DartUtils
           (int)(color.g * fractionThis + other.g * fractionOther),
           (int)(color.b * fractionThis + other.b * fractionOther));
     }
+
+    public static bool isEmpty(this string s)
+    {
+      return string.IsNullOrEmpty(s);
+    }
+
+    public static bool isNotEmpty(this string s)
+    {
+      return !string.IsNullOrEmpty(s);
+    }
 }
 
 // public class Color {

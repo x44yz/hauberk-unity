@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityTerminal;
 using UnityEngine;
+using System.Linq;
 
 class _Field {
   public const int name = 0;
@@ -193,183 +194,178 @@ class NewHeroScreen : UnityTerminal.Screen {
   }
 
   void _renderClass(Terminal terminal) {
-    // terminal = terminal.rect(40, 10, 40, 29);
+    var p = new Panel(40, 10, 40, 29);
 
-    // Draw.frame(terminal, 0, 0, terminal.width, terminal.height,
-    //     _field == _Field.heroClass ? UIHue.selection : darkCoolGray);
-    // terminal.writeAt(1, 0, "Class",
-    //     _field == _Field.heroClass ? UIHue.selection : UIHue.text);
+    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h,
+        _field == _Field.heroClass ? UIHue.selection : Hues.darkCoolGray);
+    terminal.WriteAt(p, 1, 0, "Class",
+        _field == _Field.heroClass ? UIHue.selection : UIHue.text);
 
-    // var heroClass = content.classes[_class];
-    // terminal.writeAt(1, 2, heroClass.name, UIHue.primary);
+    var heroClass = content.classes[_class];
+    terminal.WriteAt(p, 1, 2, heroClass.name, UIHue.primary);
 
-    // var y = 4;
-    // for (var line in Log.wordWrap(38, heroClass.description)) {
-    //   terminal.writeAt(1, y, line, UIHue.text);
-    //   y++;
-    // }
+    var y = 4;
+    foreach (var line in Log.wordWrap(38, heroClass.description)) {
+      terminal.WriteAt(1, y, line, UIHue.text);
+      y++;
+    }
   }
 
   void _renderMenu(Terminal terminal) {
-    // terminal = terminal.rect(40, 0, 40, 10);
+    var p = new Panel(40, 0, 40, 10);
 
-    // Draw.frame(terminal, 0, 0, terminal.width, terminal.height);
+    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h);
 
-    // if (_field == _Field.name) return;
+    if (_field == _Field.name) return;
 
-    // string label;
-    // var items = <string>[];
-    // int selected;
-    // if (_field == _Field.race) {
-    //   label = "race";
-    //   items.addAll(content.races.map((race) => race.name));
-    //   selected = _race;
-    // } else {
-    //   label = "class";
-    //   items.addAll(content.classes.map((c) => c.name));
-    //   selected = _class;
-    // }
+    string label = "";
+    var items = new List<string>();
+    int selected;
+    if (_field == _Field.race) {
+      label = "race";
+      items.AddRange(content.races.Select((race) => race.name));
+      selected = _race;
+    } else {
+      label = "class";
+      items.AddRange(content.classes.Select((c) => c.name));
+      selected = _class;
+    }
 
-    // terminal.writeAt(1, 0, "Choose a $label:", UIHue.selection);
+    terminal.WriteAt(p, 1, 0, $"Choose a {label}:", UIHue.selection);
 
-    // var y = 2;
-    // for (var i = 0; i < items.length; i++) {
-    //   var item = items[i];
-    //   var isSelected = i == selected;
-    //   terminal.writeAt(
-    //       2, y, item, isSelected ? UIHue.selection : UIHue.primary);
-    //   if (isSelected) {
-    //     terminal.writeAt(1, y, "►", UIHue.selection);
-    //   }
-    //   y++;
-    // }
+    var y = 2;
+    for (var i = 0; i < items.Count; i++) {
+      var item = items[i];
+      var isSelected = i == selected;
+      terminal.WriteAt(p, 
+          2, y, item, isSelected ? UIHue.selection : UIHue.primary);
+      if (isSelected) {
+        terminal.WriteAt(p, 1, y, "►", UIHue.selection);
+      }
+      y++;
+    }
   }
 
-  // bool handleInput(Input input) {
-  //   if (input == Input.cancel) {
-  //     ui.pop();
-  //     return true;
-  //   }
+  public override void HandleInput()
+  {
+    base.HandleInput();
 
-  //   if (_field == _Field.race) {
-  //     switch (input) {
-  //       case Input.n:
-  //         _changeRace(-1);
-  //         return true;
+    bool shift = Input.GetKey(KeyCode.LeftShift);
+    bool alt = Input.GetKey(KeyCode.LeftAlt);
 
-  //       case Input.s:
-  //         _changeRace(1);
-  //         return true;
-  //     }
-  //   } else if (_field == _Field.heroClass) {
-  //     switch (input) {
-  //       case Input.n:
-  //         _changeClass(-1);
-  //         return true;
+    if (Input.GetKeyDown(KeyCode.Escape))
+    {
+      terminal.Pop();
+    }
+    
+    if (_field == _Field.race)
+    {
+      if (Input.GetKeyDown(InputX.n))
+          _changeRace(-1);
+      else if (Input.GetKeyDown(InputX.s))
+          _changeRace(1);
+    }
+    else if (_field == _Field.heroClass)
+    {
+      if (Input.GetKeyDown(InputX.n))
+          _changeClass(-1);
+      else if (Input.GetKeyDown(InputX.s))
+          _changeClass(1);
+    }
 
-  //       case Input.s:
-  //         _changeClass(1);
-  //         return true;
-  //     }
-  //   }
+    if (Input.GetKeyDown(KeyCode.Return))
+    {
+        var hero = content.createHero(_name.isNotEmpty() ? _name : _defaultName,
+            content.races[_race], content.classes[_class]);
+        storage.heroes.Add(hero);
+        storage.save();
+        // terminal.GoTo(GameScreen.town(storage, content, hero));
+    }
+    if (Input.GetKeyDown(KeyCode.Tab))
+    {
+      if (shift) {
+        _changeField(-1);
+      } else {
+        _changeField(1);
+      }
+    }
+    else if (Input.GetKeyDown(KeyCode.Space))
+    {
+        if (_field == _Field.name) {
+          // TODO: Handle modifiers.
+          _appendToName(" ");
+        }
+    }
+    else if (Input.GetKeyDown(KeyCode.Delete))
+    {
+      if (_field == _Field.name) {
+        if (_name.isNotEmpty()) {
+          _name = _name.Substring(0, _name.Length - 1);
 
-  //   return false;
-  // }
+          // Pick a new default name.
+          if (_name.isEmpty()) {
+            _defaultName = Rng.rng.item<string>(_defaultNames);
+          }
 
-  // bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-  //   // TODO: Figuring out the char code manually here is lame. Pass it in from
-  //   // the KeyEvent?
-
-  //   switch (keyCode) {
-  //     case KeyCode.enter:
-  //       var hero = content.createHero(_name.isNotEmpty ? _name : _defaultName,
-  //           content.races[_race], content.classes[_class]);
-  //       storage.heroes.add(hero);
-  //       storage.save();
-  //       ui.goTo(GameScreen.town(storage, content, hero));
-  //       return true;
-
-  //     case KeyCode.tab:
-  //       if (shift) {
-  //         _changeField(-1);
-  //       } else {
-  //         _changeField(1);
-  //       }
-  //       return true;
-
-  //     case KeyCode.delete:
-  //       if (_field == _Field.name) {
-  //         if (_name.isNotEmpty) {
-  //           _name = _name.substring(0, _name.length - 1);
-
-  //           // Pick a new default name.
-  //           if (_name.isEmpty) {
-  //             _defaultName = rng.item(_defaultNames);
-  //           }
-
-  //           dirty();
-  //         }
-  //       }
-  //       return true;
-
-  //     case KeyCode.space:
-  //       if (_field == _Field.name) {
-  //         // TODO: Handle modifiers.
-  //         _appendToName(" ");
-  //       }
-  //       return true;
-
-  //     default:
-  //       if (_field == _Field.name && !alt) {
-  //         var key = keyCode;
-
-  //         if (key >= KeyCode.a && key <= KeyCode.z) {
-  //           var charCode = key;
-  //           // TODO: Handle other modifiers.
-  //           if (!shift) {
-  //             charCode = 'a'.codeUnits[0] - 'A'.codeUnits[0] + charCode;
-  //           }
-
-  //           _appendToName(string.fromCharCodes([charCode]));
-  //           return true;
-  //         } else if (key >= KeyCode.zero && key <= KeyCode.nine) {
-  //           _appendToName(string.fromCharCodes([key]));
-  //           return true;
-  //         }
-  //       }
-  //       break;
-  //   }
-
-  //   return false;
-  // }
+          Dirty();
+        }
+      }
+    }
+    else if (Input.anyKeyDown)
+    {
+      if (_field == _Field.name && !alt) {
+        for (int i = 0; i < KeyCode.Z - KeyCode.A + 1; ++i)
+        {
+          if (Input.GetKeyDown(KeyCode.A + i))
+          {
+            var charCode = 'a' + i;
+            // TODO: Handle other modifiers.
+            if (shift) {
+              charCode = 'A' + i;
+            }
+            _appendToName(char.ConvertFromUtf32(charCode));
+            break;
+          }
+        }
+        for (int i = 0; i < 10; ++i)
+        {
+          if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+          {
+            var charCode = '0' + i;
+            _appendToName(char.ConvertFromUtf32(charCode));
+          }
+        }
+      }
+    }
+  }
 
   void _changeField(int offset) {
-    // _field = (_field + offset + _Field.count) % _Field.count;
-    // dirty();
+    _field = (_field + offset + _Field.count) % _Field.count;
+    Dirty();
   }
 
   void _appendToName(string text) {
-    // _name += text;
-    // if (_name.length > _maxNameLength) {
-    //   _name = _name.substring(0, _maxNameLength);
-    // }
+    _name += text;
+    if (_name.Length > _maxNameLength) {
+      _name = _name.Substring(0, _maxNameLength);
+    }
 
-    // dirty();
+    Dirty();
   }
 
   void _changeRace(int offset) {
-    // var race = (_race + offset).clamp(0, content.races.length - 1);
-    // if (race != _race) {
-    //   _race = race;
-    //   dirty();
-    // }
+    var race = Mathf.Clamp(_race + offset, 0, content.races.Count - 1);
+    if (race != _race) {
+      _race = race;
+      Dirty();
+    }
   }
 
   void _changeClass(int offset) {
-    // var heroClass = (_class + offset).clamp(0, content.classes.length - 1);
-    // if (heroClass != _class) {
-    //   _class = heroClass;
-    //   dirty();
-    // }
+    var heroClass = Mathf.Clamp(_class + offset, 0, content.classes.Count - 1);
+    if (heroClass != _class) {
+      _class = heroClass;
+      Dirty();
+    }
   }
 }
