@@ -42,7 +42,7 @@ public class Game
   Stage _stage;
   public Hero hero;
 
-  Game(Content content, HeroSave _save, int depth, int width = 80, int height = 60)
+  public Game(Content content, HeroSave _save, int depth, int width = 80, int height = 60)
   {
     this.content = content;
     this._save = _save;
@@ -54,7 +54,7 @@ public class Game
     Rng.rng.shuffle(_substanceUpdateOrder);
   }
 
-  List<string> generate(){
+  public List<string> generate(){
     // TODO: Do something useful with depth.
     var rt = new List<string>();
 

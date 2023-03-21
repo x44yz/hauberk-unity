@@ -34,7 +34,7 @@ class Debugger {
   static object? _gameScreen;
   static object? gameScreen => _gameScreen;
 
-  static void bindGameScreen(object? screen) {
+  public static void bindGameScreen(object? screen) {
     _gameScreen = screen;
     _monsters.Clear();
   }
