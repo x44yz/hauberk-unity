@@ -192,6 +192,13 @@ public class Inventory : IEnumerable<Item> {
   }
 
   IEnumerator<Item> iterator => _items.GetEnumerator();
+
+  public bool isNotEmpty
+  {
+    get {
+      return _items != null && _items.Count > 0;
+    }
+  }
 }
 
 /// Describes the result of attempting to add an item stack to the inventory.

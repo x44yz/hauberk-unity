@@ -147,7 +147,7 @@ public class Stage {
     }
 
     /// Returns `true` if there is at least one item at [pos].
-    bool isItemAt(Vec pos) => _itemsByTile.ContainsKey(pos);
+    public bool isItemAt(Vec pos) => _itemsByTile.ContainsKey(pos);
 
     /// Gets the [Item]s at [pos].
     public Inventory itemsAt(Vec pos) =>

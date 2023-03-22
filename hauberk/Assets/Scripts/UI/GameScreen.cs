@@ -33,7 +33,7 @@ class GameScreen : UnityTerminal.Screen {
   /// When this changes, we know the hero has stepped onto a new one.
   TilePortal? _portal;
 
-  void targetActor(Actor? value) {
+  public void targetActor(Actor? value) {
     if (_targetActor != value) Dirty();
 
     _targetActor = value;
@@ -41,7 +41,7 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   /// Targets the floor at [pos].
-  void targetFloor(Vec? pos) {
+  public void targetFloor(Vec? pos) {
     if (_targetActor != null || _target != pos) Dirty();
 
     _targetActor = null;
@@ -51,7 +51,7 @@ class GameScreen : UnityTerminal.Screen {
   /// Gets the currently targeted position.
   ///
   /// If targeting an actor, gets the actor's position.
-  Vec? currentTarget {
+  public Vec? currentTarget {
     get {
       // If we're targeting an actor, use its position.
       var actor = currentTargetActor;
@@ -81,7 +81,7 @@ class GameScreen : UnityTerminal.Screen {
     }
   }
 
-  Rect cameraBounds => _stagePanel.cameraBounds;
+  public Rect cameraBounds => _stagePanel.cameraBounds;
 
   Color heroColor {
     get {
@@ -116,7 +116,7 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   /// Draws [Glyph] at [x], [y] in [Stage] coordinates onto the stage panel.
-  void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
+  public void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
     _stagePanel.drawStageGlyph(terminal, x, y, glyph);
   }
 
@@ -556,7 +556,7 @@ class GameScreen : UnityTerminal.Screen {
       // TODO: This leaks information if the hero is next to unexplored tiles.
       game.hero.setNextAction(game.stage[pos].type.onOpen!(pos));
     } else {
-      terminal.Push(OpenDialog(this));
+      terminal.Push(new OpenDialog(this));
     }
   }
 
@@ -577,7 +577,7 @@ class GameScreen : UnityTerminal.Screen {
       // TODO: This leaks information if the hero is next to unexplored tiles.
       game.hero.setNextAction(game.stage[pos].type.onClose!(pos));
     } else {
-      terminal.Push(CloseDialog(this));
+      terminal.Push(new CloseDialog(this));
     }
   }
 
@@ -588,16 +588,16 @@ class GameScreen : UnityTerminal.Screen {
       terminal.Push(ItemDialog.pickUp(this));
     } else if (items.length == 1) {
       // Otherwise attempt to pick the one item.
-      game.hero.setNextAction(PickUpAction(items.first));
+      game.hero.setNextAction(new PickUpAction(items.First()));
     } else {
-      game.log.error('There is nothing here.');
+      game.log.error("There is nothing here.");
       Dirty();
     }
   }
 
   void _openTargetDialog(TargetSkill skill) {
     terminal.Push(
-        TargetDialog(this, skill.getRange(game), (_) => _fireAtTarget(skill)));
+        new TargetDialog(this, skill.getRange(game), (_) => _fireAtTarget(skill)));
   }
 
   void _fireAtTarget(TargetSkill skill) {
@@ -629,7 +629,7 @@ class GameScreen : UnityTerminal.Screen {
 
       // Target the monster that is in the fired direction, if any.
       late Vec previous;
-      for (var step in Line(game.hero.pos, pos)) {
+      foreach (var step in new Line(game.hero.pos, pos)) {
         // If we reached an actor, target it.
         var actor = game.stage.actorAt(step);
         if (actor != null) {

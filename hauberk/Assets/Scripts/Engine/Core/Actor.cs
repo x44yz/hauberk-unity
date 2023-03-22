@@ -95,7 +95,7 @@ public abstract class Actor : Noun
     }
   }
 
-  Object appearance;
+  public object appearance;
 
   // string nounText;
 

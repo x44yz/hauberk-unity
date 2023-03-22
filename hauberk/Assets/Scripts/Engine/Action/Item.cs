@@ -66,7 +66,7 @@ public abstract class ItemAction : Action {
 class PickUpAction : Action {
   public Item item;
 
-  PickUpAction(Item item)
+  public PickUpAction(Item item)
   {
     this.item = item;
   }

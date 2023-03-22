@@ -75,6 +75,44 @@ public static class DartUtils
         value = combine(value, element);
       return value;
     }
+
+  /// Finds the item in [collection] whose score is lowest.
+  ///
+  /// The score for an item is determined by calling [callback] on it. Returns
+  /// `null` if the [collection] is `null` or empty.
+  public static T _findLowest<T>(List<T> collection, System.Func<T, int> callback) {
+    T bestItem = default(T);
+    int? bestScore = null;
+
+    foreach (var item in collection) {
+      var score = callback(item);
+      if (bestScore == null || score < bestScore) {
+        bestItem = item;
+        bestScore = score;
+      }
+    }
+
+    return bestItem;
+  }
+
+  /// Finds the item in [collection] whose score is highest.
+  ///
+  /// The score for an item is determined by calling [callback] on it. Returns
+  /// `null` if the [collection] is `null` or empty.
+  public static T _findHighest<T>(List<T> collection, System.Func<T, int> callback) {
+    T bestItem = default(T);
+    int? bestScore = null;
+
+    foreach (var item in collection) {
+      var score = callback(item);
+      if (bestScore == null || score > bestScore) {
+        bestItem = item;
+        bestScore = score;
+      }
+    }
+
+    return bestItem;
+  }
 }
 
 // public class Color {
