@@ -96,7 +96,7 @@ public class Hit {
   // bonuses and stuff more explicitly there and get rid of this.
   /// The average amount of damage this hit causes, with two decimal points of
   /// precision.
-  string damageString {
+  public string damageString {
     get {
       return ((int)(averageDamage * 100) / 100).ToString();
     }

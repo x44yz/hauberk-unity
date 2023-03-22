@@ -30,12 +30,12 @@ public class ItemLocation
 
 // TODO: Move tryAdd() out of ItemCollection and Equipment? I think it's only
 // needed for the home and crucible?
-public interface ItemCollection {
-  ItemLocation location { get; }
+public class ItemCollection : IEnumerable<Item> {
+  public ItemLocation location { get; }
 
-  string name { get; } //=> location.name;
+  public string name { get; } //=> location.name;
 
-  int length { get; }
+  public int length { get; }
 
   // Item operator [](int index);
 
@@ -43,18 +43,18 @@ public interface ItemCollection {
   ///
   /// Otherwise returns `null`. It's only valid to access this if [slots]
   /// returns `null` for some index.
-  List<string> slotTypes { get; } // => const [];
+  public List<string> slotTypes { get; } // => const [];
 
   /// If the item collection may have empty slots in it (equipment) this returns
   /// the sequence of items and slots.
-  // Iterable<Item?> get slots => this;
+  public IEnumerable<Item> slots => this;
 
-  void remove(Item item);
+  public void remove(Item item);
 
-  Item removeAt(int index);
+  public Item removeAt(int index);
 
   /// Returns `true` if the entire stack of [item] will fit in this collection.
-  bool canAdd(Item item);
+  public bool canAdd(Item item);
 
   AddItemResult tryAdd(Item item);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class DartUtils
 {
@@ -112,6 +113,35 @@ public static class DartUtils
     }
 
     return bestItem;
+  }
+
+  public static T elementAt<T>(this IEnumerable<T> collection, int index)
+  {
+    return collection.ToList()[index];
+  }
+
+  // TODO: Move this elsewhere?
+  public static string formatMoney(int price) {
+    var result = price.ToString();
+    if (price > 999999999) {
+      result = result.Substring(0, result.Length - 9) +
+          "," +
+          result.Substring(result.Length - 9);
+    }
+
+    if (price > 999999) {
+      result = result.Substring(0, result.Length - 6) +
+          "," +
+          result.Substring(result.Length - 6);
+    }
+
+    if (price > 999) {
+      result = result.Substring(0, result.Length - 3) +
+          "," +
+          result.Substring(result.Length - 3);
+    }
+
+    return result;
   }
 }
 
