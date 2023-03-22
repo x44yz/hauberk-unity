@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -134,9 +135,8 @@ class _MonsterLog {
 
     var statNames = stats.Keys.ToList();
     statNames.Sort();
-    var length = 0;
-    foreach (var name in statNames)
-      length += Mathf.Max(length, name.Length);
+    var length = 
+      statNames.fold<string>(0, (length, name) => Math.Max(length, name.Length));
 
     var barChars = " ▁▂▃▄▅▆▇█";
     foreach (var name in statNames) {

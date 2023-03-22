@@ -142,7 +142,7 @@ public class HeroSave
     /// Move data from [hero] into this object. This should be called when the
     /// [Hero] has successfully completed a stage and his changes need to be
     /// "saved".
-    void takeFrom(Hero hero) {
+    public void takeFrom(Hero hero) {
         _inventory = hero.inventory;
         _equipment = hero.equipment;
         experience = hero.experience;

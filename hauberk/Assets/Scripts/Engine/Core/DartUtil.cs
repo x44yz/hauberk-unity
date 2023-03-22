@@ -67,6 +67,14 @@ public static class DartUtils
     {
       return !string.IsNullOrEmpty(s);
     }
+
+    public static int fold<T>(this List<T> list, int initialValue, Func<int, T, int> combine)
+    {
+      int value = initialValue;
+      foreach (var element in list)
+        value = combine(value, element);
+      return value;
+    }
 }
 
 // public class Color {

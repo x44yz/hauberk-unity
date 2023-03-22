@@ -77,7 +77,17 @@ public class TilePortal {
     this.name = name;
   }
 
-  string  ToString() => name;
+  public static bool operator ==(TilePortal a, TilePortal b)
+  {
+    return a.name.Equals(b.name);
+  }
+
+  public static bool operator !=(TilePortal a, TilePortal b)
+  {
+    return a.name.Equals(b.name) == false;
+  }
+
+  public override string  ToString() => name;
 }
 
 public class TileType {
@@ -92,7 +102,7 @@ public class TileType {
     public int emanation;
     public object appearance;
 
-    bool canClose => onClose != null;
+    public bool canClose => onClose != null;
 
     public bool canOpen => onOpen != null;
 

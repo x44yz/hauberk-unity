@@ -71,7 +71,7 @@ public class Game
     return rt;
   }
 
-  GameResult update() 
+  public GameResult update() 
   {
     var madeProgress = false;
 

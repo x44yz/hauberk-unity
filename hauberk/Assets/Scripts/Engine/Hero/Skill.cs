@@ -120,12 +120,12 @@ public abstract class ActionSkill : UsableSkill {
 
 /// A skill that requires a target position to perform.
 public abstract class TargetSkill : UsableSkill {
-  bool canTargetSelf => false;
+  public bool canTargetSelf => false;
 
   /// The maximum range of the target from the hero.
   public abstract int getRange(Game game);
 
-  Action getTargetAction(Game game, int level, Vec target) {
+  public Action getTargetAction(Game game, int level, Vec target) {
     return _wrapActionCost(
         game.hero.save, level, onGetTargetAction(game, level, target));
   }
@@ -139,7 +139,7 @@ public abstract class TargetSkill : UsableSkill {
 public abstract class DirectionSkill : UsableSkill {
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
-  Action getDirectionAction(Game game, int level, Direction dir) {
+  public Action getDirectionAction(Game game, int level, Direction dir) {
     return _wrapActionCost(
         game.hero.save, level, onGetDirectionAction(game, level, dir));
   }

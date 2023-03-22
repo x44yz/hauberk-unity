@@ -26,7 +26,7 @@ public class Shop {
         return new Inventory(ItemLocation.shop(name), capacity, items);
     }
 
-    void update(Inventory inventory) 
+    public void update(Inventory inventory) 
     {
         // Remove some.
         var remainCount = (int)Rng.rng.rfloat(capacity * 0.2, capacity * 0.4);

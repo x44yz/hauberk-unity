@@ -80,22 +80,22 @@ public class Hero : Actor {
 
   public Lore lore => save.lore;
 
-  public int maxHealth => fortitude.maxHealth;
+  public override int maxHealth => fortitude.maxHealth;
 
-  Strength strength => save.strength;
+  public Strength strength => save.strength;
 
-  Agility agility => save.agility;
+  public Agility agility => save.agility;
 
-  Fortitude fortitude => save.fortitude;
+  public Fortitude fortitude => save.fortitude;
 
-  Intellect intellect => save.intellect;
+  public Intellect intellect => save.intellect;
 
-  Will will => save.will;
+  public Will will => save.will;
 
   // TODO: Equipment and items that let the hero swim, fly, etc.
-  Motility motility => Motility.doorAndWalk;
+  public override Motility motility => Motility.doorAndWalk;
 
-  int emanationLevel => save.emanationLevel;
+  public override int emanationLevel => save.emanationLevel;
 
   public Hero(Game game, Vec pos, HeroSave save) 
     : base(game, pos.x, pos.y) 
@@ -339,7 +339,7 @@ public class Hero : Actor {
     _behavior = null;
   }
 
-  void setNextAction(Action action) {
+  public void setNextAction(Action action) {
     _behavior = new ActionBehavior(action);
   }
 

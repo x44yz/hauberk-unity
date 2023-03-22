@@ -28,7 +28,7 @@ public class Lore {
   List<Breed> slainBreeds => _slainBreeds.Keys.ToList();
 
   /// The total number of monsters slain.
-  int allSlain {
+  public int allSlain {
     get {
       int rt = 0;
       foreach (var kv in _slainBreeds)

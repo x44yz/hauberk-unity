@@ -120,189 +120,257 @@ class GameScreen : UnityTerminal.Screen {
     _stagePanel.drawStageGlyph(terminal, x, y, glyph);
   }
 
-  bool handleInput(Input input) {
-    Action? action;
-    switch (input) {
-      case Input.quit:
+  public override void HandleInput() {
+    bool shift = Input.GetKey(KeyCode.LeftShift);
+    bool alt = Input.GetKey(KeyCode.LeftAlt);
+
+    Action action = null;
+    if (Input.GetKeyDown(InputX.quit))
+    {
         var portal = game.stage[game.hero.pos].portal;
         if (portal == TilePortals.exit) {
           // Should have a storage because there are no exits in the town.
-          ui.push(ExitPopup(_storageSave!, game));
+          terminal.Push(new ExitPopup(_storageSave!, game));
         } else {
           game.log.error("You are not standing on an exit.");
           Dirty();
         }
-        break;
-
-      case Input.forfeit:
-        ui.push(ForfeitPopup(isTown: game.depth == 0));
-        break;
-      case Input.selectSkill:
-        ui.push(SelectSkillDialog(this));
-        break;
-      case Input.editSkills:
-        ui.push(SkillDialog(game.hero.save));
-        break;
-      case Input.heroInfo:
-        ui.push(HeroInfoDialog(game.content, game.hero.save));
-        break;
-      case Input.drop:
-        ui.push(ItemDialog.drop(this));
-        break;
-      case Input.use:
-        ui.push(ItemDialog.use(this));
-        break;
-      case Input.toss:
-        ui.push(ItemDialog.toss(this));
-        break;
-
-      case Input.rest:
-        if (!game.hero.rest()) {
-          // Show the message.
-          Dirty();
-        }
-        break;
-
-      case Input.open:
-        _open();
-        break;
-      case Input.close:
-        _closeDoor();
-        break;
-      case Input.pickUp:
-        _pickUp();
-        break;
-      case Input.equip:
-        ui.push(ItemDialog.equip(this));
-        break;
-
-      case Input.nw:
-        action = WalkAction(Direction.nw);
-        break;
-      case Input.n:
-        action = WalkAction(Direction.n);
-        break;
-      case Input.ne:
-        action = WalkAction(Direction.ne);
-        break;
-      case Input.w:
-        action = WalkAction(Direction.w);
-        break;
-      case Input.ok:
-        action = WalkAction(Direction.none);
-        break;
-      case Input.e:
-        action = WalkAction(Direction.e);
-        break;
-      case Input.sw:
-        action = WalkAction(Direction.sw);
-        break;
-      case Input.s:
-        action = WalkAction(Direction.s);
-        break;
-      case Input.se:
-        action = WalkAction(Direction.se);
-        break;
-
-      case Input.runNW:
-        game.hero.run(Direction.nw);
-        break;
-      case Input.runN:
-        game.hero.run(Direction.n);
-        break;
-      case Input.runNE:
-        game.hero.run(Direction.ne);
-        break;
-      case Input.runW:
-        game.hero.run(Direction.w);
-        break;
-      case Input.runE:
-        game.hero.run(Direction.e);
-        break;
-      case Input.runSW:
-        game.hero.run(Direction.sw);
-        break;
-      case Input.runS:
-        game.hero.run(Direction.s);
-        break;
-      case Input.runSE:
-        game.hero.run(Direction.se);
-        break;
-
-      case Input.fireNW:
-        _fireTowards(Direction.nw);
-        break;
-      case Input.fireN:
-        _fireTowards(Direction.n);
-        break;
-      case Input.fireNE:
-        _fireTowards(Direction.ne);
-        break;
-      case Input.fireW:
-        _fireTowards(Direction.w);
-        break;
-      case Input.fireE:
-        _fireTowards(Direction.e);
-        break;
-      case Input.fireSW:
-        _fireTowards(Direction.sw);
-        break;
-      case Input.fireS:
-        _fireTowards(Direction.s);
-        break;
-      case Input.fireSE:
-        _fireTowards(Direction.se);
-        break;
-
-      case Input.fire:
-        if (_lastSkill is TargetSkill) {
-          var targetSkill = _lastSkill as TargetSkill;
-          if (currentTargetActor != null) {
-            // If we still have a visible target, use it.
-            _fireAtTarget(_lastSkill as TargetSkill);
-          } else {
-            // No current target, so ask for one.
-            _openTargetDialog(targetSkill);
-          }
-        } else if (_lastSkill is DirectionSkill) {
-          // Ask user to pick a direction.
-          ui.push(SkillDirectionDialog(this, _fireTowards));
-        } else if (_lastSkill is ActionSkill) {
-          var actionSkill = _lastSkill as ActionSkill;
-          game.hero.setNextAction(
-              actionSkill.getAction(game, game.hero.skills.level(actionSkill)));
-        } else {
-          game.log.error("No skill selected.");
-          Dirty();
-        }
-        break;
-
-      case Input.swap:
-        var unequipped = game.hero.inventory.lastUnequipped;
-        if (unequipped == null) {
-          game.log.error("You aren't holding an unequipped item to swap.");
-          Dirty();
-        } else {
-          action = EquipAction(ItemLocation.inventory, unequipped);
-        }
-        break;
-
-      case Input.wizard:
-        if (Debug.enabled) {
-          ui.push(WizardDialog(game));
-        } else {
-          game.log.cheat("No cheating in non-debug builds. Cheater.");
-          Dirty();
-        }
-        break;
+    }
+    else if (Input.GetKeyDown(InputX.forfeit) && shift)
+    {
+      terminal.Push(new ForfeitPopup(isTown: game.depth == 0));
+    }
+    else if (Input.GetKeyDown(InputX.selectSkill))
+    {
+      throw new System.NotImplementedException();
+      // ui.push(SelectSkillDialog(this));
+    }
+    else if (Input.GetKeyDown(InputX.editSkills) && shift)
+    {
+      throw new System.NotImplementedException();
+      // ui.push(SkillDialog(game.hero.save));
+    }
+    else if (Input.GetKeyDown(InputX.heroInfo))
+    {
+      throw new System.NotImplementedException();
+      // ui.push(HeroInfoDialog(game.content, game.hero.save));
+    }
+    else if (Input.GetKeyDown(InputX.drop))
+    {
+      throw new System.NotImplementedException();
+      // ui.push(ItemDialog.drop(this));
+    }
+    else if (Input.GetKeyDown(InputX.use))
+    {
+      throw new System.NotImplementedException();
+      // ui.push(ItemDialog.use(this));
+    }
+    else if (Input.GetKeyDown(InputX.toss))
+    {
+      throw new System.NotImplementedException();
+      // ui.push(ItemDialog.toss(this));
+    }
+    else if (Input.GetKeyDown(InputX.rest) && shift)
+    {
+      throw new System.NotImplementedException();
+        // if (!game.hero.rest()) {
+        //   // Show the message.
+        //   Dirty();
+        // }
+    }
+    else if (Input.GetKeyDown(InputX.open) && shift)
+    {
+      _open();
+    }
+    else if (Input.GetKeyDown(InputX.close))
+    {
+      _closeDoor();
+    }
+    else if (Input.GetKeyDown(InputX.pickUp))
+    {
+      _pickUp();
+    }
+    else if (Input.GetKeyDown(InputX.equip))
+    {
+      throw new System.NotImplementedException();
+        // ui.push(ItemDialog.equip(this));
+    }
+    else if (Input.GetKeyDown(InputX.nw))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.nw);
+    }
+    else if (Input.GetKeyDown(InputX.n))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.n);
+    }
+    else if (Input.GetKeyDown(InputX.ne))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.ne);
+    }
+    else if (Input.GetKeyDown(InputX.w))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.w);
+    }
+    else if (Input.GetKeyDown(InputX.ok))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.none);
+    }
+    else if (Input.GetKeyDown(InputX.e))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.e);
+    }
+    else if (Input.GetKeyDown(InputX.sw))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.sw);
+    }
+    else if (Input.GetKeyDown(InputX.s))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.s);
+    }
+    else if (Input.GetKeyDown(InputX.se))
+    {
+      throw new System.NotImplementedException();
+        // action = WalkAction(Direction.se);
+    }
+    else if (Input.GetKeyDown(InputX.runNW) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.nw);
+    }
+    else if (Input.GetKeyDown(InputX.runN) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.n);
+    }
+    else if (Input.GetKeyDown(InputX.runNE) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.ne);
+    }
+    else if (Input.GetKeyDown(InputX.runW) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.w);
+    }
+    else if (Input.GetKeyDown(InputX.runE) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.e);
+    }
+    else if (Input.GetKeyDown(InputX.runSW) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.sw);
+    }
+    else if (Input.GetKeyDown(InputX.runS) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.s);
+    }
+    else if (Input.GetKeyDown(InputX.runSE) && shift)
+    {
+      throw new System.NotImplementedException();
+        // game.hero.run(Direction.se);
+    }
+    else if (Input.GetKeyDown(InputX.fireNW) && alt)
+    {
+      throw new System.NotImplementedException();
+        // _fireTowards(Direction.nw);
+    }
+    else if (Input.GetKeyDown(InputX.fireN) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.n);
+    }
+    else if (Input.GetKeyDown(InputX.fireNE) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.ne);
+    }
+    else if (Input.GetKeyDown(InputX.fireW) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.w);
+    }
+    else if (Input.GetKeyDown(InputX.fireE) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.e);
+    }
+    else if (Input.GetKeyDown(InputX.fireSW) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.sw);
+    }
+    else if (Input.GetKeyDown(InputX.fireS) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.s);
+    }
+    else if (Input.GetKeyDown(InputX.fireSE) && alt)
+    {
+      throw new System.NotImplementedException();
+        //_fireTowards(Direction.se);
+    }
+    else if (Input.GetKeyDown(InputX.fire) && alt)
+    {
+      throw new System.NotImplementedException();
+    // if (_lastSkill is TargetSkill) {
+    //         var targetSkill = _lastSkill as TargetSkill;
+    //         if (currentTargetActor != null) {
+    //           // If we still have a visible target, use it.
+    //           _fireAtTarget(_lastSkill as TargetSkill);
+    //         } else {
+    //           // No current target, so ask for one.
+    //           _openTargetDialog(targetSkill);
+    //         }
+    //       } else if (_lastSkill is DirectionSkill) {
+    //         // Ask user to pick a direction.
+    //         ui.push(SkillDirectionDialog(this, _fireTowards));
+    //       } else if (_lastSkill is ActionSkill) {
+    //         var actionSkill = _lastSkill as ActionSkill;
+    //         game.hero.setNextAction(
+    //             actionSkill.getAction(game, game.hero.skills.level(actionSkill)));
+    //       } else {
+    //         game.log.error("No skill selected.");
+    //         Dirty();
+    //       }
+    }
+    else if (Input.GetKeyDown(InputX.swap))
+    {
+      throw new System.NotImplementedException();
+        // var unequipped = game.hero.inventory.lastUnequipped;
+        // if (unequipped == null) {
+        //   game.log.error("You aren't holding an unequipped item to swap.");
+        //   Dirty();
+        // } else {
+        //   action = EquipAction(ItemLocation.inventory, unequipped);
+        // }
+    }
+    else if (Input.GetKeyDown(InputX.wizard) && shift && alt)
+    {
+        throw new System.NotImplementedException();
+        // if (Debugger.enabled) {
+        //   ui.push(WizardDialog(game));
+        // } else {
+        //   game.log.cheat("No cheating in non-debug builds. Cheater.");
+        //   Dirty();
+        // }
     }
 
-    if (action != null) game.hero.setNextAction(action);
-
-    return true;
+    if (action != null) 
+      game.hero.setNextAction(action);
   }
 
-  void activate(Screen popped, Object? result) {
+  public override void Active(UnityTerminal.Screen popped, object result) {
     if (!game.hero.needsInput) {
       // The player is coming back from a screen where they selected an action
       // for the hero. Give them a bit to visually reorient themselves before
@@ -315,19 +383,26 @@ class GameScreen : UnityTerminal.Screen {
       _storageSave!.takeFrom(game.hero);
 
       // Update shops.
-      game.hero.save.shops.forEach((shop, inventory) {
+      foreach (var kv in game.hero.save.shops)
+      {
+        var shop = kv.Key;
+        var inventory = kv.Value;
         shop.update(inventory);
-      });
+      };
 
       _storage.save();
-      ui.goTo(GameScreen.town(_storage, game.content, _storageSave!));
-    } else if (popped is SelectDepthPopup && result is int) {
+      terminal.GoTo(GameScreen.town(_storage, game.content, _storageSave!));
+    }
+    /*
+    else if (popped is SelectDepthPopup && result is int) {
       // Enter the dungeon.
       _storage.save();
       ui.push(LoadingDialog(game.hero.save, game.content, result));
-    } else if (popped is LoadingDialog) {
+    }
+    else if (popped is LoadingDialog) {
       ui.goTo(GameScreen(_storage, result as Game, game.hero.save));
-    } else if (popped is ForfeitPopup && result == true) {
+    } 
+    else if (popped is ForfeitPopup && result == true) {
       if (game.depth > 0) {
         // Forfeiting, so return to the town and discard the current hero.
         // TODO: Hero should start next to dungeon entrance.
@@ -337,17 +412,21 @@ class GameScreen : UnityTerminal.Screen {
         _storage.save();
         ui.pop();
       }
-    } else if (popped is ItemScreen) {
+    } 
+    else if (popped is ItemScreen) {
       // Always save when leaving home or a shop.
       _storage.save();
-    } else if (popped is ItemDialog) {
+    } 
+    else if (popped is ItemDialog) {
       // Save after changing items in the town.
       if (game.depth == 0) _storage.save();
-    } else if (popped is SkillDialog) {
+    } 
+    else if (popped is SkillDialog) {
       // TODO: Once skills can be learned on the SkillDialog again, make this
       // work.
 //      game.hero.updateSkills(result);
-    } else if (popped is SelectSkillDialog && result != null) {
+    } 
+    else if (popped is SelectSkillDialog && result != null) {
       if (result is TargetSkill) {
         _openTargetDialog(result);
       } else if (result is DirectionSkill) {
@@ -361,6 +440,7 @@ class GameScreen : UnityTerminal.Screen {
             result.getAction(game, game.hero.skills.level(result)));
       }
     }
+    */
   }
 
   void update() {
@@ -375,7 +455,7 @@ class GameScreen : UnityTerminal.Screen {
 
     // See if the hero died.
     if (!game.hero.isAlive) {
-      ui.goTo(GameOverScreen(game.log));
+      terminal.GoTo(new GameOverScreen(game.log));
       return;
     }
 
@@ -384,7 +464,9 @@ class GameScreen : UnityTerminal.Screen {
     if (result.needsRefresh) Dirty();
   }
 
-  void resize(Vec size) {
+  public override void Resize(int width, int height){
+    var size = new Vec(width, height);
+
     var leftWidth = 21;
 
     if (size > 160) {
@@ -397,22 +479,22 @@ class GameScreen : UnityTerminal.Screen {
 
     itemPanel.hide();
     if (size.x >= 100) {
-      var width = math.min(50, 20 + (size.x - 100) ~/ 2);
-      itemPanel.show(Rect(size.x - width, 0, width, size.y));
-      centerWidth = size.x - leftWidth - width;
+      var nwidth = Math.Min(50, 20 + (size.x - 100) / 2);
+      itemPanel.show(new Rect(size.x - nwidth, 0, nwidth, size.y));
+      centerWidth = size.x - leftWidth - nwidth;
     }
 
-    _sidebarPanel.show(Rect(0, 0, leftWidth, size.y));
+    _sidebarPanel.show(new Rect(0, 0, leftWidth, size.y));
 
-    var logHeight = 6 + (size.y - 40) ~/ 2;
-    logHeight = math.min(logHeight, 20);
+    var logHeight = 6 + (size.y - 40) / 2;
+    logHeight = Math.Min(logHeight, 20);
 
-    stagePanel.show(Rect(leftWidth, 0, centerWidth, size.y - logHeight));
-    _logPanel.show(Rect(leftWidth, size.y - logHeight, centerWidth, logHeight));
+    stagePanel.show(new Rect(leftWidth, 0, centerWidth, size.y - logHeight));
+    _logPanel.show(new Rect(leftWidth, size.y - logHeight, centerWidth, logHeight));
   }
 
-  void render(Terminal terminal) {
-    terminal.clear();
+  public override void Render() {
+    terminal.Clear();
 
     _stagePanel.render(terminal);
     _logPanel.render(terminal);
@@ -428,43 +510,30 @@ class GameScreen : UnityTerminal.Screen {
     if (portal == _portal) return false;
     _portal = portal;
 
-    switch (portal) {
-      case TilePortals.dungeon:
-        ui.push(SelectDepthPopup(game.content, game.hero.save));
-        break;
-      case TilePortals.home:
-        ui.push(ItemScreen.home(this));
-        break;
-      case TilePortals.shop1:
+    if (portal == TilePortals.dungeon)
+        terminal.Push(new SelectDepthPopup(game.content, game.hero.save));
+    else if (portal == TilePortals.home)
+        terminal.Push(ItemScreen.home(this));
+    else if (portal == TilePortals.shop1)
         _enterShop(0);
-        break;
-      case TilePortals.shop2:
+    else if (portal == TilePortals.shop2)
         _enterShop(1);
-        break;
-      case TilePortals.shop3:
+    else if (portal == TilePortals.shop3)
         _enterShop(2);
-        break;
-      case TilePortals.shop4:
+    else if (portal == TilePortals.shop4)
         _enterShop(3);
-        break;
-      case TilePortals.shop5:
+    else if (portal == TilePortals.shop5)
         _enterShop(4);
-        break;
-      case TilePortals.shop6:
+    else if (portal == TilePortals.shop6)
         _enterShop(5);
-        break;
-      case TilePortals.shop7:
+    else if (portal == TilePortals.shop7)
         _enterShop(6);
-        break;
-      case TilePortals.shop8:
+    else if (portal == TilePortals.shop8)
         _enterShop(7);
-        break;
-      case TilePortals.shop9:
+    else if (portal == TilePortals.shop9)
         _enterShop(8);
-        break;
       // TODO: No crucible right now.
 //        ui.push(new ItemScreen.crucible(content, save));
-    }
 
     return true;
   }
@@ -472,43 +541,43 @@ class GameScreen : UnityTerminal.Screen {
   void _open() {
     // See how many adjacent closed doors there are.
     // TODO: Handle chests.
-    var openable = <Vec>[];
-    for (var pos in game.hero.pos.neighbors) {
+    var openable = new List<Vec>();
+    foreach (var pos in game.hero.pos.neighbors) {
       if (game.stage[pos].type.canOpen) {
-        openable.add(pos);
+        openable.Add(pos);
       }
     }
 
-    if (openable.isEmpty) {
-      game.log.error('You are not next to anything to open.');
+    if (openable.isEmpty()) {
+      game.log.error("You are not next to anything to open.");
       Dirty();
-    } else if (openable.length == 1) {
-      var pos = openable.first;
+    } else if (openable.Count == 1) {
+      var pos = openable.First();
       // TODO: This leaks information if the hero is next to unexplored tiles.
       game.hero.setNextAction(game.stage[pos].type.onOpen!(pos));
     } else {
-      ui.push(OpenDialog(this));
+      terminal.Push(OpenDialog(this));
     }
   }
 
   void _closeDoor() {
     // See how many adjacent open doors there are.
-    var closeable = <Vec>[];
-    for (var pos in game.hero.pos.neighbors) {
+    var closeable = new List<Vec>();
+    foreach (var pos in game.hero.pos.neighbors) {
       if (game.stage[pos].type.canClose) {
-        closeable.add(pos);
+        closeable.Add(pos);
       }
     }
 
-    if (closeable.isEmpty) {
-      game.log.error('You are not next to an open door.');
+    if (closeable.isEmpty()) {
+      game.log.error("You are not next to an open door.");
       Dirty();
-    } else if (closeable.length == 1) {
-      var pos = closeable.first;
+    } else if (closeable.Count == 1) {
+      var pos = closeable.First();
       // TODO: This leaks information if the hero is next to unexplored tiles.
       game.hero.setNextAction(game.stage[pos].type.onClose!(pos));
     } else {
-      ui.push(CloseDialog(this));
+      terminal.Push(CloseDialog(this));
     }
   }
 
@@ -516,7 +585,7 @@ class GameScreen : UnityTerminal.Screen {
     var items = game.stage.itemsAt(game.hero.pos);
     if (items.length > 1) {
       // Show item dialog if there are multiple things to pick up.
-      ui.push(ItemDialog.pickUp(this));
+      terminal.Push(ItemDialog.pickUp(this));
     } else if (items.length == 1) {
       // Otherwise attempt to pick the one item.
       game.hero.setNextAction(PickUpAction(items.first));
@@ -527,7 +596,7 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   void _openTargetDialog(TargetSkill skill) {
-    ui.push(
+    terminal.Push(
         TargetDialog(this, skill.getRange(game), (_) => _fireAtTarget(skill)));
   }
 
@@ -602,9 +671,9 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   void _enterShop(int index) {
-    var shops = game.hero.save.shops.keys.toList();
-    if (index >= shops.length) return;
+    var shops = game.hero.save.shops.Keys.ToList();
+    if (index >= shops.Count) return;
 
-    ui.push(ItemScreen.shop(this, game.hero.save.shops[shops[index]]!));
+    terminal.Push(ItemScreen.shop(this, game.hero.save.shops[shops[index]]!));
   }
 }

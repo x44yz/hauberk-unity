@@ -111,9 +111,9 @@ public abstract class Actor : Noun
 
   public bool needsInput => false;
 
-  public Motility motility;
+  public virtual Motility motility => null;
 
-  public int maxHealth;
+  public virtual int maxHealth => 0;
 
   /// Gets the actor's current speed, taking into any account any active
   /// [Condition]s.
@@ -150,7 +150,7 @@ public abstract class Actor : Noun
   ///
   /// This is not a raw emanation value, but a "level" to be passed to
   /// [Lighting.emanationForLevel()].
-  public int emanationLevel;
+  public virtual int emanationLevel => 0;
 
   /// Called when the actor's position is about to change from [from] to [to].
   public virtual void changePosition(Vec from, Vec to) {
