@@ -21,7 +21,7 @@ public class Item : Noun, System.IComparable<Item>
 
     public object appearance => type.appearance;
 
-    bool canEquip => equipSlot != null;
+    public bool canEquip => equipSlot != null;
     public string equipSlot => type.equipSlot;
 
     /// Whether the item can be used or not.

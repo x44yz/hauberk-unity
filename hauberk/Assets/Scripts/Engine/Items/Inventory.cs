@@ -26,16 +26,35 @@ public class ItemLocation
     }
 
     public static ItemLocation shop(string name) => new ItemLocation(name, "All sold out!");
+
+    public static bool operator ==(ItemLocation a, ItemLocation b)
+    {
+      return a.name.Equals(b.name);
+    }
+
+    public static bool operator !=(ItemLocation a, ItemLocation b)
+    {
+      return a.name.Equals(b.name) == false;
+    }
 }
 
 // TODO: Move tryAdd() out of ItemCollection and Equipment? I think it's only
 // needed for the home and crucible?
-public class ItemCollection : IEnumerable<Item> {
-  public ItemLocation location { get; }
+public abstract class ItemCollection : IEnumerable<Item> {
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return null;
+  }
+  public virtual IEnumerator<Item> GetEnumerator()
+  {
+    return null;
+  }
+
+  public virtual ItemLocation location { get; }
 
   public string name { get; } //=> location.name;
 
-  public int length { get; }
+  public virtual int length { get; }
 
   // Item operator [](int index);
 
@@ -49,31 +68,28 @@ public class ItemCollection : IEnumerable<Item> {
   /// the sequence of items and slots.
   public IEnumerable<Item> slots => this;
 
-  public void remove(Item item);
+  public abstract void remove(Item item);
 
-  public Item removeAt(int index);
+  public abstract Item removeAt(int index);
 
   /// Returns `true` if the entire stack of [item] will fit in this collection.
-  public bool canAdd(Item item);
+  public abstract bool canAdd(Item item);
 
-  AddItemResult tryAdd(Item item);
+  public abstract AddItemResult tryAdd(Item item);
 
   /// Called when the count of an item in the collection has changed.
-  void countChanged();
+  public abstract void countChanged();
 }
 
 /// The collection of [Item]s held by an [Actor].
-public class Inventory : IEnumerable<Item> {
-  IEnumerator IEnumerable.GetEnumerator()
-  {
-    return iterator;
-  }
-  public IEnumerator<Item> GetEnumerator()
+public class Inventory : ItemCollection {
+  public override IEnumerator<Item> GetEnumerator()
   {
     return iterator;
   }
 
-  public ItemLocation location;
+  ItemLocation _location = null;
+  public override ItemLocation location => _location;
 
   public List<Item> _items = new List<Item>();
   public int _capacity;
@@ -87,13 +103,13 @@ public class Inventory : IEnumerable<Item> {
   Item? lastUnequipped => _lastUnequipped;
   Item? _lastUnequipped;
 
-  public int length => _items.Count;
+  public override int length => _items.Count;
 
   public Item this[int index] => _items[index];
 
   public Inventory(ItemLocation location, int _capacity = 0, List<Item> items = null)
   {
-    this.location = location;
+    this._location = location;
     this._capacity = _capacity;
     if (items != null)
     this._items.AddRange(items);
@@ -115,18 +131,18 @@ public class Inventory : IEnumerable<Item> {
     _lastUnequipped = null;
   }
 
-  public void remove(Item item) {
+  public override void remove(Item item) {
     _items.Remove(item);
   }
 
-  public Item removeAt(int index) {
+  public override Item removeAt(int index) {
     var item = _items[index];
     _items.RemoveAt(index);
     if (_lastUnequipped == item) _lastUnequipped = null;
     return item;
   }
 
-  bool canAdd(Item item) {
+  public override bool canAdd(Item item) {
     // If there's an empty slot, can always add it.
     if (_capacity > 0 || _items.Count < _capacity!) return true;
 
@@ -146,6 +162,10 @@ public class Inventory : IEnumerable<Item> {
 
   public void _tryAdd(Item item) {
       tryAdd(item, false);
+  }
+
+  public override AddItemResult tryAdd(Item item) {
+    return tryAdd(item, false);
   }
 
   public AddItemResult tryAdd(Item item, bool wasUnequipped = false) {
@@ -180,7 +200,7 @@ public class Inventory : IEnumerable<Item> {
   ///
   /// This should be called any time the count of an item stack in the hero's
   /// inventory is changed.
-  public void countChanged() {
+  public override void countChanged() {
     // Hacky. Just re-add everything from scratch.
     var items = _items;
     _items.Clear();

@@ -21,14 +21,14 @@ abstract class ItemScreen : Screen {
   ItemCollection? _destination => null;
 
   /// Whether the shift key is currently pressed.
-  bool _shiftDown = false;
+  public bool _shiftDown = false;
 
   /// Whether this screen is on top.
   // TODO: Maintaining this manually is hacky. Maybe have malison expose it?
-  bool _isActive = true;
+  public bool _isActive = true;
 
   /// The item currently being inspected or `null` if none.
-  Item? _inspected;
+  public Item? _inspected;
 
 //  /// If the crucible contains a complete recipe, this will be it. Otherwise,
 //  /// this will be `null`.
@@ -36,11 +36,11 @@ abstract class ItemScreen : Screen {
 
   string? _error;
 
-  ItemCollection _items;
+  public virtual ItemCollection _items => null;
 
-  HeroSave _save => _gameScreen.game.hero.save;
+  public HeroSave _save => _gameScreen.game.hero.save;
 
-  string _headerText;
+  public virtual string _headerText => "";
 
   public virtual Dictionary<string, string> _helpKeys => null;
 
@@ -56,16 +56,16 @@ abstract class ItemScreen : Screen {
   public static ItemScreen shop(GameScreen gameScreen, Inventory shop) =>
       new _ShopViewScreen(gameScreen, shop);
 
-  bool _canSelectAny => false;
-  bool _showPrices => false;
+  public virtual bool _canSelectAny => false;
+  public virtual bool _showPrices => false;
 
-  bool _canSelect(Item item) {
+  public virtual bool _canSelect(Item item) {
     if (_shiftDown) return true;
 
     return canSelect(item);
   }
 
-  bool canSelect(Item item) => true;
+  public virtual bool canSelect(Item item) => true;
 
   public override bool HandleInput() {
     _error = null;
@@ -85,62 +85,78 @@ abstract class ItemScreen : Screen {
     return false;
   }
 
-  // bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-  //   _error = null;
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
+    if (keyCode == InputX.cancel) {
+      terminal.Pop();
+      return true;
+    }
+    // end of hanleInput
+    
+    _error = null;
 
-  //   if (keyCode == KeyCode.shift) {
-  //     _shiftDown = true;
-  //     dirty();
-  //     return true;
-  //   }
+    if (keyCode == KeyCode.LeftShift) {
+      _shiftDown = true;
+      Dirty();
+      return true;
+    }
 
-  //   if (alt) return false;
+    if (alt) return false;
 
+//    if (keyCode == KeyCode.space && completeRecipe != null) {
+//      _save.crucible.clear();
+//      completeRecipe.result.spawnDrop(_save.crucible.tryAdd);
+//      refreshRecipe();
+//
+//      // The player probably wants to get the item out of the crucible.
+//      _mode = Mode.get;
+//      dirty();
+//      return true;
+//    }
 
-  //   if (_shiftDown && keyCode == KeyCode.escape) {
-  //     _inspected = null;
-  //     dirty();
-  //     return true;
-  //   }
+    if (_shiftDown && keyCode == KeyCode.Escape) {
+      _inspected = null;
+      Dirty();
+      return true;
+    }
 
-  //   if (keyCode >= KeyCode.a && keyCode <= KeyCode.z) {
-  //     var index = keyCode - KeyCode.a;
-  //     if (index >= _items.slots.length) return false;
-  //     var item = _items.slots.elementAt(index);
-  //     if (item == null) return false;
+    if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
+      var index = keyCode - KeyCode.A;
+      if (index >= _items.slots.Count()) return false;
+      var item = _items.slots.elementAt(index);
+      if (item == null) return false;
 
-  //     if (_shiftDown) {
-  //       _inspected = item;
-  //       dirty();
-  //     } else {
-  //       if (!_canSelectAny || !canSelect(item)) return false;
+      if (_shiftDown) {
+        _inspected = item;
+        Dirty();
+      } else {
+        if (!_canSelectAny || !canSelect(item)) return false;
 
-  //       // Prompt the user for a count if the item is a stack.
-  //       if (item.count > 1) {
-  //         _isActive = false;
-  //         ui.push(_CountScreen(_gameScreen, this as _ItemVerbScreen, item));
-  //         return true;
-  //       }
+        // Prompt the user for a count if the item is a stack.
+        if (item.count > 1) {
+          _isActive = false;
+          terminal.Push(new _CountScreen(_gameScreen, this as _ItemVerbScreen, item));
+          return true;
+        }
 
-  //       if (_transfer(item, 1)) {
-  //         ui.pop();
-  //         return true;
-  //       }
-  //     }
-  //   }
+        if (_transfer(item, 1)) {
+          terminal.Pop();
+          return true;
+        }
+      }
+    }
 
-  //   return false;
-  // }
+    return false;
+  }
 
-  // bool keyUp(int keyCode, {required bool shift, required bool alt}) {
-  //   if (keyCode == KeyCode.shift) {
-  //     _shiftDown = false;
-  //     dirty();
-  //     return true;
-  //   }
+  public override bool KeyUp(KeyCode keyCode, bool shift, bool alt) {
+    if (keyCode == KeyCode.LeftShift) {
+      _shiftDown = false;
+      Dirty();
+      return true;
+    }
 
-  //   return false;
-  // }
+    return false;
+  }
 
   public override void Active(Screen popped, object result) {
     _isActive = true;
@@ -173,9 +189,9 @@ abstract class ItemScreen : Screen {
       }
     }
 
-    var view = _TownItemView(this);
+    var view = new _TownItemView(this);
     var width =
-        math.min(ItemView.preferredWidth, _gameScreen.stagePanel.bounds.width);
+        Math.Min(ItemView.preferredWidth, _gameScreen.stagePanel.bounds.width);
     view.render(terminal, _gameScreen.stagePanel.bounds.x,
         _gameScreen.stagePanel.bounds.y, width, _items.length);
 
@@ -190,19 +206,19 @@ abstract class ItemScreen : Screen {
 //    }
 
     if (_error != null) {
-      terminal.WriteAt(0, 32, _error!, red);
+      terminal.WriteAt(0, 32, _error!, Hues.red);
     }
   }
 
   /// The default count to move when transferring a stack from [_items].
-  int _initialCount(Item item) => item.count;
+  public int _initialCount(Item item) => item.count;
 
   /// The maximum number of items in the stack of [item] that can be
   /// transferred from [_items].
-  int _maxCount(Item item) => item.count;
+  public int _maxCount(Item item) => item.count;
 
   /// By default, don't show the price.
-  int? _itemPrice(Item item) => null;
+  public virtual int? _itemPrice(Item item) => null;
 
   bool _transfer(Item item, int count) {
     var destination = _destination!;
@@ -248,7 +264,10 @@ abstract class _ItemVerbScreen : ItemScreen {
 class _TownItemView : ItemView {
   public ItemScreen _screen;
 
-  _TownItemView(this._screen);
+  public _TownItemView(ItemScreen _screen)
+  {
+    this._screen = _screen;
+  }
 
   HeroSave save => _screen._gameScreen.game.hero.save;
 
@@ -270,7 +289,7 @@ class _TownItemView : ItemView {
 }
 
 class _HomeViewScreen : ItemScreen {
-  ItemCollection _items => _save.home;
+  public override ItemCollection _items => _save.home;
 
   string _headerText => "Welcome home!";
 
@@ -285,27 +304,29 @@ class _HomeViewScreen : ItemScreen {
   {
   }
 
-  public override void HandleInput()
+  public override bool HandleInput()
   {
-    
-  }
+    if (base.HandleInput())
+      return true;
 
-  bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-    if (super.keyDown(keyCode, shift: shift, alt: alt)) return true;
+    bool shift = Input.GetKey(KeyCode.LeftShift);
+    bool alt = Input.GetKey(KeyCode.LeftAlt);
 
-    if (shift || alt) return false;
+    if (shift || alt)
+      return false;
 
-    switch (keyCode) {
-      case KeyCode.g:
-        var screen = _HomeGetScreen(_gameScreen);
+    if (Input.GetKeyDown(KeyCode.G))
+    {
+        var screen = new _HomeGetScreen(_gameScreen);
         screen._inspected = _inspected;
         _isActive = false;
-        ui.push(screen);
+        terminal.Push(screen);
         return true;
-
-      case KeyCode.p:
+    }
+    else if (Input.GetKeyDown(KeyCode.P))
+    {
         _isActive = false;
-        ui.push(ItemDialog.put(_gameScreen));
+        terminal.Push(ItemDialog.put(_gameScreen));
         return true;
     }
 
@@ -314,23 +335,28 @@ class _HomeViewScreen : ItemScreen {
 }
 
 /// Screen to items from the hero's home.
-class _HomeGetScreen extends _ItemVerbScreen {
+class _HomeGetScreen : _ItemVerbScreen {
   string _headerText => "Get which item?";
 
-  string _verb => "Get";
+  public override string _verb => "Get";
 
-  Map<string, string> _helpKeys =>
-      {"A-Z": "Select item", "Shift": "Inspect item", "Esc": "Cancel"};
+  public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>() {
+      {"A-Z", "Select item"}, 
+      {"Shift", "Inspect item"}, 
+      {"Esc", "Cancel"}
+  };
 
-  ItemCollection _items => _gameScreen.game.hero.save.home;
+  public override ItemCollection _items => _gameScreen.game.hero.save.home;
 
   ItemCollection _destination => _gameScreen.game.hero.inventory;
 
-  _HomeGetScreen(GameScreen gameScreen) : super(gameScreen);
+  public _HomeGetScreen(GameScreen gameScreen) : base(gameScreen)
+  {
+  }
 
-  bool _canSelectAny => true;
+  public override bool _canSelectAny => true;
 
-  bool canSelect(Item item) => true;
+  public override bool canSelect(Item item) => true;
 
   void _afterTransfer(Item item, int count) {
     _gameScreen.game.log.message("You ${item.clone(count)}.");
@@ -342,10 +368,10 @@ class _HomeGetScreen extends _ItemVerbScreen {
 class _ShopViewScreen : ItemScreen {
   public Inventory _shop;
 
-  ItemCollection _items => _shop;
+  public override ItemCollection _items => _shop;
 
   string _headerText => "What can I interest you in?";
-  bool _showPrices => true;
+  public override bool _showPrices => true;
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>(){
         {"B", "Buy item"},
@@ -359,29 +385,29 @@ class _ShopViewScreen : ItemScreen {
     this._shop = _shop;
   }
 
-  bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-    if (super.keyDown(keyCode, shift: shift, alt: alt)) return true;
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
+    if (base.KeyDown(keyCode, shift: shift, alt: alt)) return true;
 
     if (shift || alt) return false;
 
     switch (keyCode) {
-      case KeyCode.b:
-        var screen = _ShopBuyScreen(_gameScreen, _shop);
+      case KeyCode.B:
+        var screen = new _ShopBuyScreen(_gameScreen, _shop);
         screen._inspected = _inspected;
         _isActive = false;
-        ui.push(screen);
+        terminal.Push(screen);
         break;
 
-      case KeyCode.s:
+      case KeyCode.S:
         _isActive = false;
-        ui.push(ItemDialog.sell(_gameScreen, _shop));
+        terminal.Push(ItemDialog.sell(_gameScreen, _shop));
         return true;
     }
 
     return false;
   }
 
-  int? _itemPrice(Item item) => item.price;
+  public override int? _itemPrice(Item item) => item.price;
 }
 
 /// Screen to buy items from a shop.
@@ -398,19 +424,19 @@ class _ShopBuyScreen : _ItemVerbScreen {
       {"Esc", "Cancel"}
   };
 
-  ItemCollection _items => _shop;
+  public override ItemCollection _items => _shop;
 
   ItemCollection _destination => _gameScreen.game.hero.save.inventory;
 
-  _ShopBuyScreen(GameScreen gameScreen, Inventory _shop) : base(gameScreen)
+  public _ShopBuyScreen(GameScreen gameScreen, Inventory _shop) : base(gameScreen)
   {
     this._shop = _shop;
   }
 
-  bool _canSelectAny => true;
-  bool _showPrices => true;
+  public override bool _canSelectAny => true;
+  public override bool _showPrices => true;
 
-  bool canSelect(Item item) => item.price <= _save.gold;
+  public override bool canSelect(Item item) => item.price <= _save.gold;
 
   int _initialCount(Item item) => 1;
 
@@ -440,14 +466,14 @@ class _CountScreen : ItemScreen {
   public Item _item;
   int _count;
 
-  ItemCollection _items => _parent._items;
+  public override ItemCollection _items => _parent._items;
 
   string _headerText {
     get {
       var itemText = _item.clone(_count).ToString();
       var price = _parent._itemPrice(_item);
       if (price != null) {
-        var priceString = formatMoney(price * _count);
+        var priceString = DartUtils.formatMoney(price.Value * _count);
         return $"{{{_parent._verb}}} {itemText} for {priceString} gold?";
       } else {
         return $"{{{_parent._verb}}} {itemText}?";
@@ -461,7 +487,7 @@ class _CountScreen : ItemScreen {
       {"Esc", "Cancel"}
   };
 
-  _CountScreen(GameScreen gameScreen, _ItemVerbScreen _parent, Item _item)
+  public _CountScreen(GameScreen gameScreen, _ItemVerbScreen _parent, Item _item)
   :base(gameScreen)
   {
     this._parent = _parent;
@@ -470,57 +496,59 @@ class _CountScreen : ItemScreen {
     _inspected = _item;
   }
 
-  bool _canSelectAny => true;
+  public override bool _canSelectAny => true;
 
   /// Highlight the item the user already selected.
-  bool canSelect(Item item) => item == _item;
+  public override bool canSelect(Item item) => item == _item;
 
-  bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-    // Don't allow the shift key to inspect items.
-    if (keyCode == KeyCode.shift) return false;
-
-    return super.keyDown(keyCode, shift: shift, alt: alt);
-  }
-
-  bool handleInput(Input input) {
-    switch (input) {
-      case Input.ok:
-        ui.pop(_count);
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
+    if (keyCode == InputX.ok)
+    {
+        terminal.Pop(_count);
         return true;
-
-      case Input.cancel:
-        ui.pop();
+    }
+    else if (keyCode == InputX.cancel)
+    {
+        terminal.Pop();
         return true;
-
-      case Input.n:
+    }
+    else if (keyCode == InputX.n)
+    {
         if (_count < _parent._maxCount(_item)) {
           _count++;
-          dirty();
+          Dirty();
         }
         return true;
-
-      case Input.s:
+    }
+    else if (keyCode == InputX.s)
+    {
         if (_count > 1) {
           _count--;
-          dirty();
+          Dirty();
         }
         return true;
-
-      case Input.runN:
+    }
+    else if (keyCode == InputX.runN && shift)
+    {
         _count = _parent._maxCount(_item);
-        dirty();
+        Dirty();
         return true;
-
-      case Input.runS:
-        _count = 1;
-        dirty();
+    }
+    else if (keyCode == InputX.runS && shift)
+    {
+          _count = 1;
+          Dirty();
         return true;
 
       // TODO: Allow typing number.
     }
+    // en of handleInput
 
-    return false;
+    // Don't allow the shift key to inspect items.
+    if (keyCode == KeyCode.LeftShift) return false;
+
+    return base.KeyDown(keyCode, shift: shift, alt: alt);
   }
 
-  int? _itemPrice(Item item) => _parent._itemPrice(item);
+  public override int? _itemPrice(Item item) => _parent._itemPrice(item);
 }

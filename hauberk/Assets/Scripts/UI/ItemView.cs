@@ -9,7 +9,7 @@ using UnityTerminal;
 /// Renders a list of items in some UI context, including the surrounding frame.
 abstract class ItemView {
   /// The ideal maximum width of an item list, including the frame.
-  static int preferredWidth = 46;
+  public const int preferredWidth = 46;
 
   HeroSave save;
 
@@ -31,7 +31,7 @@ abstract class ItemView {
 
   int? getPrice(Item item) => item.price;
 
-  void render(
+  public void render(
       Terminal terminal, int left, int top, int width, int itemSlotCount) 
   {
     Draw.frame(terminal, left, top, width, itemSlotCount + 2,

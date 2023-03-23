@@ -11,7 +11,7 @@ class TossAction : ItemAction {
   public Hit _hit;
   public Vec _target;
 
-  TossAction(ItemLocation location, Item item, Hit _hit, Vec _target)
+  public TossAction(ItemLocation location, Item item, Hit _hit, Vec _target)
       : base(location, item)
     {
         this._hit = _hit;

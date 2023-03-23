@@ -97,7 +97,7 @@ class DropAction : ItemAction {
   /// The number of items in the stack to drop.
   public int _count;
 
-  DropAction(ItemLocation location, Item item, int _count)
+  public DropAction(ItemLocation location, Item item, int _count)
       : base(location, item)
       {
         this._count = _count;
@@ -130,7 +130,7 @@ class DropAction : ItemAction {
 /// [Equipment]. May cause a currently equipped Item to become unequipped. If
 /// there is no room in the Inventory for that Item, it will drop to the ground.
 class EquipAction : ItemAction {
-  EquipAction(ItemLocation location, Item item) : base(location, item)
+  public EquipAction(ItemLocation location, Item item) : base(location, item)
   {
 
   }
@@ -214,7 +214,7 @@ class UnequipAction : ItemAction {
 
 /// [Action] for using an [Item].
 class UseAction : ItemAction {
-  UseAction(ItemLocation location, Item item) : base(location, item)
+  public UseAction(ItemLocation location, Item item) : base(location, item)
   {
   }
 
