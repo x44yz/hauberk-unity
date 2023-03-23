@@ -43,7 +43,7 @@ public class Item : Noun, System.IComparable<Item>
 
     public Toss? toss => type.toss;
 
-    Element element {
+    public Element element {
         get {
             var result = Element.none;
             if (attack != null) result = attack!.element;
@@ -53,7 +53,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    int strikeBonus {
+    public int strikeBonus {
         get {
             var result = 0;
             _applyAffixes((affix) => result += affix.strikeBonus);
@@ -61,7 +61,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    double damageScale {
+    public double damageScale {
         get {
             var result = 1.0;
             _applyAffixes((affix) => result *= affix.damageScale);
@@ -69,7 +69,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    int damageBonus {
+    public int damageBonus {
         get {
             var result = 0;
             _applyAffixes((affix) => result += affix.damageBonus);
@@ -85,10 +85,10 @@ public class Item : Noun, System.IComparable<Item>
 
     /// The base amount of protection provided by the item when equipped,
     /// ignoring any affix modifiers.
-    int baseArmor => type.armor;
+    public int baseArmor => type.armor;
 
     /// The amount of protection added by the affixes.
-    int armorModifier {
+    public int armorModifier {
         get {
             var result = 0;
             _applyAffixes((affix) => result += affix.armor);

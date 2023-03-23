@@ -153,12 +153,12 @@ abstract class ItemView {
 
       // Draw the inspector for this item.
       if (item == inspectedItem) {
-        var inspector = Inspector(save, item);
+        var inspector = new Inspector(save, item);
         if (inspectorOnRight) {
           if (left + width + Inspector.width > terminal.width) {
             // No room on the right so draw it below.
             terminal.WriteAt(left + width - 1, y, "▼", UIHue.selection);
-            inspector.draw(left + (width - Inspector.width) ~/ 2,
+            inspector.draw(left + (width - Inspector.width) / 2,
                 top + itemSlotCount + 3, terminal);
           } else {
             terminal.WriteAt(left + width - 1, y, "►", UIHue.selection);

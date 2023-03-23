@@ -5,20 +5,18 @@ using System.Linq;
 
 /// The collection of wielded [Item]s held by the hero. Unlike [Inventory], the
 /// [Equipment] holds each item in a categorized slot.
-public class Equipment : IEnumerable<Item> {
-  IEnumerator IEnumerable.GetEnumerator()
-  {
-    return iterator;
-  }
-  public IEnumerator<Item> GetEnumerator()
+public class Equipment : ItemCollection {
+  public override IEnumerator<Item> GetEnumerator()
   {
     return iterator;
   }
 
-  ItemLocation location => ItemLocation.equipment;
+  public override ItemLocation location => ItemLocation.equipment;
 
-  public List<string> slotTypes;
-  public List<Item> slots;
+  List<string> _slotTypes = null;
+  List<Item> _slots = null;
+  public override List<string> slotTypes => _slotTypes;
+  public override List<Item> slots => slots;
 
   public Equipment()
   {
@@ -47,7 +45,7 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Gets the number of equipped items. Ignores empty slots.
-  int length {
+  public override int length {
     get {
       int count = 0;
       slots.ForEach((item) => count += (item == null) ? 0 : 1);
@@ -89,7 +87,7 @@ public class Equipment : IEnumerable<Item> {
     return slotTypes.Any((slot) => item.equipSlot == slot);
   }
 
-  bool canAdd(Item item) {
+  public override bool canAdd(Item item) {
     // Look for an empty slot of the right type.
     for (var i = 0; i < slots.Count; i++) {
       if (slotTypes[i] == item.equipSlot && slots[i] == null) return true;
@@ -101,7 +99,7 @@ public class Equipment : IEnumerable<Item> {
   /// Tries to add the item. This will only succeed if there is an empty slot
   /// that allows the item. Unlike [equip], this will not swap items. It is
   /// used by the ItemScreen.
-  AddItemResult tryAdd(Item item) {
+  public override AddItemResult tryAdd(Item item) {
     // Should not be able to equip stackable items. If we want to make, say,
     // knives stackable, we'll have to add support for splitting stacks here.
     DartUtils.assert(item.count == 1);
@@ -117,7 +115,7 @@ public class Equipment : IEnumerable<Item> {
     return new AddItemResult(0, item.count);
   }
 
-  public void countChanged() {
+  public override void countChanged() {
     // Do nothing. Equipment doesn't stack.
   }
 
@@ -204,7 +202,7 @@ public class Equipment : IEnumerable<Item> {
     return unequipped;
   }
 
-  public void remove(Item item) {
+  public override void remove(Item item) {
     for (var i = 0; i < slots.Count; i++) {
       if (slots[i] == item) {
         slots[i] = null;
@@ -214,7 +212,7 @@ public class Equipment : IEnumerable<Item> {
   }
 
   /// Unequips and returns the [Item] at [index].
-  Item removeAt(int index) {
+  public override Item removeAt(int index) {
     // Find the slot, skipping over empty ones.
     for (var i = 0; i < slotTypes.Count; i++) {
       if (slots[i] == null) continue;

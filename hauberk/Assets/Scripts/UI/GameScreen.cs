@@ -628,7 +628,7 @@ class GameScreen : UnityTerminal.Screen {
       var pos = game.hero.pos + dir;
 
       // Target the monster that is in the fired direction, if any.
-      late Vec previous;
+      Vec previous = null;
       foreach (var step in new Line(game.hero.pos, pos)) {
         // If we reached an actor, target it.
         var actor = game.stage.actorAt(step);
@@ -661,7 +661,7 @@ class GameScreen : UnityTerminal.Screen {
         Dirty();
       }
     } else if (_lastSkill is ActionSkill) {
-      game.log.error("${_lastSkill!.useName} does not take a direction.");
+      game.log.error($"{(_lastSkill as ActionSkill).useName} does not take a direction.");
       Dirty();
     } else {
       // TODO: Better error message.

@@ -62,11 +62,11 @@ public abstract class ItemCollection : IEnumerable<Item> {
   ///
   /// Otherwise returns `null`. It's only valid to access this if [slots]
   /// returns `null` for some index.
-  public List<string> slotTypes { get; } // => const [];
+  public virtual List<string> slotTypes { get; } // => const [];
 
   /// If the item collection may have empty slots in it (equipment) this returns
   /// the sequence of items and slots.
-  public IEnumerable<Item> slots => this;
+  public virtual IEnumerable<Item> slots => null;
 
   public abstract void remove(Item item);
 
