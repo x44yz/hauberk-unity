@@ -380,4 +380,14 @@ public class EventType {
   }
 
   public override string ToString() => _name;
+
+  public static bool operator == (EventType a, EventType b)
+  {
+    return a._name.Equals(b._name);
+  }
+
+  public static bool operator != (EventType a, EventType b)
+  {
+    return a._name.Equals(b._name) == false;
+  }
 }

@@ -6,8 +6,6 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-
-
 // typedef DrawGlyph = void Function(int x, int y, Glyph glyph);
 
 abstract class Effect {
@@ -15,24 +13,24 @@ abstract class Effect {
 // black when over unexplored tiles, unlit over unlit, etc.
 
   public static Dictionary<Direction, char> _directionLines = new Dictionary<Direction, char>(){
-    {Direction.n, "|"},
-    {Direction.ne, "/"},
-    {Direction.e, "-"},
-    {Direction.se, "\\"},
-    {Direction.s, "|"},
-    {Direction.sw, "/"},
-    {Direction.w, "-"},
-    {Direction.nw, "\\"}
+    {Direction.n, '|'},
+    {Direction.ne, '/'},
+    {Direction.e, '-'},
+    {Direction.se, '\\'},
+    {Direction.s, '|'},
+    {Direction.sw, '/'},
+    {Direction.w, '-'},
+    {Direction.nw, '\\'}
   };
 
   /// Adds an [Effect]s that should be displayed when [event] happens.
   public static void addEffects(List<Effect> effects, Event evt) {
-    switch (evt.type) {
-      case EventType.pause:
+    if (evt.type == EventType.pause)
+    {
         // Do nothing.
-        break;
-
-      case EventType.bolt:
+    }
+    else if (evt.type == EventType.bolt)
+    {
         // TODO: Assumes all none-element bolts are arrows. Do something better?
         if (evt.element == Element.none) {
           var chars = new Dictionary<Direction, char>() {
@@ -50,86 +48,99 @@ abstract class Effect {
         } else {
           effects.add(ElementEffect(evt.pos!, evt.element));
         }
-        break;
+    }
 
-      case EventType.cone:
+      else if (evt.type == EventType.cone)
+      {
         effects.add(ElementEffect(evt.pos!, evt.element));
-        break;
+      }
 
-      case EventType.toss:
+      else if (evt.type == EventType.toss)
+      {
         effects.add(ItemEffect(evt.pos!, evt.other as Item));
-        break;
+      }
 
-      case EventType.hit:
+      else if (evt.type == EventType.hit)
+      {
         effects
             .add(DamageEffect(evt.actor!, evt.element, evt.other as int));
-        break;
+      }
 
-      case EventType.die:
+      else if (evt.type == EventType.die)
+      {
         // TODO: Make number of particles vary based on monster health.
         for (var i = 0; i < 10; i++) {
           // TODO: Different blood colors for different breeds.
           effects.add(ParticleEffect(evt.actor!.x, evt.actor!.y, red));
         }
-        break;
+      }
 
-      case EventType.heal:
+      else if (evt.type == EventType.heal)
+      {
         effects.add(HealEffect(evt.actor!.pos.x, evt.actor!.pos.y));
-        break;
+      }
 
-      case EventType.detect:
+      else if (evt.type == EventType.detect)
+      {
         effects.add(DetectEffect(evt.pos!));
-        break;
+      }
 
-      case EventType.perceive:
+      else if (evt.type == EventType.perceive)
+      {
         // TODO: Make look different.
         effects.add(DetectEffect(evt.actor!.pos));
-        break;
+      }
 
-      case EventType.map:
+      else if (evt.type == EventType.map)
+      {
         effects.add(MapEffect(evt.pos!));
-        break;
+      }
 
-      case EventType.teleport:
+      else if (evt.type == EventType.teleport)
+      {
         var numParticles = (evt.actor!.pos - evt.pos!).kingLength * 2;
         for (var i = 0; i < numParticles; i++) {
           effects.add(TeleportEffect(evt.pos!, evt.actor!.pos));
         }
-        break;
+      }
 
-      case EventType.spawn:
+      else if (evt.type == EventType.spawn)
+      {
         // TODO: Something more interesting.
         effects.add(FrameEffect(evt.actor!.pos, '*', ash));
-        break;
+      }
 
-      case EventType.polymorph:
+      else if (evt.type == EventType.polymorph)
+      {
         // TODO: Something more interesting.
         effects.add(FrameEffect(evt.actor!.pos, '*', ash));
-        break;
+      }
 
-      case EventType.howl:
+      else if (evt.type == EventType.howl)
+      {
         effects.add(HowlEffect(evt.actor!));
-        break;
+      }
 
-      case EventType.awaken:
+      else if (evt.type == EventType.awaken)
+      {
         effects.add(BlinkEffect(evt.actor!, Glyph('!', ash)));
-        break;
+      }
 
-      case EventType.frighten:
+      else if (evt.type == EventType.frighten:
         effects.add(BlinkEffect(evt.actor!, Glyph("!", gold)));
         break;
 
-      case EventType.wind:
+      else if (evt.type == EventType.wind:
         // TODO: Do something.
         break;
 
-      case EventType.knockBack:
+      else if (evt.type == EventType.knockBack:
         // TODO: Something more interesting.
         effects.add(FrameEffect(evt.pos!, "*", buttermilk));
         break;
 
-      case EventType.slash:
-      case EventType.stab:
+      else if (evt.type == EventType.slash:
+      else if (evt.type == EventType.stab:
         var line = _directionLines[evt.dir]!;
 
         var color = ash;
@@ -142,11 +153,11 @@ abstract class Effect {
         effects.add(FrameEffect(evt.pos!, line, color));
         break;
 
-      case EventType.gold:
+      else if (evt.type == EventType.gold:
         effects.add(TreasureEffect(evt.pos!, evt.other as Item));
         break;
 
-      case EventType.openBarrel:
+      else if (evt.type == EventType.openBarrel:
         effects.add(FrameEffect(evt.pos!, '*', sandal));
         break;
     }
@@ -158,7 +169,7 @@ abstract class Effect {
     for (int i = 0; i < chars.Length; ++i) {
       var ch = chars[i];
       foreach (var color in colors) {
-        results.add(new Glyph(ch, color));
+        results.Add(new Glyph(ch, color));
       }
     }
 
@@ -229,20 +240,20 @@ abstract class Effect {
     }},
     {Elements.light, new List<List<Glyph>>(){
       _glyphs("*", new List<Color>(){Hues.ash}),
-      _glyphs("x+", new List<Color>(){Hues.ash, buttermilk}),
-      _glyphs(":;\"'`,", new List<Color>(){Hues.buttermilk, gold}),
-      _glyphs(".", new List<Color>(){Hues.lightCoolGray, buttermilk})
+      _glyphs("x+", new List<Color>(){Hues.ash, Hues.buttermilk}),
+      _glyphs(":;\"'`,", new List<Color>(){Hues.buttermilk, Hues.gold}),
+      _glyphs(".", new List<Color>(){Hues.lightCoolGray, Hues.buttermilk})
     }},
     {Elements.spirit, new List<List<Glyph>>(){
-      _glyphs("Oo*+", new List<Color>(){Hues.lilac, lightCoolGray}),
-      _glyphs("o+", new List<Color>(){Hues.purple, peaGreen}),
-      _glyphs("•.", new List<Color>(){Hues.violet, sherwood, sherwood})
+      _glyphs("Oo*+", new List<Color>(){Hues.lilac, Hues.lightCoolGray}),
+      _glyphs("o+", new List<Color>(){Hues.purple, Hues.peaGreen}),
+      _glyphs("•.", new List<Color>(){Hues.violet, Hues.sherwood, Hues.sherwood})
     }},
   };
 
   public abstract bool update(Game game);
 
-  public abstract void render(Game game, DrawGlyph drawGlyph);
+  public abstract void render(Game game, System.Action<int, int, Glyph> drawGlyph);
 }
 
 
@@ -264,141 +275,170 @@ class ElementEffect : Effect {
     return _age < _sequence.Count;
   }
 
-  public override void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     drawGlyph(_pos.x, _pos.y, Rng.rng.item<Glyph>(_sequence[_age]));
   }
 }
 
 class FrameEffect : Effect {
-  final Vec pos;
-  final String char;
-  final Color color;
+  public Vec pos;
+  public string ch;
+  public Color color;
   int life;
 
-  FrameEffect(this.pos, this.char, this.color, {this.life = 4});
+  FrameEffect(Vec pos, string ch, Color color, int life = 4)
+  {
+    this.pos = pos;
+    this.ch = ch;
+    this.color = color; 
+    this.life = life;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     if (!game.stage[pos].isVisible) return false;
 
     return --life >= 0;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
-    drawGlyph(pos.x, pos.y, Glyph(char, color));
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
+    drawGlyph(pos.x, pos.y, new Glyph(ch[0], color));
   }
 }
 
 /// Draws an [Item] as a given position. Used for thrown items.
-class ItemEffect implements Effect {
-  final Vec pos;
-  final Item item;
+class ItemEffect : Effect {
+  public Vec pos;
+  public Item item;
   int _life = 2;
 
-  ItemEffect(this.pos, this.item);
+  ItemEffect(Vec pos, Item item)
+  {
+    this.pos = pos;
+    this.item = item;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     if (!game.stage[pos].isVisible) return false;
 
     return --_life >= 0;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     drawGlyph(pos.x, pos.y, item.appearance as Glyph);
   }
 }
 
-class DamageEffect implements Effect {
-  final Actor actor;
-  final Element element;
-  final int _blinks;
+class DamageEffect : Effect {
+  public Actor actor;
+  public Element element;
+  public int _blinks;
   int _frame = 0;
 
-  DamageEffect(this.actor, this.element, int damage)
-      : _blinks = math.sqrt(damage / 5).ceil();
+  DamageEffect(Actor actor, Element element, int damage)
+  {
+    this.actor = actor;
+    this.element = element;
+    _blinks = (int)Math.Ceiling(Math.Sqrt(damage / 5));
+  }
 
-  bool update(Game game) => ++_frame < _blinks * _framesPerBlink;
+  public override bool update(Game game) => ++_frame < _blinks * _framesPerBlink;
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     var frame = _frame % _framesPerBlink;
-    if (frame < _framesPerBlink ~/ 2) {
-      drawGlyph(actor.x, actor.y, Glyph("*", elementColor(element)));
+    if (frame < _framesPerBlink / 2) {
+      drawGlyph(actor.x, actor.y, new Glyph('*', elementColor(element)));
     }
   }
 
   /// Blink faster as the number of blinks increases so that the effect doesn't
   /// get gratuitously long.
-  int get _framesPerBlink => lerpInt(_blinks, 1, 10, 16, 8);
+  int _framesPerBlink => MathUtils.lerpInt(_blinks, 1, 10, 16, 8);
 }
 
-class ParticleEffect implements Effect {
-  num x;
-  num y;
-  num h;
-  num v;
+class ParticleEffect : Effect {
+  float x;
+  float y;
+  float h;
+  float v;
   int life;
-  final Color color;
+  public Color color;
 
-  factory ParticleEffect(num x, num y, Color color) {
-    var theta = rng.range(628) / 100;
-    var radius = rng.range(30, 40) / 100;
+  public static ParticleEffect create(float x, float y, Color color) {
+    var theta = Rng.rng.range(628) / 100;
+    var radius = Rng.rng.range(30, 40) / 100;
 
-    var h = math.cos(theta) * radius;
-    var v = math.sin(theta) * radius;
-    var life = rng.range(7, 15);
-    return ParticleEffect._(x, y, h, v, life, color);
+    var h = Math.Cos(theta) * radius;
+    var v = Math.Sin(theta) * radius;
+    var life = Rng.rng.range(7, 15);
+    return new ParticleEffect(x, y, (float)h, (float)v, life, color);
   }
 
-  ParticleEffect._(this.x, this.y, this.h, this.v, this.life, this.color);
+  ParticleEffect(float x, float y, float h, float v, int life, Color color)
+  {
+    this.x = x;
+    this.y = y;
+    this.h = h;
+    this.v = v;
+    this.life = life;
+    this.color = color;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     x += h;
     y += v;
 
-    var pos = Vec(x.toInt(), y.toInt());
+    var pos = new Vec((int)x, (int)y);
     if (!game.stage.bounds.contains(pos)) return false;
     if (!game.stage[pos].isFlyable) return false;
 
     return life-- > 0;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
-    drawGlyph(x.toInt(), y.toInt(), Glyph('•', color));
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
+    drawGlyph((int)x, (int)y, new Glyph('•', color));
   }
 }
 
 /// A particle that starts with a random initial velocity and arcs towards a
 /// target.
-class TeleportEffect implements Effect {
-  num x;
-  num y;
-  num h;
-  num v;
+class TeleportEffect : Effect {
+  float x;
+  float y;
+  float h;
+  float v;
   int age = 0;
-  final Vec target;
+  public Vec target;
 
-  static final _colors = [lightAqua, lightBlue, lilac, ash];
+  public static Color[] _colors = new Color[]{Hues.lightAqua, Hues.lightBlue, Hues.lilac, Hues.ash};
 
-  factory TeleportEffect(Vec from, Vec target) {
+  public static TeleportEffect create(Vec from, Vec target) {
     var x = from.x;
     var y = from.y;
 
-    var theta = rng.range(628) / 100;
-    var radius = rng.range(10, 80) / 100;
+    var theta = Rng.rng.range(628) / 100;
+    var radius = Rng.rng.range(10, 80) / 100;
 
-    var h = math.cos(theta) * radius;
-    var v = math.sin(theta) * radius;
+    var h = Math.Cos(theta) * radius;
+    var v = Math.Sin(theta) * radius;
 
-    return TeleportEffect._(x, y, h, v, target);
+    return new TeleportEffect(x, y, (float)h, (float)v, target);
   }
 
-  TeleportEffect._(this.x, this.y, this.h, this.v, this.target);
+  TeleportEffect(float x, float y, float h, float v, Vec target)
+  {
+    this.x = x;
+    this.y = y;
+    this.h = h;
+    this.v = v;
+    this.target = target;
+  }
 
-  bool update(Game game) {
-    var friction = 1.0 - age * 0.015;
+  public override bool update(Game game) {
+    var friction = 1.0f - age * 0.015f;
     h *= friction;
     v *= friction;
 
-    var pull = age * 0.003;
+    var pull = age * 0.003f;
     h += (target.x - x) * pull;
     v += (target.y - y) * pull;
 
@@ -406,116 +446,128 @@ class TeleportEffect implements Effect {
     y += v;
 
     age++;
-    return (Vec(x.toInt(), y.toInt()) - target) > 1;
+    return (new Vec((int)x, (int)y) - target) > 1;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
-    var pos = Vec(x.toInt(), y.toInt());
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
+    var pos = new Vec((int)x, (int)y);
     if (!game.stage.bounds.contains(pos)) return;
 
-    var char = _getChar(h, v);
-    var color = rng.item(_colors);
+    var char_ = _getChar(h, v);
+    var color = Rng.rng.item<Color>(_colors);
 
-    drawGlyph(pos.x, pos.y, Glyph.fromCharCode(char, color));
+    drawGlyph(pos.x, pos.y, new Glyph(char_, color));
   }
 
   /// Chooses a "line" character based on the vector [x], [y]. It will try to
   /// pick a line that follows the vector.
-  int _getChar(num x, num y) {
-    var velocity = Vec((x * 10).toInt(), (y * 10).toInt());
+  int _getChar(float x, float y) {
+    var velocity = new Vec((int)(x * 10), (int)(y * 10));
     if (velocity < 5) return CharCode.bullet;
 
-    var angle = math.atan2(x, y) / (math.pi * 2) * 16 + 8;
-    return r"|\\--//||\\--//||".codeUnitAt(angle.floor());
+    var angle = Math.Atan2(x, y) / (Math.PI * 2) * 16 + 8;
+    return "|\\--//||\\--//||"[UnityEngine.Mathf.FloorToInt((float)angle)];
   }
 }
 
-class HealEffect implements Effect {
+class HealEffect : Effect {
   int x;
   int y;
   int frame = 0;
 
-  HealEffect(this.x, this.y);
+  HealEffect(int x, int y)
+  {
+    this.x = x;
+    this.y = y;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     return frame++ < 24;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     if (game.stage.get(x, y).isOccluded) return;
 
-    var back = [darkerCoolGray, aqua, lightBlue, lightAqua][(frame ~/ 4) % 4];
+    var back = new Color[]{Hues.darkerCoolGray, Hues.aqua, Hues.lightBlue, Hues.lightAqua}[(frame / 4) % 4];
 
-    drawGlyph(x - 1, y, Glyph('-', back));
-    drawGlyph(x + 1, y, Glyph('-', back));
-    drawGlyph(x, y - 1, Glyph('|', back));
-    drawGlyph(x, y + 1, Glyph('|', back));
+    drawGlyph(x - 1, y, new Glyph('-', back));
+    drawGlyph(x + 1, y, new Glyph('-', back));
+    drawGlyph(x, y - 1, new Glyph('|', back));
+    drawGlyph(x, y + 1, new Glyph('|', back));
   }
 }
 
-class DetectEffect implements Effect {
-  static final _colors = [
-    ash,
-    buttermilk,
-    gold,
-    olive,
-    darkOlive,
-  ];
+class DetectEffect : Effect {
+  public static Color[] _colors = new Color[]{
+    Hues.ash,
+    Hues.buttermilk,
+    Hues.gold,
+    Hues.olive,
+    Hues.darkOlive,
+  };
 
-  final Vec pos;
+  public Vec pos;
   int life = 20;
 
-  DetectEffect(this.pos);
+  DetectEffect(Vec pos)
+  {
+    this.pos = pos;
+  }
 
-  bool update(Game game) => --life >= 0;
+  public override bool update(Game game) => --life >= 0;
 
-  void render(Game game, DrawGlyph drawGlyph) {
-    var radius = life ~/ 4;
-    var glyph = Glyph("*", _colors[radius]);
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
+    var radius = life / 4;
+    var glyph = new Glyph('*', _colors[radius]);
 
-    for (var pixel in Circle(pos, radius).edge) {
+    foreach (var pixel in new Circle(pos, radius).edge) {
       drawGlyph(pixel.x, pixel.y, glyph);
     }
   }
 }
 
-class MapEffect implements Effect {
-  final _maxLife = rng.range(10, 20);
+class MapEffect : Effect {
+  public int _maxLife;
 
-  final Vec pos;
+  public Vec pos;
   int life = -1;
 
-  MapEffect(this.pos) {
+  MapEffect(Vec pos) {
+    this.pos = pos;
+    _maxLife = Rng.rng.range(10, 20);
     life = _maxLife;
   }
 
-  bool update(Game game) => --life >= 0;
+  public override bool update(Game game) => --life >= 0;
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     var glyph = game.stage[pos].type.appearance as Glyph;
 
-    glyph = Glyph.fromCharCode(
-        glyph.char,
-        glyph.fore.blend(gold, life / _maxLife),
-        glyph.back.blend(tan, life / _maxLife));
+    glyph = new Glyph(
+        glyph.ch,
+        glyph.fore.blend(Hues.gold, life / _maxLife),
+        glyph.back.blend(Hues.tan, life / _maxLife));
 
     drawGlyph(pos.x, pos.y, glyph);
   }
 }
 
 /// Floats a treasure item upward.
-class TreasureEffect implements Effect {
-  final int _x;
+class TreasureEffect : Effect {
+  public int _x;
   int _y;
-  final Item _item;
+  public Item _item;
   int _life = 8;
 
-  TreasureEffect(Vec pos, this._item)
-      : _x = pos.x,
+  TreasureEffect(Vec pos, Item _item)
+  {
+    this._item = _item;
+        _x = pos.x;
         _y = pos.y;
+  }
 
-  bool update(Game game) {
-    if (_life.isEven) {
+  public override bool update(Game game) {
+    if (_life.isEven()) {
       _y--;
       if (_y < 0) return false;
     }
@@ -523,32 +575,35 @@ class TreasureEffect implements Effect {
     return --_life >= 0;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     drawGlyph(_x, _y, _item.appearance as Glyph);
   }
 }
 
-class HowlEffect implements Effect {
-  static final bang = Glyph("!", aqua);
-  static final slash = Glyph("/", lightAqua);
-  static final backslash = Glyph("\\", lightAqua);
-  static final dash = Glyph("-", aqua);
-  static final less = Glyph("<", aqua);
-  static final greater = Glyph(">", aqua);
+class HowlEffect : Effect {
+  static public Glyph bang = new Glyph('!', Hues.aqua);
+  static public Glyph slash = new Glyph('/', Hues.lightAqua);
+  static public Glyph backslash = new Glyph('\\', Hues.lightAqua);
+  static public Glyph dash = new Glyph('-', Hues.aqua);
+  static public Glyph less = new Glyph('<', Hues.aqua);
+  static public Glyph greater = new Glyph('>', Hues.aqua);
 
-  final Actor _actor;
+  public Actor _actor;
   int _age = 0;
 
-  HowlEffect(this._actor);
+  HowlEffect(Actor _actor)
+  {
+    this._actor = _actor;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     return ++_age < 24;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     var pos = _actor.pos;
 
-    if ((_age ~/ 6).isEven) {
+    if ((_age / 6).isEven()) {
       drawGlyph(pos.x, pos.y, bang);
       drawGlyph(pos.x - 1, pos.y, greater);
       drawGlyph(pos.x + 1, pos.y, less);
@@ -563,23 +618,27 @@ class HowlEffect implements Effect {
   }
 }
 
-class BlinkEffect implements Effect {
-  final Actor _actor;
-  final Glyph _glyph;
+class BlinkEffect : Effect {
+  public Actor _actor;
+  public Glyph _glyph;
   int _age = 0;
 
-  BlinkEffect(this._actor, this._glyph);
+  BlinkEffect(Actor _actor, Glyph _glyph)
+  {
+    this._actor = _actor;
+    this._glyph = _glyph;
+  }
 
-  bool update(Game game) {
+  public override bool update(Game game) {
     if (!game.stage[_actor.pos].isVisible) return false;
 
     return ++_age < 24;
   }
 
-  void render(Game game, DrawGlyph drawGlyph) {
+  public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     var pos = _actor.pos;
 
-    if ((_age ~/ 6).isOdd) {
+    if ((_age / 6).isOdd()) {
       drawGlyph(pos.x, pos.y, _glyph);
     }
   }

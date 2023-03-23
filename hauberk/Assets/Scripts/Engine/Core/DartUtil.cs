@@ -153,6 +153,11 @@ public static class DartUtils
 
     return result;
   }
+
+  public static bool isEven(this int v)
+  {
+    return v % 2 == 0;
+  }
 }
 
 // public class Color {
