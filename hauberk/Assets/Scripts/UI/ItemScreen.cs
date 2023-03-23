@@ -18,7 +18,7 @@ abstract class ItemScreen : Screen {
   // this nullable?
   /// The place items are being transferred to or `null` if this is just a
   /// view.
-  ItemCollection? _destination => null;
+  ItemCollection _destination => null;
 
   /// Whether the shift key is currently pressed.
   public bool _shiftDown = false;
@@ -28,13 +28,13 @@ abstract class ItemScreen : Screen {
   public bool _isActive = true;
 
   /// The item currently being inspected or `null` if none.
-  public Item? _inspected;
+  public Item _inspected;
 
 //  /// If the crucible contains a complete recipe, this will be it. Otherwise,
 //  /// this will be `null`.
 //  Recipe completeRecipe;
 
-  string? _error;
+  string _error;
 
   public virtual ItemCollection _items => null;
 
@@ -193,11 +193,11 @@ abstract class ItemScreen : Screen {
   }
 
   /// The default count to move when transferring a stack from [_items].
-  public int _initialCount(Item item) => item.count;
+  public virtual int _initialCount(Item item) => item.count;
 
   /// The maximum number of items in the stack of [item] that can be
   /// transferred from [_items].
-  public int _maxCount(Item item) => item.count;
+  public virtual int _maxCount(Item item) => item.count;
 
   /// By default, don't show the price.
   public virtual int? _itemPrice(Item item) => null;
@@ -259,7 +259,7 @@ class _TownItemView : ItemView {
 
   bool showPrices => _screen._showPrices;
 
-  Item? inspectedItem => _screen._isActive ? _screen._inspected : null;
+  Item inspectedItem => _screen._isActive ? _screen._inspected : null;
 
   bool inspectorOnRight => true;
 
@@ -273,7 +273,7 @@ class _TownItemView : ItemView {
 class _HomeViewScreen : ItemScreen {
   public override ItemCollection _items => _save.home;
 
-  string _headerText => "Welcome home!";
+  public override string _headerText => "Welcome home!";
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>(){
         {"G", "Get item"},
@@ -315,7 +315,7 @@ class _HomeViewScreen : ItemScreen {
 
 /// Screen to items from the hero's home.
 class _HomeGetScreen : _ItemVerbScreen {
-  string _headerText => "Get which item?";
+  public override string _headerText => "Get which item?";
 
   public override string _verb => "Get";
 
@@ -349,7 +349,7 @@ class _ShopViewScreen : ItemScreen {
 
   public override ItemCollection _items => _shop;
 
-  string _headerText => "What can I interest you in?";
+  public override string _headerText => "What can I interest you in?";
   public override bool _showPrices => true;
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>(){
@@ -417,12 +417,12 @@ class _ShopBuyScreen : _ItemVerbScreen {
 
   public override bool canSelect(Item item) => item.price <= _save.gold;
 
-  int _initialCount(Item item) => 1;
+  public override int _initialCount(Item item) => 1;
 
   /// Don't allow buying more than the hero can afford.
-  int _maxCount(Item item) => Math.Min(item.count, _save.gold / item.price);
+  public override int _maxCount(Item item) => Math.Min(item.count, _save.gold / item.price);
 
-  int? _itemPrice(Item item) => item.price;
+  public override int? _itemPrice(Item item) => item.price;
 
   /// Pay for purchased item.
   void _afterTransfer(Item item, int count) {
@@ -447,7 +447,7 @@ class _CountScreen : ItemScreen {
 
   public override ItemCollection _items => _parent._items;
 
-  string _headerText {
+  public override string _headerText {
     get {
       var itemText = _item.clone(_count).ToString();
       var price = _parent._itemPrice(_item);

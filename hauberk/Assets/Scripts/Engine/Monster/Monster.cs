@@ -51,7 +51,7 @@ public class Monster : Actor {
 
   public bool isAwake => _state is AwakeState;
 
-  public Motility motility => breed.motility;
+  public override Motility motility => breed.motility;
 
   /// Whether the monster wanted to melee or do a ranged attack the last time
   /// it took a step.
@@ -73,22 +73,22 @@ public class Monster : Actor {
 
   public double fear => _fear;
 
-  object appearance => breed.appearance;
+  public override object appearance => breed.appearance;
 
-  public string nounText => $"the {breed.name}";
+  public override string nounText => $"the {breed.name}";
 
-  Pronoun pronoun => breed.pronoun;
+  public override Pronoun pronoun => breed.pronoun;
 
   /// How much experience the [Hero] gains for killing this monster.
   public int experience => breed.experience;
 
-  int maxHealth => breed.maxHealth;
+  public override int maxHealth => breed.maxHealth;
 
   /// Instead of armor, we just scale up the health for different breeds to
   /// accomplish the same thing.
-  int armor => 0;
+  public override int armor => 0;
 
-  int emanationLevel => breed.emanationLevel;
+  public override int emanationLevel => breed.emanationLevel;
 
   /// How much the monster relies on sight to sense the hero, from 0.0 to 1.0.
   public double sightReliance {
@@ -328,7 +328,7 @@ public class Monster : Actor {
     _state.bind(this);
   }
 
-  public override List<Hit> onCreateMeleeHits(Actor? defender) 
+  public override List<Hit> onCreateMeleeHits(Actor defender) 
   {
     return new List<Hit>(){ Rng.rng.item(breed.attacks).createHit() };
   }
@@ -365,7 +365,7 @@ public class Monster : Actor {
   }
 
   /// Taking damage increases fear.
-  void onTakeDamage(Action action, Actor? attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage) {
     _alertness = _maxAlertness;
 
     // The greater the power of the hit, the more frightening it is.

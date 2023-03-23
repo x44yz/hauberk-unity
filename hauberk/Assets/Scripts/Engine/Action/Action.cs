@@ -106,7 +106,7 @@ public abstract class Action
     return ActionResult.success;
   }
 
-  public ActionResult fail(string? message = null, Noun? noun1 = null, Noun? noun2 = null, Noun? noun3 = null) {
+  public ActionResult fail(string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     if (message != null) error(message, noun1, noun2, noun3);
     return ActionResult.failure;
   }

@@ -11,7 +11,7 @@ public partial class ArchitecturalStyle
       double? endFrequency = null,
       string decor = "",
       double? decorDensity = null,
-      string? monsters = null,
+      string monsters = null,
       double? monsterDensity = null,
       double? itemDensity = null,
       System.Func<Architecture> create = null,

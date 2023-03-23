@@ -25,12 +25,12 @@ class MonsterPathfinder : Pathfinder<Direction> {
   /// available.
   public const int _diagonalCost = 11;
 
-  public static Direction? findDirection(Stage stage, Monster monster) {
+  public static Direction findDirection(Stage stage, Monster monster) {
     return new MonsterPathfinder(stage, monster).search();
   }
 
   public Monster _monster;
-  Path? _nearest;
+  Path _nearest;
 
   MonsterPathfinder(Stage stage, Monster _monster)
       : base(stage, _monster.pos, stage.game.hero.pos)
@@ -119,7 +119,7 @@ class MonsterPathfinder : Pathfinder<Direction> {
   /// There's no path to the goal so, just pick the path that gets nearest to
   /// it and hope for the best. (Maybe someone will open a door later or
   /// something.)
-  public override Direction? unreachableGoal() {
+  public override Direction unreachableGoal() {
     // If the monster was totally blocked in, there is no path.
     if (_nearest == null) return null;
 

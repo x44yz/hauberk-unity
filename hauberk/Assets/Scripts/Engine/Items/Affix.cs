@@ -36,7 +36,7 @@ public class Affix
       int? strikeBonus,
       double? damageScale,
       int? damageBonus,
-      Element? brand,
+      Element brand,
       int? armor,
       int? priceBonus,
       double? priceScale)

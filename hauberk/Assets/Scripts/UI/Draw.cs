@@ -24,7 +24,7 @@ public static class Draw {
   }
 
   public static void helpKeys(Terminal terminal, Dictionary<string, string> helpKeys,
-      string? query = null) {
+      string query = null) {
     // Draw the help.
     var helpTextLength = 0;
     foreach (var kv in helpKeys) {

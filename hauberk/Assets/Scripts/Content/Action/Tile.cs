@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// Base class for actions that open a container tile.
 abstract class _OpenTileAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
 
   public _OpenTileAction(Vec _pos)
   {

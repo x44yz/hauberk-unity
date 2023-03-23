@@ -25,8 +25,8 @@ class GameContent : Content {
   }
 
   public override Affix findAffix(string name) => Affixes.find(name);
-  public override Breed? tryFindBreed(string name) => Monsters.breeds.tryFind(name);
-  public override ItemType? tryFindItem(string name) => Items.types.tryFind(name);
+  public override Breed tryFindBreed(string name) => Monsters.breeds.tryFind(name);
+  public override ItemType tryFindItem(string name) => Items.types.tryFind(name);
   public override Skill findSkill(string name) => Skills.find(name);
 
   public override List<Breed> breeds => Monsters.breeds.all.ToList();
@@ -37,7 +37,7 @@ class GameContent : Content {
   public override List<Skill> skills => Skills.all;
   public override Dictionary<string, Shop> shops => Shops.all;
 
-  public override HeroSave createHero(string name, Race? race = null, HeroClass? heroClass = null) {
+  public override HeroSave createHero(string name, Race race = null, HeroClass heroClass = null) {
     race ??= Races.human;
     heroClass ??= Classes.adventurer;
 
@@ -72,7 +72,7 @@ class GameContent : Content {
 
   // TODO: Putting this right here in content is kind of lame. Is there a
   // better place for it?
-  public override Action? updateSubstance(Stage stage, Vec pos) {
+  public override Action updateSubstance(Stage stage, Vec pos) {
     // TODO: More interactions:
     // fire:
     // - burns fuel (amount) and goes out when it hits zero

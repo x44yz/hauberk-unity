@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// Spawns a new [Monster] of a given [Breed].
 class SpawnAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
   public Breed _breed;
 
   public SpawnAction(Vec _pos, Breed _breed)

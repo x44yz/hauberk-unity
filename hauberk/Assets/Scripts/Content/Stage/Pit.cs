@@ -50,7 +50,7 @@ class Pit : Architecture {
     return rt;
   }
 
-  bool spawnMonsters(Painter painter) {
+  public override bool spawnMonsters(Painter painter) {
     // Boost the depth some.
     var depth = Mathf.CeilToInt((float)(painter.depth * Rng.rng.rfloat(1.0, 1.4)));
 
@@ -77,7 +77,7 @@ class Pit : Architecture {
     return true;
   }
 
-  Rect? _tryPlaceCave(Array2D<bool> cave, Rect bounds) {
+  Rect _tryPlaceCave(Array2D<bool> cave, Rect bounds) {
     if (bounds.width < cave.width) return null;
     if (bounds.height < cave.height) return null;
 

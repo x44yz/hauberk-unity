@@ -28,7 +28,7 @@ public class Sound {
 
   /// A [Flow] that calculates how much sound attenuates from the hero's
   /// current position.
-  Flow? _flow;
+  Flow _flow;
 
   public Sound(Stage _stage)
   {

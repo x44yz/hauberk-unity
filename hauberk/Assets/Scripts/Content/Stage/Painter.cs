@@ -7,7 +7,7 @@ using System.Linq;
 public class Painter {
   public Decorator _decorator;
   public Architect _architect;
-  public Architecture? _architecture;
+  public Architecture _architecture;
   int _painted = 0;
 
   public Painter(Decorator _decorator, Architect _architect, Architecture _architecture)
@@ -75,16 +75,16 @@ public class PaintStyle {
     Tiles.granite3
   };
 
-  public List<TileType>? _floor;
-  public List<TileType>? _wall;
-  public TileType? _closedDoor;
-  public TileType? _openDoor;
+  public List<TileType> _floor;
+  public List<TileType> _wall;
+  public TileType _closedDoor;
+  public TileType _openDoor;
 
   public PaintStyle(
-      List<TileType>? floor = null,
-      List<TileType>? wall = null,
-      TileType? closedDoor = null,
-      TileType? openDoor = null)
+      List<TileType> floor = null,
+      List<TileType> wall = null,
+      TileType closedDoor = null,
+      TileType openDoor = null)
   {
       _floor = floor;
       _wall = wall;

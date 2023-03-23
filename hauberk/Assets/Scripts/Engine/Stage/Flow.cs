@@ -100,7 +100,7 @@ public abstract class Flow {
   ///
   /// If there are multiple equivalent positions, chooses one randomly. If
   /// there are none, returns null.
-  public Vec? bestWhere(System.Func<Vec, bool> predicate) {
+  public Vec bestWhere(System.Func<Vec, bool> predicate) {
     var results = _findAllBestWhere(predicate);
     if (results.Count == 0) return null;
 

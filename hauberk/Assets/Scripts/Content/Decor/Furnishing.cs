@@ -5,7 +5,7 @@ using System.Linq;
 /// A template-based decor that applies a set of tiles if it matches a set of
 /// existing tiles.
 class Furnishing : Decor {
-  static void initialize() {
+  // static void initialize() {
     /*
     // Fountains.
     // TODO: Can these be found anywhere else?
@@ -155,7 +155,7 @@ class Furnishing : Decor {
 
     // TODO: Fireplaces.
     */
-  }
+  // }
 
   public Array2D<Cell> _cells;
 
@@ -194,15 +194,15 @@ class Furnishing : Decor {
 public class Cell {
   static public Cell uninitialized = new Cell();
 
-  public TileType? _apply;
-  public Motility? _motility;
+  public TileType _apply;
+  public Motility _motility;
   public List<TileType> _require = new List<TileType>{};
 
   public Cell(
-      TileType? apply = null,
-      Motility? motility = null,
-      TileType? require = null,
-      List<TileType>? requireAny = null)
+      TileType apply = null,
+      Motility motility = null,
+      TileType require = null,
+      List<TileType> requireAny = null)
   {
     _apply = apply;
     _motility = motility;

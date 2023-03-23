@@ -79,7 +79,7 @@ class Affixes {
     return suffixes.find(name);
   }
 
-  static Affix? _chooseAffix(
+  static Affix _chooseAffix(
       ResourceSet<Affix> affixes, ItemType itemType, int depth) {
     return affixes.tryChooseMatching(depth, Items.types.getTags(itemType.name));
   }

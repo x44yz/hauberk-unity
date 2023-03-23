@@ -287,11 +287,11 @@ public class Event {
   public EventType type;
   // TODO: Having these all be nullable leads to a lot of "!" in effects.
   // Consider a better way to model this.
-  public Actor? actor;
+  public Actor actor;
   public Element element;
-  public object? other;
-  public Vec? pos;
-  public Direction? dir;
+  public object other;
+  public Vec pos;
+  public Direction dir;
 
   public Event(EventType type, Actor actor, Element element, Vec pos, 
             Direction dir, object other)
@@ -389,5 +389,18 @@ public class EventType {
   public static bool operator != (EventType a, EventType b)
   {
     return a._name.Equals(b._name) == false;
+  }
+  public override bool Equals(object obj)
+  {
+    if (obj is EventType)
+    {
+      var evt = obj as EventType;
+      return this == evt;
+    }
+    return false;
+  }
+  public override int GetHashCode()
+  {
+    return _name.GetHashCode();
   }
 }

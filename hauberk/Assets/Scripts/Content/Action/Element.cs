@@ -56,7 +56,7 @@ class BurnActorAction : Action {
 
 /// Side-effect action when an [Elements.fire] area attack sweeps over a tile.
 class BurnFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
   public int _damage;
   public int _fuel;
 
@@ -97,7 +97,7 @@ class BurnFloorAction : Action {
 /// Action created by the [Elements.fire] substance each turn a tile continues
 /// to burn.
 class BurningFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
 
   public DestroyActionMixin _destroyMixin;
 
@@ -124,7 +124,7 @@ class BurningFloorAction : Action {
 
 /// Side-effect action when an [Elements.cold] area attack sweeps over a tile.
 class FreezeFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
 
   public DestroyActionMixin _destroyMixin;
 
@@ -145,7 +145,7 @@ class FreezeFloorAction : Action {
 
 /// Side-effect action when an [Elements.poison] area attack sweeps over a tile.
 class PoisonFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
   public int _damage;
 
   public DestroyActionMixin _destroyMixin;
@@ -178,7 +178,7 @@ class PoisonFloorAction : Action {
 /// Action created by the [Elements.poison] substance each turn a tile contains
 /// poisonous gas.
 class PoisonedFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
 
     public DestroyActionMixin _destroyMixin;
   public PoisonedFloorAction(Vec _pos)

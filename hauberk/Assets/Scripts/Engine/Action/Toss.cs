@@ -47,7 +47,7 @@ class TossLosAction : LosAction {
   /// range.
   bool _missed = false;
 
-  int range => _hit.range;
+  public override int range => _hit.range;
 
   public TossLosAction(Vec target, Item _item, Hit _hit) : base(target)
   {

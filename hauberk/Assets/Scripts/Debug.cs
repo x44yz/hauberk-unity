@@ -25,17 +25,17 @@ class Debugger {
   /// The current density map being used.
   ///
   /// Typed as Object? so that this library isn't coupled to the UI.
-  public static object? densityMap;
+  public static object densityMap;
 
   static public Dictionary<Monster, _MonsterLog> _monsters = new Dictionary<Monster, _MonsterLog>();
 
   /// The current game screen.
   ///
   /// Typed as Object so that this library isn't coupled to the UI.
-  static object? _gameScreen;
-  static object? gameScreen => _gameScreen;
+  static object _gameScreen;
+  static object gameScreen => _gameScreen;
 
-  public static void bindGameScreen(object? screen) {
+  public static void bindGameScreen(object screen) {
     _gameScreen = screen;
     _monsters.Clear();
   }
@@ -94,7 +94,7 @@ class Debugger {
   }
 
   /// Gets the debug info for [monster].
-  static string? monsterInfo(Monster monster) {
+  static string monsterInfo(Monster monster) {
     if (!enabled || _gameScreen == null) return null;
 
     var log = _monsters[monster];

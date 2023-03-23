@@ -26,7 +26,7 @@ public class Decorator {
   public Stage _stage => _architect.stage;
 
   /// Gets the list of tiles owned by [architecture].
-  public List<Vec> tilesFor(Architecture? architecture) =>
+  public List<Vec> tilesFor(Architecture architecture) =>
       _tilesByArchitecture[architecture]!;
 
   public IEnumerable<string> decorate() {
@@ -289,7 +289,7 @@ public class Decorator {
     _spawnMonster(null, pos, breed);
   }
 
-  int _spawnMonster(DensityMap? density, Vec pos, Breed breed) {
+  int _spawnMonster(DensityMap density, Vec pos, Breed breed) {
     var isCorpse = !breed.flags.unique && Rng.rng.oneIn(10);
 
     var experience = 0;
@@ -473,7 +473,7 @@ class DensityMap {
   /// Picks a random tile from the map, weighed by the density of each tile.
   ///
   /// Returns `null` if no tiles have any density.
-  public Vec? choose() {
+  public Vec choose() {
     if (_total == 0) return null;
 
     var n = Rng.rng.range(_total);

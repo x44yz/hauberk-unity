@@ -221,7 +221,7 @@ class AwakeState : MonsterState {
     var meleeDir = _findMeleePath();
     var rangedDir = rangedAttacks > 0 ? _findRangedPath() : null;
 
-    Direction? walkDir;
+    Direction walkDir;
     if (monster.wantsToMelee) {
       walkDir = meleeDir ?? rangedDir;
     } else {
@@ -252,7 +252,7 @@ class AwakeState : MonsterState {
   /// Returns the [Direction] to take along the path. Returns [Direction.none]
   /// if the monster's current position is a good ranged spot. Returns `null`
   /// if no good ranged position could be found.
-  Direction? _findRangedPath() {
+  Direction _findRangedPath() {
     var maxRange = 9999;
     foreach (var move in breed.moves) {
       if (move.range > 0 && move.range < maxRange) maxRange = move.range;
@@ -318,7 +318,7 @@ class AwakeState : MonsterState {
     return null;
   }
 
-  Direction? _findMeleePath() {
+  Direction _findMeleePath() {
     var losDir = _findLosWalkPath();
     if (losDir != null) return losDir;
 
@@ -337,9 +337,9 @@ class AwakeState : MonsterState {
   ///    to the hero, A* will always prefer an intercardinal move direction,
   ///    even if the hero is almost a cardinal direction away. Bresenham will
   ///    pick a direction that's closest to the direction pointing at the hero.
-  Direction? _findLosWalkPath() {
+  Direction _findLosWalkPath() {
     // TODO: Need to verify that this does actually help performance.
-    Vec? first = null;
+    Vec first = null;
     var length = 1;
 
     foreach (var pos in new Line(pos, game.hero.pos)) {

@@ -16,7 +16,7 @@ abstract class MasteryDiscipline : Discipline {
 
   double _damageScale(int level) => MathUtils.lerpDouble(level, 1, maxLevel, 1.0, 2.0);
 
-  public override void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {
+  public override void modifyAttack(Hero hero, Monster monster, Hit hit, int level) {
     if (!_hasWeapon(hero)) return;
 
     // TODO: Tune.

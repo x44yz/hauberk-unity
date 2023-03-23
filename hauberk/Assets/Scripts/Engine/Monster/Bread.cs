@@ -91,7 +91,7 @@ public class Breed {
   public int countMax;
 
   /// Additional monsters that should be spawned when this one is spawned.
-  public Spawn? minions;
+  public Spawn minions;
 
   /// The name of the breed. If the breed's name has irregular pluralization
   /// like "bunn[y|ies]", this will be the original unparsed string.
@@ -99,7 +99,7 @@ public class Breed {
 
   /// If this breed should stain some of the nearby floor tiles when spawned,
   /// this is the type is should stain them with. Otherwise `null`.
-  public TileType? stain;
+  public TileType stain;
 
   /// The groups that the breed is a part of.
   ///

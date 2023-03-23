@@ -87,6 +87,20 @@ public class TilePortal {
     return a.name.Equals(b.name) == false;
   }
 
+    public override bool Equals(object obj)
+    {
+        if (obj is TilePortal)
+        {
+            var k = obj as TilePortal;
+            return this == k;
+        }
+        return false;
+    }
+    public override int GetHashCode()
+    {
+        return name.GetHashCode();
+    }
+
   public override string  ToString() => name;
 }
 
@@ -235,7 +249,7 @@ public class Tile {
 
     public bool isClosedDoor => type.motility == Motility.door;
 
-    public TilePortal? portal => type.portal;
+    public TilePortal portal => type.portal;
 
     public bool canEnter(Motility motility) => type.canEnter(motility);
 }

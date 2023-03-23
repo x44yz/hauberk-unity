@@ -332,9 +332,9 @@ class _TileBuilder {
   public string name;
   public List<Glyph> glyphs;
 
-  System.Func<Vec, Action>? _onClose;
-  System.Func<Vec, Action>? _onOpen;
-  TilePortal? _portal;
+  System.Func<Vec, Action> _onClose;
+  System.Func<Vec, Action> _onOpen;
+  TilePortal _portal;
   int _emanation = 0;
 
   public _TileBuilder(string name, object ch, Color fore, Color? back) 

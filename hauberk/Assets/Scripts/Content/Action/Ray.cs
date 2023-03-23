@@ -152,7 +152,7 @@ class RingSelfAction : Action {
 
 class RingFromAction : Action {
   public Attack _attack;
-  public Vec _pos;
+  // public Vec _pos;
 
   public RingFromAction(Attack _attack, Vec _pos)
   {

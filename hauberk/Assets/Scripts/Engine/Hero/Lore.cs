@@ -73,7 +73,7 @@ public class Lore {
     if (!_foundItems.ContainsKey(item.type)) _foundItems.Add(item.type, 0);
     _foundItems[item.type] = _foundItems[item.type]! + 1;
 
-    void findAffix(Affix? affix) {
+    void findAffix(Affix affix) {
       if (affix == null) return;
 
       if (!_foundAffixes.ContainsKey(affix)) _foundAffixes.Add(affix, 0);

@@ -7,7 +7,7 @@ using System.Linq;
 /// Note that this may generate unconnected regions.
 class Blob {
   public static Array2D<bool> make(int size) {
-    Array2D<bool>? blob = null;
+    Array2D<bool> blob = null;
 
     if (size >= 64) {
       // Truncate to nearest multiple of 8.
@@ -34,7 +34,7 @@ class Blob {
     return _crop(blob);
   }
 
-  static Array2D<bool> _make(int size, int smoothing, Array2D<bool>? input = null) {
+  static Array2D<bool> _make(int size, int smoothing, Array2D<bool> input = null) {
     var cells = new Array2D<bool>(size, size, false);
     var dest = new Array2D<bool>(size, size, false);
 

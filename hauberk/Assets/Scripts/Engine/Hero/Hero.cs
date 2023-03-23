@@ -14,7 +14,7 @@ public class Hero : Actor {
   /// Monsters the hero has already seen. Makes sure we don't double count them.
   public HashSet<Monster> _seenMonsters = new HashSet<Monster>();
 
-  Behavior? _behavior;
+  Behavior _behavior;
 
   /// Damage scales for each weapon being wielded, based on the weapon, other
   /// equipment, and stats.
@@ -56,7 +56,7 @@ public class Hero : Actor {
   public double lastNoise => _lastNoise;
   double _lastNoise = 0.0;
 
-  string nounText => "you";
+  public override string nounText => "you";
 
   public override Pronoun pronoun => Pronoun.you;
 
@@ -119,9 +119,9 @@ public class Hero : Actor {
   }
 
   // TODO: Hackish.
-  object appearance => "hero";
+  public override object appearance => "hero";
 
-  bool needsInput {
+  public override bool needsInput {
     get {
       if (_behavior != null && !_behavior!.canPerform(this)) {
         waitForInput();
@@ -135,7 +135,7 @@ public class Hero : Actor {
   public int level => _level.value;
   public Property<int> _level = new Property<int>();
 
-  int armor => save.armor;
+  public override int armor => save.armor;
 
   /// The total weight of all equipment.
   int weight => save.weight;
@@ -191,7 +191,7 @@ public class Hero : Actor {
 
   public override Action onGetAction() => _behavior!.getAction(this);
 
-  public override List<Hit> onCreateMeleeHits(Actor? defender) {
+  public override List<Hit> onCreateMeleeHits(Actor defender) {
     var hits = new List<Hit>();
 
     // See if any melee weapons are equipped.
@@ -276,7 +276,7 @@ public class Hero : Actor {
     _gainFury(damage / defender.maxHealth * maxHealth / 100);
   }
 
-  void onTakeDamage(Action action, Actor? attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage) {
     // Getting hit loses focus and gains fury.
     // TODO: Lose less focus for ranged attacks?
     var focus = Mathf.CeilToInt((float)(damage / maxHealth * will.damageFocusScale));
@@ -407,7 +407,7 @@ public class Hero : Actor {
   ///
   /// Does not reset [_turnsSinceLostFocus].
   public void spendFury(int fury) {
-    DartUtils.assert(fury >= fury);
+    DartUtils.assert(fury >= _fury);
 
     _fury -= fury;
   }

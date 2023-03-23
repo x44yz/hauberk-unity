@@ -252,5 +252,18 @@ public class Vec : VecBase
     {
         return a.x != b.x || a.y != b.y;
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Vec)
+        {
+        var k = obj as Vec;
+        return this == k;
+        }
+        return false;
+    }
+    public override int GetHashCode()
+    {
+        return hashCode;
+    }
 }
 

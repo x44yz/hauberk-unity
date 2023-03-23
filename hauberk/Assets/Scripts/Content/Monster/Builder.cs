@@ -26,7 +26,7 @@ public static class _MBaseBuilderUtils
     /// The last builder that was created. It gets implicitly finished when the
     /// next family or breed starts, or at the end of initialization. This way, we
     /// don't need an explicit `build()` call at the end of each builder.
-    public static _BreedBuilder? _builder;
+    public static _BreedBuilder _builder;
 
     public static _FamilyBuilder _family;
 
@@ -122,7 +122,7 @@ public class _MBaseBuilder {
   public int? _countMin;
   public int? _countMax;
 
-  public TileType? _stain;
+  public TileType _stain;
 
   public int? _emanationLevel;
 
@@ -215,7 +215,7 @@ public class _BreedBuilder : _MBaseBuilder {
   public List<Move> _moves = new List<Move>();
   public List<Drop> _drops = new List<Drop>();
   public List<Spawn> _minions = new List<Spawn>();
-  public Pronoun? _pronoun;
+  public Pronoun _pronoun;
   public string _description;
 
   public _BreedBuilder(string _name, int _depth, double? frequency, object _appearance, int _health)
@@ -244,7 +244,7 @@ public class _BreedBuilder : _MBaseBuilder {
     _minions.Add(spawn);
   }
 
-  public void attack(string verb, int damage, Element? element = null, Noun? noun = null) {
+  public void attack(string verb, int damage, Element element = null, Noun noun = null) {
     _attacks.Add(new Attack(noun, verb, damage, 0, element));
   }
 
@@ -368,7 +368,7 @@ public class _BreedBuilder : _MBaseBuilder {
   public void amputate(string body, string part, string message) =>
       _addMove(new AmputateMove(new BreedRef(body), new BreedRef(part), message));
 
-  void _bolt(string? noun, string verb, Element element,
+  void _bolt(string noun, string verb, Element element,
       num rate, int damage, int range) {
     var nounObject = noun != null ? new Noun(noun) : null;
     _addMove(new BoltMove(rate, new Attack(nounObject, verb, damage, range, element)));
@@ -399,7 +399,7 @@ public class _BreedBuilder : _MBaseBuilder {
     var dodge = _dodge ?? _family._dodge;
     if (flags.Contains("immobile")) dodge = 0;
 
-    Spawn? minions = null;
+    Spawn minions = null;
     if (_minions.Count == 1) {
       minions = _minions[0];
     } else if (_minions.Count > 1) {

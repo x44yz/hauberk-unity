@@ -11,7 +11,7 @@ class FlowAction : Action {
 
   public Flow _flow;
   // TODO: Make this late public?
-  List<Vec>? _tiles;
+  List<Vec> _tiles;
 
   public Motility _motility;
   public int _slowness;
@@ -91,7 +91,7 @@ class FlowSelfAction : Action {
 
 class FlowFromAction : Action {
   public Attack _attack;
-  public Vec _pos;
+  // public Vec _pos;
   public Motility _motility;
 
   public FlowFromAction(Attack _attack, Vec _pos, Motility _motility)

@@ -91,7 +91,7 @@ public class Stage {
         _currentActorIndex = (_currentActorIndex + 1) % _actors.Count;
     }
 
-    public Actor? actorAt(Vec pos) => _actorsByTile[pos];
+    public Actor actorAt(Vec pos) => _actorsByTile[pos];
 
     public List<Item> placeDrops(Vec pos, Motility motility, Drop drop) {
         var items = new List<Item>();

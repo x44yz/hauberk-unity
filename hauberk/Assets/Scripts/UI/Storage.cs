@@ -165,7 +165,7 @@ class Storage {
     // return items;
   }
 
-  Item? _loadItem(Dictionary<string, object> data) {
+  Item _loadItem(Dictionary<string, object> data) {
     throw new System.NotImplementedException();
     // var type = content.tryFindItem(data['type'] as String);
     // if (type == null) {

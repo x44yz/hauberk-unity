@@ -27,12 +27,12 @@ public class Region {
 
 /// The main class that orchestrates painting and populating the stage.
 public class Architect {
-  static Array2D<Architecture?>? debugOwners;
+  static Array2D<Architecture> debugOwners;
 
   public Lore lore;
   public Stage stage;
   public int depth;
-  public Array2D<Architecture?> _owners;
+  public Array2D<Architecture> _owners;
 
   public int _carvedTiles = 0;
 
@@ -99,10 +99,10 @@ public class Architect {
     return rt;
   }
 
-  public Architecture? ownerAt(Vec pos) => _owners[pos];
+  public Architecture ownerAt(Vec pos) => _owners[pos];
 
   /// Marks the tile at [x], [y] as open floor for [architecture].
-  public void _carve(Architecture architecture, int x, int y, TileType? tile) {
+  public void _carve(Architecture architecture, int x, int y, TileType tile) {
     DartUtils.assert(_owners._get(x, y) == null || _owners._get(x, y) == architecture);
     DartUtils.assert(stage.get(x, y).type == Tiles.unformed);
 
@@ -457,7 +457,7 @@ public abstract class Architecture {
   /// Sets the tile at [x], [y] to [tile] and owned by this architecture.
   ///
   /// If [tile] is omitted, uses [Tiles.open].
-  public void carve(int x, int y, TileType? tile = null) =>
+  public void carve(int x, int y, TileType tile = null) =>
       _architect._carve(this, x, y, tile);
 
   /// Whether this architecture can carve the tile at [pos].

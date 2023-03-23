@@ -17,7 +17,7 @@ class Swordfighting : MasteryDiscipline {
       base.levelDescription(level) +
       " Parrying increases dodge by ${_parryDefense(level)}.";
 
-  public override Defense? getDefense(Hero hero, int level) {
+  public override Defense getDefense(Hero hero, int level) {
     var swords = hero.equipment.weapons
         .Where((weapon) => weapon.type.weaponType == "sword")
         .Count();

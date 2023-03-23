@@ -39,7 +39,7 @@ class SlayDiscipline : Discipline {
     hero.refreshSkill(this);
   }
 
-  public override void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {
+  public override void modifyAttack(Hero hero, Monster monster, Hit hit, int level) {
     if (monster == null) return;
     if (!Monsters.breeds.hasTag(monster.breed.name, _breedGroup)) return;
 

@@ -275,13 +275,14 @@ public class Log {
 }
 
 public class Noun {
-  public string nounText;
+  public virtual string nounText => _nounText;
+  protected string _nounText;
 
   public virtual Pronoun pronoun => Pronoun.it;
 
   public Noun(string nounText)
   {
-    this.nounText = nounText;
+    this._nounText = nounText;
   }
 
   public override string ToString() => nounText;

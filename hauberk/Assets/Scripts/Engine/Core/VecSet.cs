@@ -81,5 +81,5 @@ class VecSet : IEnumerable<Vec>
     _yMax = Math.Max(_yMax, pos.y);
   }
 
-  public bool contains(object? element) => _values[element as Vec] == _sentinel;
+  public bool contains(object element) => _values[element as Vec] == _sentinel;
 }

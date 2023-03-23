@@ -36,6 +36,20 @@ public class ItemLocation
     {
       return a.name.Equals(b.name) == false;
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is ItemLocation)
+        {
+          var k = obj as ItemLocation;
+          return this == k;
+        }
+        return false;
+    }
+    public override int GetHashCode()
+    {
+        return name.GetHashCode() ^ emptyDescription.GetHashCode();
+    }
 }
 
 // TODO: Move tryAdd() out of ItemCollection and Equipment? I think it's only
@@ -100,8 +114,8 @@ public class Inventory : ItemCollection {
   /// will refer to the item that was unequipped.
   ///
   /// If the hero isn't holding an unequipped item, returns `null`.
-  Item? lastUnequipped => _lastUnequipped;
-  Item? _lastUnequipped;
+  Item lastUnequipped => _lastUnequipped;
+  Item _lastUnequipped;
 
   public override int length => _items.Count;
 

@@ -77,7 +77,7 @@ public abstract partial class Decor {
   };
 
   public static void category(
-      string themes, double? frequency = null, Dictionary<string, Cell>? cells = null) {
+      string themes, double? frequency = null, Dictionary<string, Cell> cells = null) {
     _themes = themes;
     _categoryFrequency = frequency;
     _categoryCells = cells;
@@ -85,7 +85,7 @@ public abstract partial class Decor {
 
   public static Cell applyOpen(TileType type) => new Cell(apply: type, motility: Motility.walk);
 
-  public static Cell apply(TileType type, TileType? over) => new Cell(apply: type, require: over);
+  public static Cell apply(TileType type, TileType over) => new Cell(apply: type, require: over);
 
   public static Cell require(TileType type) => new Cell(require: type);
 

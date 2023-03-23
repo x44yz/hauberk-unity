@@ -4,11 +4,12 @@ using num = System.Double;
 
 /// Creates a swath of emanation that radiates out from a point.
 class IlluminateAction : RayActionBase {
-  public int range;
+  public override int range => _range;
+  int _range;
 
   public IlluminateAction(int range, Vec center) : base(center, center, 1.0)
   {
-    this.range = range;
+    this._range = range;
   }
 
   void reachStartTile(Vec pos) {

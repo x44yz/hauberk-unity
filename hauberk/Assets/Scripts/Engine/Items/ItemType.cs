@@ -34,7 +34,7 @@ public class Toss {
 
     /// The action created when the item is tossed and hits something, or `null`
     /// if it just falls to the ground.
-    public TossItemUse? use;
+    public TossItemUse use;
 
     public Toss(int breakage, Attack attack, TossItemUse use)
     {
@@ -69,24 +69,24 @@ public class ItemType {
 
     /// The name of the equipment slot that [Item]s can be placed in. If `null`
     /// then this Item cannot be equipped.
-    public string? equipSlot;
+    public string equipSlot;
 
     /// If true, the item takes up both hand slots.
     public bool isTwoHanded;
 
     /// If this item is a weapon, returns which kind of weapon it is -- "spear",
     /// "sword", etc. Otherwise returns `null`.
-    public string? weaponType;
+    public string weaponType;
 
-    public ItemUse? use;
+    public ItemUse use;
 
     /// The item's [Attack] or `null` if the item is not an equippable weapon.
-    public Attack? attack;
+    public Attack attack;
 
     /// The items toss information, or `null` if it can't be tossed.
-    public Toss? toss;
+    public Toss toss;
 
-    public Defense? defense;
+    public Defense defense;
 
     public int armor;
 

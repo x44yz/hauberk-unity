@@ -95,7 +95,7 @@ public abstract class Actor : Noun
     }
   }
 
-  public object appearance;
+  public virtual object appearance => null;
 
   // string nounText;
 
@@ -109,7 +109,7 @@ public abstract class Actor : Noun
   /// Whether the actor's vision is currently impaired.
   public bool isBlinded => blindness.isActive || dazzle.isActive;
 
-  public bool needsInput => false;
+  public virtual bool needsInput => false;
 
   public virtual Motility motility => null;
 
@@ -144,7 +144,7 @@ public abstract class Actor : Noun
   }
 
   /// The amount of protection against damage the actor has.
-  public int armor;
+  public virtual int armor => 0;
 
   /// The amount of light emanating from this actor.
   ///
@@ -263,7 +263,7 @@ public abstract class Actor : Noun
   ///
   /// [attacker] may be `null` if the damage is not the direct result of an
   /// attack (for example, poison).
-  void onTakeDamage(Action action, Actor? attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage) {
     // Do nothing.
   }
 

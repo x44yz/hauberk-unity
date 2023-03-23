@@ -23,7 +23,7 @@ abstract partial class Decor {
 //    all.addUnnamed(Blast(), 1, 0.01, "laboratory");
   }
 
-  public static Decor? choose(int depth, string theme) {
+  public static Decor choose(int depth, string theme) {
     if (!all.tagExists(theme)) return null;
     return all.tryChoose(depth, tag: theme);
   }

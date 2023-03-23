@@ -275,7 +275,7 @@ class RoomTile {
   /// prevent entrances to rooms in corners, which looks weird.
   public static RoomTile wall = new RoomTile(Tiles.solid);
 
-  public TileType? tile;
+  public TileType tile;
   public Direction direction;
 
   public RoomTile(Direction direction)

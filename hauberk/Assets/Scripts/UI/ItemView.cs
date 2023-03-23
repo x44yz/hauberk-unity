@@ -23,7 +23,7 @@ abstract class ItemView {
 
   bool showPrices => false;
 
-  Item? inspectedItem => null;
+  Item inspectedItem => null;
 
   bool inspectorOnRight => false;
 

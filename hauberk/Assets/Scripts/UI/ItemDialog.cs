@@ -19,7 +19,7 @@ class ItemDialog : Screen {
 
   /// If the player needs to select a quantity for an item they have already
   /// chosen, this will be the index of the item.
-  Item? _selectedItem;
+  Item _selectedItem;
 
   /// The number of items the player selected.
   int _count = -1;
@@ -28,7 +28,7 @@ class ItemDialog : Screen {
   public bool _shiftDown = false;
 
   /// The current item being inspected or `null` if there is none.
-  public Item? _inspected;
+  public Item _inspected;
 
   public override bool isTransparent => true;
 
@@ -289,7 +289,7 @@ class _ItemDialogItemView : ItemView {
 
   bool showPrices => _dialog._command.showPrices;
 
-  Item? inspectedItem => _dialog._inspected;
+  Item inspectedItem => _dialog._inspected;
 
   bool canSelect(Item item) => _dialog._canSelect(item);
 
@@ -360,7 +360,7 @@ abstract class _ItemCommand {
 }
 
 class _DropItemCommand : _ItemCommand {
-  List<ItemLocation> allowedLocations =>
+  public override List<ItemLocation> allowedLocations =>
       new List<ItemLocation>(){ItemLocation.inventory, ItemLocation.equipment};
 
   public override bool needsCount => true;
@@ -464,7 +464,7 @@ class _TossItemCommand : _ItemCommand {
 // TODO: It queries for a count. But if there is only a single item, the hero
 // automatically picks up the whole stack. Should it do the same here?
 class _PickUpItemCommand : _ItemCommand {
-  List<ItemLocation> allowedLocations => new List<ItemLocation>()
+  public override List<ItemLocation> allowedLocations => new List<ItemLocation>()
     {ItemLocation.onGround};
 
   public override bool needsCount => true;
@@ -488,7 +488,7 @@ class _PutItemCommand : _ItemCommand {
   {
   }
 
-  List<ItemLocation> allowedLocations =>
+  public override List<ItemLocation> allowedLocations =>
       new List<ItemLocation>(){ItemLocation.inventory, ItemLocation.equipment};
 
   public override bool needsCount => true;

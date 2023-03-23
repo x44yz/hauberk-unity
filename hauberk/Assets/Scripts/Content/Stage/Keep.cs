@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// Places a number of connected rooms.
 class Keep : RoomArchitecture {
-  public static JunctionSet? debugJunctions;
+  public static JunctionSet debugJunctions;
 
   public JunctionSet _junctions;
 
@@ -263,7 +263,7 @@ class JunctionSet {
 
   public bool isNotEmpty => _junctions.isNotEmpty<Junction>();
 
-  Junction? this[Vec pos] => _byPosition[pos];
+  Junction this[Vec pos] => _byPosition[pos];
 
   public void add(Junction junction) {
     DartUtils.assert(_byPosition[junction.position] == null);

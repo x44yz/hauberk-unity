@@ -145,7 +145,7 @@ public class ResourceSet<T> where T : class {
 
     return _runQuery(label, depth, (_Resource<T> resource) => {
       var scale = 1.0;
-      for (_Tag<T>? thisTag = goalTag;
+      for (_Tag<T> thisTag = goalTag;
           thisTag != null;
           thisTag = thisTag.parent) {
         foreach (var resourceTag in resource._tags) {
@@ -311,7 +311,7 @@ public class _Tag<T> {
 
   /// Returns `true` if this tag is [tag] or one of this tag's parents is.
   public bool contains(_Tag<T> tag) {
-    for (_Tag<T>? thisTag = this; thisTag != null; thisTag = thisTag.parent) {
+    for (_Tag<T> thisTag = this; thisTag != null; thisTag = thisTag.parent) {
       if (tag == thisTag) return true;
     }
 
@@ -343,6 +343,20 @@ public class _QueryKey {
   }
   public static bool operator !=(_QueryKey a, object other) { 
     return !(a == other);
+  }
+
+  public override bool Equals(object obj)
+  {
+    if (obj is _QueryKey)
+    {
+      var k = obj as _QueryKey;
+      return this == k;
+    }
+    return false;
+  }
+  public override int GetHashCode()
+  {
+    return hashCode;
   }
 
   public override string ToString() => $"{name} ({depth})";

@@ -10,7 +10,7 @@ class GameScreen : UnityTerminal.Screen {
   /// When the hero is in the dungeon, this is their save state before entering.
   /// If they die or forfeit, their current state is discarded and this one is
   /// used instead.
-  public HeroSave? _storageSave;
+  public HeroSave _storageSave;
   public Storage _storage;
   public LogPanel _logPanel;
   public ItemPanel itemPanel;
@@ -23,17 +23,17 @@ class GameScreen : UnityTerminal.Screen {
   /// coming back from a dialog where the player chose an action for the hero.
   int _pause = 0;
 
-  Actor? _targetActor;
-  Vec? _target;
+  Actor _targetActor;
+  Vec _target;
 
-  UsableSkill? _lastSkill;
+  UsableSkill _lastSkill;
 
   /// The portal for the tile the hero is currently standing on.
   ///
   /// When this changes, we know the hero has stepped onto a new one.
-  TilePortal? _portal;
+  TilePortal _portal;
 
-  public void targetActor(Actor? value) {
+  public void targetActor(Actor value) {
     if (_targetActor != value) Dirty();
 
     _targetActor = value;
@@ -41,7 +41,7 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   /// Targets the floor at [pos].
-  public void targetFloor(Vec? pos) {
+  public void targetFloor(Vec pos) {
     if (_targetActor != null || _target != pos) Dirty();
 
     _targetActor = null;
@@ -51,7 +51,7 @@ class GameScreen : UnityTerminal.Screen {
   /// Gets the currently targeted position.
   ///
   /// If targeting an actor, gets the actor's position.
-  public Vec? currentTarget {
+  public Vec currentTarget {
     get {
       // If we're targeting an actor, use its position.
       var actor = currentTargetActor;

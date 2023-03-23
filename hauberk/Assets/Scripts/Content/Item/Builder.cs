@@ -10,10 +10,10 @@ class _BaseBuilder {
   public Dictionary<Element, int> _destroyChance = new Dictionary<Element, int>();
 
   public int? _maxStack;
-  public Element? _tossElement;
+  public Element _tossElement;
   public int? _tossDamage;
   public int? _tossRange;
-  public TossItemUse? _tossUse;
+  public TossItemUse _tossUse;
   public int? _emanation;
   public int? _fuel;
 
@@ -25,7 +25,7 @@ class _BaseBuilder {
   }
 
   /// Makes items in the category throwable.
-  public void toss(int? damage = null, Element? element = null, int? range = null, int? breakage = null) {
+  public void toss(int? damage = null, Element element = null, int? range = null, int? breakage = null) {
     _tossDamage = damage;
     _tossElement = element;
     _tossRange = range;
@@ -65,10 +65,10 @@ class _CategoryBuilder : _BaseBuilder {
 
   /// The current glyph's character code. Any items defined will use this.
   public int _glyph;
-  public string? _verb;
+  public string _verb;
 
-  public string? _equipSlot;
-  public string? _weaponType;
+  public string _equipSlot;
+  public string _weaponType;
     public string _tag;
   public bool _isTreasure = false;
   public bool _isTwoHanded = false;
@@ -129,7 +129,7 @@ static string[] tagEquipSlots = new string[]{
 class _ItemBuilder : _BaseBuilder {
 
 public static int _sortIndex = 0;
-public static _ItemBuilder? _item;
+public static _ItemBuilder _item;
 public static _ItemBuilder item(string name, Color color,
     double frequency = 1.0, int price = 0) {
   finishItem();
@@ -141,9 +141,9 @@ public static _ItemBuilder item(string name, Color color,
   public Color _color;
   public double _frequency;
   public int _price;
-  ItemUse? _use;
-  Attack? _attack;
-  Defense? _defense;
+  ItemUse _use;
+  Attack _attack;
+  Defense _defense;
   int? _weight;
   int? _heft;
   int? _armor;
@@ -179,7 +179,7 @@ public static _ItemBuilder item(string name, Color color,
     _weight = weight;
   }
 
-  public void weapon(int damage, int heft, Element? element = null) {
+  public void weapon(int damage, int heft, Element element = null) {
     _attack = new Attack(null, _category._verb!, damage, 0, element);
     _heft = heft;
   }
@@ -297,7 +297,7 @@ public static _ItemBuilder item(string name, Color color,
 
       var appearance = new Glyph(_category._glyph, builder._color);
 
-      Toss? toss = null;
+      Toss toss = null;
       var tossDamage = builder._tossDamage ?? _category._tossDamage;
       if (tossDamage != null) {
           var noun = new Noun("the ${builder._name.toLowerCase()}");
@@ -358,7 +358,7 @@ public static _ItemBuilder item(string name, Color color,
 class _AffixBuilder {
 
 public static string _affixTag;
-public static _AffixBuilder? _affix;
+public static _AffixBuilder _affix;
 public static void affixCategory(string tag) {
   finishAffix();
   _affixTag = tag;
@@ -393,7 +393,7 @@ public static _AffixBuilder affix(string name, double frequency) {
   int? _strikeBonus;
   double? _damageScale;
   int? _damageBonus;
-  Element? _brand;
+  Element _brand;
   int? _armor;
   int? _priceBonus;
   double? _priceScale;

@@ -39,9 +39,9 @@ public class Item : Noun, System.IComparable<Item>
     public bool canToss => type.toss != null;
 
     /// The base attack for the item, ignoring its own affixes.
-    public Attack? attack => type.attack;
+    public Attack attack => type.attack;
 
-    public Toss? toss => type.toss;
+    public Toss toss => type.toss;
 
     public Element element {
         get {
@@ -78,7 +78,7 @@ public class Item : Noun, System.IComparable<Item>
     }
 
     // TODO: Affix defenses?
-    public Defense? defense => type.defense;
+    public Defense defense => type.defense;
 
     /// The amount of protection provided by the item when equipped.
     public int armor => baseArmor + armorModifier;
@@ -96,7 +96,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    string nounText {
+    public override string nounText {
         get {
             var name = type.quantifiableName;
 
@@ -107,7 +107,7 @@ public class Item : Noun, System.IComparable<Item>
         }
     }
 
-    Pronoun pronoun => Pronoun.it;
+    public override Pronoun pronoun => Pronoun.it;
 
     /// How much the one unit of the item can be bought and sold for.
     public int price {
