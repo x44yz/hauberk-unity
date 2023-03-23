@@ -100,10 +100,10 @@ class GameScreen : UnityTerminal.Screen {
     this._storage = _storage;
     this.game = game;
     this._storageSave = _storageSave;
-    _logPanel = LogPanel(game.log);
-    itemPanel = ItemPanel(game);
-    _sidebarPanel = SidebarPanel(this);
-    _stagePanel = StagePanel(this);
+    _logPanel = new LogPanel(game.log);
+    itemPanel = new ItemPanel(game);
+    _sidebarPanel = new SidebarPanel(this);
+    _stagePanel = new StagePanel(this);
 
     Debugger.bindGameScreen(this);
   }

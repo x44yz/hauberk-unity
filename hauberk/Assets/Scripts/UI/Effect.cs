@@ -33,7 +33,7 @@ abstract class Effect {
     {
         // TODO: Assumes all none-element bolts are arrows. Do something better?
         if (evt.element == Element.none) {
-          var chars = new Dictionary<Direction, char>() {
+          var chars = new Dictionary<Direction, string>() {
             {Direction.none, "•"},
             {Direction.n, "|"},
             {Direction.ne, "/"},
@@ -44,26 +44,26 @@ abstract class Effect {
             {Direction.w, "-"},
             {Direction.nw, "\\"},
           };
-          effects.add(FrameEffect(evt.pos!, chars[evt.dir], sandal, life: 2));
+          effects.Add(new FrameEffect(evt.pos!, chars[evt.dir], Hues.sandal, life: 2));
         } else {
-          effects.add(ElementEffect(evt.pos!, evt.element));
+          effects.Add(new ElementEffect(evt.pos!, evt.element));
         }
     }
 
       else if (evt.type == EventType.cone)
       {
-        effects.add(ElementEffect(evt.pos!, evt.element));
+        effects.Add(new ElementEffect(evt.pos!, evt.element));
       }
 
       else if (evt.type == EventType.toss)
       {
-        effects.add(ItemEffect(evt.pos!, evt.other as Item));
+        effects.Add(new ItemEffect(evt.pos!, evt.other as Item));
       }
 
       else if (evt.type == EventType.hit)
       {
         effects
-            .add(DamageEffect(evt.actor!, evt.element, evt.other as int));
+            .Add(new DamageEffect(evt.actor!, evt.element, (int)evt.other));
       }
 
       else if (evt.type == EventType.die)
@@ -71,100 +71,105 @@ abstract class Effect {
         // TODO: Make number of particles vary based on monster health.
         for (var i = 0; i < 10; i++) {
           // TODO: Different blood colors for different breeds.
-          effects.add(ParticleEffect(evt.actor!.x, evt.actor!.y, red));
+          effects.Add(ParticleEffect.create(evt.actor!.x, evt.actor!.y, Hues.red));
         }
       }
 
       else if (evt.type == EventType.heal)
       {
-        effects.add(HealEffect(evt.actor!.pos.x, evt.actor!.pos.y));
+        effects.Add(new HealEffect(evt.actor!.pos.x, evt.actor!.pos.y));
       }
 
       else if (evt.type == EventType.detect)
       {
-        effects.add(DetectEffect(evt.pos!));
+        effects.Add(new DetectEffect(evt.pos!));
       }
 
       else if (evt.type == EventType.perceive)
       {
         // TODO: Make look different.
-        effects.add(DetectEffect(evt.actor!.pos));
+        effects.Add(new DetectEffect(evt.actor!.pos));
       }
 
       else if (evt.type == EventType.map)
       {
-        effects.add(MapEffect(evt.pos!));
+        effects.Add(new MapEffect(evt.pos!));
       }
 
       else if (evt.type == EventType.teleport)
       {
         var numParticles = (evt.actor!.pos - evt.pos!).kingLength * 2;
         for (var i = 0; i < numParticles; i++) {
-          effects.add(TeleportEffect(evt.pos!, evt.actor!.pos));
+          effects.Add(TeleportEffect.create(evt.pos!, evt.actor!.pos));
         }
       }
 
       else if (evt.type == EventType.spawn)
       {
         // TODO: Something more interesting.
-        effects.add(FrameEffect(evt.actor!.pos, '*', ash));
+        effects.Add(new FrameEffect(evt.actor!.pos, "*", Hues.ash));
       }
 
       else if (evt.type == EventType.polymorph)
       {
         // TODO: Something more interesting.
-        effects.add(FrameEffect(evt.actor!.pos, '*', ash));
+        effects.Add(new FrameEffect(evt.actor!.pos, "*", Hues.ash));
       }
 
       else if (evt.type == EventType.howl)
       {
-        effects.add(HowlEffect(evt.actor!));
+        effects.Add(new HowlEffect(evt.actor!));
       }
 
       else if (evt.type == EventType.awaken)
       {
-        effects.add(BlinkEffect(evt.actor!, Glyph('!', ash)));
+        effects.Add(new BlinkEffect(evt.actor!, new Glyph('!', Hues.ash)));
       }
 
-      else if (evt.type == EventType.frighten:
-        effects.add(BlinkEffect(evt.actor!, Glyph("!", gold)));
-        break;
+      else if (evt.type == EventType.frighten)
+      {
+        effects.Add(new BlinkEffect(evt.actor!, new Glyph('!', Hues.gold)));
+      }
 
-      else if (evt.type == EventType.wind:
+      else if (evt.type == EventType.wind)
+      {
         // TODO: Do something.
-        break;
+      }
 
-      else if (evt.type == EventType.knockBack:
+      else if (evt.type == EventType.knockBack)
+      {
         // TODO: Something more interesting.
-        effects.add(FrameEffect(evt.pos!, "*", buttermilk));
-        break;
+        effects.Add(new FrameEffect(evt.pos!, "*", Hues.buttermilk));
+      }
 
-      else if (evt.type == EventType.slash:
-      else if (evt.type == EventType.stab:
+      else if (evt.type == EventType.slash ||
+              evt.type == EventType.stab)
+      {
         var line = _directionLines[evt.dir]!;
 
-        var color = ash;
+        var color = Hues.ash;
         if (evt.other != null) {
           color = (evt.other as Glyph).fore;
         }
         // TODO: If monsters starting using this, we'll need some other way to
         // color it.
 
-        effects.add(FrameEffect(evt.pos!, line, color));
-        break;
+        effects.Add(new FrameEffect(evt.pos!, line.ToString(), color));
+      }
 
-      else if (evt.type == EventType.gold:
-        effects.add(TreasureEffect(evt.pos!, evt.other as Item));
-        break;
+      else if (evt.type == EventType.gold)
+      {
+        effects.Add(new TreasureEffect(evt.pos!, evt.other as Item));
+      }
 
-      else if (evt.type == EventType.openBarrel:
-        effects.add(FrameEffect(evt.pos!, '*', sandal));
-        break;
-    }
+      else if (evt.type == EventType.openBarrel)
+      {
+        effects.Add(new FrameEffect(evt.pos!, "*", Hues.sandal));
+      }
   }
 
   /// Creates a list of [Glyph]s for each combination of [chars] and [colors].
-  public static List<Glyph> _glyphs(string chars, List<Color> colors) {
+  private static List<Glyph> _glyphs(string chars, List<Color> colors) {
     var results = new List<Glyph>();
     for (int i = 0; i < chars.Length; ++i) {
       var ch = chars[i];
@@ -264,7 +269,7 @@ class ElementEffect : Effect {
   public List<List<Glyph>> _sequence;
   int _age = 0;
 
-  ElementEffect(Vec _pos, Element element)
+  public ElementEffect(Vec _pos, Element element)
   {
     this._pos = _pos;
     _sequence = _elementSequences[element]!;
@@ -286,7 +291,7 @@ class FrameEffect : Effect {
   public Color color;
   int life;
 
-  FrameEffect(Vec pos, string ch, Color color, int life = 4)
+  public FrameEffect(Vec pos, string ch, Color color, int life = 4)
   {
     this.pos = pos;
     this.ch = ch;
@@ -311,7 +316,7 @@ class ItemEffect : Effect {
   public Item item;
   int _life = 2;
 
-  ItemEffect(Vec pos, Item item)
+  public ItemEffect(Vec pos, Item item)
   {
     this.pos = pos;
     this.item = item;
@@ -334,7 +339,7 @@ class DamageEffect : Effect {
   public int _blinks;
   int _frame = 0;
 
-  DamageEffect(Actor actor, Element element, int damage)
+  public DamageEffect(Actor actor, Element element, int damage)
   {
     this.actor = actor;
     this.element = element;
@@ -346,7 +351,7 @@ class DamageEffect : Effect {
   public override void render(Game game, System.Action<int, int, Glyph> drawGlyph) {
     var frame = _frame % _framesPerBlink;
     if (frame < _framesPerBlink / 2) {
-      drawGlyph(actor.x, actor.y, new Glyph('*', elementColor(element)));
+      drawGlyph(actor.x, actor.y, new Glyph('*', Hues.elementColor(element)));
     }
   }
 
@@ -424,7 +429,7 @@ class TeleportEffect : Effect {
     return new TeleportEffect(x, y, (float)h, (float)v, target);
   }
 
-  TeleportEffect(float x, float y, float h, float v, Vec target)
+  public TeleportEffect(float x, float y, float h, float v, Vec target)
   {
     this.x = x;
     this.y = y;
@@ -475,7 +480,7 @@ class HealEffect : Effect {
   int y;
   int frame = 0;
 
-  HealEffect(int x, int y)
+  public HealEffect(int x, int y)
   {
     this.x = x;
     this.y = y;
@@ -509,7 +514,7 @@ class DetectEffect : Effect {
   public Vec pos;
   int life = 20;
 
-  DetectEffect(Vec pos)
+  public DetectEffect(Vec pos)
   {
     this.pos = pos;
   }
@@ -532,7 +537,7 @@ class MapEffect : Effect {
   public Vec pos;
   int life = -1;
 
-  MapEffect(Vec pos) {
+  public MapEffect(Vec pos) {
     this.pos = pos;
     _maxLife = Rng.rng.range(10, 20);
     life = _maxLife;
@@ -559,7 +564,7 @@ class TreasureEffect : Effect {
   public Item _item;
   int _life = 8;
 
-  TreasureEffect(Vec pos, Item _item)
+  public TreasureEffect(Vec pos, Item _item)
   {
     this._item = _item;
         _x = pos.x;
@@ -591,7 +596,7 @@ class HowlEffect : Effect {
   public Actor _actor;
   int _age = 0;
 
-  HowlEffect(Actor _actor)
+  public HowlEffect(Actor _actor)
   {
     this._actor = _actor;
   }
@@ -623,7 +628,7 @@ class BlinkEffect : Effect {
   public Glyph _glyph;
   int _age = 0;
 
-  BlinkEffect(Actor _actor, Glyph _glyph)
+  public BlinkEffect(Actor _actor, Glyph _glyph)
   {
     this._actor = _actor;
     this._glyph = _glyph;

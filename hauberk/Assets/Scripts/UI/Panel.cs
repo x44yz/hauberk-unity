@@ -1,7 +1,7 @@
 using System;
 using UnityTerminal;
 
-abstract class XPanel {
+abstract class Panel {
   Rect _bounds;
 
   public virtual bool isVisible => _bounds != null;
@@ -11,18 +11,18 @@ abstract class XPanel {
   /// This can only be called if the panel is visible.
   public virtual Rect bounds => _bounds!;
 
-  void hide() {
+  public void hide() {
     _bounds = null;
   }
 
-  void show(Rect bounds) {
+  public void show(Rect bounds) {
     _bounds = bounds;
   }
 
-  void render(Terminal terminal) {
+  public void render(Terminal terminal) {
     if (!isVisible) return;
-    renderPanel(terminal, terminal.Rect(bounds.x, bounds.y, bounds.width, bounds.height));
+    renderPanel(terminal.Rect(bounds.x, bounds.y, bounds.width, bounds.height));
   }
 
-  public abstract void renderPanel(Terminal terminal, Panel p);
+  public abstract void renderPanel(Terminal terminal);
 }

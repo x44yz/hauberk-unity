@@ -75,7 +75,7 @@ abstract class ItemView {
           terminal.WriteAt(x + 2, y, "↑ two-handed", UIHue.disabled);
         } else {
           terminal.WriteAt(
-              x + 2, y, $"({{{items.slotTypes[slot]}}})", UIHue.disabled);
+              x + 2, y, $"({items.slotTypes[slot]})", UIHue.disabled);
         }
         letter++;
         slot++;
@@ -117,8 +117,8 @@ abstract class ItemView {
 
       var nameRight = left + width - 1;
       if (showPrices && getPrice(item) != null) {
-        var price = DartUtils.formatMoney(getPrice(item)!);
-        var priceLeft = left + width - 1 - price.length - 1;
+        var price = DartUtils.formatMoney(getPrice(item).Value);
+        var priceLeft = left + width - 1 - price.Length - 1;
         terminal.WriteAt(priceLeft, y, "\\$", enabled ? Hues.tan : UIHue.disabled);
         terminal.WriteAt(
             priceLeft + 1, y, price, enabled ? Hues.gold : UIHue.disabled);

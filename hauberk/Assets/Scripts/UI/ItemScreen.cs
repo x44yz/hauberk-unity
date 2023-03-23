@@ -453,9 +453,9 @@ class _CountScreen : ItemScreen {
       var price = _parent._itemPrice(_item);
       if (price != null) {
         var priceString = DartUtils.formatMoney(price.Value * _count);
-        return $"{{{_parent._verb}}} {itemText} for {priceString} gold?";
+        return $"{_parent._verb} {itemText} for {priceString} gold?";
       } else {
-        return $"{{{_parent._verb}}} {itemText}?";
+        return $"{_parent._verb} {itemText}?";
       }
     }
   }

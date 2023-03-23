@@ -82,17 +82,17 @@ class ExitPopup : Popup {
       terminal.WriteAt(5, value.y, "${value.name}:",
           value.value == 0 ? UIHue.disabled : UIHue.primary);
 
-      var number = value.current.tostring();
+      var number = value.current.ToString();
       if (value.total != null) {
-        var total = value.total.tostring();
-        terminal.writeAt(
-            terminal.width - 1 - total.length, value.y, total, value.color);
-        terminal.writeAt(
-            terminal.width - 1 - total.length - 3, value.y, " / ", value.color);
-        terminal.writeAt(terminal.width - 4 - total.length - number.length,
+        var total = value.total.ToString();
+        terminal.WriteAt(
+            terminal.width - 1 - total.Length, value.y, total, value.color);
+        terminal.WriteAt(
+            terminal.width - 1 - total.Length - 3, value.y, " / ", value.color);
+        terminal.WriteAt(terminal.width - 4 - total.Length - number.Length,
             value.y, number, value.color);
       } else {
-        terminal.writeAt(terminal.width - 1 - number.length, value.y, number,
+        terminal.WriteAt(terminal.width - 1 - number.Length, value.y, number,
             value.value == 0 ? UIHue.disabled : value.color);
       }
     }
@@ -112,7 +112,7 @@ class _AnimatedValue {
   public Color color;
   public int? total;
 
-  int current;
+  public int current;
 
   public _AnimatedValue(int y, string name, int value, Color color, int? total = null)
   {

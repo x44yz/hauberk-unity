@@ -127,16 +127,15 @@ class MainMenuScreen : UnityTerminal.Screen {
     base.Render();
 
     // Center everything horizontally.
-    var p = new Panel((terminal.width - 78) / 2, 0, 80, terminal.height);
+    var pterminal= terminal.Rect((terminal.width - 78) / 2, 0, 80, terminal.height);
 
-    terminal.WriteAt(p,
-        0,
-        p.h - 1,
+    pterminal.WriteAt(0,
+        pterminal.height - 1,
         "[L] Select a hero, [↕] Change selection, [N] Create a new hero, [D] Delete hero",
         UIHue.helpText);
 
     // Center the content vertically.
-    p = new Panel(0, (terminal.height - 40) / 2, p.w, 40);
+    pterminal = pterminal.Rect(0, (pterminal.height - 40) / 2, pterminal.width, 40);
     for (var y = 0; y < _chars.Length; y++) {
       for (var x = 0; x < _chars[y].Length; x++) {
         if (_chars[y][x] == CharCode.space)
@@ -148,15 +147,14 @@ class MainMenuScreen : UnityTerminal.Screen {
           continue;
         }
         var color = _colors[k];
-        terminal.WriteAt(p, x + 1, y + 1, _chars[y][x], color);
+        pterminal.WriteAt(x + 1, y + 1, _chars[y][x], color);
       }
     }
 
-    terminal.WriteAt(p, 10, 18, "Which hero shall you play?", UIHue.text);
+    pterminal.WriteAt(10, 18, "Which hero shall you play?", UIHue.text);
 
     if (storage.heroes.Count == 0) {
-      terminal.WriteAt(p,
-          10, 20, "(No heroes. Please create a new one.)", UIHue.helpText);
+      pterminal.WriteAt(10, 20, "(No heroes. Please create a new one.)", UIHue.helpText);
     }
 
     for (var i = 0; i < storage.heroes.Count; i++) {
@@ -168,14 +166,13 @@ class MainMenuScreen : UnityTerminal.Screen {
         primary = UIHue.selection;
         secondary = UIHue.selection;
 
-        terminal.WriteAt(p,
-            9, 20 + i, CharCode.blackRightPointingPointer, UIHue.selection);
+        pterminal.WriteAt(9, 20 + i, CharCode.blackRightPointingPointer, UIHue.selection);
       }
 
-      terminal.WriteAt(p, 10, 20 + i, hero.name, primary);
-      terminal.WriteAt(p, 30, 20 + i, $"Level {hero.level}", secondary);
-      terminal.WriteAt(p, 40, 20 + i, hero.race.name, secondary);
-      terminal.WriteAt(p, 50, 20 + i, hero.heroClass.name, secondary);
+      pterminal.WriteAt(10, 20 + i, hero.name, primary);
+      pterminal.WriteAt(30, 20 + i, $"Level {hero.level}", secondary);
+      pterminal.WriteAt(40, 20 + i, hero.race.name, secondary);
+      pterminal.WriteAt(50, 20 + i, hero.heroClass.name, secondary);
     }
   }
 

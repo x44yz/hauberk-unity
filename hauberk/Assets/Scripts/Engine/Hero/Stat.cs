@@ -68,7 +68,7 @@ public abstract class StatBase : Property<int>
 {
   public HeroSave _hero;
 
-  string name => _stat.name;
+  public string name => _stat.name;
   public virtual Stat _stat => null;
   public virtual string _gainAdjective => "";
   public virtual string _loseAdjective => "";

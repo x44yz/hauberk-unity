@@ -48,23 +48,23 @@ abstract class Popup : Screen {
     Draw.doubleBox(
         terminal, left - 1, top - 1, popupWidth + 2, popupHeight + 2, Hues.gold);
 
-    var p = terminal.Rect(left, top, popupWidth, popupHeight);
-    terminal.Clear(p);
+    var pterminal = terminal.Rect(left, top, popupWidth, popupHeight);
+    pterminal.Clear();
 
     // Draw the message if there is one.
     if (messageLines != null) {
       var widest = messageLines.fold<string>(
           0, (width, line) => Math.Max(width, line.Length));
-      var x = (terminal.width - widest) / 2;
+      var x = (pterminal.width - widest) / 2;
       var y = 1;
 
       foreach (var line in messageLines) {
-        terminal.WriteAt(p, x, y, line, UIHue.text);
+        pterminal.WriteAt(x, y, line, UIHue.text);
         y++;
       }
     }
 
-    renderPopup(terminal);
+    renderPopup(pterminal);
   }
 
   void renderPopup(Terminal terminal) {}

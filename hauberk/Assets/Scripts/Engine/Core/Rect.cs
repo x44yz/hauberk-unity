@@ -181,7 +181,7 @@ public class Rect : IEnumerable<Vec>
     return new Vec(x, y);
   }
 
-  RectIterator iterator => new RectIterator(this);
+  public RectIterator iterator => new RectIterator(this);
 
   /// Returns the distance between this Rect and [other]. This is minimum
   /// length that a corridor would have to be to go from one Rect to the other.
@@ -246,7 +246,7 @@ public class Rect : IEnumerable<Vec>
   // TODO: Equality operator and hashCode.
 }
 
-class RectIterator : IEnumerator<Vec> 
+public class RectIterator : IEnumerator<Vec> 
 {
 
   object IEnumerator.Current => current;
@@ -254,7 +254,6 @@ class RectIterator : IEnumerator<Vec>
     public bool MoveNext() => moveNext();
     public void Reset()
     {
-        _rect= Rect.empty;
         _x = 0;
         _y = 0;
     }

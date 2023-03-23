@@ -24,7 +24,7 @@ public abstract class Skill : System.IComparable<Skill> {
 
   // TODO: Different messages for gain and lose?
   /// Message displayed when the hero reaches [level] in the skill.
-  public abstract string gainMessage(int level);
+  public virtual string gainMessage(int level) => "";
 
   /// Message displayed when the hero first discovers this skill.
   public virtual string  discoverMessage => "";
@@ -40,7 +40,7 @@ public abstract class Skill : System.IComparable<Skill> {
   public virtual int calculateLevel(HeroSave hero) =>
       onCalculateLevel(hero, hero.skills.points(this));
 
-  public abstract int onCalculateLevel(HeroSave hero, int points);
+  public virtual int onCalculateLevel(HeroSave hero, int points) { return 0; }
 
   /// Called when the hero takes damage.
   public virtual void takeDamage(Hero hero, int damage) {}
@@ -82,7 +82,7 @@ public abstract class Skill : System.IComparable<Skill> {
 /// Some skills require additional data to be performed -- a target position
 /// or a direction. Those will implement one of the subclasses, [TargetSkill]
 /// or [DirectionSkill].
-public class UsableSkill {
+public class UsableSkill : Skill {
   /// The focus cost to use the skill, with proficiency applied.
   int focusCost(HeroSave hero, int level) => 0;
 

@@ -6,7 +6,7 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class ItemPanel : XPanel {
+class ItemPanel : Panel {
   public Game _game;
 
   public ItemPanel(Game _game)
@@ -21,7 +21,7 @@ class ItemPanel : XPanel {
 
   public bool onGroundVisible => bounds.height > 50;
 
-  public override void renderPanel(Terminal terminal, Panel p) {
+  public override void renderPanel(Terminal terminal) {
     var hero = _game.hero;
     _drawItems(
         terminal, equipmentTop, hero.equipment.slots.Count, hero.equipment);

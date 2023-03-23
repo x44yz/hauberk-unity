@@ -4,6 +4,7 @@ using System.Linq;
 using Color = UnityEngine.Color;
 using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
+using Mathf = UnityEngine.Mathf;
 using UnityTerminal;
 
 /// Shows a detailed info box for an item.
@@ -47,12 +48,12 @@ class Inspector {
     }
 
     // A line of space between each section.
-    height += _sections.length - 1;
+    height += _sections.Count - 1;
 
     // Try to align the box next to the item, but shift it as needed to keep it
     // in bounds and not overlapping the help box on the bottom.
-    var top = (itemY - 1).clamp(0, terminal.height - 4 - height);
-    terminal = terminal.rect(x, top, 34, height);
+    var top = Mathf.Clamp(itemY - 1, 0, terminal.height - 4 - height);
+    terminal = terminal.Rect(x, top, 34, height);
 
     // Draw the frame.
     Draw.frame(
@@ -62,7 +63,7 @@ class Inspector {
     terminal.WriteAt(1, 1, "╡", UIHue.helpText);
     terminal.WriteAt(3, 1, "╞", UIHue.helpText);
 
-    terminal.drawGlyph(2, 1, _item.appearance as Glyph);
+    terminal.WriteAt(2, 1, _item.appearance as Glyph);
     terminal.WriteAt(4, 1, _item.nounText, UIHue.primary);
 
     // Draw the sections.
@@ -105,7 +106,7 @@ class Inspector {
     if (toss != null) {
       var element = "";
       if (toss.attack.element != Element.none) {
-        element = $" {{{toss.attack.element.name}}}";
+        element = $" {toss.attack.element.name}";
       }
 
       sentences.Add($"It can be thrown for {toss.attack.damage}{element}" +
@@ -210,7 +211,7 @@ class _AttackSection : _Section {
     _writeLabel(terminal, y, "Damage");
     if (_item.element != Element.none) {
       terminal.WriteAt(
-          9, y, _item.element.abbreviation, elementColor(_item.element));
+          9, y, _item.element.abbreviation, Hues.elementColor(_item.element));
     }
 
     terminal.WriteAt(12, y, _item.attack!.damage.ToString(), UIHue.text);
@@ -248,7 +249,7 @@ class _DefenseSection : _Section {
   public override string header => "Defense";
   public override int height => _item.defense != null ? 3 : 2;
 
-  _DefenseSection(Item _item)
+  public _DefenseSection(Item _item)
   {
     this._item = _item;
   }
@@ -280,7 +281,7 @@ class _ResistancesSection : _Section {
   public override string header => "Resistances";
   public override int height => 2;
 
-  _ResistancesSection(Item _item)
+  public _ResistancesSection(Item _item)
   {
     this._item = _item;
   }
@@ -292,7 +293,7 @@ class _ResistancesSection : _Section {
       var resistance = _item.resistance(element);
       _writeBonus(terminal, x - 1, y, resistance);
       terminal.WriteAt(x, y + 1, element.abbreviation,
-          resistance == 0 ? UIHue.disabled : elementColor(element));
+          resistance == 0 ? UIHue.disabled : Hues.elementColor(element));
       x += 3;
     }
   }

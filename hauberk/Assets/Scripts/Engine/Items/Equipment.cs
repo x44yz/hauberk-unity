@@ -20,7 +20,7 @@ public class Equipment : ItemCollection {
 
   public Equipment()
   {
-    slotTypes = new List<string>(){
+    _slotTypes = new List<string>(){
       "hand",
       "hand",
       "ring",
@@ -31,9 +31,9 @@ public class Equipment : ItemCollection {
       "gloves",
       "boots"
     };
-    slots = new List<Item>(9);
-    for (int i = 0; i < slots.Capacity; ++i)
-      slots.Add(null);
+    _slots = new List<Item>(9);
+    for (int i = 0; i < _slots.Capacity; ++i)
+      _slots.Add(null);
   }
 
   /// Gets the currently-equipped weapons, if any.

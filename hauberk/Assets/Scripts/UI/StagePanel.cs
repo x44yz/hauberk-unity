@@ -7,7 +7,7 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 /// The main gameplay area of the screen.
-class StagePanel : XPanel {
+class StagePanel : Panel {
   public static Color[] _dazzleColors = new Color[]{
     Hues.darkCoolGray,
     Hues.coolGray,
@@ -56,7 +56,7 @@ class StagePanel : XPanel {
   int _frame = 0;
 
   /// The portion of the [Stage] currently in view on screen.
-  Rect cameraBounds => _cameraBounds;
+  public Rect cameraBounds => _cameraBounds;
 
   Rect _cameraBounds;
 
@@ -72,7 +72,7 @@ class StagePanel : XPanel {
   }
 
   /// Draws [Glyph] at [x], [y] in [Stage] coordinates onto the current view.
-  void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
+  public void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
     _drawStageGlyph(terminal, x + bounds.x, y + bounds.y, glyph);
   }
 
@@ -81,7 +81,7 @@ class StagePanel : XPanel {
         y - _cameraBounds.y + _renderOffset.y, glyph);
   }
 
-  bool update(List<Event> events) {
+  public bool update(List<Event> events) {
     _frame++;
 
     foreach (var evt in events) {
@@ -100,7 +100,7 @@ class StagePanel : XPanel {
         _gameScreen.game.hero.dazzle.isActive;
   }
 
-  void renderPanel(Terminal terminal) {
+  public override void renderPanel(Terminal terminal) {
     _positionCamera(new Vec(terminal.width, terminal.height));
 
     visibleMonsters.Clear();

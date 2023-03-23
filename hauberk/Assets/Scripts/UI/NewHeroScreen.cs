@@ -135,74 +135,71 @@ class NewHeroScreen : UnityTerminal.Screen {
   }
 
   void _renderName(Terminal terminal) {
-    var p = new Panel(0, 0, 40, 10);
+    terminal = terminal.Rect(0, 0, 40, 10);
 
     TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
         _field == _Field.name ? UIHue.selection : Hues.darkCoolGray);
 
-    terminal.WriteAt(p,
-        1, 0, "Name", _field == _Field.name ? UIHue.selection : UIHue.text);
-    terminal.WriteAt(p, 1, 2, "Out of the mists of history, a hero", UIHue.text);
-    terminal.WriteAt(p, 1, 3, "appears named...", UIHue.text);
+    terminal.WriteAt(1, 0, "Name", _field == _Field.name ? UIHue.selection : UIHue.text);
+    terminal.WriteAt(1, 2, "Out of the mists of history, a hero", UIHue.text);
+    terminal.WriteAt(1, 3, "appears named...", UIHue.text);
 
-    TerminalUtils.DrawBox(terminal, p, 2, 5, 23, 3,
+    TerminalUtils.DrawBox(terminal, 2, 5, 23, 3,
         _field == _Field.name ? UIHue.selection : UIHue.disabled);
 
     if (string.IsNullOrEmpty(_name) == false)
     {
-      terminal.WriteAt(p, 3, 6, _name, UIHue.primary);
+      terminal.WriteAt(3, 6, _name, UIHue.primary);
       if (_field == _Field.name) {
-        terminal.WriteAt(p,
-            3 + _name.Length, 6, " ", Color.black, UIHue.selection);
+        terminal.WriteAt(3 + _name.Length, 6, " ", Color.black, UIHue.selection);
       }
     }
     else
     {
       if (_field == _Field.name) {
-        terminal.WriteAt(p, 3, 6, _defaultName, Color.black, UIHue.selection);
+        terminal.WriteAt(3, 6, _defaultName, Color.black, UIHue.selection);
       } else {
-        terminal.WriteAt(p, 3, 6, _defaultName, UIHue.primary);
+        terminal.WriteAt(3, 6, _defaultName, UIHue.primary);
       }
     }
   }
 
   void _renderRace(Terminal terminal) {
-    var p = new Panel(0, 10, 40, 29);
+    terminal = terminal.Rect(0, 10, 40, 29);
 
-    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h,
+    TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
         _field == _Field.race ? UIHue.selection : Hues.darkCoolGray);
-    terminal.WriteAt(p,
-        1, 0, "Race", _field == _Field.race ? UIHue.selection : UIHue.text);
+    terminal.WriteAt(1, 0, "Race", _field == _Field.race ? UIHue.selection : UIHue.text);
 
     var race = content.races[_race];
-    terminal.WriteAt(p, 1, 2, race.name, UIHue.primary);
+    terminal.WriteAt(1, 2, race.name, UIHue.primary);
 
     var y = 4;
     foreach (var line in Log.wordWrap(38, race.description)) {
-      terminal.WriteAt(p, 1, y, line, UIHue.text);
+      terminal.WriteAt(1, y, line, UIHue.text);
       y++;
     }
 
     y = 18;
     foreach (var stat in Stat.all) {
-      terminal.WriteAt(p, 2, y, stat.name, UIHue.secondary);
+      terminal.WriteAt(2, y, stat.name, UIHue.secondary);
       var width = 25 * race.stats[stat]! / 45;
-      terminal.WriteAt(p, 12, y, new string(' ', width), Hues.ash, Hues.red);
-      terminal.WriteAt(p, 12 + width, y, new string(' ', 25 - width), Hues.ash, Hues.maroon);
+      terminal.WriteAt(12, y, new string(' ', width), Hues.ash, Hues.red);
+      terminal.WriteAt(12 + width, y, new string(' ', 25 - width), Hues.ash, Hues.maroon);
       y += 2;
     }
   }
 
   void _renderClass(Terminal terminal) {
-    var p = new Panel(40, 10, 40, 29);
+    terminal = terminal.Rect(40, 10, 40, 29);
 
-    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h,
+    TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
         _field == _Field.heroClass ? UIHue.selection : Hues.darkCoolGray);
-    terminal.WriteAt(p, 1, 0, "Class",
+    terminal.WriteAt(1, 0, "Class",
         _field == _Field.heroClass ? UIHue.selection : UIHue.text);
 
     var heroClass = content.classes[_class];
-    terminal.WriteAt(p, 1, 2, heroClass.name, UIHue.primary);
+    terminal.WriteAt(1, 2, heroClass.name, UIHue.primary);
 
     var y = 4;
     foreach (var line in Log.wordWrap(38, heroClass.description)) {
@@ -212,9 +209,9 @@ class NewHeroScreen : UnityTerminal.Screen {
   }
 
   void _renderMenu(Terminal terminal) {
-    var p = new Panel(40, 0, 40, 10);
+    terminal = terminal.Rect(40, 0, 40, 10);
 
-    TerminalUtils.DrawFrame(terminal, p, 0, 0, p.w, p.h);
+    TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height);
 
     if (_field == _Field.name) return;
 
@@ -231,16 +228,15 @@ class NewHeroScreen : UnityTerminal.Screen {
       selected = _class;
     }
 
-    terminal.WriteAt(p, 1, 0, $"Choose a {label}:", UIHue.selection);
+    terminal.WriteAt(1, 0, $"Choose a {label}:", UIHue.selection);
 
     var y = 2;
     for (var i = 0; i < items.Count; i++) {
       var item = items[i];
       var isSelected = i == selected;
-      terminal.WriteAt(p, 
-          2, y, item, isSelected ? UIHue.selection : UIHue.primary);
+      terminal.WriteAt(2, y, item, isSelected ? UIHue.selection : UIHue.primary);
       if (isSelected) {
-        terminal.WriteAt(p, 1, y, "►", UIHue.selection);
+        terminal.WriteAt(1, y, "►", UIHue.selection);
       }
       y++;
     }
