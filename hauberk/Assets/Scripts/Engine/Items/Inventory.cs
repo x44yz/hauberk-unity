@@ -66,7 +66,7 @@ public abstract class ItemCollection : IEnumerable<Item> {
 
   /// If the item collection may have empty slots in it (equipment) this returns
   /// the sequence of items and slots.
-  public virtual IEnumerable<Item> slots => null;
+  public virtual List<Item> slots => null;
 
   public abstract void remove(Item item);
 

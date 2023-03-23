@@ -120,12 +120,10 @@ class GameScreen : UnityTerminal.Screen {
     _stagePanel.drawStageGlyph(terminal, x, y, glyph);
   }
 
-  public override void HandleInput() {
-    bool shift = Input.GetKey(KeyCode.LeftShift);
-    bool alt = Input.GetKey(KeyCode.LeftAlt);
-
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
     Action action = null;
-    if (Input.GetKeyDown(InputX.quit))
+    if (keyCode == InputX.quit)
     {
         var portal = game.stage[game.hero.pos].portal;
         if (portal == TilePortals.exit) {
@@ -136,41 +134,41 @@ class GameScreen : UnityTerminal.Screen {
           Dirty();
         }
     }
-    else if (Input.GetKeyDown(InputX.forfeit) && shift)
+    else if (keyCode == InputX.forfeit && shift)
     {
       terminal.Push(new ForfeitPopup(isTown: game.depth == 0));
     }
-    else if (Input.GetKeyDown(InputX.selectSkill))
+    else if (keyCode == InputX.selectSkill)
     {
       throw new System.NotImplementedException();
       // ui.push(SelectSkillDialog(this));
     }
-    else if (Input.GetKeyDown(InputX.editSkills) && shift)
+    else if (keyCode == InputX.editSkills && shift)
     {
       throw new System.NotImplementedException();
       // ui.push(SkillDialog(game.hero.save));
     }
-    else if (Input.GetKeyDown(InputX.heroInfo))
+    else if (keyCode == InputX.heroInfo)
     {
       throw new System.NotImplementedException();
       // ui.push(HeroInfoDialog(game.content, game.hero.save));
     }
-    else if (Input.GetKeyDown(InputX.drop))
+    else if (keyCode == InputX.drop)
     {
       throw new System.NotImplementedException();
       // ui.push(ItemDialog.drop(this));
     }
-    else if (Input.GetKeyDown(InputX.use))
+    else if (keyCode == InputX.use)
     {
       throw new System.NotImplementedException();
       // ui.push(ItemDialog.use(this));
     }
-    else if (Input.GetKeyDown(InputX.toss))
+    else if (keyCode == InputX.toss)
     {
       throw new System.NotImplementedException();
       // ui.push(ItemDialog.toss(this));
     }
-    else if (Input.GetKeyDown(InputX.rest) && shift)
+    else if (keyCode == InputX.rest && shift)
     {
       throw new System.NotImplementedException();
         // if (!game.hero.rest()) {
@@ -178,149 +176,149 @@ class GameScreen : UnityTerminal.Screen {
         //   Dirty();
         // }
     }
-    else if (Input.GetKeyDown(InputX.open) && shift)
+    else if (keyCode == InputX.open && shift)
     {
       _open();
     }
-    else if (Input.GetKeyDown(InputX.close))
+    else if (keyCode == InputX.close)
     {
       _closeDoor();
     }
-    else if (Input.GetKeyDown(InputX.pickUp))
+    else if (keyCode == InputX.pickUp)
     {
       _pickUp();
     }
-    else if (Input.GetKeyDown(InputX.equip))
+    else if (keyCode == InputX.equip)
     {
       throw new System.NotImplementedException();
         // ui.push(ItemDialog.equip(this));
     }
-    else if (Input.GetKeyDown(InputX.nw))
+    else if (keyCode == InputX.nw)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.nw);
     }
-    else if (Input.GetKeyDown(InputX.n))
+    else if (keyCode == InputX.n)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.n);
     }
-    else if (Input.GetKeyDown(InputX.ne))
+    else if (keyCode == InputX.ne)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.ne);
     }
-    else if (Input.GetKeyDown(InputX.w))
+    else if (keyCode == InputX.w)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.w);
     }
-    else if (Input.GetKeyDown(InputX.ok))
+    else if (keyCode == InputX.ok)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.none);
     }
-    else if (Input.GetKeyDown(InputX.e))
+    else if (keyCode == InputX.e)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.e);
     }
-    else if (Input.GetKeyDown(InputX.sw))
+    else if (keyCode == InputX.sw)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.sw);
     }
-    else if (Input.GetKeyDown(InputX.s))
+    else if (keyCode == InputX.s)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.s);
     }
-    else if (Input.GetKeyDown(InputX.se))
+    else if (keyCode == InputX.se)
     {
       throw new System.NotImplementedException();
         // action = WalkAction(Direction.se);
     }
-    else if (Input.GetKeyDown(InputX.runNW) && shift)
+    else if (keyCode == InputX.runNW && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.nw);
     }
-    else if (Input.GetKeyDown(InputX.runN) && shift)
+    else if (keyCode == InputX.runN && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.n);
     }
-    else if (Input.GetKeyDown(InputX.runNE) && shift)
+    else if (keyCode == InputX.runNE && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.ne);
     }
-    else if (Input.GetKeyDown(InputX.runW) && shift)
+    else if (keyCode == InputX.runW && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.w);
     }
-    else if (Input.GetKeyDown(InputX.runE) && shift)
+    else if (keyCode == InputX.runE && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.e);
     }
-    else if (Input.GetKeyDown(InputX.runSW) && shift)
+    else if (keyCode == InputX.runSW && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.sw);
     }
-    else if (Input.GetKeyDown(InputX.runS) && shift)
+    else if (keyCode == InputX.runS && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.s);
     }
-    else if (Input.GetKeyDown(InputX.runSE) && shift)
+    else if (keyCode == InputX.runSE && shift)
     {
       throw new System.NotImplementedException();
         // game.hero.run(Direction.se);
     }
-    else if (Input.GetKeyDown(InputX.fireNW) && alt)
+    else if (keyCode == InputX.fireNW && alt)
     {
       throw new System.NotImplementedException();
         // _fireTowards(Direction.nw);
     }
-    else if (Input.GetKeyDown(InputX.fireN) && alt)
+    else if (keyCode == InputX.fireN && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.n);
     }
-    else if (Input.GetKeyDown(InputX.fireNE) && alt)
+    else if (keyCode == InputX.fireNE && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.ne);
     }
-    else if (Input.GetKeyDown(InputX.fireW) && alt)
+    else if (keyCode == InputX.fireW && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.w);
     }
-    else if (Input.GetKeyDown(InputX.fireE) && alt)
+    else if (keyCode == InputX.fireE && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.e);
     }
-    else if (Input.GetKeyDown(InputX.fireSW) && alt)
+    else if (keyCode == InputX.fireSW && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.sw);
     }
-    else if (Input.GetKeyDown(InputX.fireS) && alt)
+    else if (keyCode == InputX.fireS && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.s);
     }
-    else if (Input.GetKeyDown(InputX.fireSE) && alt)
+    else if (keyCode == InputX.fireSE && alt)
     {
       throw new System.NotImplementedException();
         //_fireTowards(Direction.se);
     }
-    else if (Input.GetKeyDown(InputX.fire) && alt)
+    else if (keyCode == InputX.fire && alt)
     {
       throw new System.NotImplementedException();
     // if (_lastSkill is TargetSkill) {
@@ -344,7 +342,7 @@ class GameScreen : UnityTerminal.Screen {
     //         Dirty();
     //       }
     }
-    else if (Input.GetKeyDown(InputX.swap))
+    else if (keyCode == InputX.swap)
     {
       throw new System.NotImplementedException();
         // var unequipped = game.hero.inventory.lastUnequipped;
@@ -355,7 +353,7 @@ class GameScreen : UnityTerminal.Screen {
         //   action = EquipAction(ItemLocation.inventory, unequipped);
         // }
     }
-    else if (Input.GetKeyDown(InputX.wizard) && shift && alt)
+    else if (keyCode == InputX.wizard && shift && alt)
     {
         throw new System.NotImplementedException();
         // if (Debugger.enabled) {
@@ -368,6 +366,8 @@ class GameScreen : UnityTerminal.Screen {
 
     if (action != null) 
       game.hero.setNextAction(action);
+
+    return true;
   }
 
   public override void Active(UnityTerminal.Screen popped, object result) {

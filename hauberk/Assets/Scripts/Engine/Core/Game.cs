@@ -261,7 +261,7 @@ public abstract class Content {
 
 /// Each call to [Game.update()] will return a [GameResult] object that tells
 /// the UI what happened during that update and what it needs to do.
-class GameResult {
+public class GameResult {
   /// The "interesting" events that occurred in this update.
   public List<Event> events = new List<Event>();
 

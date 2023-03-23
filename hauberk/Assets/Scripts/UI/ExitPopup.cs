@@ -51,14 +51,17 @@ class ExitPopup : Popup {
 
   public override bool isTransparent => true;
 
-  public override void HandleInput()
+  public override bool KeyDown(UnityEngine.KeyCode keyCode, bool shift, bool alt)
   {
-    if (Input.GetKeyDown(InputX.ok)) return;
+    if (keyCode == InputX.ok)
+    {
+      // Remember that this depth was reached.
+      _game.hero.save.maxDepth = Math.Max(_save.maxDepth, _game.depth);
 
-    // Remember that this depth was reached.
-    _game.hero.save.maxDepth = Math.Max(_save.maxDepth, _game.depth);
+      terminal.Pop();
+    }
 
-    terminal.Pop();
+    return false;
   }
 
   public override void Tick(float dt) {

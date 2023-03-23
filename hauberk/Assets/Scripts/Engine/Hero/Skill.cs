@@ -57,13 +57,13 @@ public abstract class Skill : System.IComparable<Skill> {
   // TODO: Rename to "modifyHit".
   /// Gives the skill a chance to modify the [hit] the [hero] is about to
   /// perform on [monster].
-  public virtual void modifyAttack(Hero hero, Monster? monster, Hit hit, int level) {}
+  public virtual void modifyAttack(Hero hero, Monster monster, Hit hit, int level) {}
 
   /// Modifies the hero's base armor.
   public virtual int modifyArmor(HeroSave hero, int level, int armor) => armor;
 
   /// Gives the skill a chance to add new defenses to the hero.
-  public virtual Defense? getDefense(Hero hero, int level) => null;
+  public virtual Defense getDefense(Hero hero, int level) => null;
 
   /// Gives the skill a chance to adjust the [heftModifier] applied to the base
   /// heft of a weapon.

@@ -67,24 +67,6 @@ abstract class ItemScreen : Screen {
 
   public virtual bool canSelect(Item item) => true;
 
-  public override bool HandleInput() {
-    _error = null;
-
-    bool shift = Input.GetKey(KeyCode.LeftShift);
-    bool alt = Input.GetKey(KeyCode.LeftAlt);
-
-    if (Input.GetKeyDown(InputX.cancel)) {
-      terminal.Pop();
-      return true;
-    }
-    else if (Input.anyKeyDown)
-    {
-
-    }
-
-    return false;
-  }
-
   public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
     if (keyCode == InputX.cancel) {
       terminal.Pop();
@@ -304,18 +286,15 @@ class _HomeViewScreen : ItemScreen {
   {
   }
 
-  public override bool HandleInput()
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    if (base.HandleInput())
+    if (base.KeyDown(keyCode, shift, alt))
       return true;
-
-    bool shift = Input.GetKey(KeyCode.LeftShift);
-    bool alt = Input.GetKey(KeyCode.LeftAlt);
 
     if (shift || alt)
       return false;
 
-    if (Input.GetKeyDown(KeyCode.G))
+    if (keyCode == KeyCode.G)
     {
         var screen = new _HomeGetScreen(_gameScreen);
         screen._inspected = _inspected;
@@ -323,7 +302,7 @@ class _HomeViewScreen : ItemScreen {
         terminal.Push(screen);
         return true;
     }
-    else if (Input.GetKeyDown(KeyCode.P))
+    else if (keyCode == KeyCode.P)
     {
         _isActive = false;
         terminal.Push(ItemDialog.put(_gameScreen));

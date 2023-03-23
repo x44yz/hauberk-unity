@@ -66,31 +66,32 @@ class TargetDialog : Screen {
     return true;
   }
 
-  public override void HandleInput() {
-    if (Input.GetKeyDown(InputX.ok))
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.ok)
         if (_gameScreen.currentTarget != null) {
           terminal.Pop();
           _onSelect(_gameScreen.currentTarget!);
         }
-    else if (Input.GetKeyDown(InputX.cancel))
+    else if (keyCode == InputX.cancel)
         terminal.Pop();
-    else if (Input.GetKeyDown(InputX.nw))
+    else if (keyCode == InputX.nw)
         _changeTarget(Direction.nw);
-    else if (Input.GetKeyDown(InputX.n))
+    else if (keyCode == InputX.n)
         _changeTarget(Direction.n);
-    else if (Input.GetKeyDown(InputX.ne))
+    else if (keyCode == InputX.ne)
         _changeTarget(Direction.ne);
-    else if (Input.GetKeyDown(InputX.w))
+    else if (keyCode == InputX.w)
         _changeTarget(Direction.w);
-    else if (Input.GetKeyDown(InputX.e))
+    else if (keyCode == InputX.e)
         _changeTarget(Direction.e);
-    else if (Input.GetKeyDown(InputX.sw))
+    else if (keyCode == InputX.sw)
         _changeTarget(Direction.sw);
-    else if (Input.GetKeyDown(InputX.s))
+    else if (keyCode == InputX.s)
         _changeTarget(Direction.s);
-    else if (Input.GetKeyDown(InputX.se))
+    else if (keyCode == InputX.se)
         _changeTarget(Direction.se);
-    else if (Input.GetKeyDown(KeyCode.Tab) && _monsters.isNotEmpty()) 
+    else if (keyCode == KeyCode.Tab && _monsters.isNotEmpty()) 
     {
         _targetingFloor = !_targetingFloor;
         if (!_targetingFloor) {
@@ -98,11 +99,14 @@ class TargetDialog : Screen {
           // targeting.
           _targetNearest(_gameScreen.currentTarget ?? _gameScreen.game.hero.pos);
         }
+        else
+        {
+          _gameScreen.targetFloor(_gameScreen.currentTarget);
+        }
+        return true;
     }
-    else if (Input.anyKeyDown) 
-    {
-      _gameScreen.targetFloor(_gameScreen.currentTarget);
-    }
+
+    return false;
   }
 
   public override void Tick(float dt) {

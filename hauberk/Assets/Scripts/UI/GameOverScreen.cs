@@ -16,10 +16,15 @@ class GameOverScreen : Screen
     this.log = log;
   }
 
-  public override  void HandleInput() 
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    if (Input.GetKeyDown(InputX.cancel))
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
+      return true;
+    }
+
+    return false;
   }
 
   public override void Render() {

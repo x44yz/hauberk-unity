@@ -32,23 +32,27 @@ class ForfeitPopup : Popup {
       {"Esc", "No"}
   };
 
-  public override void HandleInput() {
-    if (Input.GetKeyDown(InputX.cancel)) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel) {
       terminal.Pop(false);
+      return true;
     }
 
-    bool shift = Input.GetKey(KeyCode.LeftShift);
-    bool alt = Input.GetKey(KeyCode.LeftAlt);
     if (shift || alt)
-      return;
+      return false;
 
-    if (Input.GetKeyDown(KeyCode.N))
+    if (keyCode == KeyCode.N)
     {
       terminal.Pop(false);
+      return true;
     }
-    else if (Input.GetKeyDown(KeyCode.Y))
+    else if (keyCode == KeyCode.Y)
     {
       terminal.Pop(true);
+      return true;
     }
+
+    return false;
   }
 }

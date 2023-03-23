@@ -229,7 +229,7 @@ class WindAction : Action {
 
 /// Permanently illuminates the given tile.
 class LightFloorAction : Action {
-  public Vec _pos;
+  // public Vec _pos;
   int _emanation;
 
   public LightFloorAction(Vec pos, Hit hit, num distance) {

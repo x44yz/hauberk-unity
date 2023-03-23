@@ -29,25 +29,28 @@ abstract class DirectionDialog : Screen
     this._gameScreen = _gameScreen;
   }
 
-  public override void HandleInput() {
-    if (Input.GetKeyDown(InputX.cancel))
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
       _select(Direction.none);
-    else if (Input.GetKeyDown(InputX.nw))
+    else if (keyCode == InputX.nw)
       _select(Direction.nw);
-    else if (Input.GetKeyDown(InputX.n))
+    else if (keyCode == InputX.n)
       _select(Direction.n);
-    else if (Input.GetKeyDown(InputX.ne))
+    else if (keyCode == InputX.ne)
       _select(Direction.ne);
-    else if (Input.GetKeyDown(InputX.w))
+    else if (keyCode == InputX.w)
       _select(Direction.w);
-    else if (Input.GetKeyDown(InputX.e))
+    else if (keyCode == InputX.e)
       _select(Direction.e);
-    else if (Input.GetKeyDown(InputX.sw))
+    else if (keyCode == InputX.sw)
       _select(Direction.sw);
-    else if (Input.GetKeyDown(InputX.s))
+    else if (keyCode == InputX.s)
       _select(Direction.s);
-    else if (Input.GetKeyDown(InputX.se))
+    else if (keyCode == InputX.se)
       _select(Direction.se);
+
+    return true;
   }
 
   public override void Tick(float dt) {

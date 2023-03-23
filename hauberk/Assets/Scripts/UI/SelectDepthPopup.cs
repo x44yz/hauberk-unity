@@ -34,20 +34,22 @@ class SelectDepthPopup : Popup {
       {"Esc", "Cancel"}
   };
 
-  public override void HandleInput() 
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    if (Input.GetKeyDown(InputX.w))
+    if (keyCode == InputX.w)
         _changeDepth(_depth - 1);
-    else if (Input.GetKeyDown(InputX.e))
+    else if (keyCode == InputX.e)
         _changeDepth(_depth + 1);
-    else if (Input.GetKeyDown(InputX.n))
+    else if (keyCode == InputX.n)
         _changeDepth(_depth - 10);
-    else if (Input.GetKeyDown(InputX.s))
+    else if (keyCode == InputX.s)
         _changeDepth(_depth + 10);
-    else if (Input.GetKeyDown(InputX.ok))
+    else if (keyCode == InputX.ok)
         terminal.Pop(_depth);
-    else if (Input.GetKeyDown(InputX.cancel))
+    else if (keyCode == InputX.cancel)
         terminal.Pop();
+
+    return true;
   }
 
   void renderPopup(Terminal terminal) {

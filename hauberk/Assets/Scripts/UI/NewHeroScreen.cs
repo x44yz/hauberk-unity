@@ -246,57 +246,68 @@ class NewHeroScreen : UnityTerminal.Screen {
     }
   }
 
-  public override void HandleInput()
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    base.HandleInput();
-
-    bool shift = Input.GetKey(KeyCode.LeftShift);
-    bool alt = Input.GetKey(KeyCode.LeftAlt);
-
-    if (Input.GetKeyDown(KeyCode.Escape))
+    if (keyCode == InputX.cancel)
     {
       terminal.Pop();
+      return true;
     }
     
     if (_field == _Field.race)
     {
-      if (Input.GetKeyDown(InputX.n))
+      if (keyCode == InputX.n)
+      {
           _changeRace(-1);
-      else if (Input.GetKeyDown(InputX.s))
+          return true;
+      }
+      else if (keyCode == InputX.s)
+      {
           _changeRace(1);
+          return true;
+      }
     }
     else if (_field == _Field.heroClass)
     {
-      if (Input.GetKeyDown(InputX.n))
+      if (keyCode == InputX.n)
+      {
           _changeClass(-1);
-      else if (Input.GetKeyDown(InputX.s))
+        return true;
+      }
+      else if (keyCode == InputX.s)
+      {
           _changeClass(1);
+        return true;
+      }
     }
 
-    if (Input.GetKeyDown(KeyCode.Return))
+    if (keyCode == KeyCode.Return)
     {
         var hero = content.createHero(_name.isNotEmpty() ? _name : _defaultName,
             content.races[_race], content.classes[_class]);
         storage.heroes.Add(hero);
         storage.save();
         // terminal.GoTo(GameScreen.town(storage, content, hero));
+        return true;
     }
-    if (Input.GetKeyDown(KeyCode.Tab))
+    else if (keyCode == KeyCode.Tab)
     {
       if (shift) {
         _changeField(-1);
       } else {
         _changeField(1);
       }
+      return true;
     }
-    else if (Input.GetKeyDown(KeyCode.Space))
+    else if (keyCode == KeyCode.Space)
     {
         if (_field == _Field.name) {
           // TODO: Handle modifiers.
           _appendToName(" ");
         }
+        return true;
     }
-    else if (Input.GetKeyDown(KeyCode.Delete))
+    else if (keyCode == KeyCode.Delete)
     {
       if (_field == _Field.name) {
         if (_name.isNotEmpty()) {
@@ -310,33 +321,31 @@ class NewHeroScreen : UnityTerminal.Screen {
           Dirty();
         }
       }
+      return true;
     }
     else if (Input.anyKeyDown)
     {
       if (_field == _Field.name && !alt) {
-        for (int i = 0; i < KeyCode.Z - KeyCode.A + 1; ++i)
-        {
-          if (Input.GetKeyDown(KeyCode.A + i))
+          if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
           {
-            var charCode = 'a' + i;
+            var charCode = 'a' + (keyCode - KeyCode.A);
             // TODO: Handle other modifiers.
             if (shift) {
-              charCode = 'A' + i;
+              charCode = 'A' + (keyCode - KeyCode.A);
             }
             _appendToName(char.ConvertFromUtf32(charCode));
-            break;
+            return true;
           }
-        }
-        for (int i = 0; i < 10; ++i)
-        {
-          if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+          else if (keyCode >= KeyCode.Alpha0 && keyCode <= KeyCode.Alpha9)
           {
-            var charCode = '0' + i;
-            _appendToName(char.ConvertFromUtf32(charCode));
+              var charCode = '0' + (keyCode - KeyCode.Alpha0);
+              _appendToName(char.ConvertFromUtf32(charCode));
+            return true;
           }
-        }
       }
     }
+
+    return false;
   }
 
   void _changeField(int offset) {

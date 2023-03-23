@@ -61,12 +61,15 @@ class MainMenuScreen : UnityTerminal.Screen {
     storage = new Storage(content);
   }
 
-  public override void HandleInput()
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    if (Input.GetKeyDown(KeyCode.N))
+    if (keyCode == KeyCode.N)
     {
       terminal.Push(new NewHeroScreen(content, storage));
+      return true;
     }
+
+    return false;
   }
 
   // bool handleInput(Input input) {
