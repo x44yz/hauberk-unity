@@ -175,7 +175,7 @@ public class Rect : IEnumerable<Vec>
 
   /// Returns a new [Vec] that is as near to [vec] as possible while being in
   /// bounds.
-  Vec clamp(Vec vec) {
+  public Vec clamp(Vec vec) {
     var x = (int)Mathf.Clamp(vec.x, left, right);
     var y = (int)Mathf.Clamp(vec.y, top, bottom);
     return new Vec(x, y);

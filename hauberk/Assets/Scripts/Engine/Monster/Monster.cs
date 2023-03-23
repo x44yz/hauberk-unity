@@ -59,7 +59,7 @@ public class Monster : Actor {
 
   double _alertness = 0.0;
 
-  double alertness => _alertness;
+  public double alertness => _alertness;
 
   /// How afraid of the hero the monster currently is. If it gets high enough,
   /// the monster will switch to the afraid state and try to flee.

@@ -60,7 +60,7 @@ class GameScreen : UnityTerminal.Screen {
   }
 
   /// The currently targeted actor, if any.
-  Actor? currentTargetActor {
+  public Actor currentTargetActor {
     get {
     // Forget the target if it dies or goes offscreen.
       var actor = _targetActor;
@@ -83,7 +83,7 @@ class GameScreen : UnityTerminal.Screen {
 
   public Rect cameraBounds => _stagePanel.cameraBounds;
 
-  Color heroColor {
+  public Color heroColor {
     get {
       var hero = game.hero;
       if (hero.health < hero.maxHealth / 4) return Hues.red;

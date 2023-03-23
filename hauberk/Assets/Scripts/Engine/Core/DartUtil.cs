@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Color = UnityEngine.Color;
 
 public static class DartUtils
 {
@@ -50,13 +51,22 @@ public static class DartUtils
       return orElse == null ? default(T) : orElse();
     }
 
-    public static UnityEngine.Color blend(this UnityEngine.Color color, UnityEngine.Color other, float fractionOther)
+    public static Color blend(this Color color, Color other, float fractionOther)
     {
       var fractionThis = 1.0 - fractionOther;
-      return new UnityEngine.Color(
-          (int)(color.r * fractionThis + other.r * fractionOther),
-          (int)(color.g * fractionThis + other.g * fractionOther),
-          (int)(color.b * fractionThis + other.b * fractionOther));
+      return new Color(
+          (float)(color.r * fractionThis + other.r * fractionOther),
+          (float)(color.g * fractionThis + other.g * fractionOther),
+          (float)(color.b * fractionThis + other.b * fractionOther));
+    }
+
+    public static Color add(this Color a, Color other, double? fractionOther = null) {
+      fractionOther ??= 1.0;
+      return new Color(
+          (float)(a.r + other.r * fractionOther),
+          (float)(a.g + other.g * fractionOther),
+          (float)(a.b + other.b * fractionOther)
+      );
     }
 
     public static bool isEmpty(this string s)

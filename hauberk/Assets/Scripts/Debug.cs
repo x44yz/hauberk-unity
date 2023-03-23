@@ -15,12 +15,12 @@ class Debugger {
   public static bool enabled = true;
 
   /// If true, all monsters are rendered, regardless of in-game visibility.
-  static bool showAllMonsters = false;
+  public static bool showAllMonsters = false;
 
   /// If true, monster alertness is rendered.
-  static bool showMonsterAlertness = false;
+  public static bool showMonsterAlertness = false;
 
-  static bool showHeroVolume = false;
+  public static bool showHeroVolume = false;
 
   /// The current density map being used.
   ///

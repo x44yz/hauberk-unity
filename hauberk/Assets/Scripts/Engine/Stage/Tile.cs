@@ -152,7 +152,7 @@ public class Tile {
     public bool isOccluded => _isOccluded;
 
     /// How much visibility is reduced by distance fall-off.
-    int fallOff => _fallOff;
+    public int fallOff => _fallOff;
     int _fallOff = 0;
 
     /// Whether the tile can be seen through or blocks the hero's view beyond it.
