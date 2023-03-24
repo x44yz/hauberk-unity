@@ -16,7 +16,7 @@ public class Equipment : ItemCollection {
   List<string> _slotTypes = null;
   List<Item> _slots = null;
   public override List<string> slotTypes => _slotTypes;
-  public override List<Item> slots => slots;
+  public override List<Item> slots => _slots;
 
   public Equipment()
   {
@@ -40,7 +40,7 @@ public class Equipment : ItemCollection {
   public List<Item> weapons
   {
     get {
-      return slots.Where<Item>((item) => item.type.weaponType != null).ToList();
+      return slots.Where<Item>((item) => item != null && item.type.weaponType != null).ToList();
     }
   }
 

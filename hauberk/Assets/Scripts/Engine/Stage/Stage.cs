@@ -150,8 +150,12 @@ public class Stage {
     public bool isItemAt(Vec pos) => _itemsByTile.ContainsKey(pos);
 
     /// Gets the [Item]s at [pos].
-    public Inventory itemsAt(Vec pos) =>
-        _itemsByTile[pos] ?? new Inventory(ItemLocation.onGround);
+    public Inventory itemsAt(Vec pos)
+    {
+        if (_itemsByTile.ContainsKey(pos))
+            return _itemsByTile[pos];
+        return new Inventory(ItemLocation.onGround);
+    }
     // TODO: This is kind of slow, probably from creating the inventory each time.
     // Use a const one for the empty case?
 

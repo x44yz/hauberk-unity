@@ -283,7 +283,7 @@ class NewHeroScreen : UnityTerminal.Screen {
             content.races[_race], content.classes[_class]);
         storage.heroes.Add(hero);
         storage.save();
-        // terminal.GoTo(GameScreen.town(storage, content, hero));
+        terminal.GoTo(GameScreen.town(storage, content, hero));
         return true;
     }
     else if (keyCode == KeyCode.Tab)
@@ -319,7 +319,7 @@ class NewHeroScreen : UnityTerminal.Screen {
       }
       return true;
     }
-    else if (Input.anyKeyDown)
+    else
     {
       if (_field == _Field.name && !alt) {
           if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)

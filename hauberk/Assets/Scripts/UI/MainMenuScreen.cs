@@ -63,63 +63,54 @@ class MainMenuScreen : UnityTerminal.Screen {
 
   public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
+    if (keyCode == InputX.n)
+    {
+      _changeSelection(-1);
+      return true;
+    }
+    else if (keyCode == InputX.s)
+    {
+      _changeSelection(1);
+      return true;
+    }
+    else if (keyCode == InputX.ok)
+    {
+        if (selectedHero < storage.heroes.Count) {
+          var save = storage.heroes[selectedHero];
+          terminal.Push(GameScreen.town(storage, content, save));
+        }
+        return true;
+    }
+
+    if (shift || alt) return false;
+
     if (keyCode == KeyCode.N)
     {
       terminal.Push(new NewHeroScreen(content, storage));
       return true;
     }
-
+    else if (keyCode == KeyCode.D)
+    {
+        if (selectedHero < storage.heroes.Count) {
+          var name = storage.heroes[selectedHero].name;
+          terminal.Push(
+              new ConfirmPopup($"Are you sure you want to delete {name}?", "delete"));
+        }
+        return true;
+    }
     return false;
   }
 
-  // bool handleInput(Input input) {
-  //   switch (input) {
-  //     case Input.n:
-  //       _changeSelection(-1);
-  //       return true;
-  //     case Input.s:
-  //       _changeSelection(1);
-  //       return true;
-
-  //     case Input.ok:
-  //       if (selectedHero < storage.heroes.length) {
-  //         var save = storage.heroes[selectedHero];
-  //         ui.push(GameScreen.town(storage, content, save));
-  //       }
-  //       return true;
-  //   }
-
-  //   return false;
-  // }
-
-  // bool keyDown(int keyCode, {required bool shift, required bool alt}) {
-  //   if (shift || alt) return false;
-
-  //   switch (keyCode) {
-  //     case KeyCode.d:
-  //       if (selectedHero < storage.heroes.length) {
-  //         var name = storage.heroes[selectedHero].name;
-  //         ui.push(
-  //             ConfirmPopup("Are you sure you want to delete $name?", 'delete'));
-  //       }
-  //       return true;
-
-
-  //   }
-
-  //   return false;
-  // }
-
   public override void Active(UnityTerminal.Screen popped, object result) 
   {
-    // if (popped is ConfirmPopup && result.Equals("delete")) {
-    //   storage.heroes.RemoveAt(selectedHero);
-    //   if (selectedHero > 0 && selectedHero >= storage.heroes.Count) {
-    //     selectedHero--;
-    //   }
-    //   storage.save();
-    //   Dirty();
-    // }
+    if (popped is ConfirmPopup && result.Equals("delete")) {
+      storage.heroes.RemoveAt(selectedHero);
+      if (selectedHero > 0 && selectedHero >= storage.heroes.Count) {
+        selectedHero--;
+      }
+      storage.save();
+      Dirty();
+    }
   }
 
   public override void Render()

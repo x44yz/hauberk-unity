@@ -295,49 +295,49 @@ public class Lighting {
         var diagonalAttenuate = (int)Mathf.Ceil(attenuate * 1.5f);
 
         while (true) {
-        var pos = _queue.removeNext();
-        if (pos == null) break;
+            var pos = _queue.removeNext();
+            if (pos == null) break;
 
-        var parentLight = tiles[pos];
+            var parentLight = tiles[pos];
 
-        void checkNeighbor(Vec dir, int attenuation) {
-            var neighborPos = pos + dir;
+            void checkNeighbor(Vec dir, int attenuation) {
+                var neighborPos = pos + dir;
 
-            if (!_stage.bounds.contains(neighborPos)) return;
+                if (!_stage.bounds.contains(neighborPos)) return;
 
-            var neighborTile = _stage[neighborPos];
+                var neighborTile = _stage[neighborPos];
 
-            // Don't illuminate opaque (we'll do this in a separate pass).
-            if (neighborTile.blocksView) return;
+                // Don't illuminate opaque (we'll do this in a separate pass).
+                if (neighborTile.blocksView) return;
 
-            var illumination = parentLight - attenuation;
+                var illumination = parentLight - attenuation;
 
-            // Don't revisit a tiles that are already as light as they should be.
-            // We may actually revisit a tile if it is both directly lit (and thus
-            // pre-emptively enqueued) *and* a nearby even brighter light is
-            // brighter than its own direct illumination. That's OK. When that
-            // happens, the second time we process the tile, nothing will happen.
-            if (tiles[neighborPos] >= illumination) return;
+                // Don't revisit a tiles that are already as light as they should be.
+                // We may actually revisit a tile if it is both directly lit (and thus
+                // pre-emptively enqueued) *and* a nearby even brighter light is
+                // brighter than its own direct illumination. That's OK. When that
+                // happens, the second time we process the tile, nothing will happen.
+                if (tiles[neighborPos] >= illumination) return;
 
-            // Lighten the tile.
-            tiles[neighborPos] = illumination;
+                // Lighten the tile.
+                tiles[neighborPos] = illumination;
 
-            // If the neighbor is too dim for light to propagate from it, don't
-            // bother enqueuing it.
-            if (illumination <= attenuate) return;
+                // If the neighbor is too dim for light to propagate from it, don't
+                // bother enqueuing it.
+                if (illumination <= attenuate) return;
 
-            // Check the tile's neighbors.
-            _enqueue(neighborPos, illumination);
-        }
+                // Check the tile's neighbors.
+                _enqueue(neighborPos, illumination);
+            }
 
-        checkNeighbor(Direction.n, attenuate);
-        checkNeighbor(Direction.s, attenuate);
-        checkNeighbor(Direction.e, attenuate);
-        checkNeighbor(Direction.w, attenuate);
-        checkNeighbor(Direction.ne, diagonalAttenuate);
-        checkNeighbor(Direction.se, diagonalAttenuate);
-        checkNeighbor(Direction.nw, diagonalAttenuate);
-        checkNeighbor(Direction.sw, diagonalAttenuate);
+            checkNeighbor(Direction.n, attenuate);
+            checkNeighbor(Direction.s, attenuate);
+            checkNeighbor(Direction.e, attenuate);
+            checkNeighbor(Direction.w, attenuate);
+            checkNeighbor(Direction.ne, diagonalAttenuate);
+            checkNeighbor(Direction.se, diagonalAttenuate);
+            checkNeighbor(Direction.nw, diagonalAttenuate);
+            checkNeighbor(Direction.sw, diagonalAttenuate);
         }
     }
 }

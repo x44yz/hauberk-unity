@@ -245,19 +245,32 @@ public class Vec : VecBase
 
     public static bool operator ==(Vec a, Vec b) 
     {
+        if (a is null && b is null)
+            return true;
+        if (a is null)
+            return false;
+        if (b is null)
+            return false;
         return a.x == b.x && a.y == b.y;
     }
 
     public static bool operator !=(Vec a, Vec b) 
     {
+        if (a is null && b is null)
+            return false;
+        if (a is null)
+            return true;
+        if (b is null)
+            return true;
         return a.x != b.x || a.y != b.y;
     }
+
     public override bool Equals(object obj)
     {
         if (obj is Vec)
         {
-        var k = obj as Vec;
-        return this == k;
+            var k = obj as Vec;
+            return this == k;
         }
         return false;
     }
