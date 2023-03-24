@@ -195,88 +195,71 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.nw)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.nw);
+      action = new WalkAction(Direction.nw);
     }
     else if (keyCode == InputX.n)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.n);
+      action = new WalkAction(Direction.n);
     }
     else if (keyCode == InputX.ne)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.ne);
+      action = new WalkAction(Direction.ne);
     }
     else if (keyCode == InputX.w)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.w);
+      action = new WalkAction(Direction.w);
     }
     else if (keyCode == InputX.ok)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.none);
+      action = new WalkAction(Direction.none);
     }
     else if (keyCode == InputX.e)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.e);
+      action = new WalkAction(Direction.e);
     }
     else if (keyCode == InputX.sw)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.sw);
+      action = new WalkAction(Direction.sw);
     }
     else if (keyCode == InputX.s)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.s);
+      action = new WalkAction(Direction.s);
     }
     else if (keyCode == InputX.se)
     {
-      throw new System.NotImplementedException();
-        // action = WalkAction(Direction.se);
+      action = new WalkAction(Direction.se);
     }
     else if (keyCode == InputX.runNW && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.nw);
+      game.hero.run(Direction.nw);
     }
     else if (keyCode == InputX.runN && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.n);
+      game.hero.run(Direction.n);
     }
     else if (keyCode == InputX.runNE && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.ne);
+      game.hero.run(Direction.ne);
     }
     else if (keyCode == InputX.runW && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.w);
+      game.hero.run(Direction.w);
     }
     else if (keyCode == InputX.runE && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.e);
+      game.hero.run(Direction.e);
     }
     else if (keyCode == InputX.runSW && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.sw);
+      game.hero.run(Direction.sw);
     }
     else if (keyCode == InputX.runS && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.s);
+      game.hero.run(Direction.s);
     }
     else if (keyCode == InputX.runSE && shift)
     {
-      throw new System.NotImplementedException();
-        // game.hero.run(Direction.se);
+      game.hero.run(Direction.se);
     }
     else if (keyCode == InputX.fireNW && alt)
     {
@@ -443,7 +426,7 @@ class GameScreen : UnityTerminal.Screen {
     */
   }
 
-  void update() {
+  public override void Tick(float dt) {
     if (_enterPortal()) return;
 
     if (_pause > 0) {

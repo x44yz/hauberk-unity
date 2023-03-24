@@ -79,11 +79,17 @@ public class TilePortal {
 
   public static bool operator ==(TilePortal a, TilePortal b)
   {
+    if (a is null && b is null) return true;
+    if (a is null) return false;
+    if (b is null) return false;
     return a.name.Equals(b.name);
   }
 
   public static bool operator !=(TilePortal a, TilePortal b)
   {
+    if (a is null && b is null) return false;
+    if (a is null) return true;
+    if (b is null) return true;
     return a.name.Equals(b.name) == false;
   }
 

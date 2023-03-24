@@ -11,27 +11,27 @@ abstract class ItemView {
   /// The ideal maximum width of an item list, including the frame.
   public const int preferredWidth = 46;
 
-  HeroSave save;
+  public virtual HeroSave save => null;
 
-  ItemCollection items;
+  public virtual ItemCollection items => null;
 
-  bool showLetters => true;
+  public virtual bool showLetters => true;
 
-  bool canSelectAny => true;
+  public virtual bool canSelectAny => true;
 
-  bool capitalize => false;
+  public virtual bool capitalize => false;
 
-  bool showPrices => false;
+  public virtual bool showPrices => false;
 
-  Item inspectedItem => null;
+  public virtual Item inspectedItem => null;
 
-  bool inspectorOnRight => false;
+  public virtual bool inspectorOnRight => false;
 
-  bool canSelect(Item item) => false;
+  public virtual bool canSelect(Item item) => false;
 
-  int? getPrice(Item item) => item.price;
+  public virtual int? getPrice(Item item) => item.price;
 
-  public void render(
+  public virtual void render(
       Terminal terminal, int left, int top, int width, int itemSlotCount) 
   {
     Draw.frame(terminal, left, top, width, itemSlotCount + 2,

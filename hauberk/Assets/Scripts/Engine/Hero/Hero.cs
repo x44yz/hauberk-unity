@@ -366,7 +366,7 @@ public class Hero : Actor {
     return true;
   }
 
-  void run(Direction direction) {
+  public void run(Direction direction) {
     _behavior = new RunBehavior(direction);
   }
 

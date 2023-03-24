@@ -91,6 +91,8 @@ public static class Draw {
     for (int i = 1; i < height - 1; ++i)
     {
         terminal.WriteAt(x, y + i, vertical, color);
+        for (int j = 1; j < width - 1; ++j)
+          terminal.WriteAt(x + j, y + i, CharCode.space, color);
         terminal.WriteAt(x + width - 1, y + i, vertical, color);
     }
 

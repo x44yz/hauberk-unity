@@ -279,21 +279,21 @@ class ItemDialog : Screen {
 class _ItemDialogItemView : ItemView {
   public ItemDialog _dialog;
 
-  HeroSave save => _dialog._gameScreen.game.hero.save;
+  public override HeroSave save => _dialog._gameScreen.game.hero.save;
 
-  ItemCollection items => _dialog._getItems();
+  public override ItemCollection items => _dialog._getItems();
 
-  bool canSelectAny => true;
+  public override bool canSelectAny => true;
 
-  bool capitalize => _dialog._shiftDown;
+  public override bool capitalize => _dialog._shiftDown;
 
-  bool showPrices => _dialog._command.showPrices;
+  public override bool showPrices => _dialog._command.showPrices;
 
-  Item inspectedItem => _dialog._inspected;
+  public override Item inspectedItem => _dialog._inspected;
 
-  bool canSelect(Item item) => _dialog._canSelect(item);
+  public override bool canSelect(Item item) => _dialog._canSelect(item);
 
-  int getPrice(Item item) => _dialog._command.getPrice(item);
+  public override int? getPrice(Item item) => _dialog._command.getPrice(item);
 
   public _ItemDialogItemView(ItemDialog _dialog)
   {

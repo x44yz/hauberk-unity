@@ -49,17 +49,18 @@ class ItemPanel : Panel {
 
 class _ItemPanelItemView : ItemView {
   public Game _game;
-  public ItemCollection items;
+  public override ItemCollection items => _items;
+  ItemCollection _items;
 
   public _ItemPanelItemView(Game _game, ItemCollection items)
   {
     this._game = _game;
-    this.items = items;
+    this._items = items;
   }
 
-  HeroSave save => _game.hero.save;
+  public override HeroSave save => _game.hero.save;
 
-  bool showLetters => false;
+  public override bool showLetters => false;
 
-  bool canSelectAny => false;
+  public override bool canSelectAny => false;
 }

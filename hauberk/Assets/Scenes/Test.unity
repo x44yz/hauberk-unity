@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retroCanvas: {fileID: 1212139115}
-  width: 80
+  width: 100
   height: 40
 --- !u!4 &789946401
 Transform:

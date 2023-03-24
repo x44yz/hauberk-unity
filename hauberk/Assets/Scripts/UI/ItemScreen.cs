@@ -251,23 +251,23 @@ class _TownItemView : ItemView {
     this._screen = _screen;
   }
 
-  HeroSave save => _screen._gameScreen.game.hero.save;
+  public override HeroSave save => _screen._gameScreen.game.hero.save;
 
-  ItemCollection items => _screen._items;
+  public override ItemCollection items => _screen._items;
 
-  bool capitalize => _screen._shiftDown;
+  public override bool capitalize => _screen._shiftDown;
 
-  bool showPrices => _screen._showPrices;
+  public override bool showPrices => _screen._showPrices;
 
-  Item inspectedItem => _screen._isActive ? _screen._inspected : null;
+  public override Item inspectedItem => _screen._isActive ? _screen._inspected : null;
 
-  bool inspectorOnRight => true;
+  public override bool inspectorOnRight => true;
 
-  bool canSelectAny => _screen._shiftDown || _screen._canSelectAny;
+  public override bool canSelectAny => _screen._shiftDown || _screen._canSelectAny;
 
-  bool canSelect(Item item) => _screen._canSelect(item);
+  public override bool canSelect(Item item) => _screen._canSelect(item);
 
-  int? getPrice(Item item) => _screen._itemPrice(item);
+  public override int? getPrice(Item item) => _screen._itemPrice(item);
 }
 
 class _HomeViewScreen : ItemScreen {

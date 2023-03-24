@@ -66,7 +66,7 @@ public abstract class ItemCollection : IEnumerable<Item> {
 
   public virtual ItemLocation location { get; }
 
-  public string name { get; } //=> location.name;
+  public string name => location.name;
 
   public virtual int length { get; }
 
@@ -76,11 +76,11 @@ public abstract class ItemCollection : IEnumerable<Item> {
   ///
   /// Otherwise returns `null`. It's only valid to access this if [slots]
   /// returns `null` for some index.
-  public virtual List<string> slotTypes { get; } // => const [];
+  public virtual List<string> slotTypes => new List<string>();
 
   /// If the item collection may have empty slots in it (equipment) this returns
   /// the sequence of items and slots.
-  public virtual List<Item> slots => null;
+  public virtual List<Item> slots => new List<Item>();
 
   public abstract void remove(Item item);
 
