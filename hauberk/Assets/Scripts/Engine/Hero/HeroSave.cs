@@ -107,7 +107,7 @@ public class HeroSave
     }
 
     // TODO: Rename.
-    HeroSave(
+    public HeroSave(
         string name,
         RaceStats race,
         HeroClass heroClass,

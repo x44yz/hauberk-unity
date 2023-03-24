@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// An [Item] in the game can be either on the ground in the level, or held by
 /// the [Hero] in their [Inventory] or [Equipment]. This enum describes which
@@ -80,7 +81,7 @@ public abstract class ItemCollection : IEnumerable<Item> {
 
   /// If the item collection may have empty slots in it (equipment) this returns
   /// the sequence of items and slots.
-  public virtual List<Item> slots => new List<Item>();
+  public virtual List<Item> slots => this.ToList();
 
   public abstract void remove(Item item);
 

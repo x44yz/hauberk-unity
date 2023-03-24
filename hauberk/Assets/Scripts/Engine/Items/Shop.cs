@@ -22,7 +22,7 @@ public class Shop {
         return inventory;
     }
 
-    Inventory load(List<Item> items) {
+    public Inventory load(List<Item> items) {
         return new Inventory(ItemLocation.shop(name), capacity, items);
     }
 

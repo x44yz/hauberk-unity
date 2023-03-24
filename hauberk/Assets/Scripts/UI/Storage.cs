@@ -14,192 +14,208 @@ class Storage {
   }
 
   void _load() {
-    // // TODO: For debugging. If the query is "?clear", then ditch saved heroes.
+    // TODO: For debugging. If the query is "?clear", then ditch saved heroes.
     // if (html.window.location.search == '?clear') {
     //   save();
     //   return;
     // }
 
-    // var storage = html.window.localStorage['heroes'];
-    // if (storage == null) return;
+    var storage = PlayerPrefs.GetString("heroes");
+    if (storage == null) return;
 
-    // var data = json.decode(storage) as Map<String, dynamic>;
+    var data = JsonUtility.FromJson<Dictionary<string, object>>(storage);
 
-    // // TODO: Check version.
+    // TODO: Check version.
+    
+    var heros = data["heroes"] as List<object>;
+    foreach (var heroObj in heros) {
+      try {
+        var hero = heroObj as Dictionary<string, object>;
 
-    // for (var hero in data['heroes']) {
-    //   try {
-    //     var name = hero['name'] as String;
-    //     var race = _loadRace(hero['race'] as Map<String, dynamic>);
+        var name = hero["name"] as string;
+        var race = _loadRace(hero["race"] as Dictionary<string, object>);
 
-    //     HeroClass heroClass;
-    //     if (hero['class'] == null) {
-    //       // TODO: Temp for characters before classes.
-    //       heroClass = content.classes[0];
-    //     } else {
-    //       var name = hero['class'] as String;
-    //       heroClass = content.classes.firstWhere((c) => c.name == name);
-    //     }
+        HeroClass heroClass;
+        if (hero["class"] == null) {
+          // TODO: Temp for characters before classes.
+          heroClass = content.classes[0];
+        } else {
+          var className = hero["class"] as string;
+          heroClass = content.classes.First((c) => c.name == className);
+        }
 
-    //     var inventoryItems = _loadItems(hero['inventory']);
-    //     var inventory = Inventory(
-    //         ItemLocation.inventory, Option.inventoryCapacity, inventoryItems);
+        var inventoryItems = _loadItems(hero["inventory"] as List<object>);
+        var inventory = new Inventory(
+            ItemLocation.inventory, Option.inventoryCapacity, inventoryItems);
 
-    //     var equipment = Equipment();
-    //     for (var item in _loadItems(hero['equipment'])) {
-    //       // TODO: If there are multiple slots of the same type, this may
-    //       // shuffle items around.
-    //       equipment.equip(item);
-    //     }
+        var equipment = new Equipment();
+        foreach (var item in _loadItems(hero["equipment"] as List<object>)) {
+          // TODO: If there are multiple slots of the same type, this may
+          // shuffle items around.
+          equipment.equip(item);
+        }
 
-    //     var homeItems = _loadItems(hero['home']);
-    //     var home = Inventory(ItemLocation.home, Option.homeCapacity, homeItems);
+        var homeItems = _loadItems(hero["home"] as List<object>);
+        var home = new Inventory(ItemLocation.home, Option.homeCapacity, homeItems);
 
-    //     var crucibleItems = _loadItems(hero['crucible']);
-    //     var crucible = Inventory(
-    //         ItemLocation.crucible, Option.crucibleCapacity, crucibleItems);
+        var crucibleItems = _loadItems(hero["crucible"] as List<object>);
+        var crucible = new Inventory(
+            ItemLocation.crucible, Option.crucibleCapacity, crucibleItems);
 
-    //     // TODO: What if shops are added or changed?
-    //     var shops = <Shop, Inventory>{};
-    //     if (hero.containsKey('shops')) {
-    //       content.shops.forEach((name, shop) {
-    //         var shopData = hero['shops'][name] as List<dynamic>?;
-    //         if (shopData != null) {
-    //           shops[shop] = shop.load(_loadItems(shopData));
-    //         } else {
-    //           print("No data for $name, so regenerating.");
-    //           shops[shop] = shop.create();
-    //         }
-    //       });
-    //     }
+        // TODO: What if shops are added or changed?
+        var shops = new Dictionary<Shop, Inventory>{};
+        if (hero.ContainsKey("shops")) {
+          foreach (var kv in content.shops) {
+            var shopName = kv.Key;
+            var shop = kv.Value;
 
-    //     // Clean up legacy heroes before item stacks.
-    //     // TODO: Remove this once we don't need to worry about it anymore.
-    //     inventory.countChanged();
-    //     home.countChanged();
-    //     crucible.countChanged();
+            var kk = hero["shops"] as Dictionary<string, object>;
+            var shopData = kk[shopName] as List<object>;
+            if (shopData != null) {
+              shops[shop] = shop.load(_loadItems(shopData));
+            } else {
+              Debug.LogError($"No data for {shopName}, so regenerating.");
+              shops[shop] = shop.create();
+            }
+          };
+        }
 
-    //     // Defaults are to support legacy saves.
+        // Clean up legacy heroes before item stacks.
+        // TODO: Remove this once we don't need to worry about it anymore.
+        inventory.countChanged();
+        home.countChanged();
+        crucible.countChanged();
 
-    //     var experience = hero['experience'] as int;
+        // Defaults are to support legacy saves.
 
-    //     var levels = <Skill, int>{};
-    //     var points = <Skill, int>{};
-    //     var skills = hero['skills'] as Map<String, dynamic>?;
-    //     if (skills != null) {
-    //       for (var name in skills.keys) {
-    //         var skill = content.findSkill(name);
-    //         // Handle old storage without points.
-    //         // TODO: Remove when no longer needed.
-    //         if (skills[name] is int) {
-    //           levels[skill] = skills[name] as int;
-    //           points[skill] = 0;
-    //         } else {
-    //           levels[skill] = skills[name]['level'] as int;
-    //           points[skill] = skills[name]['points'] as int;
-    //         }
-    //       }
-    //     }
+        var experience = (int)hero["experience"];
 
-    //     var skillSet = SkillSet.from(levels, points);
+        var levels = new Dictionary<Skill, int>{};
+        var points = new Dictionary<Skill, int>{};
+        var skills = hero["skills"] as Dictionary<string, object>;
+        if (skills != null) {
+          foreach (var skillName in skills.Keys) {
+            var skill = content.findSkill(skillName);
+            // Handle old storage without points.
+            // TODO: Remove when no longer needed.
+            if (skills[skillName] is int) {
+              levels[skill] = (int)skills[skillName];
+              points[skill] = 0;
+            } else {
+              var kk = skills[skillName] as Dictionary<string, int>;
+              levels[skill] = (int)kk["level"];
+              points[skill] = (int)kk["points"];
+            }
+          }
+        }
 
-    //     var lore = _loadLore(hero['lore'] as Map<String, dynamic>);
+        var skillSet = new SkillSet(levels, points);
 
-    //     var gold = hero['gold'] as int;
-    //     var maxDepth = hero['maxDepth'] as int? ?? 0;
+        var lore = _loadLore(hero["lore"] as Dictionary<string, object>);
 
-    //     var heroSave = HeroSave.load(
-    //         name,
-    //         race,
-    //         heroClass,
-    //         inventory,
-    //         equipment,
-    //         home,
-    //         crucible,
-    //         shops,
-    //         experience,
-    //         skillSet,
-    //         lore,
-    //         gold,
-    //         maxDepth);
-    //     heroes.add(heroSave);
-    //   } catch (error, trace) {
-    //     print("Could not load hero. Data:");
-    //     print(json.encode(hero));
-    //     print("Error:\n$error\n$trace");
-    //   }
-    // }
+        var gold = (int)hero["gold"];
+        var maxDepth = 0;
+        if (hero.ContainsKey("maxDepth"))
+          maxDepth = (int)hero["maxDepth"];
+
+        var heroSave = new HeroSave(
+            name,
+            race,
+            heroClass,
+            inventory,
+            equipment,
+            home,
+            crucible,
+            shops,
+            experience,
+            skillSet,
+            lore,
+            gold,
+            maxDepth);
+        heroes.Add(heroSave);
+      } catch (Exception ex) {
+        Debug.LogError("Could not load hero. Data:");
+        Debug.Log(JsonUtility.ToJson(heroObj));
+        Debug.LogError($"Error:{ex}");
+      }
+    }
   }
 
-  RaceStats _loadRace(Dictionary<String, object> data) {
-    throw new System.NotImplementedException();
-    // // TODO: Temp to handle heros from before races.
-    // if (data == null) {
-    //   return content.races.elementAt(4).rollStats();
-    // }
+  RaceStats _loadRace(Dictionary<string, object> data) {
+    // TODO: Temp to handle heros from before races.
+    if (data == null) {
+      return content.races.elementAt(4).rollStats();
+    }
 
-    // var name = data['name'] as String;
-    // var race = content.races.firstWhere((race) => race.name == name);
+    var name = data["name"] as string;
+    var race = content.races.First((race) => race.name == name);
 
-    // var statData = data['stats'] as Map<String, dynamic>;
-    // var stats = <Stat, int>{};
+    var statData = data["stats"] as Dictionary<string, object>;
+    var stats = new Dictionary<Stat, int>{};
 
-    // for (var stat in Stat.all) {
-    //   stats[stat] = statData[stat.name] as int;
-    // }
+    foreach (var stat in Stat.all) {
+      if (statData.ContainsKey(stat.name)) {
+        stats[stat] = (int)statData[stat.name];
+      }
+    }
 
-    // // TODO: 1234 is temp for characters without seed.
-    // var seed = data['seed'] as int? ?? 1234;
+    // TODO: 1234 is temp for characters without seed.
+    var seed = 1234;
+    if (data.ContainsKey("seed"))
+      seed = (int)data["seed"];
 
-    // return RaceStats(race, stats, seed);
+    return new RaceStats(race, stats, seed);
   }
 
-  List<Item> _loadItems(List<dynamic> data) {
-    throw new System.NotImplementedException();
-    // var items = <Item>[];
-    // for (var itemData in data) {
-    //   var item = _loadItem(itemData as Map<String, dynamic>);
-    //   if (item != null) items.add(item);
-    // }
+  List<Item> _loadItems(List<object> data) {
+    var items = new List<Item>();
+    if (data == null)
+      return items;
 
-    // return items;
+    foreach (var itemData in data) {
+      var item = _loadItem(itemData as Dictionary<string, object>);
+      if (item != null) items.Add(item);
+    }
+
+    return items;
   }
 
   Item _loadItem(Dictionary<string, object> data) {
-    throw new System.NotImplementedException();
-    // var type = content.tryFindItem(data['type'] as String);
-    // if (type == null) {
-    //   print("Couldn't find item type \"${data['type']}\", discarding item.");
-    //   return null;
-    // }
+    var type = content.tryFindItem(data["type"] as string);
+    if (type == null) {
+      Debug.LogError($"Couldn't find item type {data["type"]}, discarding item.");
+      return null;
+    }
 
-    // var count = 1;
-    // // Existing save files don't store count, so allow it to be missing.
-    // if (data.containsKey('count')) {
-    //   count = data['count'] as int;
-    // }
+    var count = 1;
+    // Existing save files don't store count, so allow it to be missing.
+    if (data.ContainsKey("count")) {
+      count = (int)data["count"];
+    }
 
-    // Affix? prefix;
-    // if (data.containsKey('prefix')) {
-    //   // TODO: Older save from back when affixes had types.
-    //   if (data['prefix'] is Map) {
-    //     prefix = content.findAffix(data['prefix']['name'] as String);
-    //   } else {
-    //     prefix = content.findAffix(data['prefix'] as String);
-    //   }
-    // }
+    Affix prefix = null;
+    if (data.ContainsKey("prefix")) {
+      // TODO: Older save from back when affixes had types.
+      if (data["prefix"] is string) {
+        prefix = content.findAffix(data["prefix"] as string);
+      } else {
+        var kk = data["prefix"] as Dictionary<string, object>;
+        prefix = content.findAffix(kk["name"] as string);
+      }
+    }
 
-    // Affix? suffix;
-    // if (data.containsKey('suffix')) {
-    //   // TODO: Older save from back when affixes had types.
-    //   if (data['suffix'] is Map) {
-    //     suffix = content.findAffix(data['suffix']['name'] as String);
-    //   } else {
-    //     suffix = content.findAffix(data['suffix'] as String);
-    //   }
-    // }
+    Affix suffix = null;
+    if (data.ContainsKey("suffix")) {
+      // TODO: Older save from back when affixes had types.
+      if (data["suffix"] is string) {
+        suffix = content.findAffix(data["suffix"] as string);
+      } else {
+        var kk = data["suffix"] as Dictionary<string, object>;
+        suffix = content.findAffix(kk["name"] as string);
+      }
+    }
 
-    // return Item(type, count, prefix, suffix);
+    return new Item(type, count, prefix, suffix);
   }
 
   Lore _loadLore(Dictionary<string, object> data) {
@@ -212,7 +228,7 @@ class Storage {
 
     // // TODO: Older saves before lore.
     // if (data != null) {
-    //   var seenMap = data['seen'] as Map<String, dynamic>?;
+    //   var seenMap = data['seen'] as Map<string, dynamic>?;
     //   if (seenMap != null) {
     //     seenMap.forEach((breedName, dynamic count) {
     //       var breed = content.tryFindBreed(breedName);
@@ -220,7 +236,7 @@ class Storage {
     //     });
     //   }
 
-    //   var slainMap = data['slain'] as Map<String, dynamic>?;
+    //   var slainMap = data['slain'] as Map<string, dynamic>?;
     //   if (slainMap != null) {
     //     slainMap.forEach((breedName, dynamic count) {
     //       var breed = content.tryFindBreed(breedName);
@@ -228,7 +244,7 @@ class Storage {
     //     });
     //   }
 
-    //   var foundItemMap = data['foundItems'] as Map<String, dynamic>?;
+    //   var foundItemMap = data['foundItems'] as Map<string, dynamic>?;
     //   if (foundItemMap != null) {
     //     foundItemMap.forEach((itemName, dynamic count) {
     //       var itemType = content.tryFindItem(itemName);
@@ -236,7 +252,7 @@ class Storage {
     //     });
     //   }
 
-    //   var foundAffixMap = data['foundAffixes'] as Map<String, dynamic>?;
+    //   var foundAffixMap = data['foundAffixes'] as Map<string, dynamic>?;
     //   if (foundAffixMap != null) {
     //     foundAffixMap.forEach((affixName, dynamic count) {
     //       var affix = content.findAffix(affixName);
@@ -244,7 +260,7 @@ class Storage {
     //     });
     //   }
 
-    //   var usedItemMap = data['usedItems'] as Map<String, dynamic>?;
+    //   var usedItemMap = data['usedItems'] as Map<string, dynamic>?;
     //   if (usedItemMap != null) {
     //     usedItemMap.forEach((itemName, dynamic count) {
     //       var itemType = content.tryFindItem(itemName);
