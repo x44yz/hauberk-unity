@@ -150,8 +150,7 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.heroInfo)
     {
-      throw new System.NotImplementedException();
-      // ui.push(HeroInfoDialog(game.content, game.hero.save));
+      terminal.Push(HeroInfoDialog(game.content, game.hero.save));
     }
     else if (keyCode == InputX.drop)
     {

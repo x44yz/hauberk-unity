@@ -119,7 +119,7 @@ abstract class ItemView {
       if (showPrices && getPrice(item) != null) {
         var price = DartUtils.formatMoney(getPrice(item).Value);
         var priceLeft = left + width - 1 - price.Length - 1;
-        terminal.WriteAt(priceLeft, y, "\\$", enabled ? Hues.tan : UIHue.disabled);
+        terminal.WriteAt(priceLeft, y, "$", enabled ? Hues.tan : UIHue.disabled);
         terminal.WriteAt(
             priceLeft + 1, y, price, enabled ? Hues.gold : UIHue.disabled);
 

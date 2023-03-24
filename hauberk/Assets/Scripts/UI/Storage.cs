@@ -24,7 +24,7 @@ class Storage {
     // }
 
     var storage = PlayerPrefs.GetString("heroes", null);
-    if (storage == null) return;
+    if (storage == null || string.IsNullOrEmpty(storage)) return;
 
     var data = SimpleJson.SimpleJson.DeserializeObject(storage) as IDictionary<string, object>;
     if (data == null)

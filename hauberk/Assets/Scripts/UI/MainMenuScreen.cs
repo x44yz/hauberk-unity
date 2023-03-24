@@ -73,7 +73,7 @@ class MainMenuScreen : UnityTerminal.Screen {
       _changeSelection(1);
       return true;
     }
-    else if (keyCode == InputX.ok)
+    else if (keyCode == KeyCode.L)
     {
         if (selectedHero < storage.heroes.Count) {
           var save = storage.heroes[selectedHero];

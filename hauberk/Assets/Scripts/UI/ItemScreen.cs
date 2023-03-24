@@ -338,7 +338,7 @@ class _HomeGetScreen : _ItemVerbScreen {
   public override bool canSelect(Item item) => true;
 
   void _afterTransfer(Item item, int count) {
-    _gameScreen.game.log.message("You ${item.clone(count)}.");
+    _gameScreen.game.log.message($"You {item.clone(count)}.");
     _gameScreen.game.hero.pickUp(item);
   }
 }
