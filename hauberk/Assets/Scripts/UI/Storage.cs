@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+// using LitJson;
+// using SimpleJSON;
+using SimpleJson;
 
 /// The entrypoint for all persisted save data.
 class Storage {
@@ -20,20 +23,22 @@ class Storage {
     //   return;
     // }
 
-    var storage = PlayerPrefs.GetString("heroes");
+    var storage = PlayerPrefs.GetString("heroes", null);
     if (storage == null) return;
 
-    var data = JsonUtility.FromJson<Dictionary<string, object>>(storage);
+    var data = SimpleJson.SimpleJson.DeserializeObject(storage) as IDictionary<string, object>;
+    if (data == null)
+      return;
 
     // TODO: Check version.
     
-    var heros = data["heroes"] as List<object>;
-    foreach (var heroObj in heros) {
-      try {
-        var hero = heroObj as Dictionary<string, object>;
+    var heros = data["heroes"] as IList<object>;
+    foreach (var hero_ in heros) {
+      // try {
+        var hero =  hero_ as IDictionary<string, object>;
 
         var name = hero["name"] as string;
-        var race = _loadRace(hero["race"] as Dictionary<string, object>);
+        var race = _loadRace(hero["race"] as IDictionary<string, object>);
 
         HeroClass heroClass;
         if (hero["class"] == null) {
@@ -69,8 +74,8 @@ class Storage {
             var shopName = kv.Key;
             var shop = kv.Value;
 
-            var kk = hero["shops"] as Dictionary<string, object>;
-            var shopData = kk[shopName] as List<object>;
+            var kk = hero["shops"] as IDictionary<string, object>;
+            var shopData = kk[shopName] as IList<object>;
             if (shopData != null) {
               shops[shop] = shop.load(_loadItems(shopData));
             } else {
@@ -88,11 +93,11 @@ class Storage {
 
         // Defaults are to support legacy saves.
 
-        var experience = (int)hero["experience"];
+        var experience = Convert.ToInt32(hero["experience"]);
 
         var levels = new Dictionary<Skill, int>{};
         var points = new Dictionary<Skill, int>{};
-        var skills = hero["skills"] as Dictionary<string, object>;
+        var skills = hero["skills"] as IDictionary<string, object>;
         if (skills != null) {
           foreach (var skillName in skills.Keys) {
             var skill = content.findSkill(skillName);
@@ -102,7 +107,7 @@ class Storage {
               levels[skill] = (int)skills[skillName];
               points[skill] = 0;
             } else {
-              var kk = skills[skillName] as Dictionary<string, int>;
+              var kk = skills[skillName] as IDictionary<string, int>;
               levels[skill] = (int)kk["level"];
               points[skill] = (int)kk["points"];
             }
@@ -111,12 +116,12 @@ class Storage {
 
         var skillSet = new SkillSet(levels, points);
 
-        var lore = _loadLore(hero["lore"] as Dictionary<string, object>);
+        var lore = _loadLore(hero["lore"] as IDictionary<string, object>);
 
-        var gold = (int)hero["gold"];
+        var gold = Convert.ToInt32(hero["gold"]);
         var maxDepth = 0;
         if (hero.ContainsKey("maxDepth"))
-          maxDepth = (int)hero["maxDepth"];
+          maxDepth = Convert.ToInt32(hero["maxDepth"]);
 
         var heroSave = new HeroSave(
             name,
@@ -133,15 +138,15 @@ class Storage {
             gold,
             maxDepth);
         heroes.Add(heroSave);
-      } catch (Exception ex) {
-        Debug.LogError("Could not load hero. Data:");
-        Debug.Log(JsonUtility.ToJson(heroObj));
-        Debug.LogError($"Error:{ex}");
-      }
+      // } catch (Exception ex) {
+      //   Debug.LogError("Could not load hero. Data:");
+      //   // Debug.Log(heroStr);
+      //   Debug.LogError($"Error:{ex}");
+      // }
     }
   }
 
-  RaceStats _loadRace(Dictionary<string, object> data) {
+  RaceStats _loadRace(IDictionary<string, object> data) {
     // TODO: Temp to handle heros from before races.
     if (data == null) {
       return content.races.elementAt(4).rollStats();
@@ -150,37 +155,37 @@ class Storage {
     var name = data["name"] as string;
     var race = content.races.First((race) => race.name == name);
 
-    var statData = data["stats"] as Dictionary<string, object>;
+    var statData = data["stats"] as IDictionary<string, object>;
     var stats = new Dictionary<Stat, int>{};
 
     foreach (var stat in Stat.all) {
       if (statData.ContainsKey(stat.name)) {
-        stats[stat] = (int)statData[stat.name];
+        stats[stat] = Convert.ToInt32(statData[stat.name]);
       }
     }
 
     // TODO: 1234 is temp for characters without seed.
     var seed = 1234;
     if (data.ContainsKey("seed"))
-      seed = (int)data["seed"];
+      seed = Convert.ToInt32(data["seed"]);
 
     return new RaceStats(race, stats, seed);
   }
 
-  List<Item> _loadItems(List<object> data) {
+  List<Item> _loadItems(IList<object> data) {
     var items = new List<Item>();
     if (data == null)
       return items;
 
     foreach (var itemData in data) {
-      var item = _loadItem(itemData as Dictionary<string, object>);
+      var item = _loadItem(itemData as IDictionary<string, object>);
       if (item != null) items.Add(item);
     }
 
     return items;
   }
 
-  Item _loadItem(Dictionary<string, object> data) {
+  Item _loadItem(IDictionary<string, object> data) {
     var type = content.tryFindItem(data["type"] as string);
     if (type == null) {
       Debug.LogError($"Couldn't find item type {data["type"]}, discarding item.");
@@ -190,7 +195,7 @@ class Storage {
     var count = 1;
     // Existing save files don't store count, so allow it to be missing.
     if (data.ContainsKey("count")) {
-      count = (int)data["count"];
+      count = Convert.ToInt32(data["count"]);
     }
 
     Affix prefix = null;
@@ -199,7 +204,7 @@ class Storage {
       if (data["prefix"] is string) {
         prefix = content.findAffix(data["prefix"] as string);
       } else {
-        var kk = data["prefix"] as Dictionary<string, object>;
+        var kk = data["prefix"] as IDictionary<string, object>;
         prefix = content.findAffix(kk["name"] as string);
       }
     }
@@ -210,7 +215,7 @@ class Storage {
       if (data["suffix"] is string) {
         suffix = content.findAffix(data["suffix"] as string);
       } else {
-        var kk = data["suffix"] as Dictionary<string, object>;
+        var kk = data["suffix"] as IDictionary<string, object>;
         suffix = content.findAffix(kk["name"] as string);
       }
     }
@@ -218,64 +223,84 @@ class Storage {
     return new Item(type, count, prefix, suffix);
   }
 
-  Lore _loadLore(Dictionary<string, object> data) {
-    throw new System.NotImplementedException();
-    // var seenBreeds = <Breed, int>{};
-    // var slain = <Breed, int>{};
-    // var foundItems = <ItemType, int>{};
-    // var foundAffixes = <Affix, int>{};
-    // var usedItems = <ItemType, int>{};
+  Lore _loadLore(IDictionary<string, object> data) {
+    var seenBreeds = new Dictionary<Breed, int>{};
+    var slain = new Dictionary<Breed, int>{};
+    var foundItems = new Dictionary<ItemType, int>{};
+    var foundAffixes = new Dictionary<Affix, int>{};
+    var usedItems = new Dictionary<ItemType, int>{};
 
-    // // TODO: Older saves before lore.
-    // if (data != null) {
-    //   var seenMap = data['seen'] as Map<string, dynamic>?;
-    //   if (seenMap != null) {
-    //     seenMap.forEach((breedName, dynamic count) {
-    //       var breed = content.tryFindBreed(breedName);
-    //       if (breed != null) seenBreeds[breed] = count as int;
-    //     });
-    //   }
+    // TODO: Older saves before lore.
+    if (data != null) {
+      var seenMap = data["seen"] as IDictionary<string, object>;
+      if (seenMap != null) {
+        foreach (var kv in seenMap) {
+          var breedName = kv.Key;
+          var count = kv.Value;
 
-    //   var slainMap = data['slain'] as Map<string, dynamic>?;
-    //   if (slainMap != null) {
-    //     slainMap.forEach((breedName, dynamic count) {
-    //       var breed = content.tryFindBreed(breedName);
-    //       if (breed != null) slain[breed] = count as int;
-    //     });
-    //   }
+          var breed = content.tryFindBreed(breedName);
+          if (breed != null) seenBreeds[breed] = (int)count;
+        };
+      }
 
-    //   var foundItemMap = data['foundItems'] as Map<string, dynamic>?;
-    //   if (foundItemMap != null) {
-    //     foundItemMap.forEach((itemName, dynamic count) {
-    //       var itemType = content.tryFindItem(itemName);
-    //       if (itemType != null) foundItems[itemType] = count as int;
-    //     });
-    //   }
+      var slainMap = data["slain"] as IDictionary<string, object>;
+      if (slainMap != null) {
+        foreach (var kv in slainMap) {
+          var breedName = kv.Key;
+          var count = kv.Value;
+  
+          var breed = content.tryFindBreed(breedName);
+          if (breed != null) slain[breed] = (int)count;
+        };
+      }
 
-    //   var foundAffixMap = data['foundAffixes'] as Map<string, dynamic>?;
-    //   if (foundAffixMap != null) {
-    //     foundAffixMap.forEach((affixName, dynamic count) {
-    //       var affix = content.findAffix(affixName);
-    //       if (affix != null) foundAffixes[affix] = count as int;
-    //     });
-    //   }
+      if (data.ContainsKey("foundItems")) {
+        var foundItemMap = data["foundItems"] as IDictionary<string, object>;
+        if (foundItemMap != null) {
+          foreach (var kv in foundItemMap) {
+            var itemName = kv.Key;
+            var count = kv.Value;
 
-    //   var usedItemMap = data['usedItems'] as Map<string, dynamic>?;
-    //   if (usedItemMap != null) {
-    //     usedItemMap.forEach((itemName, dynamic count) {
-    //       var itemType = content.tryFindItem(itemName);
-    //       if (itemType != null) usedItems[itemType] = count as int;
-    //     });
-    //   }
-    // }
+            var itemType = content.tryFindItem(itemName);
+            if (itemType != null) foundItems[itemType] = (int)count;
+          };
+        }
+      }
 
-    // return Lore.from(seenBreeds, slain, foundItems, foundAffixes, usedItems);
+      if (data.ContainsKey("foundAffixes")) {
+        var foundAffixMap = data["foundAffixes"] as IDictionary<string, object>;
+        if (foundAffixMap != null) {
+          foreach (var kv in foundAffixMap) {
+            var affixName = kv.Key;
+            var count = kv.Value;
+
+            var affix = content.findAffix(affixName);
+            if (affix != null) foundAffixes[affix] = (int)count;
+          };
+        }
+      }
+
+      if (data.ContainsKey("usedItems")) {
+        var usedItemMap = data["usedItems"] as IDictionary<string, object>;
+        if (usedItemMap != null) {
+          foreach (var kv in usedItemMap) {
+            var itemName = kv.Key;
+            var count = kv.Value;
+
+            var itemType = content.tryFindItem(itemName);
+            if (itemType != null) usedItems[itemType] = (int)count;
+          };
+        }
+      }
+    }
+
+    return new Lore(seenBreeds, slain, foundItems, foundAffixes, usedItems);
   }
 
   public void save() {
     var heroData = new List<object>();
     foreach (var hero in heroes) {
-      var raceStats = new Dictionary<string, dynamic>{};
+      var raceStats = new Dictionary<string, object>{};
       foreach (var stat in Stat.all) {
         raceStats[stat.name] = hero.race.max(stat);
       }
@@ -342,8 +367,9 @@ class Storage {
     };
 
     // html.window.localStorage['heroes'] = json.encode(data);
-    var edata = JsonUtility.ToJson(data);
+    var edata = SimpleJson.SimpleJson.SerializeObject(data);
     PlayerPrefs.SetString("heroes", edata);
+    PlayerPrefs.Save();
     Debug.Log("Saved.");
   }
 
