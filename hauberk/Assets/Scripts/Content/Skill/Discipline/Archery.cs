@@ -16,7 +16,7 @@ class Archery : Discipline {
       "of arrows from far away.";
 
   public override string levelDescription(int level) =>
-      "Scales strike by ${(_strikeScale(level) * 100).toInt()}%.";
+      $"Scales strike by {(int)(_strikeScale(level) * 100)}%.";
 
   string unusableReason(Game game) {
     if (_hasBow(game.hero)) return null;

@@ -174,7 +174,7 @@ class SidebarPanel : Panel {
       }
     }
 
-    var armor = " ${(100 - getArmorMultiplier(hero.armor) * 100).toInt()}%";
+    var armor = $" {(int)(100 - Attack.getArmorMultiplier(hero.armor) * 100)}%";
     _drawStat(terminal, y, "Armor", armor, Hues.peaGreen);
   }
 
