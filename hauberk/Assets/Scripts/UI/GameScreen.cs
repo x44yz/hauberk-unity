@@ -152,26 +152,22 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.drop)
     {
-      throw new System.NotImplementedException();
-      // ui.push(ItemDialog.drop(this));
+      terminal.Push(ItemDialog.drop(this));
     }
     else if (keyCode == InputX.use)
     {
-      throw new System.NotImplementedException();
-      // ui.push(ItemDialog.use(this));
+      terminal.Push(ItemDialog.use(this));
     }
     else if (keyCode == InputX.toss)
     {
-      throw new System.NotImplementedException();
-      // ui.push(ItemDialog.toss(this));
+      terminal.Push(ItemDialog.toss(this));
     }
     else if (keyCode == InputX.rest && shift)
     {
-      throw new System.NotImplementedException();
-        // if (!game.hero.rest()) {
-        //   // Show the message.
-        //   Dirty();
-        // }
+        if (!game.hero.rest()) {
+          // Show the message.
+          Dirty();
+        }
     }
     else if (keyCode == InputX.open && shift)
     {
@@ -187,8 +183,7 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.equip)
     {
-      throw new System.NotImplementedException();
-        // ui.push(ItemDialog.equip(this));
+      terminal.Push(ItemDialog.equip(this));
     }
     else if (keyCode == InputX.nw)
     {
@@ -260,88 +255,77 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.fireNW && alt)
     {
-      throw new System.NotImplementedException();
-        // _fireTowards(Direction.nw);
+      _fireTowards(Direction.nw);
     }
     else if (keyCode == InputX.fireN && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.n);
+      _fireTowards(Direction.n);
     }
     else if (keyCode == InputX.fireNE && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.ne);
+      _fireTowards(Direction.ne);
     }
     else if (keyCode == InputX.fireW && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.w);
+      _fireTowards(Direction.w);
     }
     else if (keyCode == InputX.fireE && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.e);
+      _fireTowards(Direction.e);
     }
     else if (keyCode == InputX.fireSW && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.sw);
+      _fireTowards(Direction.sw);
     }
     else if (keyCode == InputX.fireS && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.s);
+      _fireTowards(Direction.s);
     }
     else if (keyCode == InputX.fireSE && alt)
     {
-      throw new System.NotImplementedException();
-        //_fireTowards(Direction.se);
+      _fireTowards(Direction.se);
     }
     else if (keyCode == InputX.fire && alt)
     {
-      throw new System.NotImplementedException();
-    // if (_lastSkill is TargetSkill) {
-    //         var targetSkill = _lastSkill as TargetSkill;
-    //         if (currentTargetActor != null) {
-    //           // If we still have a visible target, use it.
-    //           _fireAtTarget(_lastSkill as TargetSkill);
-    //         } else {
-    //           // No current target, so ask for one.
-    //           _openTargetDialog(targetSkill);
-    //         }
-    //       } else if (_lastSkill is DirectionSkill) {
-    //         // Ask user to pick a direction.
-    //         ui.push(SkillDirectionDialog(this, _fireTowards));
-    //       } else if (_lastSkill is ActionSkill) {
-    //         var actionSkill = _lastSkill as ActionSkill;
-    //         game.hero.setNextAction(
-    //             actionSkill.getAction(game, game.hero.skills.level(actionSkill)));
-    //       } else {
-    //         game.log.error("No skill selected.");
-    //         Dirty();
-    //       }
+      if (_lastSkill is TargetSkill) {
+        var targetSkill = _lastSkill as TargetSkill;
+        if (currentTargetActor != null) {
+          // If we still have a visible target, use it.
+          _fireAtTarget(_lastSkill as TargetSkill);
+        } else {
+          // No current target, so ask for one.
+          _openTargetDialog(targetSkill);
+        }
+      } else if (_lastSkill is DirectionSkill) {
+        // Ask user to pick a direction.
+        terminal.Push(new SkillDirectionDialog(this, _fireTowards));
+      } else if (_lastSkill is ActionSkill) {
+        var actionSkill = _lastSkill as ActionSkill;
+        game.hero.setNextAction(
+            actionSkill.getAction(game, game.hero.skills.level(actionSkill)));
+      } else {
+        game.log.error("No skill selected.");
+        Dirty();
+      }
     }
     else if (keyCode == InputX.swap)
     {
-      throw new System.NotImplementedException();
-        // var unequipped = game.hero.inventory.lastUnequipped;
-        // if (unequipped == null) {
-        //   game.log.error("You aren't holding an unequipped item to swap.");
-        //   Dirty();
-        // } else {
-        //   action = EquipAction(ItemLocation.inventory, unequipped);
-        // }
+      var unequipped = game.hero.inventory.lastUnequipped;
+      if (unequipped == null) {
+        game.log.error("You aren't holding an unequipped item to swap.");
+        Dirty();
+      } else {
+        action = new EquipAction(ItemLocation.inventory, unequipped);
+      }
     }
     else if (keyCode == InputX.wizard && shift && alt)
     {
-        throw new System.NotImplementedException();
-        // if (Debugger.enabled) {
-        //   ui.push(WizardDialog(game));
-        // } else {
-        //   game.log.cheat("No cheating in non-debug builds. Cheater.");
-        //   Dirty();
-        // }
+      if (Debugger.enabled) {
+        terminal.Push(new WizardDialog(game));
+      } else {
+        game.log.cheat("No cheating in non-debug builds. Cheater.");
+        Dirty();
+      }
     }
 
     if (action != null) 

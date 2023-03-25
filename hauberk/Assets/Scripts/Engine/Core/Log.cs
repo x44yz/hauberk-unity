@@ -95,7 +95,7 @@ public class Log {
     add(LogType.help, message, noun1, noun2, noun3);
   }
 
-  void cheat(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void cheat(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
     add(LogType.cheat, message, noun1, noun2, noun3);
   }
 

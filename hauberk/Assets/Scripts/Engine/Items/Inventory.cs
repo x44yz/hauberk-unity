@@ -115,7 +115,7 @@ public class Inventory : ItemCollection {
   /// will refer to the item that was unequipped.
   ///
   /// If the hero isn't holding an unequipped item, returns `null`.
-  Item lastUnequipped => _lastUnequipped;
+  public Item lastUnequipped => _lastUnequipped;
   Item _lastUnequipped;
 
   public override int length => _items.Count;

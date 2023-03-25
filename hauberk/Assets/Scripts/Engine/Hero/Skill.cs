@@ -111,7 +111,7 @@ public class UsableSkill : Skill {
 
 /// A skill that can be directly used to perform an action.
 public abstract class ActionSkill : UsableSkill {
-  Action getAction(Game game, int level) {
+  public Action getAction(Game game, int level) {
     return _wrapActionCost(game.hero.save, level, onGetAction(game, level));
   }
 

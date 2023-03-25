@@ -131,7 +131,7 @@ class SkillDirectionDialog : DirectionDialog {
 
   public override string helpText => "Choose direction";
 
-  SkillDirectionDialog(GameScreen gameScreen, System.Action<Direction> _onSelect)
+  public SkillDirectionDialog(GameScreen gameScreen, System.Action<Direction> _onSelect)
       : base(gameScreen)
       {
         this._onSelect = _onSelect;

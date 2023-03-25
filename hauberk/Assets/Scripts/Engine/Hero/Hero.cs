@@ -344,7 +344,7 @@ public class Hero : Actor {
   }
 
   /// Starts resting, if the hero has eaten and is able to regenerate.
-  bool rest() 
+  public bool rest() 
   {
     if (poison.isActive) {
       game.log
