@@ -58,13 +58,23 @@ public partial class ArchitecturalStyle {
     var count = Mathf.Min(Rng.rng.taper(1, 10), 5);
     var hasFillable = false;
 
+    int kk = 0;
+
     while (!hasFillable || result.Count < count) {
       var style = styles.tryChoose(depth)!;
+      Debug.Log("xx-- style > " + style.name + " - " + style.canFill);
 
       // Make sure there's at least one style that can fill the entire stage.
       if (style.canFill) hasFillable = true;
 
       if (!result.Contains(style)) result.Add(style);
+
+      kk += 1;
+      if (kk == 20)
+      {
+        Debug.LogError("cant fill");
+        break;
+      }
     }
 
     return result;
@@ -94,10 +104,10 @@ public partial class ArchitecturalStyle {
       this.monsterGroups = monsterGroups;
       this._factory = _factory;
 
-        decorDensity = decorDensity ?? 0.1;
-        monsterDensity = monsterDensity ?? 1.0;
-        itemDensity = itemDensity ?? 1.0;
-        canFill = canFill ?? true;
+        this.decorDensity = decorDensity ?? 0.1;
+        this.monsterDensity = monsterDensity ?? 1.0;
+        this.itemDensity = itemDensity ?? 1.0;
+        this.canFill = canFill ?? true;
     }
 
   public Architecture create(Architect architect, Region region) {

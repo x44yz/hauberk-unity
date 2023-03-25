@@ -99,7 +99,7 @@ public partial class ArchitecturalStyle
   }
 
   public static void pit(string monsterGroup, int start, int end) {
-    _addStyle("$monsterGroup pit",
+    _addStyle($"monsterGroup pit",
         start: start,
         end: end,
         startFrequency: 0.2,

@@ -21,7 +21,7 @@ abstract class RoomArchitecture : Architecture {
       var here = pos.offset(x, y);
       var tile = room[pos];
 
-      if (!tile.isUnused && !bounds.Contains(here)) return false;
+      if (!tile.isUnused && !bounds.contains(here)) return false;
       if (tile.isTile && !canCarve(pos.offset(x, y))) return false;
     }
 

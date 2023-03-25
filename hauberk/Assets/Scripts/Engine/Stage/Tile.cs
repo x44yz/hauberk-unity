@@ -33,6 +33,10 @@ public class Motility {
     int hashCode => _bitMask;
 
     public static bool operator ==(Motility a, object other) {
+        if (a is null && other is null) return true;
+        if (a is null) return false;
+        if (other is null) return false;
+
         if (other is Motility)
         {
             Motility b = other as Motility;
@@ -62,7 +66,7 @@ public class Motility {
     /// except for the motilities in [other].
     public static Motility operator -(Motility a, Motility other) => new Motility(a._bitMask & ~other._bitMask);
 
-    public bool overlaps(Motility other) => (_bitMask & other._bitMask) != 0;
+    public bool overlaps(Motility other) => other != null && (_bitMask & other._bitMask) != 0;
 
     public override string ToString() => _bitMask.ToString();
 }

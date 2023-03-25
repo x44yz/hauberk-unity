@@ -36,6 +36,9 @@ public class Decorator {
 
     foreach (var pos in _stage.bounds) {
       var owner = _architect.ownerAt(pos);
+      // TODO:
+      if (owner == null)
+        continue;
       _tilesByArchitecture.putIfAbsent(owner).Add(pos);
     }
 

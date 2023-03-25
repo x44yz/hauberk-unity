@@ -134,7 +134,7 @@ class MainMenuScreen : UnityTerminal.Screen {
         var k = _charColors[y][x].ToString();
         if (_colors.ContainsKey(k) == false)
         {
-          UnityEngine.Debug.LogWarning($"not exit key > {y} {x} > " + k + " - " + _chars[y][x].ToString());
+          // UnityEngine.Debug.LogWarning($"not exit key > {y} {x} > " + k + " - " + _chars[y][x].ToString());
           continue;
         }
         var color = _colors[k];
