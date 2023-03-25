@@ -140,8 +140,7 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.selectSkill)
     {
-      throw new System.NotImplementedException();
-      // ui.push(SelectSkillDialog(this));
+      terminal.Push(new SelectSkillDialog(this));
     }
     else if (keyCode == InputX.editSkills && shift)
     {

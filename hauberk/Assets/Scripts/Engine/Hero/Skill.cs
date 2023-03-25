@@ -92,7 +92,7 @@ public class UsableSkill : Skill {
   /// If the skill cannot currently be used (for example Archery when a bow is
   /// not equipped), returns the reason why. Otherwise, returns `null` to
   /// indicate the skill is usable.
-  string unusableReason(Game game) => null;
+  public string unusableReason(Game game) => null;
 
   /// If this skill has a focus or fury cost, wraps [action] in an appropriate
   /// action to spend that.
