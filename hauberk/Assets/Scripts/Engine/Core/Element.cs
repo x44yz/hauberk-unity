@@ -41,8 +41,8 @@ public class Element
         this.experience = experience;
         this.emanates = emanates;
         this.destroyMessage = destroyMessage;
-        attackAction = attack ?? ((_) => null);
-        floorAction = floor ?? ((_, __, ___, ____) => null);
+        this.attackAction = attack ?? ((_) => null);
+        this.floorAction = floor ?? ((_, __, ___, ____) => null);
     }
 
     public override string ToString() => name;

@@ -104,7 +104,7 @@ class _CircleIterator : IEnumerator<Vec>
   {
     this._circle = _circle;
     this._boundsIterator = _boundsIterator; 
-    _edge = edge;
+    this._edge = edge;
   }
 
   bool moveNext() {

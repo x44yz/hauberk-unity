@@ -10,7 +10,7 @@ class HowlAction : Action {
   public HowlAction(int _range, string verb = null)
   {
     this._range = _range;
-    _verb = verb ?? "howls";
+    this._verb = verb ?? "howls";
   } 
 
   public override ActionResult onPerform() {

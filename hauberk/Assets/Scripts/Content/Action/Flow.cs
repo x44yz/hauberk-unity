@@ -30,7 +30,7 @@ class FlowAction : Action {
         this._from = _from; 
         this._hit = _hit;
         this._motility = _motility;
-      _slowness = slowness ?? 1;
+      this._slowness = slowness ?? 1;
 
       _elementMixin = new ElementActionMixin(this);
     }

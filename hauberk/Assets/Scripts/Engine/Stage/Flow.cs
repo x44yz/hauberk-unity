@@ -280,9 +280,9 @@ public class MotilityFlow : Flow {
     {
         this._motility = _motility;
 
-        _maxDistance = maxDistance;
-        _avoidActors = avoidActors ?? true;
-        _avoidSubstances = avoidSubstances ?? false;
+        this._maxDistance = maxDistance;
+        this._avoidActors = avoidActors ?? true;
+        this._avoidSubstances = avoidSubstances ?? false;
     }
 
   /// The cost to enter [tile] at [pos] or `null` if the tile cannot be entered.

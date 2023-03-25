@@ -141,18 +141,18 @@ public class Breed {
     this.maxHealth = maxHealth;
     this.tracking = tracking;
 
-    vision = vision ?? 8;
-    hearing = hearing ?? 10;
+    this.vision = vision ?? 8;
+    this.hearing = hearing ?? 10;
     this.meander = meander;
-    speed = speed ?? 0;
-    dodge = dodge ?? 20;
-    emanationLevel = emanationLevel ?? 0;
-    countMin = countMin ?? 1;
-    countMax = countMax ?? 1;
+    this.speed = speed ?? 0;
+    this.dodge = dodge ?? 20;
+    this.emanationLevel = emanationLevel ?? 0;
+    this.countMin = countMin ?? 1;
+    this.countMax = countMax ?? 1;
     this.minions = minions;
     this.stain = stain;
     this.flags = flags;
-    description = description ?? "Indescribable.";
+    this.description = description ?? "Indescribable.";
   }
 
   /// How much experience a level one [Hero] gains for killing a [Monster] of

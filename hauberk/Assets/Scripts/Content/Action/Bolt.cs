@@ -15,8 +15,8 @@ class BoltAction : LosAction {
     :base(target)
   {
     this._hit = _hit;
-      _canMiss = canMiss;
-        _range = range;
+    this._canMiss = canMiss;
+    this._range = range;
   }
 
 

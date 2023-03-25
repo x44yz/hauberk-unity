@@ -100,7 +100,7 @@ class _RiverPoint {
   {
     this.x = x;
     this.y = y;
-    radius = radius ?? Rng.rng.rfloat(1.0, 3.0);
+    this.radius = radius ?? Rng.rng.rfloat(1.0, 3.0);
   }
 
   string toString() => $"{x},{y} ({radius})";

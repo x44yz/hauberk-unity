@@ -159,10 +159,10 @@ public class ItemType {
         this.price = price;
         this.maxStack = maxStack;
 
-        emanationLevel = emanation ?? 0;
-        fuel = fuel ?? 0;
-        isTreasure = treasure ?? false;
-        isTwoHanded = twoHanded ?? false;
+        this.emanationLevel = emanation ?? 0;
+        this.fuel = fuel ?? 0;
+        this.isTreasure = treasure ?? false;
+        this.isTwoHanded = twoHanded ?? false;
     }
 
     public override string ToString() => name;

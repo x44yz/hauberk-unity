@@ -52,8 +52,7 @@ class LoadingDialog : Screen {
     var stopwatch = new Stopwatch();
     stopwatch.Start();
 
-    // while
-    if (stopwatch.ElapsedMilliseconds < 16) {
+    while (stopwatch.ElapsedMilliseconds < 16) {
       if (_steps.MoveNext()) {
         Dirty();
       } else {
