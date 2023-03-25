@@ -357,24 +357,23 @@ class GameScreen : UnityTerminal.Screen {
       _storage.save();
       terminal.GoTo(GameScreen.town(_storage, game.content, _storageSave!));
     }
-    /*
     else if (popped is SelectDepthPopup && result is int) {
       // Enter the dungeon.
       _storage.save();
-      ui.push(LoadingDialog(game.hero.save, game.content, result));
+      terminal.Push(new LoadingDialog(game.hero.save, game.content, (int)result));
     }
     else if (popped is LoadingDialog) {
-      ui.goTo(GameScreen(_storage, result as Game, game.hero.save));
+      terminal.GoTo(new GameScreen(_storage, result as Game, game.hero.save));
     } 
-    else if (popped is ForfeitPopup && result == true) {
+    else if (popped is ForfeitPopup && result is bool && (bool)result == true) {
       if (game.depth > 0) {
         // Forfeiting, so return to the town and discard the current hero.
         // TODO: Hero should start next to dungeon entrance.
-        ui.goTo(GameScreen.town(_storage, game.content, _storageSave!));
+        terminal.GoTo(GameScreen.town(_storage, game.content, _storageSave!));
       } else {
         // Leaving the town. Save just to be safe.
         _storage.save();
-        ui.pop();
+        terminal.Pop();
       }
     } 
     else if (popped is ItemScreen) {
@@ -392,19 +391,18 @@ class GameScreen : UnityTerminal.Screen {
     } 
     else if (popped is SelectSkillDialog && result != null) {
       if (result is TargetSkill) {
-        _openTargetDialog(result);
+        _openTargetDialog((TargetSkill)result);
       } else if (result is DirectionSkill) {
-        ui.push(SkillDirectionDialog(this, (dir) {
-          _lastSkill = result;
+        terminal.Push(new SkillDirectionDialog(this, (dir) => {
+          _lastSkill = (UsableSkill)result;
           _fireTowards(dir);
         }));
       } else if (result is ActionSkill) {
-        _lastSkill = result;
+        _lastSkill = (UsableSkill)result;
         game.hero.setNextAction(
-            result.getAction(game, game.hero.skills.level(result)));
+            (result as ActionSkill).getAction(game, game.hero.skills.level((Skill)result)));
       }
     }
-    */
   }
 
   public override void Tick(float dt) {

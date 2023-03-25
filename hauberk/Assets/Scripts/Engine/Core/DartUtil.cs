@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Color = UnityEngine.Color;
+using System.Text;
 
 public static class DartUtils
 {
@@ -157,6 +158,15 @@ public static class DartUtils
   public static bool isEven(this int v)
   {
     return v % 2 == 0;
+  }
+
+  public static StringBuilder sb = new StringBuilder();
+  public static string strConcat(string a, int count)
+  {
+    sb.Clear();
+    for (int i = 0; i < count; ++i)
+      sb.Append(a);
+    return sb.ToString();
   }
 }
 

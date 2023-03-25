@@ -67,5 +67,5 @@ abstract class Popup : Screen {
     renderPopup(pterminal);
   }
 
-  void renderPopup(Terminal terminal) {}
+  public virtual void renderPopup(Terminal terminal) {}
 }

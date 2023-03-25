@@ -152,7 +152,7 @@ public class HeroSave
         maxDepth = hero.save.maxDepth;
     }
 
-    HeroSave clone() => new HeroSave(
+    public HeroSave clone() => new HeroSave(
         name,
         race,
         heroClass,

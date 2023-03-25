@@ -52,7 +52,7 @@ class SelectDepthPopup : Popup {
     return true;
   }
 
-  void renderPopup(Terminal terminal) {
+  public override void renderPopup(Terminal terminal) {
     for (var depth = 1; depth <= Option.maxDepth; depth++) {
       var x = (depth - 1) % 10;
       var y = ((depth - 1) / 10) * 2;
