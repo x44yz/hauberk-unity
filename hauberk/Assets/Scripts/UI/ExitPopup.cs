@@ -10,10 +10,10 @@ class ExitPopup : Popup {
   public Game _game;
   public List<_AnimatedValue> _values = new List<_AnimatedValue>();
 
-  public int width => 38;
-  public int height => 19;
+  public override int? width => 38;
+  public override int? height => 19;
 
-  Dictionary<string, string> helpKeys => new Dictionary<string, string>()
+  public override Dictionary<string, string> helpKeys => new Dictionary<string, string>()
   {
     {"OK", "Return to town"}
   };

@@ -11,18 +11,18 @@ abstract class Popup : Screen {
   ///
   /// If not overridden, is calculated from the width of the longest line in
   /// [message].
-  int? width => null;
+  public virtual int? width => null;
 
   /// The height of the content area of the popup.
   ///
   /// If not overridden, is calculated from the number of lines in [message].
-  int? height => null;
+  public virtual int? height => null;
 
   /// Override this to return a list of lines of text that should be shown
   /// centered at the top of the popup.
-  List<string> message => null;
+  public virtual List<string> message => null;
 
-  Dictionary<string, string> helpKeys;
+  public virtual Dictionary<string, string> helpKeys => null;
 
   public override void Render(Terminal terminal) {
     Draw.helpKeys(terminal, helpKeys);

@@ -18,9 +18,9 @@ class ConfirmPopup : Popup
     this._result = _result;
   }
 
-  List<string> message => new List<string>(){_message};
+  public override List<string> message => new List<string>(){_message};
 
-  Dictionary<string, string> helpKeys =>
+  public override Dictionary<string, string> helpKeys =>
       new Dictionary<string, string>() {
         {"Y", "Yes"}, 
         {"N", "No"}, 

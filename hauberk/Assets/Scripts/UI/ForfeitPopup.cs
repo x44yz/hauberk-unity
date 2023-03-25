@@ -15,7 +15,7 @@ class ForfeitPopup : Popup {
     _isTown = isTown;
   }
 
-  List<string> message {
+  public override List<string> message {
     get {
       if (_isTown) return new List<string>(){"Return to main menu?"};
 
@@ -26,7 +26,7 @@ class ForfeitPopup : Popup {
     }
   }
 
-  Dictionary<string, string> helpKeys => new Dictionary<string, string> {
+  public override Dictionary<string, string> helpKeys => new Dictionary<string, string> {
       {"Y", "Yes"}, 
       {"N", "No"},
       {"Esc", "No"}

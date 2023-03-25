@@ -19,16 +19,16 @@ class SelectDepthPopup : Popup {
     _depth = Math.Min(Option.maxDepth, save.maxDepth + 1);
   }
 
-  int width => 42;
+  public override int? width => 42;
 
-  int height => 26;
+  public override int? height => 26;
 
-  List<string> message => new List<string>(){
+  public override List<string> message => new List<string>(){
         "Stairs descend into darkness.",
         "How far down shall you venture?"
   };
 
-  Dictionary<string, string> helpKeys => new Dictionary<string, string>() {
+  public override Dictionary<string, string> helpKeys => new Dictionary<string, string>() {
       {"OK", "Enter dungeon"},
       {"↕↔", "Change depth"},
       {"Esc", "Cancel"}

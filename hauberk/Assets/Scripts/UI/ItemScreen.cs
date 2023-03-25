@@ -18,7 +18,7 @@ abstract class ItemScreen : Screen {
   // this nullable?
   /// The place items are being transferred to or `null` if this is just a
   /// view.
-  ItemCollection _destination => null;
+  public virtual ItemCollection _destination => null;
 
   /// Whether the shift key is currently pressed.
   public bool _shiftDown = false;
@@ -327,7 +327,7 @@ class _HomeGetScreen : _ItemVerbScreen {
 
   public override ItemCollection _items => _gameScreen.game.hero.save.home;
 
-  ItemCollection _destination => _gameScreen.game.hero.inventory;
+  public override ItemCollection _destination => _gameScreen.game.hero.inventory;
 
   public _HomeGetScreen(GameScreen gameScreen) : base(gameScreen)
   {
@@ -405,7 +405,7 @@ class _ShopBuyScreen : _ItemVerbScreen {
 
   public override ItemCollection _items => _shop;
 
-  ItemCollection _destination => _gameScreen.game.hero.save.inventory;
+  public override ItemCollection _destination => _gameScreen.game.hero.save.inventory;
 
   public _ShopBuyScreen(GameScreen gameScreen, Inventory _shop) : base(gameScreen)
   {
