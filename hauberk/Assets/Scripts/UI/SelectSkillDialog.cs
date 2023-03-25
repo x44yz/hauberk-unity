@@ -44,8 +44,8 @@ class SelectSkillDialog : Screen {
     terminal.Pop(_skills[index]);
   }
 
-  public override void Render() {
-    Draw.helpKeys(this.terminal, new Dictionary<string, string>{
+  public override void Render(Terminal terminal) {
+    Draw.helpKeys(terminal, new Dictionary<string, string>{
       {"A-Z", "Select skill"},
       // "1-9": "Bind quick key",
       {"Esc", "Exit"}
@@ -53,15 +53,14 @@ class SelectSkillDialog : Screen {
 
     // If the item panel is visible, put it there. Otherwise, put it in the
     // stage area.
-    Terminal terminal = null;
     if (_gameScreen.itemPanel.isVisible) {
-      terminal = this.terminal.Rect(
+      terminal = terminal.Rect(
           _gameScreen.itemPanel.bounds.left,
           _gameScreen.itemPanel.bounds.top,
           _gameScreen.itemPanel.bounds.width,
           _gameScreen.itemPanel.bounds.height);
     } else {
-      terminal = this.terminal.Rect(
+      terminal = terminal.Rect(
           _gameScreen.stagePanel.bounds.left,
           _gameScreen.stagePanel.bounds.top,
           _gameScreen.stagePanel.bounds.width,

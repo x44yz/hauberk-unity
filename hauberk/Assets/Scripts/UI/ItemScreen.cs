@@ -152,7 +152,7 @@ abstract class ItemScreen : Screen {
     }
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     // Don't show the help if another dialog (like buy or sell) is on top with
     // its own help.
     if (_isActive) {

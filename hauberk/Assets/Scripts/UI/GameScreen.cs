@@ -144,8 +144,7 @@ class GameScreen : UnityTerminal.Screen {
     }
     else if (keyCode == InputX.editSkills && shift)
     {
-      throw new System.NotImplementedException();
-      // ui.push(SkillDialog(game.hero.save));
+      terminal.Push(SkillDialog.create(game.hero.save));
     }
     else if (keyCode == InputX.heroInfo)
     {
@@ -474,7 +473,7 @@ class GameScreen : UnityTerminal.Screen {
     _logPanel.show(new Rect(leftWidth, size.y - logHeight, centerWidth, logHeight));
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     terminal.Clear();
 
     _stagePanel.render(terminal);

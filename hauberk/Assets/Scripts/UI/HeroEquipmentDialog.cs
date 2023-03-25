@@ -16,8 +16,8 @@ class HeroEquipmentDialog : HeroInfoDialog {
 
   public override string name => "Equipment";
 
-  public override void Render() {
-    base.Render();
+  public override void Render(Terminal terminal) {
+    base.Render(terminal);
 
     void writeLine(int y, Color color) {
       terminal.WriteAt(

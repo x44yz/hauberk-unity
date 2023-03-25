@@ -52,8 +52,8 @@ class HeroItemLoreDialog : HeroInfoDialog {
     return base.KeyDown(keyCode, shift: shift, alt: alt);
   }
 
-  public override void Render() {
-    base.Render();
+  public override void Render(Terminal terminal) {
+    base.Render(terminal);
 
     void writeLine(int y, Color color) {
       terminal.WriteAt(

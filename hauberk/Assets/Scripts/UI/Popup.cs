@@ -24,7 +24,7 @@ abstract class Popup : Screen {
 
   Dictionary<string, string> helpKeys;
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     Draw.helpKeys(terminal, helpKeys);
 
     var messageLines = message;

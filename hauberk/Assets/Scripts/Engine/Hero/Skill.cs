@@ -175,7 +175,7 @@ public abstract class Discipline : Skill {
 
   /// How close the hero is to reaching the next level in this skill, in
   /// percent, or `null` if this skill is at max level.
-  int? percentUntilNext(HeroSave hero) {
+  public int? percentUntilNext(HeroSave hero) {
     var level = calculateLevel(hero);
     if (level == maxLevel) return null;
 
@@ -187,7 +187,7 @@ public abstract class Discipline : Skill {
 
   /// How much training is needed for a hero of [heroClass] to reach [level],
   /// or `null` if the hero cannot train this skill.
-  int? trainingNeeded(HeroClass heroClass, int level) {
+  public int? trainingNeeded(HeroClass heroClass, int level) {
     var profiency = heroClass.proficiency(this);
     if (profiency == 0.0) return null;
 
@@ -212,17 +212,17 @@ abstract class Spell : Skill {
   public override int maxLevel => 1;
 
   /// The base focus cost to cast the spell.
-  int baseFocusCost;
+  public virtual int baseFocusCost => 0;
 
   /// The amount of [Intellect] the hero must possess to use this spell
   /// effectively, ignoring class proficiency.
-  int baseComplexity;
+  public virtual int baseComplexity => 0;
 
   /// The base damage of the spell, or 0 if not relevant.
-  int damage => 0;
+  public virtual int damage => 0;
 
   /// The range of the spell, or 0 if not relevant.
-  int range => 0;
+  public virtual int range => 0;
 
   public override int onCalculateLevel(HeroSave hero, int points) {
     if (hero.heroClass.proficiency(this) == 0.0) return 0;
@@ -231,7 +231,7 @@ abstract class Spell : Skill {
     return hero.intellect.value >= complexity(hero.heroClass) ? 1 : 0;
   }
 
-  int focusCost(HeroSave hero, int level) {
+  public int focusCost(HeroSave hero, int level) {
     var cost = (double)baseFocusCost;
 
     // Intellect makes spells cheaper, relative to their complexity.
@@ -244,7 +244,7 @@ abstract class Spell : Skill {
     return Mathf.CeilToInt((float)cost);
   }
 
-  int complexity(HeroClass heroClass) =>
+  public int complexity(HeroClass heroClass) =>
       ((baseComplexity - 9) / Mathf.RoundToInt((float)heroClass.proficiency(this))) + 9;
 
   int getRange(Game game) => range;
@@ -339,7 +339,7 @@ public class SkillSet {
   bool isDiscovered(Skill skill) => _levels.ContainsKey(skill);
 
   /// Whether the hero knows of and has learned this skill.
-  bool isAcquired(Skill skill) =>
+  public bool isAcquired(Skill skill) =>
       _levels.ContainsKey(skill) && _levels[skill] > 0;
 
   public SkillSet clone() 

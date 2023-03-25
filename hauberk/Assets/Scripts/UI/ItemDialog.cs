@@ -149,7 +149,7 @@ class ItemDialog : Screen {
       return false;
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     var itemCount = 0;
     if (_location == ItemLocation.inventory)
         itemCount = Option.inventoryCapacity;

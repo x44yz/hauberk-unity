@@ -60,7 +60,7 @@ abstract class HeroInfoDialog : Screen {
     return false;
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     terminal.Clear();
 
     var nextScreen = _screens[(_screens.IndexOf(this) + 1) % _screens.Count];

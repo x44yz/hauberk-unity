@@ -107,7 +107,7 @@ class NewHeroScreen : UnityTerminal.Screen {
     _class = Rng.rng.range(content.classes.Count);
   }
 
-  public override void Render()
+  public override void Render(Terminal terminal)
   {
     terminal.Clear();
 

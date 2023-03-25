@@ -27,7 +27,7 @@ class GameOverScreen : Screen
     return false;
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     terminal.Clear();
 
     terminal.WriteAt(0, 0, log.messages.Last().text);

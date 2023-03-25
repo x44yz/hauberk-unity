@@ -5,10 +5,10 @@ using UnityEngine;
 class Icicle : Spell {
   public override string name => "Icicle";
   public override string description => "Launches a spear-like icicle.";
-  int baseComplexity => 10;
-  int baseFocusCost => 12;
-  int damage => 8;
-  int range => 8;
+  public override int baseComplexity => 10;
+  public override int baseFocusCost => 12;
+  public override int damage => 8;
+  public override int range => 8;
 
   Action onGetTargetAction(Game game, int level, Vec target) {
     var attack =
@@ -20,10 +20,10 @@ class Icicle : Spell {
 class BrilliantBeam : Spell {
   public override string name => "Brilliant Beam";
   public override string description => "Emits a blinding beam of radiance.";
-  int baseComplexity => 14;
-  int baseFocusCost => 24;
-  int damage => 10;
-  int range => 12;
+  public override int baseComplexity => 14;
+  public override int baseFocusCost => 24;
+  public override int damage => 10;
+  public override int range => 12;
 
   Action onGetTargetAction(Game game, int level, Vec target) {
     var attack =
@@ -36,10 +36,10 @@ class Windstorm : Spell {
   public override string name => "Windstorm";
   public override string description =>
       "Summons a blast of air, spreading out from the sorceror.";
-  int baseComplexity => 18;
-  int baseFocusCost => 36;
-  int damage => 10;
-  int range => 6;
+  public override int baseComplexity => 18;
+  public override int baseFocusCost => 36;
+  public override int damage => 10;
+  public override int range => 6;
 
   Action onGetAction(Game game, int level) {
     var attack = new Attack(new Noun("the wind"), "blast", damage, range, Elements.air);
@@ -50,10 +50,10 @@ class Windstorm : Spell {
 class FireBarrier : Spell {
   public override string name => "Fire Barrier";
   public override string description => "Creates a wall of fire.";
-  int baseComplexity => 30;
-  int baseFocusCost => 45;
-  int damage => 10;
-  int range => 8;
+  public override int baseComplexity => 30;
+  public override int baseFocusCost => 45;
+  public override int damage => 10;
+  public override int range => 8;
 
   Action onGetTargetAction(Game game, int level, Vec target) {
     var attack = new Attack(new Noun("the fire"), "burn", damage, range, Elements.fire);
@@ -64,10 +64,10 @@ class FireBarrier : Spell {
 class TidalWave : Spell{
   public override string name => "Tidal Wave";
   public override string description => "Summons a giant tidal wave.";
-  int baseComplexity => 40;
-  int baseFocusCost => 70;
-  int damage => 50;
-  int range => 15;
+  public override int baseComplexity => 40;
+  public override int baseFocusCost => 70;
+  public override int damage => 50;
+  public override int range => 15;
 
   Action onGetAction(Game game, int level) {
     var attack =

@@ -95,7 +95,7 @@ abstract class DirectionDialog : Screen
     _gameScreen.drawStageGlyph(terminal, pos.x, pos.y, glyph);
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
 
     draw(0, Direction.n, '|');
     draw(1, Direction.ne, '/');

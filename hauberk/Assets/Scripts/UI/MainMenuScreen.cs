@@ -113,9 +113,9 @@ class MainMenuScreen : UnityTerminal.Screen {
     }
   }
 
-  public override void Render()
+  public override void Render(Terminal terminal)
   {
-    base.Render();
+    base.Render(terminal);
 
     // Center everything horizontally.
     var pterminal= terminal.Rect((terminal.width - 78) / 2, 0, 80, terminal.height);

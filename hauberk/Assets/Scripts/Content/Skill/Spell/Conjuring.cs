@@ -5,9 +5,9 @@ using UnityEngine;
 class Flee : Spell {
   public override string description => "Teleports the hero a short distance away.";
   public override string name => "Flee";
-  int baseComplexity => 10;
-  int baseFocusCost => 16;
-  int range => 8;
+  public override int baseComplexity => 10;
+  public override int baseFocusCost => 16;
+  public override int range => 8;
 
   Action onGetAction(Game game, int level) => new TeleportAction(range);
 }
@@ -15,9 +15,9 @@ class Flee : Spell {
 class Escape : Spell {
   public override string description => "Teleports the hero away.";
   public override string name => "Escape";
-  int baseComplexity => 15;
-  int baseFocusCost => 25;
-  int range => 16;
+  public override int baseComplexity => 15;
+  public override int baseFocusCost => 25;
+  public override int range => 16;
 
   Action onGetAction(Game game, int level) => new TeleportAction(range);
 }
@@ -25,9 +25,9 @@ class Escape : Spell {
 class Disappear : Spell {
   public override string description => "Moves the hero across the dungeon.";
   public override string name => "Disappear";
-  int baseComplexity => 30;
-  int baseFocusCost => 50;
-  int range => 100;
+  public override int baseComplexity => 30;
+  public override int baseFocusCost => 50;
+  public override int range => 100;
 
   Action onGetAction(Game game, int level) => new TeleportAction(range);
 }

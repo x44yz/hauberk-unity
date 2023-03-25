@@ -114,7 +114,7 @@ class TargetDialog : Screen {
     if (_animateOffset % _ticksPerFrame == 0) Dirty();
   }
 
-  public override void Render() {
+  public override void Render(Terminal terminal) {
     var stage = _gameScreen.game.stage;
     var hero = _gameScreen.game.hero;
 
