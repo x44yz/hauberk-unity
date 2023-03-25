@@ -106,7 +106,7 @@ public class Lore {
   }
 
   /// The number of items of [type] the hero has picked up.
-  int foundItems(ItemType type)
+  public int foundItems(ItemType type)
   {
     int val = 1;
     _foundItems.TryGetValue(type, out val);
@@ -122,7 +122,7 @@ public class Lore {
   }
 
   /// The number of items of [type] the hero has used.
-  int usedItems(ItemType type)
+  public int usedItems(ItemType type)
   {
     int val = 0;
     _usedItems.TryGetValue(type, out val);

@@ -15,10 +15,10 @@ abstract class HeroInfoDialog : Screen {
 
   public static HeroInfoDialog create(Content content, HeroSave hero) {
     if (_screens.isEmpty()) {
-      _screens.Add(HeroEquipmentDialog.create(content, hero));
-      _screens.Add(HeroResistancesDialog(content, hero));
-      _screens.Add(HeroMonsterLoreDialog(content, hero));
-      _screens.Add(HeroItemLoreDialog(content, hero));
+      _screens.Add(new HeroEquipmentDialog(content, hero));
+      _screens.Add(new HeroResistancesDialog(content, hero));
+      _screens.Add(new HeroMonsterLoreDialog(content, hero));
+      _screens.Add(new HeroItemLoreDialog(content, hero));
         // TODO: Affixes.
     }
 

@@ -9,7 +9,7 @@ using UnityTerminal;
 // TODO: Unify with HeroItemLoreDialog so that we can select and show inspector
 // for equipment.
 class HeroEquipmentDialog : HeroInfoDialog {
-  HeroEquipmentDialog(Content content, HeroSave hero)
+  public HeroEquipmentDialog(Content content, HeroSave hero)
       : base(content, hero)
   {
   }
