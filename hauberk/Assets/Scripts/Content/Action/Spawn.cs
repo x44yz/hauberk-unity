@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Spawns a new [Monster] of a given [Breed].
 class SpawnAction : Action {

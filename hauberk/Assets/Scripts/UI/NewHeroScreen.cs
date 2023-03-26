@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityTerminal;
-using UnityEngine;
+using KeyCode = UnityEngine.KeyCode;
+using Mathf = UnityEngine.Mathf;
 using System.Linq;
 
 class _Field {

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /// The hero's class.
 public class HeroClass {

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 using num = System.Int32;
 
 /// Calculates the hero's field of view of the dungeon, which tiles are occluded
@@ -9,6 +9,7 @@ public class Fov {
   public const int _maxViewDistance = 24;
 
 public static Vec[,] _octantCoordinates = new Vec[,]{
+    // y, x
     {new Vec(0, -1), new Vec(1, 0)},
     {new Vec(1, 0), new Vec(0, -1)},
     {new Vec(1, 0), new Vec(0, 1)},

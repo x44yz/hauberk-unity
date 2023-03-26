@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 public class Shop {
     /// The maximum number of items a shop can contain.

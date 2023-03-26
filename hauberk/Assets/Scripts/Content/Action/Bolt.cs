@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Fires a bolt, a straight line of an elemental attack that stops at the
 /// first [Actor] is hits or opaque tile.

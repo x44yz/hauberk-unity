@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using num = System.Double;
 using System.Linq;
+using Mathf  = UnityEngine.Mathf;
 
 public class ElementActionMixin : ActionMixin {
    public ElementActionMixin(Action action) : base(action)

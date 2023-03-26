@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using num = System.Double;
 using System.Text;
 using System.Linq;
+using Mathf  = UnityEngine.Mathf;
 
 /// A class for storing debugging information.
 ///

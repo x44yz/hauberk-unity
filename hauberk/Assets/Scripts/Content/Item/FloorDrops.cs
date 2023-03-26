@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 
 /// Items that are spawned on the ground when a dungeon is first generated.

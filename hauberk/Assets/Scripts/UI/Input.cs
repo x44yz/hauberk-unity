@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine;
+using KeyCode = UnityEngine.KeyCode;
 
 /// Enum class defining the high-level inputs from the user.
 ///

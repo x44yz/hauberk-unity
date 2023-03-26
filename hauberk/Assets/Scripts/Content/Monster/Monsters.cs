@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 
 /// Static class containing all of the [Monster] [Breed]s.
 public partial class Monsters {

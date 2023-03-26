@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Heals the [Actor] performing the action.
 class HealAction : Action {

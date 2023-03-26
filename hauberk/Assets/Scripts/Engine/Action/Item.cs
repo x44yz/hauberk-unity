@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// Base class for an [Action] that works with an existing [Item] in the game.
 public abstract class ItemAction : Action {

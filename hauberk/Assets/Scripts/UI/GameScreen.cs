@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityTerminal;
+using KeyCode = UnityEngine.KeyCode;
 
 class GameScreen : UnityTerminal.Screen {
   public Game game;

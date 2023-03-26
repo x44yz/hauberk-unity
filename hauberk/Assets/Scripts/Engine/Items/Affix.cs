@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /// A modifier that can be applied to an [Item] to change its capabilities.
 /// For example, in a "Dagger of Wounding", the "of Wounding" part is an affix.

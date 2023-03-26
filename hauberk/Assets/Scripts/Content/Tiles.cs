@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityTerminal;
 
 /// Static class containing all of the [TileType]s.

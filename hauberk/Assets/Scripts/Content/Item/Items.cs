@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Static class containing all of the [ItemType]s.
 public partial class Items {

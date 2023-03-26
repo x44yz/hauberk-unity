@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// Calculates the lighting and occlusion for the level.
 ///
@@ -119,9 +119,9 @@ public class Lighting {
         if (_visibilityDirty) _fov.refresh(_stage.game.hero.pos);
 
         if (_floorLightDirty || _actorLightDirty || _visibilityDirty) {
-        _mergeLayers();
-        _lightWalls();
-        _updateExplored();
+            _mergeLayers();
+            _lightWalls();
+            _updateExplored();
         }
 
         _floorLightDirty = false;
@@ -194,13 +194,13 @@ public class Lighting {
     /// This should be called after the layers have been updated.
     void _mergeLayers() {
         for (var y = 0; y < _stage.height; y++) {
-        for (var x = 0; x < _stage.width; x++) {
-            var tile = _stage.get(x, y);
-            if (tile.blocksView) continue;
+            for (var x = 0; x < _stage.width; x++) {
+                var tile = _stage.get(x, y);
+                if (tile.blocksView) continue;
 
-            tile.floorIllumination = Mathf.Clamp(_floorLight._get(x, y), 0, max);
-            tile.actorIllumination = Mathf.Clamp(_actorLight._get(x, y), 0, max);
-        }
+                tile.floorIllumination = Mathf.Clamp(_floorLight._get(x, y), 0, max);
+                tile.actorIllumination = Mathf.Clamp(_actorLight._get(x, y), 0, max);
+            }
         }
     }
 
@@ -212,62 +212,62 @@ public class Lighting {
         // Now that we've illuminated the transparent tiles, illuminate the opaque
         // tiles based on their nearest open neighbor's illumination.
         for (var y = 0; y < _stage.height; y++) {
-        for (var x = 0; x < _stage.width; x++) {
-            var tile = _stage.get(x, y);
-            if (!tile.blocksView) continue;
+            for (var x = 0; x < _stage.width; x++) {
+                var tile = _stage.get(x, y);
+                if (!tile.blocksView) continue;
 
-            var floorIllumination = 0;
-            var actorIllumination = 0;
-            var openNeighbor = false;
+                var floorIllumination = 0;
+                var actorIllumination = 0;
+                var openNeighbor = false;
 
-            void checkNeighbor(Vec offset) {
-            // Not using Vec for math because that creates a lot of temporary
-            // objects and this method is performance critical.
-            var neighborX = x + offset.x;
-            var neighborY = y + offset.y;
+                void checkNeighbor(Vec offset) {
+                    // Not using Vec for math because that creates a lot of temporary
+                    // objects and this method is performance critical.
+                    var neighborX = x + offset.x;
+                    var neighborY = y + offset.y;
 
-            if (neighborX < 0) return;
-            if (neighborX >= _stage.width) return;
-            if (neighborY < 0) return;
-            if (neighborY >= _stage.height) return;
+                    if (neighborX < 0) return;
+                    if (neighborX >= _stage.width) return;
+                    if (neighborY < 0) return;
+                    if (neighborY >= _stage.height) return;
 
-            var neighborTile = _stage.get(neighborX, neighborY);
+                    var neighborTile = _stage.get(neighborX, neighborY);
 
-            if (neighborTile.isOccluded) return;
-            if (neighborTile.blocksView) return;
+                    if (neighborTile.isOccluded) return;
+                    if (neighborTile.blocksView) return;
 
-            openNeighbor = true;
-            floorIllumination =
-                Mathf.Max(floorIllumination, neighborTile.floorIllumination);
-            actorIllumination =
-                Mathf.Max(actorIllumination, neighborTile.actorIllumination);
-            }
+                    openNeighbor = true;
+                    floorIllumination =
+                        Mathf.Max(floorIllumination, neighborTile.floorIllumination);
+                    actorIllumination =
+                        Mathf.Max(actorIllumination, neighborTile.actorIllumination);
+                }
 
-            // First, see if any of the cardinal neighbors are lit.
-            foreach (var dir in Direction.cardinal) {
-                checkNeighbor(dir);
-            }
-
-            // If so, we use their light. Only if not do we check the corners. This
-            // makes the corners of room walls visible, but avoids overly lightening
-            // walls that don't need to be because they aren't in corners.
-            if (!openNeighbor) {
-                foreach (var dir in Direction.intercardinal) {
+                // First, see if any of the cardinal neighbors are lit.
+                foreach (var dir in Direction.cardinal) {
                     checkNeighbor(dir);
                 }
-            }
 
-            tile.floorIllumination = floorIllumination;
-            tile.actorIllumination = actorIllumination;
-        }
+                // If so, we use their light. Only if not do we check the corners. This
+                // makes the corners of room walls visible, but avoids overly lightening
+                // walls that don't need to be because they aren't in corners.
+                if (!openNeighbor) {
+                    foreach (var dir in Direction.intercardinal) {
+                        checkNeighbor(dir);
+                    }
+                }
+
+                tile.floorIllumination = floorIllumination;
+                tile.actorIllumination = actorIllumination;
+            }
         }
     }
 
     void _updateExplored() {
         for (var y = 0; y < _stage.height; y++) {
-        for (var x = 0; x < _stage.width; x++) {
-            _stage.exploreAt(x, y);
-        }
+            for (var x = 0; x < _stage.width; x++) {
+                _stage.exploreAt(x, y);
+            }
         }
 
         // The hero can always tell what they're standing on, even in the dark.

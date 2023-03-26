@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /// Base class for an [Action] that traces a path from the actor along a [Line].
 abstract class LosAction : Action {

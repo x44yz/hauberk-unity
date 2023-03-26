@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// Creates a swath of damage that radiates out from a point.
 public class BarrierAction : Action {

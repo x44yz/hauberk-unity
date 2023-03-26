@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Alert nearby sleeping monsters.
 class HowlAction : Action {

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 public class BattleHardening : Discipline {
   public override int maxLevel => 40;

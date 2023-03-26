@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Base class for actions that open a container tile.
 abstract class _OpenTileAction : Action {

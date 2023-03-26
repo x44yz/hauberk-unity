@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 public class Direction : Vec {
     public static Direction none = new Direction(0, 0);

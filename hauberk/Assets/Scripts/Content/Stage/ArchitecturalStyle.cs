@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
+using Debug = UnityEngine.Debug;
 
 public partial class ArchitecturalStyle {
   public static ResourceSet<ArchitecturalStyle> styles = new ResourceSet<ArchitecturalStyle>();

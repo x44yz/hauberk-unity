@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 class SlayDiscipline : Discipline {
   // TODO: Tune.

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 class MonsterPathfinder : Pathfinder<Direction> {
   /// When calculating pathfinding, how much it "costs" to move one step on

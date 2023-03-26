@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// An [Action] that gives the hero temporary monster perception.
 class PerceiveAction : Action {

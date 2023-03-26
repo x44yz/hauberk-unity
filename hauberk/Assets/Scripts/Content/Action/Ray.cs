@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 using num = System.Double;
+using Mathf  = UnityEngine.Mathf;
 
 /// Base class for an action that touches a conical or circular swath of tiles.
 abstract class RayActionBase : Action {

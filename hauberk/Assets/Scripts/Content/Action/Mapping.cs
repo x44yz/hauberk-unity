@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// An [Action] that flows out and maps tiles within a certain distance.
 class MappingAction : Action {

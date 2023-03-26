@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 using System.Linq;
 
 /// The main player-controlled [Actor]. The player's avatar in the game world.

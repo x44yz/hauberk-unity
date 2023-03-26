@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Color = UnityEngine.Color;
 using System.Text;
+using UnityTerminal;
 
 public static class DartUtils
 {
@@ -56,17 +56,17 @@ public static class DartUtils
     {
       var fractionThis = 1.0 - fractionOther;
       return new Color(
-          (float)(color.r * fractionThis + other.r * fractionOther),
-          (float)(color.g * fractionThis + other.g * fractionOther),
-          (float)(color.b * fractionThis + other.b * fractionOther));
+          (int)(color.r * fractionThis + other.r * fractionOther),
+          (int)(color.g * fractionThis + other.g * fractionOther),
+          (int)(color.b * fractionThis + other.b * fractionOther));
     }
 
     public static Color add(this Color a, Color other, double? fractionOther = null) {
       fractionOther ??= 1.0;
       return new Color(
-          (float)(a.r + other.r * fractionOther),
-          (float)(a.g + other.g * fractionOther),
-          (float)(a.b + other.b * fractionOther)
+          (int)(a.r + other.r * fractionOther),
+          (int)(a.g + other.g * fractionOther),
+          (int)(a.b + other.b * fractionOther)
       );
     }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 // TODO: There's a lot of copy/paste between this and Catacomb. Decide if it's
 // worth trying to refactor and share some code.
 

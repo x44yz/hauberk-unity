@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 public class Decorator {
   public Architect _architect;

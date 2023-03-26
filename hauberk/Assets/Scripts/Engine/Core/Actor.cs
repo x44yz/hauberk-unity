@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf = UnityEngine.Mathf;
 
 /// An active entity in the game. Includes monsters and the hero.
 public abstract class Actor : Noun

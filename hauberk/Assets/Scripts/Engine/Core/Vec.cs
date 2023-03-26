@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// Shared base class of [Vec] and [Direction]. We do this instead of having
 /// [Direction] inherit directly from [Vec] so that we can avoid it inheriting

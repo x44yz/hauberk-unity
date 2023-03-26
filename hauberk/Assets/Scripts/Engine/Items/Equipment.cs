@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 using System.Linq;
 
 /// The collection of wielded [Item]s held by the hero. Unlike [Inventory], the

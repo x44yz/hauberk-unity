@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// A slashing melee attack that hits a number of adjacent monsters.
 class AxeMastery : MasteryDiscipline {

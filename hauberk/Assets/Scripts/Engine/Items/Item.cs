@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// A thing that can be picked up.
 public class Item : Noun, System.IComparable<Item> 

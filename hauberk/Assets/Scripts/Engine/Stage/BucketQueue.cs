@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 // TODO: Move to piecemeal?
 /// A fast priority queue optimized for non-zero integer priorities in a narrow

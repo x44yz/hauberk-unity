@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using PlayerPrefs = UnityEngine.PlayerPrefs;
+using Debug = UnityEngine.Debug;
 // using LitJson;
 // using SimpleJSON;
 using SimpleJson;

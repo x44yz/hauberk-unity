@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 class MainMenuScreen : UnityTerminal.Screen {

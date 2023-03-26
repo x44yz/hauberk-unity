@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Color = UnityEngine.Color;
 using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
@@ -204,8 +203,8 @@ class StagePanel : Panel {
       }
 
       // TODO: This could be cached if needed.
-      var foreShadow = multiply(fore, TerminalColor.Rgba255(80, 80, 95));
-      var backShadow = multiply(back, TerminalColor.Rgba255(40, 40, 55));
+      var foreShadow = multiply(fore, new Color(80, 80, 95));
+      var backShadow = multiply(back, new Color(40, 40, 55));
 
       // Apply lighting and visibility to the tile.
       if (tile.isVisible && (lightFore || lightBack)) {
@@ -225,7 +224,7 @@ class StagePanel : Panel {
           }
 
           if (tile.actorIllumination > 0) {
-            Color glow = TerminalColor.Rgba255(200, 130, 0);
+            Color glow = new Color(200, 130, 0);
             color = color.add(
                 glow, (float)MathUtils.lerpDouble(tile.actorIllumination, 0, 255, 0.05, 0.1));
           }

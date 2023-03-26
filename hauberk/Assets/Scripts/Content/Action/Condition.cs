@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 class HasteAction : ConditionAction {
   public int _speed;

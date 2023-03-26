@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Color = UnityEngine.Color;
 using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;

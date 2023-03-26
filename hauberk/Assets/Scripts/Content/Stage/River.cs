@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 
 /// Uses a cellular automata to carve out rounded open cavernous areas.
 class River : Architecture {

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Mathf  = UnityEngine.Mathf;
 using System.Linq;
 
 /// This defines the monster AI. AI is broken into a three level hierarchy.

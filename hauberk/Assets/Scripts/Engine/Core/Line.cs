@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /// Traces a line of integer coordinates from a [start] point to and through an
 /// [end] point using Bresenham's line drawing algorithm.

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// Teleports to a random tile with a given range.
 class TeleportAction : Action {

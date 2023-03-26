@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityTerminal;
-using Color = UnityEngine.Color;
 
 public static class Draw {
   public static void box(Terminal terminal, int x, int y, int width, int height,
@@ -85,7 +84,7 @@ public static class Draw {
       String bottom,
       String bottomRight) 
   {
-    color ??= TerminalColor.darkCoolGray;
+    color ??= Color.darkCoolGray;
 
     // left/right bar
     for (int i = 1; i < height - 1; ++i)

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 using System.Linq;
 
 /// The history of interesting events the hero has experienced.
