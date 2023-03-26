@@ -54,12 +54,14 @@ public class Game
     Rng.rng.shuffle(_substanceUpdateOrder);
   }
 
-  public List<string> generate(){
+  public List<string> generate()
+  {
     // TODO: Do something useful with depth.
     var rt = new List<string>();
 
     Vec heroPos = Vec.zero;
-    rt.AddRange(content.buildStage(_save.lore, _stage, depth, (pos) => {
+    rt.AddRange(content.buildStage(_save.lore, _stage, depth, (pos) =>
+    {
       heroPos = pos;
     }));
 
@@ -71,19 +73,22 @@ public class Game
     return rt;
   }
 
-  public GameResult update() 
+  public GameResult update()
   {
     var madeProgress = false;
 
-    while (true) {
+    while (true)
+    {
       // Process any ongoing or pending actions.
-      while (_actions.Count > 0) {
+      while (_actions.Count > 0)
+      {
         var action = _actions[0];
 
         var result = action.perform();
 
         // Cascade through the alternates until we hit bottom.
-        while (result.alternative != null) {
+        while (result.alternative != null)
+        {
           _actions.RemoveAt(0);
           action = result.alternative!;
           _actions.Insert(0, action);
@@ -91,13 +96,15 @@ public class Game
           result = action.perform();
         }
 
-        while (_reactions.Count > 0) {
+        while (_reactions.Count > 0)
+        {
           var reaction = _reactions[_reactions.Count - 1];
           _reactions.RemoveAt(_reactions.Count - 1);
           var rt = reaction.perform();
 
           // Cascade through the alternates until we hit bottom.
-          while (rt.alternative != null) {
+          while (rt.alternative != null)
+          {
             reaction = rt.alternative!;
             rt = reaction.perform();
           }
@@ -108,10 +115,12 @@ public class Game
         stage.refreshView();
         madeProgress = true;
 
-        if (result.done) {
+        if (result.done)
+        {
           _actions.RemoveAt(0);
 
-          if (result.succeeded && action.consumesEnergy) {
+          if (result.succeeded && action.consumesEnergy)
+          {
             action.actor!.finishTurn(action);
             stage.advanceActor();
           }
@@ -125,49 +134,61 @@ public class Game
 
       // If we are in the middle of updating substances, keep working through
       // them.
-      if (_substanceIndex != null) {
+      if (_substanceIndex != null)
+      {
         _updateSubstances();
       }
 
       // If we get here, all pending actions are done, so advance to the next
       // tick until an actor moves.
-      while (_actions.Count == 0) {
+      while (_actions.Count == 0)
+      {
         var actor = stage.currentActor;
 
         // If we are still waiting for input for the actor, just return (again).
-        if (actor.energy.canTakeTurn && actor.needsInput) {
+        if (actor.energy.canTakeTurn && actor.needsInput)
+        {
           return makeResult(madeProgress);
         }
 
-        if (actor.energy.canTakeTurn || actor.energy.gain(actor.speed)) {
+        if (actor.energy.canTakeTurn || actor.energy.gain(actor.speed))
+        {
           // If the actor can move now, but needs input from the user, just
           // return so we can wait for it.
           if (actor.needsInput) return makeResult(madeProgress);
 
           _actions.Add(actor.getAction());
-        } else {
+        }
+        else
+        {
           // This actor doesn't have enough energy yet, so move on to the next.
           stage.advanceActor();
         }
 
         // Each time we wrap around, process "idle" things that are ongoing and
         // speed independent.
-        if (actor == hero) {
-          if (_substanceEnergy.gain(Energy.normalSpeed)) {
+        if (actor == hero)
+        {
+          if (_substanceEnergy.gain(Energy.normalSpeed))
+          {
             _substanceEnergy.spend();
             _substanceIndex = 0;
             _updateSubstances();
           }
-//          trySpawnMonster();
+          //          trySpawnMonster();
         }
       }
     }
   }
 
-  public void addAction(Action action) {
-    if (action.isImmediate) {
+  public void addAction(Action action)
+  {
+    if (action.isImmediate)
+    {
       _reactions.Add(action);
-    } else {
+    }
+    else
+    {
       _actions.Add(action);
     }
   }
@@ -177,24 +198,29 @@ public class Game
       Element element = null,
       object other = null,
       Vec pos = null,
-      Direction dir = null) {
+      Direction dir = null)
+  {
     _events.Add(new Event(type, actor, element ?? Element.none, pos, dir, other));
   }
 
-  GameResult makeResult(bool madeProgress) {
+  GameResult makeResult(bool madeProgress)
+  {
     var result = new GameResult(madeProgress);
     result.events.AddRange(_events);
     _events.Clear();
     return result;
   }
 
-  void _updateSubstances() {
-    while (_substanceIndex! < _substanceUpdateOrder.Count) {
+  void _updateSubstances()
+  {
+    while (_substanceIndex! < _substanceUpdateOrder.Count)
+    {
       var pos = _substanceUpdateOrder[_substanceIndex!.Value];
       var action = content.updateSubstance(stage, pos);
       _substanceIndex = _substanceIndex! + 1;
 
-      if (action != null) {
+      if (action != null)
+      {
         action.bindPassive(this, pos);
         _actions.Add(action);
         return;
@@ -205,28 +231,29 @@ public class Game
     _substanceIndex = null;
   }
 
-// TODO: Decide if we want to keep this. Now that there is hunger forcing the
-// player to explore, it doesn't seem strictly necessary.
+  // TODO: Decide if we want to keep this. Now that there is hunger forcing the
+  // player to explore, it doesn't seem strictly necessary.
   /// Over time, new monsters will appear in unexplored areas of the dungeon.
   /// This is to encourage players to not waste time: the more they linger, the
   /// more dangerous the remaining areas become.
-//  void trySpawnMonster() {
-//    if (!rng.oneIn(Option.spawnMonsterChance)) return;
-//
-//    // Try to place a new monster in unexplored areas.
-//    Vec pos = rng.vecInRect(stage.bounds);
-//
-//    public tile = stage[pos];
-//    if (tile.visible || tile.isExplored || !tile.isPassable) return;
-//    if (stage.actorAt(pos) != null) return;
-//
-//    stage.spawnMonster(area.pickBreed(level), pos);
-//  }
+  //  void trySpawnMonster() {
+  //    if (!rng.oneIn(Option.spawnMonsterChance)) return;
+  //
+  //    // Try to place a new monster in unexplored areas.
+  //    Vec pos = rng.vecInRect(stage.bounds);
+  //
+  //    public tile = stage[pos];
+  //    if (tile.visible || tile.isExplored || !tile.isPassable) return;
+  //    if (stage.actorAt(pos) != null) return;
+  //
+  //    stage.spawnMonster(area.pickBreed(level), pos);
+  //  }
 }
 
 /// Defines the actual content for the game: the breeds, items, etc. that
 /// define the play experience.
-public abstract class Content {
+public abstract class Content
+{
   // TODO: Temp. Figure out where dungeon generator lives.
   // TODO: Using a callback to set the hero position is kind of hokey.
   public abstract IEnumerable<string> buildStage(
@@ -261,7 +288,8 @@ public abstract class Content {
 
 /// Each call to [Game.update()] will return a [GameResult] object that tells
 /// the UI what happened during that update and what it needs to do.
-public class GameResult {
+public class GameResult
+{
   /// The "interesting" events that occurred in this update.
   public List<Event> events = new List<Event>();
 
@@ -283,7 +311,8 @@ public class GameResult {
 /// Describes a single "interesting" thing that occurred during a call to
 /// [Game.update()]. In general, events correspond to things that a UI is likely
 /// to want to display visually in some form.
-public class Event {
+public class Event
+{
   public EventType type;
   // TODO: Having these all be nullable leads to a lot of "!" in effects.
   // Consider a better way to model this.
@@ -293,7 +322,7 @@ public class Event {
   public Vec pos;
   public Direction dir;
 
-  public Event(EventType type, Actor actor, Element element, Vec pos, 
+  public Event(EventType type, Actor actor, Element element, Vec pos,
             Direction dir, object other)
   {
     this.type = type;
@@ -307,7 +336,8 @@ public class Event {
 
 // TODO: Move to content.
 /// A kind of [Event] that has occurred.
-public class EventType {
+public class EventType
+{
   public static EventType pause = new EventType("pause");
 
   /// One step of a bolt.
@@ -381,12 +411,12 @@ public class EventType {
 
   public override string ToString() => _name;
 
-  public static bool operator == (EventType a, EventType b)
+  public static bool operator ==(EventType a, EventType b)
   {
     return a._name.Equals(b._name);
   }
 
-  public static bool operator != (EventType a, EventType b)
+  public static bool operator !=(EventType a, EventType b)
   {
     return a._name.Equals(b._name) == false;
   }

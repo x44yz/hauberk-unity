@@ -9,7 +9,8 @@ using UnityTerminal;
 // TODO: Split this into multiple panels and/or give it a better name.
 // TODO: There's room at the bottom of the panel for something else. Maybe a
 // mini-map?
-class SidebarPanel : Panel {
+class SidebarPanel : Panel
+{
   public static Dictionary<Element, string> _resistLetters = new Dictionary<Element, string>(){
     {Elements.air, "A"},
     {Elements.earth, "E"},
@@ -31,7 +32,8 @@ class SidebarPanel : Panel {
     this._gameScreen = _gameScreen;
   }
 
-  public override void renderPanel(Terminal terminal) {
+  public override void renderPanel(Terminal terminal)
+  {
     Draw.frame(terminal, 0, 0, terminal.width, terminal.height);
 
     var game = _gameScreen.game;
@@ -62,25 +64,29 @@ class SidebarPanel : Panel {
     _drawHealthBar(terminal, 20, hero);
 
     var visibleMonsters = _gameScreen.stagePanel.visibleMonsters;
-    visibleMonsters.Sort((a, b) => {
+    visibleMonsters.Sort((a, b) =>
+    {
       var aDistance = (a.pos - hero.pos).lengthSquared;
       var bDistance = (b.pos - hero.pos).lengthSquared;
       return aDistance.CompareTo(bDistance);
     });
 
-    for (var i = 0; i < 10 && i < visibleMonsters.Count; i++) {
+    for (var i = 0; i < 10 && i < visibleMonsters.Count; i++)
+    {
       var y = 21 + i * 2;
       if (y >= terminal.height - 2) break;
 
       var monster = visibleMonsters[i];
 
       var glyph = monster.appearance as Glyph;
-      if (_gameScreen.currentTargetActor == monster) {
+      if (_gameScreen.currentTargetActor == monster)
+      {
         glyph = new Glyph(glyph.ch, glyph.back, glyph.fore);
       }
 
       var name = monster.breed.name;
-      if (name.Length > terminal.width - 4) {
+      if (name.Length > terminal.width - 4)
+      {
         name = name.Substring(0, terminal.width - 4);
       }
 
@@ -97,9 +103,11 @@ class SidebarPanel : Panel {
     }
   }
 
-  void _drawStats(Hero hero, Terminal terminal, int y) {
+  void _drawStats(Hero hero, Terminal terminal, int y)
+  {
     var x = 1;
-    void drawStat(StatBase stat) {
+    void drawStat(StatBase stat)
+    {
       terminal.WriteAt(x, y, stat.name.Substring(0, 3), UIHue.helpText);
       terminal.WriteAt(
           x, y + 1, stat.value.ToString().PadLeft(3), UIHue.primary);
@@ -113,18 +121,21 @@ class SidebarPanel : Panel {
     drawStat(hero.will);
   }
 
-  void _drawHealth(Hero hero, Terminal terminal, int y) {
+  void _drawHealth(Hero hero, Terminal terminal, int y)
+  {
     _drawStat(terminal, y, "Health", hero.health, Hues.red, hero.maxHealth, Hues.maroon);
   }
 
-  void _drawLevel(Hero hero, Terminal terminal, int y) {
+  void _drawLevel(Hero hero, Terminal terminal, int y)
+  {
     terminal.WriteAt(1, y, "Level", UIHue.helpText);
 
     var levelString = hero.level.ToString();
     terminal.WriteAt(
         terminal.width - levelString.Length - 1, y, levelString, Hues.lightAqua);
 
-    if (hero.level < Hero.maxLevel) {
+    if (hero.level < Hero.maxLevel)
+    {
       var levelPercent = 100 *
           (hero.experience - Hero.experienceLevelCost(hero.level)) /
           (Hero.experienceLevelCost(hero.level + 1) -
@@ -134,19 +145,22 @@ class SidebarPanel : Panel {
     }
   }
 
-  void _drawGold(Hero hero, Terminal terminal, int y) {
+  void _drawGold(Hero hero, Terminal terminal, int y)
+  {
     terminal.WriteAt(1, y, "Gold", UIHue.helpText);
     var heroGold = DartUtils.formatMoney(hero.gold);
     terminal.WriteAt(terminal.width - 1 - heroGold.Length, y, heroGold, Hues.gold);
   }
 
-  void _drawWeapons(Hero hero, Terminal terminal, int y) {
+  void _drawWeapons(Hero hero, Terminal terminal, int y)
+  {
     var hits = hero.createMeleeHits(null).ToList();
 
     var label = hits.Count == 2 ? "Weapons" : "Weapon";
     terminal.WriteAt(1, y, label, UIHue.helpText);
 
-    for (var i = 0; i < hits.Count; i++) {
+    for (var i = 0; i < hits.Count; i++)
+    {
       var hitString = hits[i].damageString;
       // TODO: Show element and other bonuses.
       terminal.WriteAt(
@@ -154,20 +168,25 @@ class SidebarPanel : Panel {
     }
   }
 
-  void _drawDefense(Hero hero, Terminal terminal, int y) {
+  void _drawDefense(Hero hero, Terminal terminal, int y)
+  {
     var total = 0;
-    foreach (var defense in hero.defenses) {
+    foreach (var defense in hero.defenses)
+    {
       total += defense.amount;
     }
 
     _drawStat(terminal, y, "Dodge", $"{total}%", Hues.aqua);
   }
 
-  void _drawArmor(Hero hero, Terminal terminal, int y) {
+  void _drawArmor(Hero hero, Terminal terminal, int y)
+  {
     // Show equipment resistances.
     var x = 10;
-    foreach (var element in Elements.all) {
-      if (hero.resistance(element) > 0) {
+    foreach (var element in Elements.all)
+    {
+      if (hero.resistance(element) > 0)
+      {
         terminal.WriteAt(x, y, _resistLetters[element]!, Hues.elementColor(element));
         x++;
       }
@@ -177,13 +196,15 @@ class SidebarPanel : Panel {
     _drawStat(terminal, y, "Armor", armor, Hues.peaGreen);
   }
 
-  void _drawFood(Hero hero, Terminal terminal, int y) {
+  void _drawFood(Hero hero, Terminal terminal, int y)
+  {
     terminal.WriteAt(1, y, "Food", UIHue.helpText);
     Draw.thinMeter(terminal, 10, y, terminal.width - 11, hero.stomach,
         Option.heroMaxStomach, Hues.tan, Hues.brown);
   }
 
-  void _drawFocus(Hero hero, Terminal terminal, int y) {
+  void _drawFocus(Hero hero, Terminal terminal, int y)
+  {
     // TODO: Show bar once these are tuned.
     // terminal.WriteAt(1, y, 'Focus', UIHue.helpText);
     // Draw.thinMeter(terminal, 10, y, terminal.width - 11, hero.focus,
@@ -192,7 +213,8 @@ class SidebarPanel : Panel {
         Hues.darkBlue);
   }
 
-  void _drawFury(Hero hero, Terminal terminal, int y) {
+  void _drawFury(Hero hero, Terminal terminal, int y)
+  {
     // TODO: Show bar once these are tuned.
     // terminal.WriteAt(1, y, 'Fury', UIHue.helpText);
     // Draw.thinMeter(terminal, 10, y, terminal.width - 11, hero.fury,
@@ -204,11 +226,13 @@ class SidebarPanel : Panel {
   /// Draws a labeled numeric stat.
   void _drawStat(
       Terminal terminal, int y, string label, Object value, Color valueColor,
-      int? max = null, Color? maxColor = null) {
+      int? max = null, Color? maxColor = null)
+  {
     terminal.WriteAt(1, y, label, UIHue.helpText);
 
     var x = terminal.width - 1;
-    if (max != null) {
+    if (max != null)
+    {
       var maxString = max.ToString();
       x -= maxString.Length;
       terminal.WriteAt(x, y, maxString, maxColor);
@@ -223,11 +247,13 @@ class SidebarPanel : Panel {
   }
 
   /// Draws a health bar for [actor].
-  void _drawHealthBar(Terminal terminal, int y, Actor actor) {
+  void _drawHealthBar(Terminal terminal, int y, Actor actor)
+  {
     // Show conditions.
     var x = 3;
 
-    void drawCondition(string char_, Color fore, Color? back = null) {
+    void drawCondition(string char_, Color fore, Color? back = null)
+    {
       // Don't overlap other stuff.
       if (x > 8) return;
 
@@ -235,12 +261,15 @@ class SidebarPanel : Panel {
       x++;
     }
 
-    if (actor is Monster && (actor as Monster).isAfraid) {
+    if (actor is Monster && (actor as Monster).isAfraid)
+    {
       drawCondition("!", Hues.sandal);
     }
 
-    if (actor.poison.isActive) {
-      switch (actor.poison.intensity) {
+    if (actor.poison.isActive)
+    {
+      switch (actor.poison.intensity)
+      {
         case 1:
           drawCondition("P", Hues.sherwood);
           break;
@@ -254,7 +283,8 @@ class SidebarPanel : Panel {
     }
 
     if (actor.cold.isActive) drawCondition("C", Hues.lightBlue);
-    switch (actor.haste.intensity) {
+    switch (actor.haste.intensity)
+    {
       case 1:
         drawCondition("S", Hues.tan);
         break;
@@ -270,14 +300,17 @@ class SidebarPanel : Panel {
     if (actor.dazzle.isActive) drawCondition("D", Hues.lilac);
     if (actor.perception.isActive) drawCondition("V", Hues.ash);
 
-    foreach (var element in Elements.all) {
-      if (actor.resistances[element]!.isActive) {
+    foreach (var element in Elements.all)
+    {
+      if (actor.resistances[element]!.isActive)
+      {
         drawCondition(
             _resistLetters[element]!, Color.black, Hues.elementColor(element));
       }
     }
 
-    if (Debugger.showMonsterAlertness && actor is Monster) {
+    if (Debugger.showMonsterAlertness && actor is Monster)
+    {
       var alertness = ((int)((actor as Monster).alertness * 100)).ToString().PadLeft(3);
       terminal.WriteAt(2, y, alertness, Hues.ash);
     }

@@ -4,7 +4,8 @@ using System;
 using num = System.Double;
 using System.Linq;
 
-public class Attack {
+public class Attack
+{
 
   /// Armor reduces damage by an inverse curve such that increasing armor has
   /// less and less effect. Damage is reduced to the following:
@@ -17,7 +18,8 @@ public class Attack {
   ///     120   25%
   ///     160   20%
   ///     ...   etc.
-  public static num getArmorMultiplier(int armor) {
+  public static num getArmorMultiplier(int armor)
+  {
     // Damage is never increased.
     return 1.0 / (1.0 + Math.Max(0, armor) / 40.0);
   }
@@ -52,7 +54,8 @@ public class Attack {
 
   public Hit createHit() => new Hit(this);
 
-  public override string ToString() {
+  public override string ToString()
+  {
     var result = damage.ToString();
     if (element != Element.none) result = $"{element} {result}";
     if (range > 0) result += $"@{range}";
@@ -62,7 +65,8 @@ public class Attack {
 
 public enum HitType { melee, ranged, toss }
 
-public class Hit {
+public class Hit
+{
   public Attack _attack;
 
   int _strikeBonus = 0;
@@ -73,8 +77,10 @@ public class Hit {
 
   Element _brand = Element.none;
 
-  public int range {
-    get {
+  public int range
+  {
+    get
+    {
       if (_attack.range == 0) return 0;
 
       return (int)Math.Round(Math.Max(1, (float)(_attack.range * _rangeScale)));
@@ -83,8 +89,10 @@ public class Hit {
 
   double _rangeScale = 1.0;
 
-  public Element element {
-    get {
+  public Element element
+  {
+    get
+    {
       if (_brand != Element.none) return _brand;
       return _attack.element;
     }
@@ -96,8 +104,10 @@ public class Hit {
   // bonuses and stuff more explicitly there and get rid of this.
   /// The average amount of damage this hit causes, with two decimal points of
   /// precision.
-  public string damageString {
-    get {
+  public string damageString
+  {
+    get
+    {
       return ((int)(averageDamage * 100) / 100).ToString();
     }
   }
@@ -107,28 +117,34 @@ public class Hit {
     this._attack = _attack;
   }
 
-  public void addStrike(int bonus) {
+  public void addStrike(int bonus)
+  {
     _strikeBonus += bonus;
   }
 
-  public void scaleStrike(double factor) {
+  public void scaleStrike(double factor)
+  {
     _strikeScale *= factor;
   }
 
-  public void addDamage(int offset) {
+  public void addDamage(int offset)
+  {
     _damageBonus += offset;
   }
 
-  public void scaleDamage(double factor) {
+  public void scaleDamage(double factor)
+  {
     _damageScale *= factor;
   }
 
-  public void brand(Element element) {
+  public void brand(Element element)
+  {
     // TODO: What if it's already branded? How do they compose?
     if (element != Element.none) _brand = element;
   }
 
-  public void scaleRange(double factor) {
+  public void scaleRange(double factor)
+  {
     _rangeScale *= factor;
   }
 
@@ -137,7 +153,7 @@ public class Hit {
   ///
   /// Returns the amount of damage done if the attack connected or `null` if
   /// it missed.
-  public int perform(Action action, Actor attacker, Actor defender, bool canMiss = true) 
+  public int perform(Action action, Actor attacker, Actor defender, bool canMiss = true)
   {
     // If the attack itself doesn't have a noun ("the arrow hits"), use the
     // attacker ("the wolf bites").
@@ -153,16 +169,19 @@ public class Hit {
     // TODO: Instead of a single "canMiss" flag, consider having each defense
     // define the set of elements it can block and then apply them based on
     // that.
-    if (canMiss) {
+    if (canMiss)
+    {
       var strike = Rng.rng.inclusive(1, 100) * _strikeScale + _strikeBonus;
 
       // Shuffle them so the message shown isn't biased by their order (just
       // their relative amounts).
       var defenses = defender.defenses;
       Rng.rng.shuffle<Defense>(defenses);
-      foreach (var defense in defenses) {
+      foreach (var defense in defenses)
+      {
         strike -= defense.amount;
-        if (strike < 0) {
+        if (strike < 0)
+        {
           action.log(defense.message, defender, attackNoun);
           return 0;
         }
@@ -174,25 +193,30 @@ public class Hit {
     var resistance = defender.resistance(element);
     var damage = _rollDamage(armor, resistance);
 
-    if (damage == 0) {
+    if (damage == 0)
+    {
       // Armor cancelled out all damage.
       // TODO: Should still affect monster alertness.
       action.log("{1} do[es] no damage to {2}.", attackNoun, defender);
       return 0;
     }
 
-    if (attacker != null) {
+    if (attacker != null)
+    {
       attacker.onGiveDamage(action, defender, damage);
     }
 
-    if (defender.takeDamage(action, damage, attackNoun, attacker)) {
+    if (defender.takeDamage(action, damage, attackNoun, attacker))
+    {
       return damage;
     }
 
     // Any resistance cancels all side effects.
-    if (resistance <= 0) {
+    if (resistance <= 0)
+    {
       var sideEffect = element.attackAction(damage);
-      if (sideEffect != null) {
+      if (sideEffect != null)
+      {
         action.addAction(sideEffect, defender);
       }
 
@@ -207,7 +231,8 @@ public class Hit {
     return damage;
   }
 
-  int _rollDamage(int armor, int resistance) {
+  int _rollDamage(int armor, int resistance)
+  {
     var resistScale = 1.0 / (1.0 + resistance);
 
     // Calculate in cents so that we don't do as much rounding until after
@@ -223,7 +248,8 @@ public class Hit {
 
 /// TODO: Flags for which kinds of attacks (melee, ranged, magic) the dodge
 /// can apply to?
-public class Defense {
+public class Defense
+{
   public int amount;
   public string message;
 

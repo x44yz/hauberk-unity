@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using num = System.Double;
 using System.Linq;
 
-public class Monster : Actor {
+public class Monster : Actor
+{
   public const float _maxAlertness = 1.0f;
 
   Breed _breed;
@@ -13,7 +14,8 @@ public class Monster : Actor {
   public Breed breed
   {
     get { return _breed; }
-    set {
+    set
+    {
       _breed = value;
 
       // Keep the health in bounds.
@@ -91,8 +93,10 @@ public class Monster : Actor {
   public override int emanationLevel => breed.emanationLevel;
 
   /// How much the monster relies on sight to sense the hero, from 0.0 to 1.0.
-  public double sightReliance {
-    get {
+  public double sightReliance
+  {
+    get
+    {
       var senses = breed.vision + breed.hearing;
       if (senses == 0) return 0.0;
       return breed.vision / senses;
@@ -100,7 +104,7 @@ public class Monster : Actor {
   }
 
   public Monster(Game game, Breed _breed, int x, int y, int generation)
-      : base(game, x, y) 
+      : base(game, x, y)
   {
     this._breed = _breed;
     this.generation = generation;
@@ -112,12 +116,14 @@ public class Monster : Actor {
 
     // Initialize the recharges. These will be set to real values when the
     // monster wakes up.
-    foreach (var move in breed.moves) {
+    foreach (var move in breed.moves)
+    {
       _recharges[move] = 0.0f;
     }
   }
 
-  public void useMove(Move move) {
+  public void useMove(Move move)
+  {
     // Add some randomness to the rate. Since monsters very eagerly prefer to
     // use moves, this ensures they don't use them too predictably.
     // TODO: Make rate and experience be double instead of num? If so, get rid
@@ -133,9 +139,11 @@ public class Monster : Actor {
   ///
   /// Does not take into account if there are other [Actor]s between the monster
   /// and the target.
-  public bool canView(Vec target) {
+  public bool canView(Vec target)
+  {
     // Walk to the target.
-    foreach (var step in new Line(pos, target)) {
+    foreach (var step in new Line(pos, target))
+    {
       if (step == target) return true;
       if (game.stage[step].blocksView) return false;
     }
@@ -147,9 +155,11 @@ public class Monster : Actor {
   ///
   /// Does take into account if there are other [Actor]s between the monster
   /// and the target.
-  public bool canTarget(Vec target) {
+  public bool canTarget(Vec target)
+  {
     // Walk to the target.
-    foreach (var step in new Line(pos, target)) {
+    foreach (var step in new Line(pos, target))
+    {
       if (step == target) return true;
       if (game.stage.actorAt(step) != null) return false;
       if (game.stage[step].blocksView) return false;
@@ -164,9 +174,11 @@ public class Monster : Actor {
 
   public override List<Defense> onGetDefenses() => breed.defenses;
 
-  public override Action onGetAction() {
+  public override Action onGetAction()
+  {
     // Recharge moves.
-    foreach (var move in breed.moves) {
+    foreach (var move in breed.moves)
+    {
       _recharges[move] = Mathf.Max(0.0f, (float)(_recharges[move]! - 1.0f));
     }
 
@@ -199,16 +211,21 @@ public class Monster : Actor {
     return _state.getAction();
   }
 
-  void _updateState(double notice) {
+  void _updateState(double notice)
+  {
     // See if we want to change state.
-    if (isAsleep) {
-      if (_fear > _frightenThreshold) {
+    if (isAsleep)
+    {
+      if (_fear > _frightenThreshold)
+      {
         log("{1} is afraid!", this);
         game.addEvent(EventType.frighten, actor: this);
 
         _resetCharges();
         _changeState(new AfraidState());
-      } else if (Rng.rng.percent(_awakenPercent(notice))) {
+      }
+      else if (Rng.rng.percent(_awakenPercent(notice)))
+      {
         log("{1} wakes up!", this);
 
         // TODO: Probably shouldn't add event if monster woke up because they
@@ -219,19 +236,27 @@ public class Monster : Actor {
         _resetCharges();
         _changeState(new AwakeState());
       }
-    } else if (isAwake) {
-      if (_fear > _frightenThreshold) {
+    }
+    else if (isAwake)
+    {
+      if (_fear > _frightenThreshold)
+      {
         log("{1} is afraid!", this);
         game.addEvent(EventType.frighten, actor: this);
         _changeState(new AfraidState());
-      } else if (notice < 0.01) {
+      }
+      else if (notice < 0.01)
+      {
         log("{1} falls asleep!", this);
 
         _alertness = 0.0;
         _changeState(new AsleepState());
       }
-    } else if (isAfraid) {
-      if (_fear <= 0.0) {
+    }
+    else if (isAfraid)
+    {
+      if (_fear <= 0.0)
+      {
         log("{1} grows courageous!", this);
         _changeState(new AwakeState());
       }
@@ -239,7 +264,8 @@ public class Monster : Actor {
   }
 
   /// The percent chance of waking up at [notice].
-  int _awakenPercent(double notice) {
+  int _awakenPercent(double notice)
+  {
     // At boundaries, either always or never wake up.
     if (notice < 0.1) return 0;
     if (notice > 0.8) return 100;
@@ -249,27 +275,32 @@ public class Monster : Actor {
     return Mathf.RoundToInt((float)MathUtils.lerpDouble((float)(normal * normal * normal), 0.0f, 1.0f, 5.0, 100.0));
   }
 
-  double _seeHero() {
-    if (breed.vision == 0) {
+  double _seeHero()
+  {
+    if (breed.vision == 0)
+    {
       Debugger.monsterStat(this, "see", 0.0, "sightless");
       return 0.0;
     }
 
     var heroPos = game.hero.pos;
-    if (!canView(heroPos)) {
+    if (!canView(heroPos))
+    {
       Debugger.monsterStat(this, "see", 0.0, "out of sight");
       return 0.0;
     }
 
     // TODO: Don't check illumination for breeds that see in the dark.
     var illumination = game.stage[heroPos].illumination;
-    if (illumination == 0) {
+    if (illumination == 0)
+    {
       Debugger.monsterStat(this, "see", 0.0, "hero in dark");
       return 0.0;
     }
 
     var distance = (heroPos - pos).kingLength;
-    if (distance >= breed.vision) {
+    if (distance >= breed.vision)
+    {
       Debugger.monsterStat(this, "see", 0.0, "too far");
       return 0.0;
     }
@@ -281,8 +312,10 @@ public class Monster : Actor {
     // TODO: Can the monster see other changes? Other monsters moving?
   }
 
-  double _hearHero() {
-    if (breed.hearing == 0) {
+  double _hearHero()
+  {
+    if (breed.hearing == 0)
+    {
       Debugger.monsterStat(this, "hear", 0.0, "deaf");
       return 0.0;
     }
@@ -299,7 +332,8 @@ public class Monster : Actor {
 
   /// Modifies fear and then determines if it has crossed the threshold to
   /// cause a state change.
-  void _modifyFear(double offset) {
+  void _modifyFear(double offset)
+  {
     // Don't add effects if the monster already died.
     if (!isAlive) return;
 
@@ -312,25 +346,28 @@ public class Monster : Actor {
   }
 
   /// Adds an audible signal at [volume] to the monster's alertness.
-  public void hear(double volume) {
+  public void hear(double volume)
+  {
     _alertness += volume * breed.hearing;
     _alertness = Mathf.Clamp((float)_alertness, 0.0f, _maxAlertness);
   }
 
-  public MonsterState awaken() {
+  public MonsterState awaken()
+  {
     var state = new AwakeState();
     _changeState(state);
     return state;
   }
 
-  void _changeState(MonsterState state) {
+  void _changeState(MonsterState state)
+  {
     _state = state;
     _state.bind(this);
   }
 
-  public override List<Hit> onCreateMeleeHits(Actor defender) 
+  public override List<Hit> onCreateMeleeHits(Actor defender)
   {
-    return new List<Hit>(){ Rng.rng.item(breed.attacks).createHit() };
+    return new List<Hit>() { Rng.rng.item(breed.attacks).createHit() };
   }
 
 
@@ -338,7 +375,8 @@ public class Monster : Actor {
   public override int onGetResistance(Element element) => 0;
 
   /// Inflicting damage decreases fear.
-  public override void onGiveDamage(Action action, Actor defender, int damage) {
+  public override void onGiveDamage(Action action, Actor defender, int damage)
+  {
     // The greater the power of the hit, the more emboldening it is.
     var fear = 100.0 * damage / game.hero.maxHealth;
 
@@ -347,14 +385,16 @@ public class Monster : Actor {
         "hit for $damage/${game.hero.maxHealth} decrease by $fear");
 
     // Nearby monsters may witness it.
-    _updateWitnesses((witness) => {
+    _updateWitnesses((witness) =>
+    {
       witness._viewHeroDamage(action, damage);
     });
   }
 
   /// This is called when another monster in sight of this one has damaged the
   /// hero.
-  void _viewHeroDamage(Action action, int damage) {
+  void _viewHeroDamage(Action action, int damage)
+  {
     if (isAsleep) return;
 
     var fear = 50.0 * damage / maxHealth;
@@ -365,7 +405,8 @@ public class Monster : Actor {
   }
 
   /// Taking damage increases fear.
-  void onTakeDamage(Action action, Actor attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage)
+  {
     _alertness = _maxAlertness;
 
     // The greater the power of the hit, the more frightening it is.
@@ -379,7 +420,8 @@ public class Monster : Actor {
         this, "fear", "hit for $damage/$maxHealth increases by $fear");
 
     // Nearby monsters may witness it.
-    _updateWitnesses((witness) => {
+    _updateWitnesses((witness) =>
+    {
       witness._viewMonsterDamage(action, this, damage);
     });
 
@@ -387,22 +429,27 @@ public class Monster : Actor {
     var moves = breed.moves
         .Where((move) => move.shouldUseOnDamage(this, damage))
         .ToList();
-    if (moves.Count > 0) {
+    if (moves.Count > 0)
+    {
       action.addAction(Rng.rng.item(moves).getAction(this), this);
     }
   }
 
   /// This is called when another monster in sight of this one has taken
   /// damage.
-  void _viewMonsterDamage(Action action, Monster monster, int damage) {
+  void _viewMonsterDamage(Action action, Monster monster, int damage)
+  {
     if (isAsleep) return;
 
     var fear = 50.0 * damage / maxHealth;
 
-    if (breed.flags.protective && monster.breed == breed) {
+    if (breed.flags.protective && monster.breed == breed)
+    {
       // Seeing its own kind get hurt enrages it.
       fear *= -2.0;
-    } else if (breed.flags.berzerk) {
+    }
+    else if (breed.flags.berzerk)
+    {
       // Seeing any monster get hurt enrages it.
       fear *= -1.0;
     }
@@ -413,35 +460,42 @@ public class Monster : Actor {
   }
 
   /// Called when this Actor has been killed by [attackNoun].
-  void onDied(Noun attackNoun) {
+  void onDied(Noun attackNoun)
+  {
     // TODO: Is using the breed's motility correct? We probably don't want
     // drops going through doors.
     var items = game.stage.placeDrops(pos, breed.motility, breed.drop);
-    foreach (var item in items) {
+    foreach (var item in items)
+    {
       log("{1} drop[s] {2}.", this, item);
     }
 
     game.stage.removeActor(this);
   }
 
-  public override void changePosition(Vec from, Vec to) {
+  public override void changePosition(Vec from, Vec to)
+  {
     base.changePosition(from, to);
 
     // If the monster is (or was) visible, don't let the hero rest through it
     // moving.
-    if (game.stage[from].isVisible || game.stage[to].isVisible) {
+    if (game.stage[from].isVisible || game.stage[to].isVisible)
+    {
       game.hero.disturb();
     }
 
     // If the monster came into view, make sure the hero has seen it.
-    if (!game.stage[from].isVisible && game.stage[to].isVisible) {
+    if (!game.stage[from].isVisible && game.stage[to].isVisible)
+    {
       game.hero.seeMonster(this);
     }
   }
 
   /// Invokes [callback] on all nearby monsters that can see this one.
-  void _updateWitnesses(System.Action<Monster> callback) {
-    foreach (var other in game.stage.actors) {
+  void _updateWitnesses(System.Action<Monster> callback)
+  {
+    foreach (var other in game.stage.actors)
+    {
       if (other == this) continue;
       if (!(other is Monster)) continue;
 
@@ -456,7 +510,8 @@ public class Monster : Actor {
 
   /// Fear decays over time, more quickly the farther the monster is from the
   /// hero.
-  void _decayFear() {
+  void _decayFear()
+  {
     // TODO: Poison should slow the decay of fear.
     var fearDecay = 5.0 + (pos - game.hero.pos).kingLength;
 
@@ -473,8 +528,10 @@ public class Monster : Actor {
   ///
   /// Ensures the monster doesn't immediately unload everything on the hero
   /// when first spotted.
-  void _resetCharges() {
-    foreach (var move in breed.moves) {
+  void _resetCharges()
+  {
+    foreach (var move in breed.moves)
+    {
       _recharges[move] = Rng.rng.rfloat(move.rate / 2);
     }
   }

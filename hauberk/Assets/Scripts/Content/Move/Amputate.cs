@@ -6,7 +6,8 @@ using num = System.Double;
 ///
 /// For example, a skeleton can amputate into a decapitated skeleton and a
 /// skull.
-class AmputateMove : Move {
+class AmputateMove : Move
+{
   public override num experience => _body.breed.maxHealth * 0.5;
 
   /// The breed the remaining body turns into.
@@ -27,7 +28,8 @@ class AmputateMove : Move {
   /// Doesn't spontaneously amputate.
   public override bool shouldUse(Monster monster) => false;
 
-  public override bool shouldUseOnDamage(Monster monster, int damage) {
+  public override bool shouldUseOnDamage(Monster monster, int damage)
+  {
     // Doing more damage increases the odds.
     var odds = damage / monster.maxHealth;
     if (Rng.rng.rfloat(2.0) <= odds) return true;

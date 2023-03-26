@@ -2,41 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-partial class Decor {
-  public static void waterDecor() {
+partial class Decor
+{
+  public static void waterDecor()
+  {
     // TODO: Get rid of this if we don't add shores.
     // Grass.
-  //  category(apply: "*", themes: "water");
-  //  furnishing(Symmetry.rotate90, """
-  //    ≈≈
-  //    ≈*""");
-  //
-  //  furnishing(Symmetry.rotate90, """
-  //    ≈
-  //    *""");
-  //
-  //  category(0.6, apply: "*", themes: "water");
-  //  furnishing(Symmetry.rotate90, """
-  //    *""");
+    //  category(apply: "*", themes: "water");
+    //  furnishing(Symmetry.rotate90, """
+    //    ≈≈
+    //    ≈*""");
+    //
+    //  furnishing(Symmetry.rotate90, """
+    //    ≈
+    //    *""");
+    //
+    //  category(0.6, apply: "*", themes: "water");
+    //  furnishing(Symmetry.rotate90, """
+    //    *""");
 
-  /*
-    // Piers.
-    category(0.1, apply: "=", themes: "aquatic");
-    furnishing(Symmetry.rotate90, """
-      '≈≈≈
-      '==≈
-      '≈≈≈""");
+    /*
+      // Piers.
+      category(0.1, apply: "=", themes: "aquatic");
+      furnishing(Symmetry.rotate90, """
+        '≈≈≈
+        '==≈
+        '≈≈≈""");
 
-    furnishing(Symmetry.rotate90, """
-      '≈≈≈≈
-      '===≈
-      '≈≈≈≈""");
+      furnishing(Symmetry.rotate90, """
+        '≈≈≈≈
+        '===≈
+        '≈≈≈≈""");
 
-    furnishing(Symmetry.rotate90, """
-      '≈≈≈≈≈
-      '====≈
-      '≈≈≈≈≈""");
-  */
+      furnishing(Symmetry.rotate90, """
+        '≈≈≈≈≈
+        '====≈
+        '≈≈≈≈≈""");
+    */
 
     // TODO: These don't work as well without shores.
     // Stepping stones.

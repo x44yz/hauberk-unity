@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-class WhipMastery : MasteryDiscipline {
+class WhipMastery : MasteryDiscipline
+{
   // TODO: Tune.
   static double _whipScale(int level) => MathUtils.lerpDouble(level, 1, 10, 1.0, 3.0);
 
@@ -15,7 +16,8 @@ class WhipMastery : MasteryDiscipline {
       "distance when mastered.";
   public override string weaponType => "whip";
 
-  public override string levelDescription(int level) {
+  public override string levelDescription(int level)
+  {
     var damage = (int)(_whipScale(level) * 100);
     return base.levelDescription(level) +
         " Ranged whip attacks inflict $damage% of the damage of a regular attack.";
@@ -25,7 +27,8 @@ class WhipMastery : MasteryDiscipline {
 
   int getRange(Game game) => 3;
 
-  Action onGetTargetAction(Game game, int level, Vec target) {
+  Action onGetTargetAction(Game game, int level, Vec target)
+  {
     var defender = game.stage.actorAt(target);
 
     // Find which hand has a whip. If both do, just pick the first.
@@ -36,7 +39,8 @@ class WhipMastery : MasteryDiscipline {
 
     // Should have at least one whip wielded.
     Hit hit = null;
-    for (var i = 0; i < weapons.Count; i++) {
+    for (var i = 0; i < weapons.Count; i++)
+    {
       if (weapons[i].type.weaponType != "whip") continue;
 
       hit = hits[i];

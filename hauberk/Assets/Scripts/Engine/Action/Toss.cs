@@ -7,26 +7,31 @@ using System.Collections.Generic;
 /// This is referred to as "toss" in the code but as "throw" in the user
 /// interface. "Toss" is used just to avoid using "throw" in code, which is a
 /// reserved word.
-class TossAction : ItemAction {
+class TossAction : ItemAction
+{
   public Hit _hit;
   public Vec _target;
 
   public TossAction(ItemLocation location, Item item, Hit _hit, Vec _target)
       : base(location, item)
-    {
-        this._hit = _hit;
-        this._target = _target;
-    }
+  {
+    this._hit = _hit;
+    this._target = _target;
+  }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     if (!item.canToss) return fail("{1} can't be thrown.", item);
 
     Item tossed;
-    if (item.count == 1) {
+    if (item.count == 1)
+    {
       // Throwing the entire stack.
       tossed = item;
       removeItem();
-    } else {
+    }
+    else
+    {
       // Throwing one item from a stack.
       tossed = item.splitStack(1);
       countChanged();
@@ -38,7 +43,8 @@ class TossAction : ItemAction {
 }
 
 /// Action for handling the path of a thrown item while it's in flight.
-class TossLosAction : LosAction {
+class TossLosAction : LosAction
+{
   public Item _item;
   public Hit _hit;
 
@@ -55,13 +61,16 @@ class TossLosAction : LosAction {
     this._hit = _hit;
   }
 
-  public override void onStep(Vec previous, Vec pos) {
+  public override void onStep(Vec previous, Vec pos)
+  {
     addEvent(EventType.toss, pos: pos, other: _item);
   }
 
-  bool onHitActor(Vec pos, Actor target) {
+  bool onHitActor(Vec pos, Actor target)
+  {
     // TODO: Range should affect strike.
-    if (_hit.perform(this, actor, target) == 0) {
+    if (_hit.perform(this, actor, target) == 0)
+    {
       // The item missed, so keep flying.
       _missed = true;
       return false;
@@ -71,11 +80,13 @@ class TossLosAction : LosAction {
     return true;
   }
 
-  void onEnd(Vec pos) {
+  void onEnd(Vec pos)
+  {
     _endThrow(pos);
   }
 
-  bool onTarget(Vec pos) {
+  bool onTarget(Vec pos)
+  {
     // If the item failed to make contact with an actor, it's no longer well
     // targeted and just keeps going.
     if (_missed) return false;
@@ -86,20 +97,23 @@ class TossLosAction : LosAction {
     return true;
   }
 
-  void _endThrow(Vec pos) {
+  void _endThrow(Vec pos)
+  {
     var toss = _item.toss!;
 
     // TODO: I think there's a bug here somewhere. Sometimes, when you throw a
     // bottled element at a monster, it seems to only do the toss damage of the
     // bottle itself, and not the effect damage too.
     // See if the item does something when it hits.
-    if (toss.use != null) {
+    if (toss.use != null)
+    {
       addAction(toss.use!(pos));
       return;
     }
 
     // See if it breaks.
-    if (Rng.rng.percent(toss.breakage)) {
+    if (Rng.rng.percent(toss.breakage))
+    {
       log("{1} breaks!", _item);
       return;
     }

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-class Icicle : Spell {
+class Icicle : Spell
+{
   public override string name => "Icicle";
   public override string description => "Launches a spear-like icicle.";
   public override int baseComplexity => 10;
@@ -10,14 +11,16 @@ class Icicle : Spell {
   public override int damage => 8;
   public override int range => 8;
 
-  Action onGetTargetAction(Game game, int level, Vec target) {
+  Action onGetTargetAction(Game game, int level, Vec target)
+  {
     var attack =
         new Attack(new Noun("the icicle"), "pierce", damage, range, Elements.cold);
     return new BoltAction(target, attack.createHit());
   }
 }
 
-class BrilliantBeam : Spell {
+class BrilliantBeam : Spell
+{
   public override string name => "Brilliant Beam";
   public override string description => "Emits a blinding beam of radiance.";
   public override int baseComplexity => 14;
@@ -25,14 +28,16 @@ class BrilliantBeam : Spell {
   public override int damage => 10;
   public override int range => 12;
 
-  Action onGetTargetAction(Game game, int level, Vec target) {
+  Action onGetTargetAction(Game game, int level, Vec target)
+  {
     var attack =
         new Attack(new Noun("the light"), "sear", damage, range, Elements.light);
     return RayAction.cone(game.hero.pos, target, attack.createHit());
   }
 }
 
-class Windstorm : Spell {
+class Windstorm : Spell
+{
   public override string name => "Windstorm";
   public override string description =>
       "Summons a blast of air, spreading out from the sorceror.";
@@ -41,13 +46,15 @@ class Windstorm : Spell {
   public override int damage => 10;
   public override int range => 6;
 
-  Action onGetAction(Game game, int level) {
+  Action onGetAction(Game game, int level)
+  {
     var attack = new Attack(new Noun("the wind"), "blast", damage, range, Elements.air);
     return new FlowAction(game.hero.pos, attack.createHit(), Motility.flyAndWalk);
   }
 }
 
-class FireBarrier : Spell {
+class FireBarrier : Spell
+{
   public override string name => "Fire Barrier";
   public override string description => "Creates a wall of fire.";
   public override int baseComplexity => 30;
@@ -55,13 +62,15 @@ class FireBarrier : Spell {
   public override int damage => 10;
   public override int range => 8;
 
-  Action onGetTargetAction(Game game, int level, Vec target) {
+  Action onGetTargetAction(Game game, int level, Vec target)
+  {
     var attack = new Attack(new Noun("the fire"), "burn", damage, range, Elements.fire);
     return BarrierAction.create(game.hero.pos, target, attack.createHit());
   }
 }
 
-class TidalWave : Spell{
+class TidalWave : Spell
+{
   public override string name => "Tidal Wave";
   public override string description => "Summons a giant tidal wave.";
   public override int baseComplexity => 40;
@@ -69,7 +78,8 @@ class TidalWave : Spell{
   public override int damage => 50;
   public override int range => 15;
 
-  Action onGetAction(Game game, int level) {
+  Action onGetAction(Game game, int level)
+  {
     var attack =
         new Attack(new Noun("the wave"), "inundate", damage, range, Elements.water);
     return new FlowAction(game.hero.pos, attack.createHit(),

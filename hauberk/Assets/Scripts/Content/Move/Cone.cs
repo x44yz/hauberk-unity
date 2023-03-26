@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using num = System.Double;
 
-class ConeMove : Move {
+class ConeMove : Move
+{
   public Attack attack;
   public override int range => attack.range;
 
@@ -14,8 +15,10 @@ class ConeMove : Move {
     this.attack = attack;
   }
 
-  public override bool shouldUse(Monster monster) {
-    if (monster.isBlinded && Rng.rng.rfloat(1.0) < monster.sightReliance) {
+  public override bool shouldUse(Monster monster)
+  {
+    if (monster.isBlinded && Rng.rng.rfloat(1.0) < monster.sightReliance)
+    {
       var chance =
           (int)MathUtils.lerpDouble((float)monster.sightReliance, 0.0f, 1.0f, 0.0, 70.0);
       if (Rng.rng.percent(chance)) return false;
@@ -25,13 +28,15 @@ class ConeMove : Move {
 
     // Don't fire if out of range.
     var toTarget = target - monster.pos;
-    if (toTarget > range) {
+    if (toTarget > range)
+    {
       Debugger.monsterLog(monster, "cone move too far");
       return false;
     }
 
     // TODO: Should minimize friendly fire.
-    if (!monster.canView(target)) {
+    if (!monster.canView(target))
+    {
       Debugger.monsterLog(monster, "cone move can't target");
       return false;
     }

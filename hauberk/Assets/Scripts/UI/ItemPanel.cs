@@ -5,7 +5,8 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class ItemPanel : Panel {
+class ItemPanel : Panel
+{
   public Game _game;
 
   public ItemPanel(Game _game)
@@ -20,7 +21,8 @@ class ItemPanel : Panel {
 
   public bool onGroundVisible => bounds.height > 50;
 
-  public override void renderPanel(Terminal terminal) {
+  public override void renderPanel(Terminal terminal)
+  {
     var hero = _game.hero;
     _drawItems(
         terminal, equipmentTop, hero.equipment.slots.Count, hero.equipment);
@@ -29,7 +31,8 @@ class ItemPanel : Panel {
         terminal, inventoryTop, Option.inventoryCapacity, hero.inventory);
 
     // Don't show the on the ground panel if the height is too short for it.
-    if (onGroundVisible) {
+    if (onGroundVisible)
+    {
       var onGround = _game.stage.itemsAt(hero.pos);
       _drawItems(terminal, onGroundTop, 5, onGround);
     }
@@ -40,13 +43,15 @@ class ItemPanel : Panel {
   }
 
   void _drawItems(
-      Terminal terminal, int y, int itemSlotCount, ItemCollection items) {
+      Terminal terminal, int y, int itemSlotCount, ItemCollection items)
+  {
     var view = new _ItemPanelItemView(_game, items);
     view.render(terminal, 0, y, terminal.width, itemSlotCount);
   }
 }
 
-class _ItemPanelItemView : ItemView {
+class _ItemPanelItemView : ItemView
+{
   public Game _game;
   public override ItemCollection items => _items;
   ItemCollection _items;

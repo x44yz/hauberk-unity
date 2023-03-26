@@ -4,7 +4,8 @@ using System.Linq;
 
 
 /// Places a number of connected rooms.
-class Keep : RoomArchitecture {
+class Keep : RoomArchitecture
+{
   public static JunctionSet debugJunctions;
 
   public JunctionSet _junctions;
@@ -13,12 +14,16 @@ class Keep : RoomArchitecture {
 
   int? _maxRooms;
 
-  public static Keep create(int? maxRooms = null) {
-    if (maxRooms != null) {
+  public static Keep create(int? maxRooms = null)
+  {
+    if (maxRooms != null)
+    {
       // TODO: For now, small keeps always pack rooms in densely. Have
       // different styles of keep for different monsters?
       return new Keep(Rng.rng.triangleInt(maxRooms.Value, maxRooms.Value / 2), TakeFrom.oldest);
-    } else {
+    }
+    else
+    {
       // TODO: Do we still need this case? Do we want keeps that span the whole
       // dungeon?
       var kk = Enum.GetValues(typeof(TakeFrom));
@@ -35,7 +40,8 @@ class Keep : RoomArchitecture {
   // TODO: Different paint styles for different monsters.
   public override PaintStyle paintStyle => PaintStyle.granite;
 
-  public override IEnumerable<string> build() {
+  public override IEnumerable<string> build()
+  {
     var rt = new List<string>();
 
     debugJunctions = _junctions;
@@ -44,24 +50,28 @@ class Keep : RoomArchitecture {
     // That way, if there disconnected areas (like a river cutting through the
     // stage, we can still hopefully cover it all.
     var startingRooms = 1;
-    if (region == Region.everywhere && _maxRooms == null) {
+    if (region == Region.everywhere && _maxRooms == null)
+    {
       startingRooms = 20;
     }
 
-    for (var i = 0; i < startingRooms; i++) {
+    for (var i = 0; i < startingRooms; i++)
+    {
       rt.AddRange(_growRooms());
     }
 
     return rt;
   }
 
-  public override bool spawnMonsters(Painter painter) {
+  public override bool spawnMonsters(Painter painter)
+  {
     var tiles = painter.ownedTiles
         .Where((pos) => painter.getTile(pos).isWalkable)
         .ToList();
     Rng.rng.shuffle(tiles);
 
-    foreach (var pos in tiles) {
+    foreach (var pos in tiles)
+    {
       // TODO: Make this tunable?
       if (!Rng.rng.oneIn(20)) continue;
 
@@ -73,25 +83,30 @@ class Keep : RoomArchitecture {
     return true;
   }
 
-  IEnumerable<string> _growRooms() {
+  IEnumerable<string> _growRooms()
+  {
     var rt = new List<string>();
 
     if (!_tryPlaceStartingRoom()) return rt;
 
     // Expand outward from it.
-    while (_junctions.isNotEmpty) {
+    while (_junctions.isNotEmpty)
+    {
       var junction = _junctions.takeNext();
 
       // Make sure the junction is still valid. If other stuff has been placed
       // in its way since then, discard it.
       if (!canCarve(junction.position + junction.direction)) continue;
 
-      if (_tryAttachRoom(junction)) {
+      if (_tryAttachRoom(junction))
+      {
         rt.Add("Room");
 
         _placedRooms++;
         if (_maxRooms != null && _placedRooms >= _maxRooms!) break;
-      } else {
+      }
+      else
+      {
         // Couldn't place the room, but maybe try the junction again.
         // TODO: Make tunable.
         if (junction.tries < 5) _junctions.add(junction);
@@ -101,9 +116,11 @@ class Keep : RoomArchitecture {
     return rt;
   }
 
-  bool _tryPlaceStartingRoom() {
+  bool _tryPlaceStartingRoom()
+  {
     var room = Room.create(depth);
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 100; i++)
+    {
       var pos = _startLocation(room);
       if (_tryPlaceRoom(room, pos.x, pos.y)) return true;
     }
@@ -112,7 +129,8 @@ class Keep : RoomArchitecture {
   }
 
   /// Pick a random location for [room] in [region].
-  Vec _startLocation(Array2D<RoomTile> room) {
+  Vec _startLocation(Array2D<RoomTile> room)
+  {
     var xMin = 1;
     var xMax = width - room.width - 1;
     var yMin = 1;
@@ -121,24 +139,24 @@ class Keep : RoomArchitecture {
     if (region == Region.nw ||
       region == Region.n ||
       region == Region.ne)
-      {
-        yMax = Math.Max(1, (int)(height * 0.25) - room.height);
-      }
+    {
+      yMax = Math.Max(1, (int)(height * 0.25) - room.height);
+    }
     else if (region == Region.sw ||
       region == Region.s ||
       region == Region.se)
     {
-        yMin = (int)(height * 0.75);
+      yMin = (int)(height * 0.75);
     }
 
     if (region == Region.nw ||
       region == Region.w ||
       region == Region.sw)
-        xMax = Math.Max(1, (int)(width * 0.25) - room.width);
+      xMax = Math.Max(1, (int)(width * 0.25) - room.width);
     else if (region == Region.ne ||
       region == Region.e ||
       region == Region.se)
-        xMin = (int)(width * 0.75);
+      xMin = (int)(width * 0.75);
 
     if (xMax < xMin) xMax = xMin;
     if (yMax < yMin) yMax = yMin;
@@ -147,7 +165,8 @@ class Keep : RoomArchitecture {
   }
 
   /// Determines whether [pos] is within [region], with some randomness.
-  bool _regionContains(Vec pos) {
+  bool _regionContains(Vec pos)
+  {
     double min = -3.0;
     double max = 2.0;
 
@@ -156,28 +175,29 @@ class Keep : RoomArchitecture {
 
     var density = 0.0;
     if (region == Region.everywhere)
-        return true;
+      return true;
     else if (region == Region.n)
-        density = MathUtils.lerpDouble(pos.y, 0, height, max, min);
+      density = MathUtils.lerpDouble(pos.y, 0, height, max, min);
     else if (region == Region.ne)
-        density = diagonal(width - pos.x - 1, pos.y);
+      density = diagonal(width - pos.x - 1, pos.y);
     else if (region == Region.e)
-        density = MathUtils.lerpDouble(pos.x, 0, width, min, max);
+      density = MathUtils.lerpDouble(pos.x, 0, width, min, max);
     else if (region == Region.se)
-        density = diagonal(width - pos.x - 1, height - pos.y - 1);
+      density = diagonal(width - pos.x - 1, height - pos.y - 1);
     else if (region == Region.s)
-        density = MathUtils.lerpDouble(pos.y, 0, height, min, max);
+      density = MathUtils.lerpDouble(pos.y, 0, height, min, max);
     else if (region == Region.sw)
-        density = diagonal(pos.x, height - pos.y - 1);
+      density = diagonal(pos.x, height - pos.y - 1);
     else if (region == Region.w)
-        density = MathUtils.lerpDouble(pos.x, 0, width, max, min);
+      density = MathUtils.lerpDouble(pos.x, 0, width, max, min);
     else if (region == Region.nw)
-        density = diagonal(pos.x, pos.y);
+      density = diagonal(pos.x, pos.y);
 
     return Rng.rng.rfloat(1.0) < density;
   }
 
-  bool _tryAttachRoom(Junction junction) {
+  bool _tryAttachRoom(Junction junction)
+  {
     var room = Room.create(depth);
 
     // Try to find a junction that can mate with this one.
@@ -186,7 +206,8 @@ class Keep : RoomArchitecture {
         room.bounds.Where((pos) => room[pos].direction == direction).ToList();
     Rng.rng.shuffle(junctions);
 
-    foreach (var pos in junctions) {
+    foreach (var pos in junctions)
+    {
       // Calculate the room position by lining up the junctions.
       var roomPos = junction.position - pos;
       if (_tryPlaceRoom(room, roomPos.x, roomPos.y)) return true;
@@ -195,23 +216,31 @@ class Keep : RoomArchitecture {
     return false;
   }
 
-  bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y) {
+  bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y)
+  {
     if (!canPlaceRoom(room, x, y)) return false;
 
-    var junctions = new List<Junction>{};
+    var junctions = new List<Junction> { };
 
-    foreach (var pos in room.bounds) {
+    foreach (var pos in room.bounds)
+    {
       var here = pos.offset(x, y);
       var tile = room[pos];
 
-      if (tile.isJunction) {
+      if (tile.isJunction)
+      {
         // Don't grow outside of the chosen region.
-        if (_regionContains(here)) {
+        if (_regionContains(here))
+        {
           junctions.Add(new Junction(here, tile.direction));
         }
-      } else if (tile.isTile) {
+      }
+      else if (tile.isTile)
+      {
         carve(here.x, here.y, tile.tile);
-      } else if (tile.isWall) {
+      }
+      else if (tile.isWall)
+      {
         preventPassage(here);
         _junctions.removeAt(here);
       }
@@ -220,7 +249,8 @@ class Keep : RoomArchitecture {
     // Shuffle the junctions so that the order we traverse the room tiles
     // doesn't bias the room growth.
     Rng.rng.shuffle(junctions);
-    foreach (var junction in junctions) {
+    foreach (var junction in junctions)
+    {
       // Remove any existing junctions since they now clash with the room.
       _junctions.removeAt(junction.position);
       _junctions.add(junction);
@@ -230,7 +260,8 @@ class Keep : RoomArchitecture {
   }
 }
 
-class Junction {
+class Junction
+{
   /// The location of the junction.
   public Vec position;
 
@@ -251,10 +282,11 @@ class Junction {
 
 enum TakeFrom { newest, oldest, random }
 
-class JunctionSet {
+class JunctionSet
+{
   public TakeFrom _takeFrom;
-  public Dictionary<Vec, Junction> _byPosition = new Dictionary<Vec, Junction>(){};
-  public List<Junction> _junctions = new List<Junction>{};
+  public Dictionary<Vec, Junction> _byPosition = new Dictionary<Vec, Junction>() { };
+  public List<Junction> _junctions = new List<Junction> { };
 
   public JunctionSet(TakeFrom _takeFrom)
   {
@@ -265,16 +297,19 @@ class JunctionSet {
 
   Junction this[Vec pos] => _byPosition[pos];
 
-  public void add(Junction junction) {
+  public void add(Junction junction)
+  {
     DartUtils.assert(_byPosition[junction.position] == null);
 
     _byPosition[junction.position] = junction;
     _junctions.Add(junction);
   }
 
-  public Junction takeNext() {
+  public Junction takeNext()
+  {
     Junction junction = null;
-    switch (_takeFrom) {
+    switch (_takeFrom)
+    {
       case TakeFrom.newest:
         junction = _junctions[_junctions.Count - 1];
         _junctions.RemoveAt(_junctions.Count - 1);
@@ -296,7 +331,8 @@ class JunctionSet {
     return junction;
   }
 
-  public void removeAt(Vec pos) {
+  public void removeAt(Vec pos)
+  {
     if (_byPosition.ContainsKey(pos))
     {
       var junction = _byPosition[pos];

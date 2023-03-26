@@ -10,14 +10,16 @@ using System.Linq;
 /// Behavior is coarser-grained than actions. A single behavior may produce a
 /// series of actions. For example, when running, it will continue to produce
 /// walk actions until disturbed.
-abstract class Behavior {
+abstract class Behavior
+{
   public abstract bool canPerform(Hero hero);
   public abstract Action getAction(Hero hero);
 }
 
 /// A simple one-shot behavior that performs a given [Action] and then reverts
 /// back to waiting for input.
-class ActionBehavior : Behavior {
+class ActionBehavior : Behavior
+{
   public Action action;
 
   public ActionBehavior(Action action)
@@ -27,7 +29,8 @@ class ActionBehavior : Behavior {
 
   public override bool canPerform(Hero hero) => true;
 
-  public override Action getAction(Hero hero) {
+  public override Action getAction(Hero hero)
+  {
     hero.waitForInput();
     return action;
   }
@@ -40,13 +43,16 @@ class ActionBehavior : Behavior {
 /// * He gets hungry.
 /// * He is "disturbed" and something gets hit attention, like a [Monster]
 ///   moving, being hit, etc.
-class RestBehavior : Behavior {
-  public override bool canPerform(Hero hero) {
+class RestBehavior : Behavior
+{
+  public override bool canPerform(Hero hero)
+  {
     // See if done resting.
     if (hero.health == hero.maxHealth) return false;
     // TODO: Keep resting if focus is not at max?
 
-    if (hero.stomach == 0) {
+    if (hero.stomach == 0)
+    {
       hero.game.log.message("You must eat before you can rest.");
       return false;
     }
@@ -58,7 +64,8 @@ class RestBehavior : Behavior {
 }
 
 /// Automatic running.
-class RunBehavior : Behavior {
+class RunBehavior : Behavior
+{
   bool firstStep = true;
 
   /// Whether the hero is running with open tiles to their left.
@@ -74,11 +81,13 @@ class RunBehavior : Behavior {
     this.direction = direction;
   }
 
-  public override bool canPerform(Hero hero) {
+  public override bool canPerform(Hero hero)
+  {
     // On first step, always try to go in direction player pressed.
     if (firstStep) return true;
 
-    if (openLeft == null) {
+    if (openLeft == null)
+    {
       // On the second step, figure out if we're in a passage and which way
       // it's going. If the hero is running straight (NSEW), allow up to a 90°
       // turn. This covers cases like:
@@ -104,7 +113,8 @@ class RunBehavior : Behavior {
         direction.rotateRight45,
       };
 
-      if (Direction.cardinal.Contains(direction)) {
+      if (Direction.cardinal.Contains(direction))
+      {
         dirs.Add(direction.rotateLeft90);
         dirs.Add(direction.rotateRight90);
       }
@@ -113,7 +123,8 @@ class RunBehavior : Behavior {
 
       if (openDirs.Count == 0) return false;
 
-      if (openDirs.Count == 1) {
+      if (openDirs.Count == 1)
+      {
         // Entering a passage.
         openLeft = false;
         openRight = false;
@@ -121,21 +132,28 @@ class RunBehavior : Behavior {
         // The direction may change if the first step entered a passage from
         // around a corner.
         direction = openDirs[0];
-      } else {
+      }
+      else
+      {
         // Entering an open area.
         openLeft = _isOpen(hero, direction.rotateLeft90);
         openRight = _isOpen(hero, direction.rotateRight90);
       }
-    } else if (!(openLeft!).Value && !(openRight!).Value) {
+    }
+    else if (!(openLeft!).Value && !(openRight!).Value)
+    {
       if (!_runInPassage(hero)) return false;
-    } else {
+    }
+    else
+    {
       if (!_runInOpen(hero)) return false;
     }
 
     return _shouldKeepRunning(hero);
   }
 
-  public override Action getAction(Hero hero) {
+  public override Action getAction(Hero hero)
+  {
     firstStep = false;
     return new WalkAction(direction);
   }
@@ -145,7 +163,8 @@ class RunBehavior : Behavior {
   /// The hero will follow curves and turns as long as there is only one
   /// direction they can go. (This is more or less true, though right-angle
   /// turns need special handling.)
-  bool _runInPassage(Hero hero) {
+  bool _runInPassage(Hero hero)
+  {
     // Keep running as long as there's only one direction to go. Allow up to a
     // 90° turn while running.
     var openDirs = new List<Direction>(){
@@ -156,7 +175,8 @@ class RunBehavior : Behavior {
       direction.rotateRight90
     }.Where((dir) => _isOpen(hero, dir)).ToList();
 
-    if (openDirs.Count == 1) {
+    if (openDirs.Count == 1)
+    {
       direction = openDirs[0];
       return true;
     }
@@ -185,7 +205,8 @@ class RunBehavior : Behavior {
     return true;
   }
 
-  bool _runInOpen(Hero hero) {
+  bool _runInOpen(Hero hero)
+  {
     // Whether or not the hero's left and right sides are open cannot change.
     // In other words, if he is running along a wall on his left (closed on
     // left, open on right), he will stop if he enters an open room (open on
@@ -198,7 +219,8 @@ class RunBehavior : Behavior {
   /// Returns `true` if the hero can run one step in the current direction.
   ///
   /// Returns `false` if they should stop because they'd hit a wall or actor.
-  bool _shouldKeepRunning(Hero hero) {
+  bool _shouldKeepRunning(Hero hero)
+  {
     var pos = hero.pos + direction;
     var stage = hero.game.stage;
 

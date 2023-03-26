@@ -6,7 +6,8 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 /// The main gameplay area of the screen.
-class StagePanel : Panel {
+class StagePanel : Panel
+{
   public static Color[] _dazzleColors = new Color[]{
     Hues.darkCoolGray,
     Hues.coolGray,
@@ -36,7 +37,7 @@ class StagePanel : Panel {
     Hues.darkBlue,
   };
 
-  public static int[] _fireChars = new int[]{CharCode.blackUpPointingTriangle, CharCode.caret};
+  public static int[] _fireChars = new int[] { CharCode.blackUpPointingTriangle, CharCode.caret };
   public static Color[][] _fireColors = new Color[][]{
     new Color[]{Hues.gold, Hues.persimmon},
     new Color[]{Hues.buttermilk, Hues.carrot},
@@ -71,19 +72,23 @@ class StagePanel : Panel {
   }
 
   /// Draws [Glyph] at [x], [y] in [Stage] coordinates onto the current view.
-  public void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
+  public void drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph)
+  {
     _drawStageGlyph(terminal, x + bounds.x, y + bounds.y, glyph);
   }
 
-  void _drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph) {
+  void _drawStageGlyph(Terminal terminal, int x, int y, Glyph glyph)
+  {
     terminal.WriteAt(x - _cameraBounds.x + _renderOffset.x,
         y - _cameraBounds.y + _renderOffset.y, glyph);
   }
 
-  public bool update(List<Event> events) {
+  public bool update(List<Event> events)
+  {
     _frame++;
 
-    foreach (var evt in events) {
+    foreach (var evt in events)
+    {
       Effect.addEffects(_effects, evt);
     }
 
@@ -99,7 +104,8 @@ class StagePanel : Panel {
         _gameScreen.game.hero.dazzle.isActive;
   }
 
-  public override void renderPanel(Terminal terminal) {
+  public override void renderPanel(Terminal terminal)
+  {
     _positionCamera(new Vec(terminal.width, terminal.height));
 
     visibleMonsters.Clear();
@@ -109,7 +115,8 @@ class StagePanel : Panel {
     var hero = game.hero;
 
     // Draw the tiles and items.
-    foreach (var pos in _cameraBounds) {
+    foreach (var pos in _cameraBounds)
+    {
       int? ch = 0;
       var fore = Color.black;
       var back = Color.black;
@@ -120,7 +127,8 @@ class StagePanel : Panel {
 
       // Even if not currently visible, if explored we can see the tile itself.
       var tile = game.stage[pos];
-      if (tile.isExplored) {
+      if (tile.isExplored)
+      {
         var tileGlyph = _tileGlyph(pos, tile);
         ch = tileGlyph.ch;
         fore = tileGlyph.fore;
@@ -133,7 +141,8 @@ class StagePanel : Panel {
         // TODO: Should this show what the player last saw when the tile was
         // visible?
         var items = game.stage.itemsAt(pos);
-        if (items.isNotEmpty) {
+        if (items.isNotEmpty)
+        {
           var itemGlyph = items.First().appearance as Glyph;
           ch = itemGlyph.ch;
           fore = itemGlyph.fore;
@@ -142,16 +151,21 @@ class StagePanel : Panel {
       }
 
       // If the tile is currently visible, show any actor on it.
-      if (tile.isVisible) {
-        if (tile.substance != 0) {
-          if (tile.element == Elements.fire) {
+      if (tile.isVisible)
+      {
+        if (tile.substance != 0)
+        {
+          if (tile.element == Elements.fire)
+          {
             ch = Rng.rng.item<int>(_fireChars);
             var color = Rng.rng.item<Color[]>(_fireColors);
             fore = color[0];
             back = color[1];
 
             _hasAnimatedTile = true;
-          } else if (tile.element == Elements.poison) {
+          }
+          else if (tile.element == Elements.poison)
+          {
             var amount = 0.1f + (tile.substance / 255) * 0.9f;
             back = back.blend(Hues.lima, amount);
           }
@@ -164,13 +178,17 @@ class StagePanel : Panel {
           Debugger.showAllMonsters ||
           actor != null && hero.canPerceive(actor);
 
-      if (showActor && actor != null) {
+      if (showActor && actor != null)
+      {
         var actorGlyph = actor.appearance;
-        if (actorGlyph is Glyph) {
+        if (actorGlyph is Glyph)
+        {
           var actorGlyph_ = actorGlyph as Glyph;
           ch = actorGlyph_.ch;
           fore = actorGlyph_.fore;
-        } else {
+        }
+        else
+        {
           // Hero.
           ch = CharCode.at;
           fore = _gameScreen.heroColor;
@@ -178,7 +196,8 @@ class StagePanel : Panel {
         lightFore = false;
 
         // If the actor is being targeted, invert its colors.
-        if (_gameScreen.currentTargetActor == actor) {
+        if (_gameScreen.currentTargetActor == actor)
+        {
           back = fore;
           fore = Hues.darkerCoolGray;
           lightBack = false;
@@ -187,9 +206,11 @@ class StagePanel : Panel {
         if (actor is Monster) visibleMonsters.Add(actor as Monster);
       }
 
-      if (hero.dazzle.isActive) {
+      if (hero.dazzle.isActive)
+      {
         var chance = Math.Min(90, hero.dazzle.duration * 8);
-        if (Rng.rng.percent(chance)) {
+        if (Rng.rng.percent(chance))
+        {
           ch = Rng.rng.percent(chance) ? ch : CharCode.asterisk;
           fore = Rng.rng.item<Color>(_dazzleColors);
         }
@@ -198,8 +219,9 @@ class StagePanel : Panel {
         lightBack = false;
       }
 
-      Color multiply(Color a, Color b) {
-        return new Color(a.r * b.r, a.g * b.g, a.b * b.b);
+      Color multiply(Color a, Color b)
+      {
+        return new Color(a.r * b.r / 255, a.g * b.g / 255, a.b * b.b / 255);
       }
 
       // TODO: This could be cached if needed.
@@ -207,23 +229,29 @@ class StagePanel : Panel {
       var backShadow = multiply(back, new Color(40, 40, 55));
 
       // Apply lighting and visibility to the tile.
-      if (tile.isVisible && (lightFore || lightBack)) {
-        Color applyLighting(Color color, Color shadow) {
+      if (tile.isVisible && (lightFore || lightBack))
+      {
+        Color applyLighting(Color color, Color shadow)
+        {
           // Apply a slight brightness curve to either end of the range of
           // floor illumination. We keep most of the middle of the range flat
           // so that there is still a visible ramp down at the dark end and
           // just a small bloom around lights at the bright end.
           var visibility = tile.floorIllumination - tile.fallOff;
-          if (visibility < 64) {
+          if (visibility < 64)
+          {
             // Only blend up to 50% of the shadow color so that there is a
             // clear line between hidden and visible tiles.
             color =
                 color.blend(shadow, (float)MathUtils.lerpDouble(visibility, 0, 64, 0.5, 0.0));
-          } else if (visibility > 128) {
+          }
+          else if (visibility > 128)
+          {
             color = color.add(Hues.ash, (float)MathUtils.lerpDouble(visibility, 128, 255, 0.0, 0.2));
           }
 
-          if (tile.actorIllumination > 0) {
+          if (tile.actorIllumination > 0)
+          {
             Color glow = new Color(200, 130, 0);
             color = color.add(
                 glow, (float)MathUtils.lerpDouble(tile.actorIllumination, 0, 255, 0.05, 0.1));
@@ -234,37 +262,45 @@ class StagePanel : Panel {
 
         if (lightFore) fore = applyLighting(fore, foreShadow);
         if (lightBack) back = applyLighting(back, backShadow);
-      } else {
+      }
+      else
+      {
         if (lightFore) fore = foreShadow;
         if (lightBack) back = backShadow;
       }
 
-      if (Debugger.showHeroVolume) {
+      if (Debugger.showHeroVolume)
+      {
         var volume = game.stage.heroVolume(pos);
         if (volume > 0.0) back = back.blend(Hues.peaGreen, (float)volume);
       }
 
-      if (Debugger.showMonsterAlertness && actor is Monster) {
+      if (Debugger.showMonsterAlertness && actor is Monster)
+      {
         back = Color.blue.blend(Color.red, (float)(actor as Monster).alertness);
       }
 
-      if (ch != null) {
+      if (ch != null)
+      {
         var glyph = new Glyph(ch.Value, fore, back);
         _drawStageGlyph(terminal, pos.x, pos.y, glyph);
       }
     }
 
     // Draw the effects.
-    foreach (var effect in _effects) {
+    foreach (var effect in _effects)
+    {
       // TODO: Allow effects to preserve the tile's existing background color.
-      effect.render(game, (x, y, glyph) => {
+      effect.render(game, (x, y, glyph) =>
+      {
         _drawStageGlyph(terminal, x, y, glyph);
       });
     }
   }
 
   /// Gets the [Glyph] to render for [tile].
-  Glyph _tileGlyph(Vec pos, Tile tile) {
+  Glyph _tileGlyph(Vec pos, Tile tile)
+  {
     // If the appearance is a single glyph, it's a normal tile.
     var appearance = tile.type.appearance;
     if (appearance is Glyph) return appearance as Glyph;
@@ -278,7 +314,8 @@ class StagePanel : Panel {
     // Calculate a "random" but consistent phase for each position.
     var phase = MathUtils.hashPoint(pos.x, pos.y);
     var frame = (_frame / 8 + phase) % period;
-    if (frame >= glyphs.Count) {
+    if (frame >= glyphs.Count)
+    {
       frame = glyphs.Count - (frame - glyphs.Count) - 1;
     }
 
@@ -288,7 +325,8 @@ class StagePanel : Panel {
 
   /// Determines which portion of the [Stage] should be in view based on the
   /// position of the [Hero].
-  void _positionCamera(Vec size) {
+  void _positionCamera(Vec size)
+  {
     var game = _gameScreen.game;
 
     // Handle the stage being smaller than the view.

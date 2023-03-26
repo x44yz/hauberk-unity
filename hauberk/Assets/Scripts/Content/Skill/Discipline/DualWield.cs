@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-public class DualWield : Discipline {
+public class DualWield : Discipline
+{
   // TODO: Tune.
   public override int maxLevel => 10;
 
@@ -19,18 +20,21 @@ public class DualWield : Discipline {
 
   public override int baseTrainingNeeded(int level) => 100 * level * level * level;
 
-  public override void dualWield(Hero hero) {
+  public override void dualWield(Hero hero)
+  {
     hero.discoverSkill(this);
   }
 
-  public override double modifyHeft(Hero hero, int level, double heftModifier) {
+  public override double modifyHeft(Hero hero, int level, double heftModifier)
+  {
     // Have to be dual-wielding.
     if (hero.equipment.weapons.Count != 2) return heftModifier;
 
     return heftModifier * _heftModifier(level);
   }
 
-  public override void killMonster(Hero hero, Action action, Monster monster) {
+  public override void killMonster(Hero hero, Action action, Monster monster)
+  {
     // Have to have killed the monster by hitting it.
     if ((action is AttackAction) == false) return;
 

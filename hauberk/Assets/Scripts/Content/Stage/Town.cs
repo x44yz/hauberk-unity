@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// Generates the town.
-class Town {
+class Town
+{
   public Stage stage;
 
   public Town(Stage stage)
@@ -11,15 +12,18 @@ class Town {
     this.stage = stage;
   }
 
-  public IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
+  public IEnumerable<string> buildStage(System.Action<Vec> placeHero)
+  {
     var rt = new List<string>();
 
-    foreach (var pos in stage.bounds) {
+    foreach (var pos in stage.bounds)
+    {
       // TODO: Grass? Something else?
       stage[pos].type = Tiles.flagstoneFloor;
     }
 
-    foreach (var pos in stage.bounds.trace()) {
+    foreach (var pos in stage.bounds.trace())
+    {
       // TODO: Impenetrable wall when we add destructibility.
       stage[pos].type = Tiles.flagstoneWall;
     }
@@ -36,20 +40,25 @@ class Town {
     };
 
     // TODO: Place more interestingly.
-    for (var i = 0; i < entrances.Count; i++) {
+    for (var i = 0; i < entrances.Count; i++)
+    {
       var x = (i % 4) * 13 + 5;
       var y = (i / 4) * 14 + 6;
 
       var rect = new Rect(x, y, 11, 8);
 
-      foreach (var pos in rect) {
+      foreach (var pos in rect)
+      {
         stage[pos].type = Tiles.flagstoneWall;
       }
 
       Vec door;
-      if ((i / 4).isOdd()) {
+      if ((i / 4).isOdd())
+      {
         door = (rect.topLeft + rect.topRight) / 2;
-      } else {
+      }
+      else
+      {
         door = ((rect.bottomLeft + rect.bottomRight) / 2).offsetY(-1);
       }
 
@@ -59,7 +68,8 @@ class Town {
     }
 
     // The town is always fully lit and explored.
-    foreach (var pos in stage.bounds) {
+    foreach (var pos in stage.bounds)
+    {
       var tile = stage[pos];
 
       tile.updateExplored(force: true);

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// Spawns a new [Monster] of a given [Breed].
-class SpawnAction : Action {
+class SpawnAction : Action
+{
   // public Vec _pos;
   public Breed _breed;
 
@@ -12,7 +13,8 @@ class SpawnAction : Action {
     this._breed = _breed;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     // There's a chance the move will do nothing (except burn charge) based on
     // the monster's generation. This is to keep breeders from filling the
     // dungeon.

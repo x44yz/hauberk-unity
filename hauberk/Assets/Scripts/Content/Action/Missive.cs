@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Missive 
-{ 
-    clumsy, 
-    insult, 
-    screech 
+public enum Missive
+{
+  clumsy,
+  insult,
+  screech
 }
 
-class MissiveAction : Action {
+class MissiveAction : Action
+{
 
-    public static Dictionary<Missive, List<string>> _messages = new Dictionary<Missive, List<string>>(){
+  public static Dictionary<Missive, List<string>> _messages = new Dictionary<Missive, List<string>>(){
         {Missive.clumsy, new List<string>{
             "{1} forget[s] what {1 he} was doing.",
             "{1} lurch[es] around.",
@@ -41,7 +42,8 @@ class MissiveAction : Action {
     this.missive = missive;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     var message = Rng.rng.item<string>(_messages[missive]);
 
     return succeed(message, actor, target);

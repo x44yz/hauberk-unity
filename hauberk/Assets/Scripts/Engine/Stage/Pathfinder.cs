@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-class Path {
+class Path
+{
   /// The direction of the first step along this path.
   ///
   /// If the monster chooses to take this path, this is which way it should walk
@@ -36,7 +37,8 @@ class Path {
 /// us. Monster pathfinding treats things like door and occupied tiles as
 /// accessible but expensive. Likewise, sound pathfinding treats doors as
 /// blocking some but not all sound.
-abstract class Pathfinder<T> {
+abstract class Pathfinder<T>
+{
   public Stage stage;
   public Vec start;
   public Vec end;
@@ -49,7 +51,7 @@ abstract class Pathfinder<T> {
   }
 
   /// Perform an A* search from [start] trying to reach [end].
-  public T search() 
+  public T search()
   {
     var paths = new BucketQueue<Path>();
 
@@ -59,7 +61,8 @@ abstract class Pathfinder<T> {
     var startPath = new Path(Direction.none, start, 0, 0);
     paths.add(startPath, priority(startPath, end));
 
-    while (true) {
+    while (true)
+    {
       var path = paths.removeNext();
       if (path == null) break;
 
@@ -82,7 +85,8 @@ abstract class Pathfinder<T> {
       if (ok) return result;
 
       // Find the steps we can take.
-      foreach (var dir in Direction.all) {
+      foreach (var dir in Direction.all)
+      {
         var neighbor = path.pos + dir;
 
         if (explored.Contains(neighbor)) continue;
@@ -105,14 +109,15 @@ abstract class Pathfinder<T> {
     return unreachableGoal();
   }
 
-  int priority(Path path, Vec end) {
+  int priority(Path path, Vec end)
+  {
     return path.cost + heuristic(path.pos, end);
   }
 
   /// The estimated cost from [pos] to [end].
   ///
   /// By default, uses the king length.
-int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
+  int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
 
   /// The cost required to enter [tile] at [pos] from a neighboring tile or
   /// `null` if the tile cannot be entered.

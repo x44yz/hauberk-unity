@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// An [Action] that flows out and maps tiles within a certain distance.
-class MappingAction : Action {
+class MappingAction : Action
+{
   public int _maxDistance;
   public bool _illuminate;
   int _currentDistance = 0;
@@ -10,11 +11,13 @@ class MappingAction : Action {
   /// The different distances (squared) that contain tiles, in reverse order
   /// for easy removal of the nearest distance.
   List<List<Vec>> m_tilesByDistance = null;
-  public List<List<Vec>> _tilesByDistance {
-    get {
-        if (m_tilesByDistance == null)
-            m_tilesByDistance = _findTiles();
-        return m_tilesByDistance;
+  public List<List<Vec>> _tilesByDistance
+  {
+    get
+    {
+      if (m_tilesByDistance == null)
+        m_tilesByDistance = _findTiles();
+      return m_tilesByDistance;
     }
   }
 
@@ -26,24 +29,30 @@ class MappingAction : Action {
     this._illuminate = illuminate;
   }
 
-  public override ActionResult onPerform() {
-    for (var i = 0; i < 2; i++) {
+  public override ActionResult onPerform()
+  {
+    for (var i = 0; i < 2; i++)
+    {
       // If we've shown all the tiles, we're done.
-      if (_currentDistance >= _tilesByDistance.Count) {
+      if (_currentDistance >= _tilesByDistance.Count)
+      {
         return ActionResult.success;
       }
 
-      foreach (var pos in _tilesByDistance[_currentDistance]) {
+      foreach (var pos in _tilesByDistance[_currentDistance])
+      {
         game.stage.explore(pos, force: true);
         addEvent(EventType.map, pos: pos);
 
-        if (_illuminate) {
+        if (_illuminate)
+        {
           game.stage[pos].addEmanation(255);
           game.stage.floorEmanationChanged();
         }
 
         // Update the neighbors too mainly so that walls get explored.
-        foreach (var neighbor in pos.neighbors) {
+        foreach (var neighbor in pos.neighbors)
+        {
           game.stage.explore(neighbor, force: true);
         }
       }
@@ -56,22 +65,26 @@ class MappingAction : Action {
 
   /// Finds all the tiles that should be detected and organizes them from
   /// farthest to nearest.
-  List<List<Vec>> _findTiles() {
-    var result = new List<List<Vec>>(){new List<Vec>()};
+  List<List<Vec>> _findTiles()
+  {
+    var result = new List<List<Vec>>() { new List<Vec>() };
     result[0].Add(actor!.pos);
 
     var flow = new MappingFlow(game.stage, actor!.pos, _maxDistance);
 
-    foreach (var pos in flow.reachable) {
+    foreach (var pos in flow.reachable)
+    {
       var distance = flow.costAt(pos)!;
-      for (var i = result.Count; i <= distance; i++) {
+      for (var i = result.Count; i <= distance; i++)
+      {
         result.Add(new List<Vec>());
       }
 
       result[distance.Value].Add(pos);
     }
 
-    for (var i = 0; i < result.Count; i++) {
+    for (var i = 0; i < result.Count; i++)
+    {
       Rng.rng.shuffle(result[i]);
     }
 
@@ -81,16 +94,18 @@ class MappingAction : Action {
 
 /// Flows through any visible or traversable tiles, treating diagonals as a
 /// little longer to give a nice round edge to the perimeter.
-class MappingFlow : Flow {
+class MappingFlow : Flow
+{
   public int _maxDistance;
 
   public MappingFlow(Stage stage, Vec start, int _maxDistance)
       : base(stage, start, maxDistance: _maxDistance)
-    {
-    }
+  {
+  }
 
   /// The cost to enter [tile] at [pos] or `null` if the tile cannot be entered.
-  public override int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal) {
+  public override int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal)
+  {
     // Can't enter impassable tiles.
     if (!tile.canEnter(Motility.doorAndFly)) return null;
 

@@ -52,33 +52,46 @@ abstract class DirectionDialog : Screen
     return true;
   }
 
-  public override void Tick(float dt) {
+  public override void Tick(float dt)
+  {
     _animateOffset = (_animateOffset + 1) % (_numFrames * _ticksPerFrame);
     if (_animateOffset % _ticksPerFrame == 0) Dirty();
   }
 
-  void draw(int frame, Direction dir, char ch) {
+  void draw(int frame, Direction dir, char ch)
+  {
     var pos = game.hero.pos + dir;
     if (!canTarget(game.stage[pos])) return;
 
     Glyph glyph;
-    if (_animateOffset / _ticksPerFrame == frame) {
+    if (_animateOffset / _ticksPerFrame == frame)
+    {
       glyph = new Glyph(ch, Hues.gold, Hues.brown);
-    } 
-    else {
+    }
+    else
+    {
       // TODO: TargetDialog and GameScreen have similar code. Unify?
       var actor = game.stage.actorAt(pos);
-      if (actor != null) {
+      if (actor != null)
+      {
         glyph = actor.appearance as Glyph;
-      } else {
+      }
+      else
+      {
         var items = game.stage.itemsAt(pos);
-        if (items.isNotEmpty) {
+        if (items.isNotEmpty)
+        {
           glyph = items.First().appearance as Glyph;
-        } else {
+        }
+        else
+        {
           var tile = game.stage[pos];
-          if (tile.isExplored) {
+          if (tile.isExplored)
+          {
             glyph = tile.type.appearance as Glyph;
-          } else {
+          }
+          else
+          {
             // Since the hero doesn't know what's on the tile, show it as a
             // blank highlighted tile.
             glyph = new Glyph(CharCode.space);
@@ -94,7 +107,8 @@ abstract class DirectionDialog : Screen
     _gameScreen.drawStageGlyph(terminal, pos.x, pos.y, glyph);
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
 
     draw(0, Direction.n, '|');
     draw(1, Direction.ne, '/');
@@ -105,14 +119,18 @@ abstract class DirectionDialog : Screen
     draw(6, Direction.w, '-');
     draw(7, Direction.nw, '\\');
 
-    Draw.helpKeys(terminal, 
-      new Dictionary<string, string>{{"↕↔", helpText}, {"Esc", "Cancel"}}, query);
+    Draw.helpKeys(terminal,
+      new Dictionary<string, string> { { "↕↔", helpText }, { "Esc", "Cancel" } }, query);
   }
 
-  void _select(Direction dir) {
-    if (tryDirection(dir)) {
+  void _select(Direction dir)
+  {
+    if (tryDirection(dir))
+    {
       terminal.Pop(dir);
-    } else {
+    }
+    else
+    {
       terminal.Pop(Direction.none);
     }
   }
@@ -123,7 +141,8 @@ abstract class DirectionDialog : Screen
 }
 
 /// Asks the user to select a direction for a [DirectionSkill].
-class SkillDirectionDialog : DirectionDialog {
+class SkillDirectionDialog : DirectionDialog
+{
   public System.Action<Direction> _onSelect;
 
   public override string query => "Which direction?";
@@ -132,21 +151,23 @@ class SkillDirectionDialog : DirectionDialog {
 
   public SkillDirectionDialog(GameScreen gameScreen, System.Action<Direction> _onSelect)
       : base(gameScreen)
-      {
-        this._onSelect = _onSelect;
-      }
+  {
+    this._onSelect = _onSelect;
+  }
 
   // TODO: Let skill filter out invalid directions.
   public override bool canTarget(Tile tile) => true;
 
-  public override bool tryDirection(Direction direction) {
+  public override bool tryDirection(Direction direction)
+  {
     _onSelect(direction);
     return true;
   }
 }
 
 /// Asks the user to select an adjacent tile to close.
-class CloseDialog : DirectionDialog {
+class CloseDialog : DirectionDialog
+{
   public override string query => "Close what?";
   public override string helpText => "Choose direction";
 
@@ -157,13 +178,17 @@ class CloseDialog : DirectionDialog {
 
   public override bool canTarget(Tile tile) => tile.type.canClose;
 
-  public override bool tryDirection(Direction direction) {
+  public override bool tryDirection(Direction direction)
+  {
     var pos = game.hero.pos + direction;
     var tile = game.stage[pos].type;
-    if (tile.canClose) {
+    if (tile.canClose)
+    {
       game.hero.setNextAction(tile.onClose!(pos));
       return true;
-    } else {
+    }
+    else
+    {
       game.log.error("There is nothing to close there.");
       return false;
     }
@@ -171,7 +196,8 @@ class CloseDialog : DirectionDialog {
 }
 
 /// Asks the user to select an adjacent tile to open.
-class OpenDialog : DirectionDialog {
+class OpenDialog : DirectionDialog
+{
   public override string query => "Open what?";
   public override string helpText => "Choose direction";
 
@@ -181,13 +207,17 @@ class OpenDialog : DirectionDialog {
 
   public override bool canTarget(Tile tile) => tile.type.canOpen;
 
-  public override bool tryDirection(Direction direction) {
+  public override bool tryDirection(Direction direction)
+  {
     var pos = game.hero.pos + direction;
     var tile = game.stage[pos].type;
-    if (tile.canOpen) {
+    if (tile.canOpen)
+    {
       game.hero.setNextAction(tile.onOpen!(pos));
       return true;
-    } else {
+    }
+    else
+    {
       game.log.error("There is nothing to open there.");
       return false;
     }

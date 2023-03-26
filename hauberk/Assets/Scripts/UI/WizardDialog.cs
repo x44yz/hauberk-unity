@@ -6,47 +6,57 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 /// Cheat menu.
-class WizardDialog : Screen {
-  public Dictionary<string, System.Action> _menuItems = new Dictionary<string, System.Action>{};
+class WizardDialog : Screen
+{
+  public Dictionary<string, System.Action> _menuItems = new Dictionary<string, System.Action> { };
   public Game _game;
 
   public override bool isTransparent => true;
 
-  public WizardDialog(Game _game) {
+  public WizardDialog(Game _game)
+  {
     this._game = _game;
 
     _menuItems["Map Dungeon"] = _mapDungeon;
     _menuItems["Illuminate Dungeon"] = _illuminateDungeon;
-    _menuItems["Drop Item"] = () => {
+    _menuItems["Drop Item"] = () =>
+    {
       terminal.Push(new _WizardDropDialog(_game));
     };
-    _menuItems["Spawn Monster"] = () => {
+    _menuItems["Spawn Monster"] = () =>
+    {
       terminal.Push(new _WizardSpawnDialog(_game));
     };
     _menuItems["Gain Level"] = _gainLevel;
-    _menuItems["Train Discipline"] = () => {
+    _menuItems["Train Discipline"] = () =>
+    {
       terminal.Push(new _WizardTrainDialog(_game));
     };
 
-    _menuItems["Toggle Show All Monsters"] = () => {
+    _menuItems["Toggle Show All Monsters"] = () =>
+    {
       Debugger.showAllMonsters = !Debugger.showAllMonsters;
       _game.log.cheat("Show all monsters = ${Debug.showAllMonsters}");
       terminal.Pop();
     };
-    _menuItems["Toggle Show Monster Alertness"] = () => {
+    _menuItems["Toggle Show Monster Alertness"] = () =>
+    {
       Debugger.showMonsterAlertness = !Debugger.showMonsterAlertness;
       _game.log.cheat("Show monster alertness = ${Debug.showMonsterAlertness}");
       terminal.Pop();
     };
-    _menuItems["Toggle Show Hero Volume"] = () => {
+    _menuItems["Toggle Show Hero Volume"] = () =>
+    {
       Debugger.showHeroVolume = !Debugger.showHeroVolume;
       _game.log.cheat("Show hero volume = ${Debug.showHeroVolume}");
       terminal.Pop();
     };
   }
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
@@ -65,7 +75,8 @@ class WizardDialog : Screen {
     return true;
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     // Draw a box for the contents.
     var width = _menuItems.Keys.ToList()
         .fold<string>(0, (width, name) => Math.Max(width, name.Length));
@@ -73,7 +84,8 @@ class WizardDialog : Screen {
     terminal.WriteAt(1, 0, "Wizard Menu", UIHue.selection);
 
     var i = 0;
-    foreach (var menuItem in _menuItems.Keys) {
+    foreach (var menuItem in _menuItems.Keys)
+    {
       terminal.WriteAt(1, i + 2, " )", UIHue.secondary);
       terminal.WriteAt(
           1, i + 2, "abcdefghijklmnopqrstuvwxyz"[i], UIHue.selection);
@@ -85,19 +97,24 @@ class WizardDialog : Screen {
     terminal.WriteAt(0, terminal.height - 1, "[Esc] Exit", UIHue.helpText);
   }
 
-  void _mapDungeon() {
+  void _mapDungeon()
+  {
     var stage = _game.stage;
-    foreach (var pos in stage.bounds) {
+    foreach (var pos in stage.bounds)
+    {
       // If the tile isn't opaque, explore it.
-      if (!stage[pos].blocksView) {
+      if (!stage[pos].blocksView)
+      {
         stage[pos].updateExplored(force: true);
         continue;
       }
 
       // If it is opaque, but it's next to a non-opaque tile (i.e. it's an edge
       // wall), explore it.
-      foreach (var neighbor in pos.neighbors) {
-        if (stage.bounds.contains(neighbor) && !stage[neighbor].blocksView) {
+      foreach (var neighbor in pos.neighbors)
+      {
+        if (stage.bounds.contains(neighbor) && !stage[neighbor].blocksView)
+        {
           stage[pos].updateExplored(force: true);
           break;
         }
@@ -105,11 +122,14 @@ class WizardDialog : Screen {
     }
   }
 
-  void _illuminateDungeon() {
+  void _illuminateDungeon()
+  {
     var stage = _game.stage;
-    foreach (var pos in stage.bounds) {
+    foreach (var pos in stage.bounds)
+    {
       // If the tile isn't opaque, explore it.
-      if (!stage[pos].blocksView) {
+      if (!stage[pos].blocksView)
+      {
         stage[pos].addEmanation(255);
       }
     }
@@ -118,10 +138,14 @@ class WizardDialog : Screen {
     stage.refreshView();
   }
 
-  void _gainLevel() {
-    if (_game.hero.level == Hero.maxLevel) {
+  void _gainLevel()
+  {
+    if (_game.hero.level == Hero.maxLevel)
+    {
       _game.log.cheat("Already at max level.");
-    } else {
+    }
+    else
+    {
       _game.hero.experience = Hero.experienceLevelCost(_game.hero.level + 1);
       _game.hero.refreshProperties();
     }
@@ -131,7 +155,8 @@ class WizardDialog : Screen {
 }
 
 /// Base class for a dialog that searches for things by name.
-abstract class _SearchDialog<T> : Screen {
+abstract class _SearchDialog<T> : Screen
+{
   public Game _game;
   string _pattern = "";
 
@@ -142,17 +167,21 @@ abstract class _SearchDialog<T> : Screen {
 
   public override bool isTransparent => true;
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
 
     if (alt) return false;
 
-    switch (keyCode) {
+    switch (keyCode)
+    {
       case KeyCode.Return:
-        foreach (var item in _matchedItems) {
+        foreach (var item in _matchedItems)
+        {
           _selectItem(item);
         }
 
@@ -160,7 +189,8 @@ abstract class _SearchDialog<T> : Screen {
         return true;
 
       case KeyCode.Delete:
-        if (_pattern.isNotEmpty()) {
+        if (_pattern.isNotEmpty())
+        {
           _pattern = _pattern.Substring(0, _pattern.Length - 1);
           Dirty();
         }
@@ -172,13 +202,17 @@ abstract class _SearchDialog<T> : Screen {
         return true;
 
       default:
-        if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
+        if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
+        {
           _pattern += Char.ConvertFromUtf32((int)keyCode).ToLower();
           Dirty();
           return true;
-        } else if (keyCode >= KeyCode.Alpha0 && keyCode <= KeyCode.Alpha9) {
+        }
+        else if (keyCode >= KeyCode.Alpha0 && keyCode <= KeyCode.Alpha9)
+        {
           var n = keyCode - KeyCode.Alpha0;
-          if (n < _matchedItems.Count) {
+          if (n < _matchedItems.Count)
+          {
             _selectItem(_matchedItems[n]);
             terminal.Pop();
             return true;
@@ -190,7 +224,8 @@ abstract class _SearchDialog<T> : Screen {
     return false;
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     // Draw a box for the contents.
     Draw.frame(terminal, 25, 0, 43, 39);
     terminal.WriteAt(26, 0, _question, UIHue.selection);
@@ -200,20 +235,26 @@ abstract class _SearchDialog<T> : Screen {
         UIHue.selection, UIHue.selection);
 
     var n = 0;
-    foreach (var item in _matchedItems) {
-      if (!_itemName(item).ToLower().Contains(_pattern.ToLower())) {
+    foreach (var item in _matchedItems)
+    {
+      if (!_itemName(item).ToLower().Contains(_pattern.ToLower()))
+      {
         continue;
       }
 
-      if (n < 10) {
+      if (n < 10)
+      {
         terminal.WriteAt(26, n + 2, n.ToString(), UIHue.selection);
         terminal.WriteAt(27, n + 2, ")", UIHue.disabled);
       }
 
       var appearance = _itemAppearance(item);
-      if (appearance is Glyph) {
+      if (appearance is Glyph)
+      {
         terminal.WriteAt(28, n + 2, appearance as string);
-      } else {
+      }
+      else
+      {
         terminal.WriteAt(28, n + 2, "-");
       }
       terminal.WriteAt(30, n + 2, _itemName(item), UIHue.primary);
@@ -242,7 +283,8 @@ abstract class _SearchDialog<T> : Screen {
   public abstract void _selectItem(T item);
 }
 
-class _WizardDropDialog : _SearchDialog<ItemType> {
+class _WizardDropDialog : _SearchDialog<ItemType>
+{
   public _WizardDropDialog(Game game) : base(game)
   {
   }
@@ -255,14 +297,16 @@ class _WizardDropDialog : _SearchDialog<ItemType> {
 
   public override object _itemAppearance(ItemType item) => item.appearance;
 
-  public override void _selectItem(ItemType itemType) {
+  public override void _selectItem(ItemType itemType)
+  {
     var item = new Item(itemType, itemType.maxStack);
     _game.stage.addItem(item, _game.hero.pos);
     _game.log.cheat("Dropped {1}.", item);
   }
 }
 
-class _WizardSpawnDialog : _SearchDialog<Breed> {
+class _WizardSpawnDialog : _SearchDialog<Breed>
+{
   public _WizardSpawnDialog(Game game) : base(game)
   {
   }
@@ -275,7 +319,8 @@ class _WizardSpawnDialog : _SearchDialog<Breed> {
 
   public override object _itemAppearance(Breed breed) => breed.appearance;
 
-  public override void _selectItem(Breed breed) {
+  public override void _selectItem(Breed breed)
+  {
     var flow = new MotilityFlow(_game.stage, _game.hero.pos, Motility.walk);
     var pos = flow.bestWhere((pos) => (pos - _game.hero.pos) > 6);
     if (pos == null) return;
@@ -285,17 +330,21 @@ class _WizardSpawnDialog : _SearchDialog<Breed> {
   }
 }
 
-class _WizardTrainDialog : _SearchDialog<Discipline> {
+class _WizardTrainDialog : _SearchDialog<Discipline>
+{
   public _WizardTrainDialog(Game game) : base(game)
   {
   }
 
   public override string _question => "Train which discipline?";
 
-  public override List<Discipline> _allItems {
-    get {
+  public override List<Discipline> _allItems
+  {
+    get
+    {
       List<Discipline> rt = new List<Discipline>();
-      foreach (var k in _game.content.skills) {
+      foreach (var k in _game.content.skills)
+      {
         if (k is Discipline)
           rt.Add(k as Discipline);
       }
@@ -307,15 +356,19 @@ class _WizardTrainDialog : _SearchDialog<Discipline> {
 
   public override object _itemAppearance(Discipline discipline) => null;
 
-  public override void _selectItem(Discipline discipline) {
+  public override void _selectItem(Discipline discipline)
+  {
     var level = _game.hero.skills.level(discipline);
-    if (level + 1 < discipline.maxLevel) {
+    if (level + 1 < discipline.maxLevel)
+    {
       var training =
           discipline.trainingNeeded(_game.hero.save.heroClass, level + 1) ?? 0;
       _game.hero.skills.earnPoints(
           discipline, training - _game.hero.skills.points(discipline));
       _game.hero.refreshSkill(discipline);
-    } else {
+    }
+    else
+    {
       _game.log.cheat("Already at max level.");
     }
   }

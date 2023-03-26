@@ -1,13 +1,15 @@
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-public class BattleHardening : Discipline {
+public class BattleHardening : Discipline
+{
   public override int maxLevel => 40;
 
   public override string description => "Years of taking hits have turned your skin as hard as cured leather.";
 
   public override string name => "Battle Hardening";
 
-  public override void takeDamage(Hero hero, int damage) {
+  public override void takeDamage(Hero hero, int damage)
+  {
     hero.discoverSkill(this);
 
     // A point is one tenth of the hero's health.

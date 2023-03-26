@@ -5,15 +5,16 @@ using System.Collections.Generic;
 /// Energy is used to control the rate that actors move relative to other
 /// actors. Each game turn, every actor will accumulate energy based on their
 /// speed. When it reaches a threshold, that actor can take a turn.
-public class Energy {
-    public const int minSpeed = 0;
-    public const int normalSpeed = 6;
-    public const int maxSpeed = 12;
+public class Energy
+{
+  public const int minSpeed = 0;
+  public const int normalSpeed = 6;
+  public const int maxSpeed = 12;
 
-    public const int actionCost = 240;
+  public const int actionCost = 240;
 
-    // How much energy is gained each game turn for each speed.
-    public static int[] gains = new int[]{
+  // How much energy is gained each game turn for each speed.
+  public static int[] gains = new int[]{
         15, // 1/4 normal speed
         20, // 1/3 normal speed
         24, // 2/5 normal speed
@@ -29,21 +30,23 @@ public class Energy {
         240 // 4x normal speed
     };
 
-    public int energy = 0;
+  public int energy = 0;
 
-    public bool canTakeTurn => energy >= actionCost;
+  public bool canTakeTurn => energy >= actionCost;
 
-    /// Advances one game turn and gains an appropriate amount of energy. Returns
-    /// `true` if there is enough energy to take a turn.
-    public bool gain(int speed) {
-        energy += gains[speed];
-        return canTakeTurn;
-    }
+  /// Advances one game turn and gains an appropriate amount of energy. Returns
+  /// `true` if there is enough energy to take a turn.
+  public bool gain(int speed)
+  {
+    energy += gains[speed];
+    return canTakeTurn;
+  }
 
-    /// Spends a turn's worth of energy.
-    public void spend() {
-        DartUtils.assert(energy >= actionCost);
-        energy -= actionCost;
-    }
+  /// Spends a turn's worth of energy.
+  public void spend()
+  {
+    DartUtils.assert(energy >= actionCost);
+    energy -= actionCost;
+  }
 }
 

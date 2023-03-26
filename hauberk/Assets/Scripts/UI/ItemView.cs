@@ -6,7 +6,8 @@ using UnityTerminal;
 
 
 /// Renders a list of items in some UI context, including the surrounding frame.
-abstract class ItemView {
+abstract class ItemView
+{
   /// The ideal maximum width of an item list, including the frame.
   public const int preferredWidth = 46;
 
@@ -31,7 +32,7 @@ abstract class ItemView {
   public virtual int? getPrice(Item item) => item.price;
 
   public virtual void render(
-      Terminal terminal, int left, int top, int width, int itemSlotCount) 
+      Terminal terminal, int left, int top, int width, int itemSlotCount)
   {
     Draw.frame(terminal, left, top, width, itemSlotCount + 2,
         canSelectAny ? UIHue.selection : UIHue.disabled);
@@ -45,10 +46,13 @@ abstract class ItemView {
     // Shift the stats over to make room for prices, if needed.
     var statRight = left + width - 1;
 
-    if (showPrices) {
-      foreach (var item in items) {
+    if (showPrices)
+    {
+      foreach (var item in items)
+      {
         var price = getPrice(item);
-        if (price != null) {
+        if (price != null)
+        {
           statRight =
               Math.Min(statRight, left + width - DartUtils.formatMoney(price.Value).Length - 3);
         }
@@ -57,12 +61,14 @@ abstract class ItemView {
 
     var slot = 0;
     var letter = 0;
-    foreach (var item in items.slots) {
+    foreach (var item in items.slots)
+    {
       var x = left + (showLetters ? 3 : 1);
       var y = top + slot + 1;
 
       // If there's no item in this equipment slot, show the slot name.
-      if (item == null) {
+      if (item == null)
+      {
         // If this is the second hand slot and the previous one has a
         // two-handed item in it, mark this one.
         if (slot > 0 &&
@@ -70,9 +76,12 @@ abstract class ItemView {
             items.slotTypes[slot - 1] == "hand" &&
             // TODO: Use "?.".
             items.slots.elementAt(slot - 1) != null &&
-            items.slots.elementAt(slot - 1)!.type.isTwoHanded) {
+            items.slots.elementAt(slot - 1)!.type.isTwoHanded)
+        {
           terminal.WriteAt(x + 2, y, "↑ two-handed", UIHue.disabled);
-        } else {
+        }
+        else
+        {
           terminal.WriteAt(
               x + 2, y, $"({items.slotTypes[slot]})", UIHue.disabled);
         }
@@ -86,12 +95,16 @@ abstract class ItemView {
       var textColor = UIHue.primary;
       var enabled = true;
 
-      if (canSelectAny) {
-        if (canSelect(item)) {
+      if (canSelectAny)
+      {
+        if (canSelect(item))
+        {
           borderColor = UIHue.secondary;
           letterColor = UIHue.selection;
           textColor = UIHue.primary;
-        } else {
+        }
+        else
+        {
           borderColor = Color.black;
           letterColor = Color.black;
           textColor = UIHue.disabled;
@@ -99,23 +112,27 @@ abstract class ItemView {
         }
       }
 
-      if (item == inspectedItem) {
+      if (item == inspectedItem)
+      {
         textColor = UIHue.selection;
       }
 
-      if (showLetters) {
+      if (showLetters)
+      {
         terminal.WriteAt(left + 1, y, " )", borderColor);
         terminal.WriteAt(left + 1, y, letters[letter], letterColor);
       }
 
       letter++;
 
-      if (enabled) {
+      if (enabled)
+      {
         terminal.WriteAt(x, y, (item.appearance as Glyph));
       }
 
       var nameRight = left + width - 1;
-      if (showPrices && getPrice(item) != null) {
+      if (showPrices && getPrice(item) != null)
+      {
         var price = DartUtils.formatMoney(getPrice(item).Value);
         var priceLeft = left + width - 1 - price.Length - 1;
         terminal.WriteAt(priceLeft, y, "$", enabled ? Hues.tan : UIHue.disabled);
@@ -125,7 +142,8 @@ abstract class ItemView {
         nameRight = priceLeft;
       }
 
-      void drawStat(int symbol, object stat, Color light, Color dark) {
+      void drawStat(int symbol, object stat, Color light, Color dark)
+      {
         var str = stat.ToString();
         var statLeft = statRight - str.Length - 1;
         terminal.WriteAt(statLeft, y, symbol, enabled ? dark : UIHue.disabled);
@@ -137,11 +155,14 @@ abstract class ItemView {
 
       // TODO: Eventually need to handle equipment that gives both an armor and
       // attack bonus.
-      if (item.attack != null) {
+      if (item.attack != null)
+      {
         var hit = item.attack!.createHit();
         drawStat(
             CharCode.feminineOrdinalIndicator, hit.damageString, Hues.carrot, Hues.brown);
-      } else if (item.armor != 0) {
+      }
+      else if (item.armor != 0)
+      {
         drawStat(CharCode.latinSmallLetterAe, item.armor, Hues.peaGreen, Hues.sherwood);
       }
 
@@ -151,19 +172,26 @@ abstract class ItemView {
       terminal.WriteAt(x + 2, y, name, textColor);
 
       // Draw the inspector for this item.
-      if (item == inspectedItem) {
+      if (item == inspectedItem)
+      {
         var inspector = new Inspector(save, item);
-        if (inspectorOnRight) {
-          if (left + width + Inspector.width > terminal.width) {
+        if (inspectorOnRight)
+        {
+          if (left + width + Inspector.width > terminal.width)
+          {
             // No room on the right so draw it below.
             terminal.WriteAt(left + width - 1, y, "▼", UIHue.selection);
             inspector.draw(left + (width - Inspector.width) / 2,
                 top + itemSlotCount + 3, terminal);
-          } else {
+          }
+          else
+          {
             terminal.WriteAt(left + width - 1, y, "►", UIHue.selection);
             inspector.draw(left + width, y, terminal);
           }
-        } else {
+        }
+        else
+        {
           terminal.WriteAt(left, y, "◄", UIHue.selection);
           inspector.draw(left - Inspector.width, y, terminal);
         }

@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using num = System.Double;
 
-class MissiveMove : Move {
+class MissiveMove : Move
+{
   public Missive _missive;
 
   public MissiveMove(Missive _missive, num rate) : base(rate)
@@ -12,7 +13,8 @@ class MissiveMove : Move {
 
   public override num experience => 0.0;
 
-  public override bool shouldUse(Monster monster) {
+  public override bool shouldUse(Monster monster)
+  {
     var target = monster.game.hero.pos;
     var distance = (target - monster.pos).kingLength;
 

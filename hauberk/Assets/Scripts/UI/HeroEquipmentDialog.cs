@@ -7,7 +7,8 @@ using UnityTerminal;
 
 // TODO: Unify with HeroItemLoreDialog so that we can select and show inspector
 // for equipment.
-class HeroEquipmentDialog : HeroInfoDialog {
+class HeroEquipmentDialog : HeroInfoDialog
+{
   public HeroEquipmentDialog(Content content, HeroSave hero)
       : base(content, hero)
   {
@@ -15,10 +16,12 @@ class HeroEquipmentDialog : HeroInfoDialog {
 
   public override string name => "Equipment";
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     base.Render(terminal);
 
-    void writeLine(int y, Color color) {
+    void writeLine(int y, Color color)
+    {
       terminal.WriteAt(
           2,
           y,
@@ -27,25 +30,33 @@ class HeroEquipmentDialog : HeroInfoDialog {
           color);
     }
 
-    void writeScale(int x, int y, double scale) {
+    void writeScale(int x, int y, double scale)
+    {
       var str = scale.ToString("F1");
 
-      if (scale > 1.0) {
+      if (scale > 1.0)
+      {
         terminal.WriteAt(x, y, "x", Hues.sherwood);
         terminal.WriteAt(x + 1, y, str, Hues.peaGreen);
-      } else if (scale < 1.0) {
+      }
+      else if (scale < 1.0)
+      {
         terminal.WriteAt(x, y, "x", Hues.maroon);
         terminal.WriteAt(x + 1, y, str, Hues.red);
       }
     }
 
-    void writeBonus(int x, int y, int bonus) {
+    void writeBonus(int x, int y, int bonus)
+    {
       var str = Math.Abs(bonus).ToString();
 
-      if (bonus > 0) {
+      if (bonus > 0)
+      {
         terminal.WriteAt(x + 2 - str.Length, y, "+", Hues.sherwood);
         terminal.WriteAt(x + 3 - str.Length, y, str, Hues.peaGreen);
-      } else if (bonus < 0) {
+      }
+      else if (bonus < 0)
+      {
         terminal.WriteAt(x + 2 - str.Length, y, "-", Hues.maroon);
         terminal.WriteAt(x + 3 - str.Length, y, str, Hues.red);
       }
@@ -54,13 +65,15 @@ class HeroEquipmentDialog : HeroInfoDialog {
     terminal.WriteAt(48, 0, "══════ Attack ═════ ══ Defend ══", Hues.darkCoolGray);
     terminal.WriteAt(48, 1, "El Damage      Hit  Dodge Armor", Hues.coolGray);
 
-    drawEquipmentTable(terminal, (item, y) => {
+    drawEquipmentTable(terminal, (item, y) =>
+    {
       writeLine(y - 1, Hues.darkerCoolGray);
 
       if (item == null) return;
 
       var attack = item.attack;
-      if (attack != null) {
+      if (attack != null)
+      {
         terminal.WriteAt(
             48, y, attack.element.abbreviation, Hues.elementColor(attack.element));
 
@@ -73,7 +86,8 @@ class HeroEquipmentDialog : HeroInfoDialog {
 
       // TODO: Dodge bonuses.
 
-      if (item.baseArmor != 0) {
+      if (item.baseArmor != 0)
+      {
         terminal.WriteAt(74, y, item.baseArmor.ToString().PadLeft(2), Hues.ash);
       }
 
@@ -87,10 +101,12 @@ class HeroEquipmentDialog : HeroInfoDialog {
     var totalStrikeBonus = 0;
     var totalArmor = 0;
     var totalArmorBonus = 0;
-    foreach (var item in hero.equipment.slots) {
+    foreach (var item in hero.equipment.slots)
+    {
       if (item == null) continue;
 
-      if (item.attack != null) {
+      if (item.attack != null)
+      {
         element = item.attack!.element;
         baseDamage = item.attack!.damage;
       }

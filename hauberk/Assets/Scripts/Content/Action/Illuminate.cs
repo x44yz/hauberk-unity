@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using num = System.Double;
 
 /// Creates a swath of emanation that radiates out from a point.
-class IlluminateAction : RayActionBase {
+class IlluminateAction : RayActionBase
+{
   public override int range => _range;
   int _range;
 
@@ -12,11 +13,13 @@ class IlluminateAction : RayActionBase {
     this._range = range;
   }
 
-  void reachStartTile(Vec pos) {
+  void reachStartTile(Vec pos)
+  {
     reachTile(pos, 0);
   }
 
-  public override void reachTile(Vec pos, num distance) {
+  public override void reachTile(Vec pos, num distance)
+  {
     game.stage[pos].maxEmanation(Lighting.emanationForLevel(3));
     game.stage.floorEmanationChanged();
     addEvent(EventType.pause);
@@ -26,7 +29,8 @@ class IlluminateAction : RayActionBase {
 /// Creates an expanding ring of emanation centered on the [Actor].
 ///
 /// This class mainly exists as an [Action] that [Item]s can use.
-class IlluminateSelfAction : Action {
+class IlluminateSelfAction : Action
+{
   public int _range;
 
   public IlluminateSelfAction(int _range)
@@ -36,7 +40,8 @@ class IlluminateSelfAction : Action {
 
   public override bool isImmediate => false;
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     game.stage[actor!.pos].maxEmanation(Lighting.emanationForLevel(3));
     game.stage.floorEmanationChanged();
     addEvent(EventType.pause);

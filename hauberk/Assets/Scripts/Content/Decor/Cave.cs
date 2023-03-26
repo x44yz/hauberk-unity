@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-partial class Decor {
-  public static void caveDecor() {
+partial class Decor
+{
+  public static void caveDecor()
+  {
     category(themes: "glowing-moss", cells: new Dictionary<string, Cell>(){
       {"*", applyOpen(Tiles.glowingMoss)},
     });

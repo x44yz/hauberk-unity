@@ -4,7 +4,8 @@ using System.Linq;
 using Input = UnityEngine.Input;
 using UnityTerminal;
 
-class ExitPopup : Popup {
+class ExitPopup : Popup
+{
   public HeroSave _save;
   public Game _game;
   public List<_AnimatedValue> _values = new List<_AnimatedValue>();
@@ -17,7 +18,7 @@ class ExitPopup : Popup {
     {"OK", "Return to town"}
   };
 
-  public ExitPopup(HeroSave _save, Game _game) 
+  public ExitPopup(HeroSave _save, Game _game)
   {
     this._save = _save;
     this._game = _game;
@@ -63,26 +64,31 @@ class ExitPopup : Popup {
     return false;
   }
 
-  public override void Tick(float dt) {
-    foreach (var value in _values) {
+  public override void Tick(float dt)
+  {
+    foreach (var value in _values)
+    {
       if (value.update()) Dirty();
     }
   }
 
-  public override void renderPopup(Terminal terminal) {
+  public override void renderPopup(Terminal terminal)
+  {
     terminal.WriteAt(1, 1, "You survived depth ${_game.depth}!", UIHue.text);
 
     terminal.WriteAt(1, 3, "You gained:", UIHue.text);
     terminal.WriteAt(1, 15, "You slayed:", UIHue.text);
 
-    foreach (var value in _values) {
+    foreach (var value in _values)
+    {
       terminal.WriteAt(
           5, value.y, "................................", UIHue.disabled);
       terminal.WriteAt(5, value.y, "${value.name}:",
           value.value == 0 ? UIHue.disabled : UIHue.primary);
 
       var number = value.current.ToString();
-      if (value.total != null) {
+      if (value.total != null)
+      {
         var total = value.total.ToString();
         terminal.WriteAt(
             terminal.width - 1 - total.Length, value.y, total, value.color);
@@ -90,7 +96,9 @@ class ExitPopup : Popup {
             terminal.width - 1 - total.Length - 3, value.y, " / ", value.color);
         terminal.WriteAt(terminal.width - 4 - total.Length - number.Length,
             value.y, number, value.color);
-      } else {
+      }
+      else
+      {
         terminal.WriteAt(terminal.width - 1 - number.Length, value.y, number,
             value.value == 0 ? UIHue.disabled : value.color);
       }
@@ -104,7 +112,8 @@ class ExitPopup : Popup {
   }
 }
 
-class _AnimatedValue {
+class _AnimatedValue
+{
   public int y;
   public string name;
   public int value;
@@ -123,13 +132,17 @@ class _AnimatedValue {
     current = 0;
   }
 
-  public bool update() {
+  public bool update()
+  {
     if (current >= value) return false;
 
-    if (value > 200) {
+    if (value > 200)
+    {
       current += Rng.rng.round(value / 200);
       if (current > value) current = value;
-    } else {
+    }
+    else
+    {
       current++;
     }
 

@@ -5,14 +5,16 @@ using System.Collections.Generic;
 /// Keeps track of how audible the hero is from various places in the dungeon.
 ///
 /// Used for monsters that hear the hero's actions.
-public class Sound {
+public class Sound
+{
   public const float restNoise = 0.05f;
   public const float normalNoise = 0.25f;
   public const float attackNoise = 1.0f;
 
   public const int maxDistance = 16;
 
-  public static int _tileCost(Tile tile) {
+  public static int _tileCost(Tile tile)
+  {
     // Closed doors block some but not all sound.
     if (tile.isClosedDoor) return 8;
 
@@ -39,7 +41,8 @@ public class Sound {
   ///
   /// This should be called if a tile in the dungeon is changed in a way that
   /// affects how it attenuates sound. For example, opening a door.
-  public void dirty() {
+  public void dirty()
+  {
     // TODO: Especially during a fight, the hero probably moves a bunch but
     // reoccupies the same set of tiles repeatedly. It may be worth keeping a
     // cache of some fixed number of recently used flows instead of only a
@@ -55,7 +58,8 @@ public class Sound {
   /// can be heard in general.
   public double heroVolume(Vec pos) => _volume(_heroAuditoryDistance(pos));
 
-  public double volumeBetween(Vec from, Vec to) {
+  public double volumeBetween(Vec from, Vec to)
+  {
     if ((to - from).kingLength > maxDistance) return 0.0;
 
     var distance = new _SoundPathfinder(_stage, from, to).search();
@@ -70,8 +74,10 @@ public class Sound {
   /// in the way like doors or walls.
   ///
   /// Smaller numbers mean louder sound.
-  int _heroAuditoryDistance(Vec pos) {
-    if ((_stage.game.hero.pos - pos).kingLength > maxDistance) {
+  int _heroAuditoryDistance(Vec pos)
+  {
+    if ((_stage.game.hero.pos - pos).kingLength > maxDistance)
+    {
       return maxDistance;
     }
 
@@ -80,7 +86,8 @@ public class Sound {
   }
 
   /// Converts [auditoryDistance] to a volume.
-  double _volume(int auditoryDistance) {
+  double _volume(int auditoryDistance)
+  {
     // Normalize.
     var volume = (Sound.maxDistance - auditoryDistance) / Sound.maxDistance;
 
@@ -90,7 +97,8 @@ public class Sound {
     return volume * volume;
   }
 
-  void _refresh() {
+  void _refresh()
+  {
     // Don't recalculate if still valid.
     if (_flow != null && _stage.game.hero.pos == _flow!.start) return;
 
@@ -99,13 +107,15 @@ public class Sound {
   }
 }
 
-class _SoundFlow : Flow {
+class _SoundFlow : Flow
+{
   public _SoundFlow(Stage stage) : base(stage, stage.game.hero.pos)
   {
 
   }
 
-  public override int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal) {
+  public override int? tileCost(int parentCost, Vec pos, Tile tile, bool isDiagonal)
+  {
     // Stop propagating if we reach the max distance.
     if (parentCost >= Sound.maxDistance) return null;
 
@@ -120,14 +130,17 @@ class _SoundFlow : Flow {
   }
 }
 
-class _SoundPathfinder : Pathfinder<int> {
+class _SoundPathfinder : Pathfinder<int>
+{
   public _SoundPathfinder(Stage stage, Vec from, Vec to) : base(stage, from, to)
   {
 
   }
 
-  public override bool  processStep(Path path, out int result) {
-    if (path.cost > Sound.maxDistance){
+  public override bool processStep(Path path, out int result)
+  {
+    if (path.cost > Sound.maxDistance)
+    {
       result = Sound.maxDistance;
       return true;
     }
@@ -135,7 +148,8 @@ class _SoundPathfinder : Pathfinder<int> {
     return false;
   }
 
-  public override int? stepCost(Vec pos, Tile tile) {
+  public override int? stepCost(Vec pos, Tile tile)
+  {
     return Sound._tileCost(tile);
   }
 

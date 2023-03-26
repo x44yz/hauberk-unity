@@ -4,7 +4,8 @@ using System.Linq;
 using UnityTerminal;
 
 /// Base class for a centered modal dialog.
-abstract class Popup : Screen {
+abstract class Popup : Screen
+{
   public override bool isTransparent => true;
 
   /// The width of the content area of the popup.
@@ -24,14 +25,16 @@ abstract class Popup : Screen {
 
   public virtual Dictionary<string, string> helpKeys => null;
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     Draw.helpKeys(terminal, helpKeys);
 
     var messageLines = message;
 
     var widestLine = 0;
     var lineCount = 0;
-    if (messageLines != null) {
+    if (messageLines != null)
+    {
       widestLine = messageLines.fold<string>(
           0, (width, line) => Math.Max(width, line.Length));
       lineCount = messageLines.Count;
@@ -52,13 +55,15 @@ abstract class Popup : Screen {
     pterminal.Clear();
 
     // Draw the message if there is one.
-    if (messageLines != null) {
+    if (messageLines != null)
+    {
       var widest = messageLines.fold<string>(
           0, (width, line) => Math.Max(width, line.Length));
       var x = (pterminal.width - widest) / 2;
       var y = 1;
 
-      foreach (var line in messageLines) {
+      foreach (var line in messageLines)
+      {
         pterminal.WriteAt(x, y, line, UIHue.text);
         y++;
       }
@@ -67,5 +72,5 @@ abstract class Popup : Screen {
     renderPopup(pterminal);
   }
 
-  public virtual void renderPopup(Terminal terminal) {}
+  public virtual void renderPopup(Terminal terminal) { }
 }

@@ -3,13 +3,16 @@ using System.Collections.Generic;
 
 
 /// Base class for an [Action] that traces a path from the actor along a [Line].
-abstract class LosAction : Action {
+abstract class LosAction : Action
+{
   public Vec _target;
   public Vec _lastPos;
 
-    private IEnumerator<Vec> m_los = null;
-  public IEnumerator<Vec> _los {
-    get {
+  private IEnumerator<Vec> m_los = null;
+  public IEnumerator<Vec> _los
+  {
+    get
+    {
       if (m_los == null)
         m_los = _initIterator();
       return m_los;
@@ -26,11 +29,13 @@ abstract class LosAction : Action {
     this._target = _target;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     var pos = _los.Current;
 
     // Stop if we hit a wall or went out of range.
-    if (!game.stage[pos].isFlyable || pos - actor!.pos > range) {
+    if (!game.stage[pos].isFlyable || pos - actor!.pos > range)
+    {
       onEnd(_lastPos);
       return succeed();
     }
@@ -39,11 +44,13 @@ abstract class LosAction : Action {
 
     // See if there is an actor there.
     var target = game.stage.actorAt(pos);
-    if (target != null && target != actor) {
+    if (target != null && target != actor)
+    {
       if (onHitActor(pos, target)) return ActionResult.success;
     }
 
-    if (pos == _target) {
+    if (pos == _target)
+    {
       if (onTarget(pos)) return ActionResult.success;
     }
 
@@ -65,7 +72,7 @@ abstract class LosAction : Action {
   /// [pos] is the position on the path *before* failure. It's the last good
   /// position. It may be the actor's position if the LOS hit a wall directly
   /// adjacent to the actor.
-  void onEnd(Vec pos) {}
+  void onEnd(Vec pos) { }
 
   /// Override this to handle the LOS reaching the target on an open tile.
   ///
@@ -73,7 +80,8 @@ abstract class LosAction : Action {
   /// continue until it reaches the end of its range or hits something.
   bool onTarget(Vec pos) => false;
 
-  IEnumerator<Vec> _initIterator() {
+  IEnumerator<Vec> _initIterator()
+  {
     var iterator = new Line(actor!.pos, _target).iterator;
 
     // Advance to the first tile.

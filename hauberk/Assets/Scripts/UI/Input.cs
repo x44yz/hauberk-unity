@@ -5,7 +5,8 @@ using KeyCode = UnityEngine.KeyCode;
 ///
 /// Physical keys on the keyboard are mapped to these, which the user interface
 /// then interprets.
-class InputX {
+class InputX
+{
   /// Rests in the level, selects a menu item.
   public const KeyCode ok = KeyCode.Return; // Input("ok");
 

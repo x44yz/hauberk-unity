@@ -8,8 +8,9 @@ using System.Linq;
 // public Rng rng = Rng(DateTime.now().millisecondsSinceEpoch);
 
 /// The Random Number God: deliverer of good and ill fortune alike.
-public class Rng {
-    public static Rng rng = new Rng(System.DateTime.Now.Millisecond);
+public class Rng
+{
+  public static Rng rng = new Rng(System.DateTime.Now.Millisecond);
 
   System.Random _random;
 
@@ -19,7 +20,8 @@ public class Rng {
   }
 
   /// Resets the random number generator's internal state to [seed].
-  void setSeed(int seed) {
+  void setSeed(int seed)
+  {
     _random = new System.Random(seed);
   }
 
@@ -27,9 +29,10 @@ public class Rng {
   /// in the range `[minOrMax, max)`. Otherwise, it is `[0, minOrMax)`. In
   /// other words, `range(3)` returns a `0`, `1`, or `2`, and `range(2, 5)`
   /// returns `2`, `3`, or `4`.
-  public int range(int minOrMax, int? max = null) 
+  public int range(int minOrMax, int? max = null)
   {
-    if (max == null) {
+    if (max == null)
+    {
       max = minOrMax;
       minOrMax = 0;
     }
@@ -41,8 +44,10 @@ public class Rng {
   /// in the range `[minOrMax, max]`. Otherwise, it is `[0, minOrMax]`. In
   /// other words, `inclusive(2)` returns a `0`, `1`, or `2`, and
   /// `inclusive(2, 4)` returns `2`, `3`, or `4`.
-  public int inclusive(int minOrMax, int? max = null) {
-    if (max == null) {
+  public int inclusive(int minOrMax, int? max = null)
+  {
+    if (max == null)
+    {
       max = minOrMax;
       minOrMax = 0;
     }
@@ -52,12 +57,18 @@ public class Rng {
   }
 
   /// Gets a random floating-point value within the given range.
-  public double rfloat(double? minOrMax = null, double? max = null) {
-    if (minOrMax == null) {
+  public double rfloat(double? minOrMax = null, double? max = null)
+  {
+    if (minOrMax == null)
+    {
       return _random.NextDouble();
-    } else if (max == null) {
+    }
+    else if (max == null)
+    {
       return _random.NextDouble() * minOrMax.Value;
-    } else {
+    }
+    else
+    {
       return _random.NextDouble() * (max.Value - minOrMax.Value) + minOrMax.Value;
     }
   }
@@ -74,7 +85,8 @@ public class Rng {
   /// This is particularly useful when the range is less than one, because it
   /// gives you some chance of still producing one instead of always rounding
   /// down to zero.
-  int countFromFloat(double range) {
+  int countFromFloat(double range)
+  {
     var count = Math.Floor(range);
     if (rng.rfloat(1.0) < range - count) count++;
     return (int)count;
@@ -85,10 +97,12 @@ public class Rng {
   /// Note that this means results may be less than -1.0 or greater than 1.0.
   ///
   /// Uses https://en.wikipedia.org/wiki/Marsaglia_polar_method.
-  double normal() {
+  double normal()
+  {
     double u, v, lengthSquared;
 
-    do {
+    do
+    {
       u = rng.rfloat(-1.0, 1.0);
       v = rng.rfloat(-1.0, 1.0);
       lengthSquared = u * u + v * v;
@@ -108,7 +122,8 @@ public class Rng {
   ///
   /// For example, `round(3.2)` has a 20% chance of returning 3, and an 80%
   /// chance of returning 4.
-  public int round(double value) {
+  public int round(double value)
+  {
     var result = Math.Floor(value);
     if ((float)(1.0) < value - result) result++;
     return (int)result;
@@ -117,7 +132,8 @@ public class Rng {
   /// Gets a random item from the given list.
   public T item<T>(List<T> items) => items[range(items.Count)];
 
-  public T item<T>(Array items){
+  public T item<T>(Array items)
+  {
     var rt = new List<T>();
     foreach (var k in items)
       rt.Add((T)k);
@@ -128,7 +144,8 @@ public class Rng {
   ///
   /// This may not preserve the order of items in the list, but is faster than
   /// [takeOrdered].
-  public T take<T>(List<T> items) {
+  public T take<T>(List<T> items)
+  {
     var index = rng.range(items.Count);
     var result = items[index];
 
@@ -145,19 +162,22 @@ public class Rng {
   ///
   /// This is O(n) because it must shift forward items after the removed one.
   /// If you don't need to preserve order, use [take].
-  T takeOrdered<T>(List<T> items) {
+  T takeOrdered<T>(List<T> items)
+  {
     var result = items[items.Count - 1];
     items.RemoveAt(range(items.Count));
     return result;
-  } 
+  }
 
   /// Randomly re-orders elements in [items].
-  public void shuffle<T>(List<T> items) {
+  public void shuffle<T>(List<T> items)
+  {
     items.shuffle(_random);
   }
 
   /// Gets a random [Vec] within the given [Rect] (half-inclusive).
-  public Vec vecInRect(Rect rect) {
+  public Vec vecInRect(Rect rect)
+  {
     return new Vec(range(rect.left, rect.right), range(rect.top, rect.bottom));
   }
 
@@ -200,8 +220,10 @@ public class Rng {
   /// Choose a point in that square. Figure out which half of the triangle the
   /// point is in, and then remap the point back out to the original triangle.
   /// The result is the *x* coordinate of the point in the original triangle.
-  public int triangleInt(int center, int range) {
-    if (range < 0) {
+  public int triangleInt(int center, int range)
+  {
+    if (range < 0)
+    {
       throw new System.ArgumentException("The argument \"range\" must be zero or greater.");
     }
 
@@ -210,16 +232,20 @@ public class Rng {
     int y = inclusive(range);
 
     // Figure out which triangle we are in.
-    if (x <= y) {
+    if (x <= y)
+    {
       // Larger triangle.
       return center + x;
-    } else {
+    }
+    else
+    {
       // Smaller triangle.
       return center - range - 1 + x;
     }
   }
 
-  public int taper(int start, int chanceOfIncrement) {
+  public int taper(int start, int chanceOfIncrement)
+  {
     while (oneIn(chanceOfIncrement)) start++;
     return start;
   }

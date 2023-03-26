@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using System.Linq;
 
 /// The main player-controlled [Actor]. The player's avatar in the game world.
-public class Hero : Actor {
+public class Hero : Actor
+{
   /// The highest level the hero can reach.
   public const int maxLevel = 50;
 
@@ -20,8 +21,8 @@ public class Hero : Actor {
   /// equipment, and stats.
   ///
   /// This list parallels the sequence returned by `equipment.weapons`.
-  public List<Property<double>> _heftScales = 
-    new List<Property<double>>(){new Property<double>(), new Property<double>()};
+  public List<Property<double>> _heftScales =
+    new List<Property<double>>() { new Property<double>(), new Property<double>() };
 
   /// How full the hero is.
   ///
@@ -33,8 +34,9 @@ public class Hero : Actor {
   public int stomach
   {
     get { return _stomach; }
-    set {
-       _stomach = Mathf.Clamp(value, 0, Option.heroMaxStomach);
+    set
+    {
+      _stomach = Mathf.Clamp(value, 0, Option.heroMaxStomach);
     }
   }
   int _stomach = Option.heroMaxStomach / 2;
@@ -97,8 +99,8 @@ public class Hero : Actor {
 
   public override int emanationLevel => save.emanationLevel;
 
-  public Hero(Game game, Vec pos, HeroSave save) 
-    : base(game, pos.x, pos.y) 
+  public Hero(Game game, Vec pos, HeroSave save)
+    : base(game, pos.x, pos.y)
   {
     this.save = save;
     // Give the hero energy so they can act before all of the monsters.
@@ -113,7 +115,8 @@ public class Hero : Actor {
     // Acquire any skills from the starting items.
     // TODO: Doing this here is hacky. It only really comes into play for
     // starting items.
-    foreach (var item in inventory) {
+    foreach (var item in inventory)
+    {
       _gainItemSkills(item);
     }
   }
@@ -121,9 +124,12 @@ public class Hero : Actor {
   // TODO: Hackish.
   public override object appearance => "hero";
 
-  public override bool needsInput {
-    get {
-      if (_behavior != null && !_behavior!.canPerform(this)) {
+  public override bool needsInput
+  {
+    get
+    {
+      if (_behavior != null && !_behavior!.canPerform(this))
+      {
         waitForInput();
       }
 
@@ -155,14 +161,20 @@ public class Hero : Actor {
   // lore. Then the skill levels can be stored using Property and refreshed
   // like other properties.
   /// Discover or acquire any skills associated with [item].
-  void _gainItemSkills(Item item) {
-    foreach (var skill in item.type.skills) {
-      if (save.heroClass.proficiency(skill) != 0.0 && skills.discover(skill)) {
+  void _gainItemSkills(Item item)
+  {
+    foreach (var skill in item.type.skills)
+    {
+      if (save.heroClass.proficiency(skill) != 0.0 && skills.discover(skill))
+      {
         // See if the hero can immediately use it.
         var level = skill.calculateLevel(save);
-        if (skills.gain(skill, level)) {
+        if (skills.gain(skill, level))
+        {
           game.log.gain(skill.gainMessage(level), this);
-        } else {
+        }
+        else
+        {
           game.log.gain(skill.discoverMessage, this);
         }
       }
@@ -173,14 +185,17 @@ public class Hero : Actor {
 
   int baseDodge => 20 + agility.dodgeBonus;
 
-  public override List<Defense> onGetDefenses() {
+  public override List<Defense> onGetDefenses()
+  {
     var rt = new List<Defense>();
-    foreach (var item in equipment) {
+    foreach (var item in equipment)
+    {
       var defense = item.defense;
       if (defense != null) rt.Add(defense);
     }
 
-    foreach (var skill in skills.acquired) {
+    foreach (var skill in skills.acquired)
+    {
       var defense = skill.getDefense(this, skills.level(skill));
       if (defense != null) rt.Add(defense);
     }
@@ -191,12 +206,14 @@ public class Hero : Actor {
 
   public override Action onGetAction() => _behavior!.getAction(this);
 
-  public override List<Hit> onCreateMeleeHits(Actor defender) {
+  public override List<Hit> onCreateMeleeHits(Actor defender)
+  {
     var hits = new List<Hit>();
 
     // See if any melee weapons are equipped.
     var weapons = equipment.weapons;
-    for (var i = 0; i < weapons.Count; i++) {
+    for (var i = 0; i < weapons.Count; i++)
+    {
       var weapon = weapons[i];
       if (weapon.attack!.isRanged) continue;
 
@@ -210,14 +227,17 @@ public class Hero : Actor {
     }
 
     // If not, punch it.
-    if (hits.Count == 0) {
+    if (hits.Count == 0)
+    {
       hits.Add(new Attack(this, "punch[es]", Option.heroPunchDamage).createHit());
     }
 
-    foreach (var hit in hits) {
+    foreach (var hit in hits)
+    {
       hit.addStrike(agility.strikeBonus);
 
-      foreach (var skill in skills.acquired) {
+      foreach (var skill in skills.acquired)
+      {
         skill.modifyAttack(
             this, defender as Monster, hit, skills.level(skill));
       }
@@ -226,7 +246,8 @@ public class Hero : Actor {
     return hits;
   }
 
-  public Hit createRangedHit() {
+  public Hit createRangedHit()
+  {
     var weapons = equipment.weapons;
     var i = weapons.FindIndex((weapon) => weapon.attack!.isRanged);
     DartUtils.assert(i != -1, "Should have ranged weapon equipped.");
@@ -241,10 +262,12 @@ public class Hero : Actor {
   }
 
   /// Applies the hero-specific modifications to [hit].
-  void onModifyHit(Hit hit, HitType type) {
+  void onModifyHit(Hit hit, HitType type)
+  {
     // TODO: Use agility to affect strike.
 
-    switch (type) {
+    switch (type)
+    {
       case HitType.melee:
         break;
 
@@ -261,7 +284,8 @@ public class Hero : Actor {
     // Let armor modify it. We don't worry about weapons here since the weapon
     // modified it when the hit was created. This ensures that when
     // dual-wielding that one weapon's modifiers don't affect the other.
-    foreach (var item in equipment) {
+    foreach (var item in equipment)
+    {
       if (item.type.weaponType == null) item.modifyHit(hit);
     }
 
@@ -271,12 +295,14 @@ public class Hero : Actor {
   // TODO: If class or race can affect this, add it in.
   public override int onGetResistance(Element element) => save.equipmentResistance(element);
 
-  public override void onGiveDamage(Action action, Actor defender, int damage) {
+  public override void onGiveDamage(Action action, Actor defender, int damage)
+  {
     // Hitting increases fury.
     _gainFury(damage / defender.maxHealth * maxHealth / 100);
   }
 
-  void onTakeDamage(Action action, Actor attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage)
+  {
     // Getting hit loses focus and gains fury.
     // TODO: Lose less focus for ranged attacks?
     var focus = Mathf.CeilToInt((float)(damage / maxHealth * will.damageFocusScale));
@@ -287,12 +313,14 @@ public class Hero : Actor {
 
     // TODO: Would be better to do skills.discovered, but right now this also
     // discovers BattleHardening.
-    foreach (var skill in game.content.skills) {
+    foreach (var skill in game.content.skills)
+    {
       skill.takeDamage(this, damage);
     }
   }
 
-  void onKilled(Action action, Actor defender) {
+  void onKilled(Action action, Actor defender)
+  {
     var monster = defender as Monster;
 
     // It only counts if the hero's seen the monster at least once.
@@ -303,7 +331,8 @@ public class Hero : Actor {
 
     lore.slay(monster.breed);
 
-    foreach (var skill in skills.discovered) {
+    foreach (var skill in skills.discovered)
+    {
       skill.killMonster(this, action, monster);
     }
 
@@ -311,16 +340,19 @@ public class Hero : Actor {
     refreshProperties();
   }
 
-  void onDied(Noun attackNoun) {
+  void onDied(Noun attackNoun)
+  {
     game.log.message("you were slain by {1}.", attackNoun);
   }
 
-  void onFinishTurn(Action action) {
+  void onFinishTurn(Action action)
+  {
     // Make some noise.
     _lastNoise = action.noise;
 
     // Always digesting.
-    if (stomach > 0) {
+    if (stomach > 0)
+    {
       stomach--;
       if (stomach == 0) game.log.message("You are getting hungry.");
     }
@@ -330,34 +362,40 @@ public class Hero : Actor {
     // TODO: Passive skills?
   }
 
-  public override void changePosition(Vec from, Vec to) {
+  public override void changePosition(Vec from, Vec to)
+  {
     base.changePosition(from, to);
     game.stage.heroVisibilityChanged();
   }
 
-  public void waitForInput() {
+  public void waitForInput()
+  {
     _behavior = null;
   }
 
-  public void setNextAction(Action action) {
+  public void setNextAction(Action action)
+  {
     _behavior = new ActionBehavior(action);
   }
 
   /// Starts resting, if the hero has eaten and is able to regenerate.
-  public bool rest() 
+  public bool rest()
   {
-    if (poison.isActive) {
+    if (poison.isActive)
+    {
       game.log
           .error("You cannot rest while poison courses through your veins!");
       return false;
     }
 
-    if (health == maxHealth) {
+    if (health == maxHealth)
+    {
       game.log.message("You are fully rested.");
       return false;
     }
 
-    if (stomach == 0) {
+    if (stomach == 0)
+    {
       game.log.error("You are too hungry to rest.");
       return false;
     }
@@ -366,19 +404,23 @@ public class Hero : Actor {
     return true;
   }
 
-  public void run(Direction direction) {
+  public void run(Direction direction)
+  {
     _behavior = new RunBehavior(direction);
   }
 
-  public void disturb() {
-    if (!(_behavior is ActionBehavior)) 
+  public void disturb()
+  {
+    if (!(_behavior is ActionBehavior))
       waitForInput();
   }
 
-  public void seeMonster(Monster monster) {
+  public void seeMonster(Monster monster)
+  {
     // TODO: Blindness and dazzle.
 
-    if (_seenMonsters.Add(monster)) {
+    if (_seenMonsters.Add(monster))
+    {
       // TODO: If we want to give the hero experience for seeing a monster too,
       // (so that sneak play-style still lets the player gain levels), do that
       // here.
@@ -386,8 +428,10 @@ public class Hero : Actor {
 
       // If this is the first time we've seen this breed, see if that unlocks
       // a slaying skill for it.
-      if (lore.seenBreed(monster.breed) == 1) {
-        foreach (var skill in game.content.skills) {
+      if (lore.seenBreed(monster.breed) == 1)
+      {
+        foreach (var skill in game.content.skills)
+        {
           skill.seeBreed(this, monster.breed);
         }
       }
@@ -397,7 +441,8 @@ public class Hero : Actor {
   /// Spends focus on some useful action.
   ///
   /// Does not reset [_turnsSinceLostFocus].
-  public void spendFocus(int focus) {
+  public void spendFocus(int focus)
+  {
     DartUtils.assert(focus >= _focus);
 
     _focus -= focus;
@@ -406,13 +451,15 @@ public class Hero : Actor {
   /// Spends fury on some useful action.
   ///
   /// Does not reset [_turnsSinceLostFocus].
-  public void spendFury(int fury) {
+  public void spendFury(int fury)
+  {
     DartUtils.assert(fury >= _fury);
 
     _fury -= fury;
   }
 
-  public void regenerateFocus(int focus) {
+  public void regenerateFocus(int focus)
+  {
     // The longer the hero goes without losing focus, the more quickly it
     // regenerates.
     var scale = Mathf.Clamp(_turnsSinceLostFocus + 1, 1, 8) / 4;
@@ -421,7 +468,8 @@ public class Hero : Actor {
     _fury = Mathf.Clamp(Mathf.CeilToInt((float)(_fury - focus * scale * will.restFuryScale)), 0, strength.maxFury);
   }
 
-  void _gainFury(double fury) {
+  void _gainFury(double fury)
+  {
     _fury = (int)Mathf.Clamp(_fury + Mathf.Ceil((float)fury), 0, strength.maxFury);
   }
 
@@ -436,9 +484,11 @@ public class Hero : Actor {
   /// wrapped in a [Property] and updated here. Note that order that these are
   /// updated matters. Properties must be updated after the properties they
   /// depend on.
-  public void refreshProperties() {
+  public void refreshProperties()
+  {
     var level = experienceLevel(experience);
-    _level.update(level, (previous) => {
+    _level.update(level, (previous) =>
+    {
       game.log.gain($"You have reached level {level}.");
       // TODO: Different message if level went down.
     });
@@ -451,35 +501,43 @@ public class Hero : Actor {
 
     // Refresh the heft scales.
     var weapons = equipment.weapons;
-    for (var i = 0; i < weapons.Count; i++) {
+    for (var i = 0; i < weapons.Count; i++)
+    {
       var weapon = weapons[i];
 
       // Dual-wielding imposes a heft penalty.
       var heftModifier = 1.0;
 
-      if (weapons.Count == 2) {
+      if (weapons.Count == 2)
+      {
         heftModifier = 1.3;
 
         // Discover the dual-wield skill.
         // TODO: This is a really specific method to put on Skill. Is there a
         // cleaner way to handle this?
-        foreach (var skill in game.content.skills) {
+        foreach (var skill in game.content.skills)
+        {
           skill.dualWield(this);
         }
       }
 
-      foreach (var skill in skills.acquired) {
+      foreach (var skill in skills.acquired)
+      {
         heftModifier =
             skill.modifyHeft(this, skills.level(skill), heftModifier);
       }
 
       var heft = Mathf.RoundToInt((float)(weapon.heft * heftModifier));
       var heftScale = strength.heftScale(heft);
-      _heftScales[i].update(heftScale, (previous) => {
+      _heftScales[i].update(heftScale, (previous) =>
+      {
         // TODO: Reword these if there is no weapon equipped?
-        if (heftScale < 1.0 && previous >= 1.0) {
+        if (heftScale < 1.0 && previous >= 1.0)
+        {
           game.log.error($"You are too weak to effectively wield {weapon}.");
-        } else if (heftScale >= 1.0 && previous < 1.0) {
+        }
+        else if (heftScale >= 1.0 && previous < 1.0)
+        {
           game.log.message($"You feel comfortable wielding {weapon}.");
         }
       });
@@ -499,7 +557,8 @@ public class Hero : Actor {
   ///
   /// This can be in response to picking it up, or equipping or using it
   /// straight from the ground.
-  public void pickUp(Item item) {
+  public void pickUp(Item item)
+  {
     // TODO: If the user repeatedly picks up and drops the same item, it gets
     // counted every time. Maybe want to put a (serialized) flag on items for
     // whether they have been picked up or not.
@@ -510,13 +569,15 @@ public class Hero : Actor {
   }
 
   /// See if any known skills have leveled up.
-  void _refreshSkills() {
+  void _refreshSkills()
+  {
     skills.discovered.ToList().ForEach(x => refreshSkill(x));
   }
 
   /// Ensures the hero has discovered [skill] and logs if it is the first time
   /// it's been seen.
-  public void discoverSkill(Skill skill) {
+  public void discoverSkill(Skill skill)
+  {
     if (save.heroClass.proficiency(skill) == 0.0) return;
 
     if (!skills.discover(skill)) return;
@@ -524,9 +585,11 @@ public class Hero : Actor {
     game.log.gain(skill.discoverMessage, this);
   }
 
-  public void refreshSkill(Skill skill) {
+  public void refreshSkill(Skill skill)
+  {
     var level = skill.calculateLevel(save);
-    if (skills.gain(skill, level)) {
+    if (skills.gain(skill, level))
+    {
       game.log.gain(skill.gainMessage(level), this);
     }
   }
@@ -534,26 +597,31 @@ public class Hero : Actor {
   /// Whether the hero can currently perceive [actor].
   ///
   /// Takes into account both visibility and [perception].
-  public bool canPerceive(Actor actor) {
+  public bool canPerceive(Actor actor)
+  {
     if (game.stage[actor.pos].isVisible) return true;
-    if (perception.isActive && (pos - actor.pos) < perception.intensity) {
+    if (perception.isActive && (pos - actor.pos) < perception.intensity)
+    {
       return true;
     }
     return false;
   }
 
-  public static int experienceLevel(int experience) {
-    for (var level = 1; level <= Hero.maxLevel; level++) {
-        if (experience < Hero.experienceLevelCost(level)) 
-          return level - 1;
+  public static int experienceLevel(int experience)
+  {
+    for (var level = 1; level <= Hero.maxLevel; level++)
+    {
+      if (experience < Hero.experienceLevelCost(level))
+        return level - 1;
     }
     return Hero.maxLevel;
   }
 
   /// Returns how much experience is needed to reach [level].
-  public static int experienceLevelCost(int level) {
-      if (level > Hero.maxLevel) throw new System.ArgumentOutOfRangeException("level", level.ToString());
-      return (int)(Mathf.Pow(level - 1, 3)) * 1000;
+  public static int experienceLevelCost(int level)
+  {
+    if (level > Hero.maxLevel) throw new System.ArgumentOutOfRangeException("level", level.ToString());
+    return (int)(Mathf.Pow(level - 1, 3)) * 1000;
   }
 }
 

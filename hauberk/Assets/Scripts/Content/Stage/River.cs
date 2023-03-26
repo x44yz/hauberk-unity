@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 /// Uses a cellular automata to carve out rounded open cavernous areas.
-class River : Architecture {
-  public override IEnumerable<string> build() {
+class River : Architecture
+{
+  public override IEnumerable<string> build()
+  {
     var rt = new List<string>();
     // TODO: Branching tributaries?
 
@@ -27,31 +29,34 @@ class River : Architecture {
   /// Makes a random end- or midpoint for the river. If [side] is a cardinal
   /// direction, it picks a point on that side of the dungeon. If none, it
   /// picks a point near the center.
-  _RiverPoint _makePoint(Direction side) {
+  _RiverPoint _makePoint(Direction side)
+  {
     var x = Rng.rng.rfloat(width * 0.25, width * 0.75);
     var y = Rng.rng.rfloat(height * 0.25, height * 0.75);
 
     if (side == Direction.none)
-        return new _RiverPoint(x, y);
+      return new _RiverPoint(x, y);
     else if (side == Direction.n)
-        return new _RiverPoint(x, -2.0);
+      return new _RiverPoint(x, -2.0);
     else if (side == Direction.s)
-        return new _RiverPoint(x, height + 2.0);
+      return new _RiverPoint(x, height + 2.0);
     else if (side == Direction.e)
-        return new _RiverPoint(width + 2.0, y);
+      return new _RiverPoint(width + 2.0, y);
     else if (side == Direction.w)
-        return new _RiverPoint(-2.0, y);
+      return new _RiverPoint(-2.0, y);
 
     throw new System.Exception("Unreachable.");
   }
 
-  void _displace(_RiverPoint start, _RiverPoint end) {
+  void _displace(_RiverPoint start, _RiverPoint end)
+  {
     var h = start.x - end.x;
     var v = start.y - end.y;
 
     // Recursively subdivide if the segment is long enough.
     var length = Math.Sqrt(h * h + v * v);
-    if (length > 1.0) {
+    if (length > 1.0)
+    {
       // TODO: Displace along the tangent line between start and end?
       var x = (start.x + end.x) / 2.0 + Rng.rng.rfloat(length / 2.0) - length / 4.0;
       var y = (start.y + end.y) / 2.0 + Rng.rng.rfloat(length / 2.0) - length / 4.0;
@@ -78,8 +83,10 @@ class River : Architecture {
 
     var radiusSquared = start.radius * start.radius;
 
-    for (var y = y1; y <= y2; y++) {
-      for (var x = x1; x <= x2; x++) {
+    for (var y = y1; y <= y2; y++)
+    {
+      for (var x = x1; x <= x2; x++)
+      {
         var xx = start.x - x;
         var yy = start.y - y;
 
@@ -91,7 +98,8 @@ class River : Architecture {
   }
 }
 
-class _RiverPoint {
+class _RiverPoint
+{
   public double x;
   public double y;
   public double radius;

@@ -1,23 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using Debug = UnityEngine.Debug;
 
-public partial class ArchitecturalStyle {
+public partial class ArchitecturalStyle
+{
   public static ResourceSet<ArchitecturalStyle> styles = new ResourceSet<ArchitecturalStyle>();
 
-  public static void initialize() {
+  public static void initialize()
+  {
     // Generic default dungeon style.
     // TODO: Variations on this.
     dungeon();
 
     // TODO: Decide if we should ever do full-size keeps anymore.
-//    addStyle("keep",
-//        startFrequency: 2.0,
-//        endFrequency: 5.0,
-//        decor: "keep",
-//        decorDensity: 0.07,
-//        create: () => Keep());
+    //    addStyle("keep",
+    //        startFrequency: 2.0,
+    //        endFrequency: 5.0,
+    //        decor: "keep",
+    //        decorDensity: 0.07,
+    //        create: () => Keep());
 
     // TODO: Define more.
     // TODO: More catacomb styles with different tile types and tuned params.
@@ -52,8 +54,9 @@ public partial class ArchitecturalStyle {
     // TODO: More.
   }
 
-  public static List<ArchitecturalStyle> pick(int depth) {
-    var result = new List<ArchitecturalStyle>{};
+  public static List<ArchitecturalStyle> pick(int depth)
+  {
+    var result = new List<ArchitecturalStyle> { };
 
     // TODO: Change count range based on depth?
     var count = Mathf.Min(Rng.rng.taper(1, 10), 5);
@@ -61,7 +64,8 @@ public partial class ArchitecturalStyle {
 
     int kk = 0;
 
-    while (!hasFillable || result.Count < count) {
+    while (!hasFillable || result.Count < count)
+    {
       var style = styles.tryChoose(depth)!;
       Debug.Log("xx-- style > " + style.name + " - " + style.canFill);
 
@@ -99,19 +103,20 @@ public partial class ArchitecturalStyle {
       double? itemDensity,
       System.Func<Architecture> _factory,
       bool? canFill = null)
-    {
-      this.name = name;
-      this.decorTheme = decorTheme;
-      this.monsterGroups = monsterGroups;
-      this._factory = _factory;
+  {
+    this.name = name;
+    this.decorTheme = decorTheme;
+    this.monsterGroups = monsterGroups;
+    this._factory = _factory;
 
-        this.decorDensity = decorDensity ?? 0.1;
-        this.monsterDensity = monsterDensity ?? 1.0;
-        this.itemDensity = itemDensity ?? 1.0;
-        this.canFill = canFill ?? true;
-    }
+    this.decorDensity = decorDensity ?? 0.1;
+    this.monsterDensity = monsterDensity ?? 1.0;
+    this.itemDensity = itemDensity ?? 1.0;
+    this.canFill = canFill ?? true;
+  }
 
-  public Architecture create(Architect architect, Region region) {
+  public Architecture create(Architect architect, Region region)
+  {
     var architecture = _factory();
     architecture.bind(this, architect, region);
     return architecture;

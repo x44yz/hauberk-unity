@@ -10,7 +10,8 @@ using UnityTerminal;
 // completely differently from the ItemDialogs (put, sell, etc.). Different
 // code and different user interface. Unify those.
 
-abstract class ItemScreen : Screen {
+abstract class ItemScreen : Screen
+{
   public GameScreen _gameScreen;
 
   // TODO: Move this and _transfer() to an intermediate class instead of making
@@ -29,9 +30,9 @@ abstract class ItemScreen : Screen {
   /// The item currently being inspected or `null` if none.
   public Item _inspected;
 
-//  /// If the crucible contains a complete recipe, this will be it. Otherwise,
-//  /// this will be `null`.
-//  Recipe completeRecipe;
+  //  /// If the crucible contains a complete recipe, this will be it. Otherwise,
+  //  /// this will be `null`.
+  //  Recipe completeRecipe;
 
   string _error;
 
@@ -58,7 +59,8 @@ abstract class ItemScreen : Screen {
   public virtual bool _canSelectAny => false;
   public virtual bool _showPrices => false;
 
-  public virtual bool _canSelect(Item item) {
+  public virtual bool _canSelect(Item item)
+  {
     if (_shiftDown) return true;
 
     return canSelect(item);
@@ -66,16 +68,19 @@ abstract class ItemScreen : Screen {
 
   public virtual bool canSelect(Item item) => true;
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
     // end of hanleInput
-    
+
     _error = null;
 
-    if (keyCode == KeyCode.LeftShift) {
+    if (keyCode == KeyCode.LeftShift)
+    {
       _shiftDown = true;
       Dirty();
       return true;
@@ -83,43 +88,50 @@ abstract class ItemScreen : Screen {
 
     if (alt) return false;
 
-//    if (keyCode == KeyCode.space && completeRecipe != null) {
-//      _save.crucible.clear();
-//      completeRecipe.result.spawnDrop(_save.crucible.tryAdd);
-//      refreshRecipe();
-//
-//      // The player probably wants to get the item out of the crucible.
-//      _mode = Mode.get;
-//      dirty();
-//      return true;
-//    }
+    //    if (keyCode == KeyCode.space && completeRecipe != null) {
+    //      _save.crucible.clear();
+    //      completeRecipe.result.spawnDrop(_save.crucible.tryAdd);
+    //      refreshRecipe();
+    //
+    //      // The player probably wants to get the item out of the crucible.
+    //      _mode = Mode.get;
+    //      dirty();
+    //      return true;
+    //    }
 
-    if (_shiftDown && keyCode == KeyCode.Escape) {
+    if (_shiftDown && keyCode == KeyCode.Escape)
+    {
       _inspected = null;
       Dirty();
       return true;
     }
 
-    if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
+    if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
+    {
       var index = keyCode - KeyCode.A;
       if (index >= _items.slots.Count()) return false;
       var item = _items.slots.elementAt(index);
       if (item == null) return false;
 
-      if (_shiftDown) {
+      if (_shiftDown)
+      {
         _inspected = item;
         Dirty();
-      } else {
+      }
+      else
+      {
         if (!_canSelectAny || !canSelect(item)) return false;
 
         // Prompt the user for a count if the item is a stack.
-        if (item.count > 1) {
+        if (item.count > 1)
+        {
           _isActive = false;
           terminal.Push(new _CountScreen(_gameScreen, this as _ItemVerbScreen, item));
           return true;
         }
 
-        if (_transfer(item, 1)) {
+        if (_transfer(item, 1))
+        {
           terminal.Pop();
           return true;
         }
@@ -129,8 +141,10 @@ abstract class ItemScreen : Screen {
     return false;
   }
 
-  public override bool KeyUp(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == KeyCode.LeftShift) {
+  public override bool KeyUp(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == KeyCode.LeftShift)
+    {
       _shiftDown = false;
       Dirty();
       return true;
@@ -139,33 +153,41 @@ abstract class ItemScreen : Screen {
     return false;
   }
 
-  public override void Active(Screen popped, object result) {
+  public override void Active(Screen popped, object result)
+  {
     _isActive = true;
     _inspected = null;
 
     var countScreen = popped as _CountScreen;
-    if (countScreen != null && result != null) {
-      if (_transfer(countScreen._item, (int)result)) {
+    if (countScreen != null && result != null)
+    {
+      if (_transfer(countScreen._item, (int)result))
+      {
         terminal.Pop();
       }
     }
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     // Don't show the help if another dialog (like buy or sell) is on top with
     // its own help.
-    if (_isActive) {
-      if (_shiftDown) {
+    if (_isActive)
+    {
+      if (_shiftDown)
+      {
         var helpKeys = new Dictionary<string, string>(){
               {"A-Z", "Inspect item"},
         };
-        if (_inspected != null) 
+        if (_inspected != null)
           helpKeys["Esc"] = "Hide inspector";
         Draw.helpKeys(
             terminal,
             helpKeys,
             "Inspect which item?");
-      } else {
+      }
+      else
+      {
         Draw.helpKeys(terminal, _helpKeys, _headerText);
       }
     }
@@ -176,17 +198,18 @@ abstract class ItemScreen : Screen {
     view.render(terminal, _gameScreen.stagePanel.bounds.x,
         _gameScreen.stagePanel.bounds.y, width, _items.length);
 
-//    if (completeRecipe != null) {
-//      terminal.writeAt(59, 2, "Press [Space] to forge item!", UIHue.selection);
-//
-//      var itemCount = _place.items(this).length;
-//      for (var i = 0; i < completeRecipe.produces.length; i++) {
-//        terminal.writeAt(50, itemCount + i + 4,
-//            completeRecipe.produces.elementAt(i), UIHue.text);
-//      }
-//    }
+    //    if (completeRecipe != null) {
+    //      terminal.writeAt(59, 2, "Press [Space] to forge item!", UIHue.selection);
+    //
+    //      var itemCount = _place.items(this).length;
+    //      for (var i = 0; i < completeRecipe.produces.length; i++) {
+    //        terminal.writeAt(50, itemCount + i + 4,
+    //            completeRecipe.produces.elementAt(i), UIHue.text);
+    //      }
+    //    }
 
-    if (_error != null) {
+    if (_error != null)
+    {
       terminal.WriteAt(0, 32, _error!, Hues.red);
     }
   }
@@ -201,19 +224,24 @@ abstract class ItemScreen : Screen {
   /// By default, don't show the price.
   public virtual int? _itemPrice(Item item) => null;
 
-  bool _transfer(Item item, int count) {
+  bool _transfer(Item item, int count)
+  {
     var destination = _destination!;
-    if (!destination.canAdd(item)) {
+    if (!destination.canAdd(item))
+    {
       _error = "Not enough room for ${item.clone(count)}.";
       Dirty();
       return false;
     }
 
-    if (count == item.count) {
+    if (count == item.count)
+    {
       // Moving the entire stack.
       destination.tryAdd(item);
       _items.remove(item);
-    } else {
+    }
+    else
+    {
       // Splitting the stack.
       destination.tryAdd(item.splitStack(count));
       _items.countChanged();
@@ -221,19 +249,20 @@ abstract class ItemScreen : Screen {
 
     _afterTransfer(item, count);
     // TODO
-//    } else if (_place == _Place.crucible) {
-//      refreshRecipe();
-//    }
+    //    } else if (_place == _Place.crucible) {
+    //      refreshRecipe();
+    //    }
 
     return true;
   }
 
   /// Called after [count] of [item] has been transferred out of [_items].
-  void _afterTransfer(Item item, int count) {}
+  void _afterTransfer(Item item, int count) { }
 }
 
 /// Base class for item views where the player is performing an action.
-abstract class _ItemVerbScreen : ItemScreen {
+abstract class _ItemVerbScreen : ItemScreen
+{
   public virtual string _verb => "";
 
   public _ItemVerbScreen(GameScreen gameScreen) : base(gameScreen)
@@ -242,7 +271,8 @@ abstract class _ItemVerbScreen : ItemScreen {
   }
 }
 
-class _TownItemView : ItemView {
+class _TownItemView : ItemView
+{
   public ItemScreen _screen;
 
   public _TownItemView(ItemScreen _screen)
@@ -269,7 +299,8 @@ class _TownItemView : ItemView {
   public override int? getPrice(Item item) => _screen._itemPrice(item);
 }
 
-class _HomeViewScreen : ItemScreen {
+class _HomeViewScreen : ItemScreen
+{
   public override ItemCollection _items => _save.home;
 
   public override string _headerText => "Welcome home!";
@@ -295,17 +326,17 @@ class _HomeViewScreen : ItemScreen {
 
     if (keyCode == KeyCode.G)
     {
-        var screen = new _HomeGetScreen(_gameScreen);
-        screen._inspected = _inspected;
-        _isActive = false;
-        terminal.Push(screen);
-        return true;
+      var screen = new _HomeGetScreen(_gameScreen);
+      screen._inspected = _inspected;
+      _isActive = false;
+      terminal.Push(screen);
+      return true;
     }
     else if (keyCode == KeyCode.P)
     {
-        _isActive = false;
-        terminal.Push(ItemDialog.put(_gameScreen));
-        return true;
+      _isActive = false;
+      terminal.Push(ItemDialog.put(_gameScreen));
+      return true;
     }
 
     return false;
@@ -313,14 +344,15 @@ class _HomeViewScreen : ItemScreen {
 }
 
 /// Screen to items from the hero's home.
-class _HomeGetScreen : _ItemVerbScreen {
+class _HomeGetScreen : _ItemVerbScreen
+{
   public override string _headerText => "Get which item?";
 
   public override string _verb => "Get";
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>() {
-      {"A-Z", "Select item"}, 
-      {"Shift", "Inspect item"}, 
+      {"A-Z", "Select item"},
+      {"Shift", "Inspect item"},
       {"Esc", "Cancel"}
   };
 
@@ -336,14 +368,16 @@ class _HomeGetScreen : _ItemVerbScreen {
 
   public override bool canSelect(Item item) => true;
 
-  void _afterTransfer(Item item, int count) {
+  void _afterTransfer(Item item, int count)
+  {
     _gameScreen.game.log.message($"You {item.clone(count)}.");
     _gameScreen.game.hero.pickUp(item);
   }
 }
 
 /// Views the contents of a shop and lets the player choose to buy or sell.
-class _ShopViewScreen : ItemScreen {
+class _ShopViewScreen : ItemScreen
+{
   public Inventory _shop;
 
   public override ItemCollection _items => _shop;
@@ -363,12 +397,14 @@ class _ShopViewScreen : ItemScreen {
     this._shop = _shop;
   }
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
     if (base.KeyDown(keyCode, shift: shift, alt: alt)) return true;
 
     if (shift || alt) return false;
 
-    switch (keyCode) {
+    switch (keyCode)
+    {
       case KeyCode.B:
         var screen = new _ShopBuyScreen(_gameScreen, _shop);
         screen._inspected = _inspected;
@@ -389,7 +425,8 @@ class _ShopViewScreen : ItemScreen {
 }
 
 /// Screen to buy items from a shop.
-class _ShopBuyScreen : _ItemVerbScreen {
+class _ShopBuyScreen : _ItemVerbScreen
+{
   public Inventory _shop;
 
   public override string _headerText => "Buy which item?";
@@ -397,7 +434,7 @@ class _ShopBuyScreen : _ItemVerbScreen {
   public override string _verb => "Buy";
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>() {
-      {"A-Z", "Select item"}, 
+      {"A-Z", "Select item"},
       {"Shift", "Inspect item"},
       {"Esc", "Cancel"}
   };
@@ -424,7 +461,8 @@ class _ShopBuyScreen : _ItemVerbScreen {
   public override int? _itemPrice(Item item) => item.price;
 
   /// Pay for purchased item.
-  void _afterTransfer(Item item, int count) {
+  void _afterTransfer(Item item, int count)
+  {
     var price = item.price * count;
     _gameScreen.game.log
         .message("You buy ${item.clone(count)} for $price gold.");
@@ -438,7 +476,8 @@ class _ShopBuyScreen : _ItemVerbScreen {
 }
 
 /// Screen to let the player choose a count for a selected item.
-class _CountScreen : ItemScreen {
+class _CountScreen : ItemScreen
+{
   /// The [_ItemVerbScreen] that pushed this.
   public _ItemVerbScreen _parent;
   public Item _item;
@@ -446,27 +485,32 @@ class _CountScreen : ItemScreen {
 
   public override ItemCollection _items => _parent._items;
 
-  public override string _headerText {
-    get {
+  public override string _headerText
+  {
+    get
+    {
       var itemText = _item.clone(_count).ToString();
       var price = _parent._itemPrice(_item);
-      if (price != null) {
+      if (price != null)
+      {
         var priceString = DartUtils.formatMoney(price.Value * _count);
         return $"{_parent._verb} {itemText} for {priceString} gold?";
-      } else {
+      }
+      else
+      {
         return $"{_parent._verb} {itemText}?";
       }
     }
   }
 
   public override Dictionary<string, string> _helpKeys => new Dictionary<string, string>() {
-      {"OK", _parent._verb}, 
-      {"↕", "Change quantity"}, 
+      {"OK", _parent._verb},
+      {"↕", "Change quantity"},
       {"Esc", "Cancel"}
   };
 
   public _CountScreen(GameScreen gameScreen, _ItemVerbScreen _parent, Item _item)
-  :base(gameScreen)
+  : base(gameScreen)
   {
     this._parent = _parent;
     this._item = _item;
@@ -479,44 +523,47 @@ class _CountScreen : ItemScreen {
   /// Highlight the item the user already selected.
   public override bool canSelect(Item item) => item == _item;
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
     if (keyCode == InputX.ok)
     {
-        terminal.Pop(_count);
-        return true;
+      terminal.Pop(_count);
+      return true;
     }
     else if (keyCode == InputX.cancel)
     {
-        terminal.Pop();
-        return true;
+      terminal.Pop();
+      return true;
     }
     else if (keyCode == InputX.n)
     {
-        if (_count < _parent._maxCount(_item)) {
-          _count++;
-          Dirty();
-        }
-        return true;
+      if (_count < _parent._maxCount(_item))
+      {
+        _count++;
+        Dirty();
+      }
+      return true;
     }
     else if (keyCode == InputX.s)
     {
-        if (_count > 1) {
-          _count--;
-          Dirty();
-        }
-        return true;
+      if (_count > 1)
+      {
+        _count--;
+        Dirty();
+      }
+      return true;
     }
     else if (keyCode == InputX.runN && shift)
     {
-        _count = _parent._maxCount(_item);
-        Dirty();
-        return true;
+      _count = _parent._maxCount(_item);
+      Dirty();
+      return true;
     }
     else if (keyCode == InputX.runS && shift)
     {
-          _count = 1;
-          Dirty();
-        return true;
+      _count = 1;
+      Dirty();
+      return true;
 
       // TODO: Allow typing number.
     }

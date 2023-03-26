@@ -5,14 +5,16 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class SelectDepthPopup : Popup {
+class SelectDepthPopup : Popup
+{
   public Content content;
   public HeroSave save;
 
   /// The selected depth.
   int _depth = 1;
 
-  public SelectDepthPopup(Content content, HeroSave save) {
+  public SelectDepthPopup(Content content, HeroSave save)
+  {
     this.content = content;
     this.save = save;
     _depth = Math.Min(Option.maxDepth, save.maxDepth + 1);
@@ -36,30 +38,35 @@ class SelectDepthPopup : Popup {
   public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
     if (keyCode == InputX.w)
-        _changeDepth(_depth - 1);
+      _changeDepth(_depth - 1);
     else if (keyCode == InputX.e)
-        _changeDepth(_depth + 1);
+      _changeDepth(_depth + 1);
     else if (keyCode == InputX.n)
-        _changeDepth(_depth - 10);
+      _changeDepth(_depth - 10);
     else if (keyCode == InputX.s)
-        _changeDepth(_depth + 10);
+      _changeDepth(_depth + 10);
     else if (keyCode == InputX.ok)
-        terminal.Pop(_depth);
+      terminal.Pop(_depth);
     else if (keyCode == InputX.cancel)
-        terminal.Pop();
+      terminal.Pop();
 
     return true;
   }
 
-  public override void renderPopup(Terminal terminal) {
-    for (var depth = 1; depth <= Option.maxDepth; depth++) {
+  public override void renderPopup(Terminal terminal)
+  {
+    for (var depth = 1; depth <= Option.maxDepth; depth++)
+    {
       var x = (depth - 1) % 10;
       var y = ((depth - 1) / 10) * 2;
 
       var color = UIHue.primary;
-      if (!Debugger.enabled && depth > save.maxDepth + 1) {
+      if (!Debugger.enabled && depth > save.maxDepth + 1)
+      {
         color = UIHue.disabled;
-      } else if (depth == _depth) {
+      }
+      else if (depth == _depth)
+      {
         color = UIHue.selection;
         terminal.WriteAt(
             x * 4, y + 5, CharCode.blackRightPointingPointer, color);
@@ -71,7 +78,8 @@ class SelectDepthPopup : Popup {
     }
   }
 
-  void _changeDepth(int depth) {
+  void _changeDepth(int depth)
+  {
     if (depth < 1) return;
     if (depth > Option.maxDepth) return;
     if (!Debugger.enabled && depth > save.maxDepth + 1) return;

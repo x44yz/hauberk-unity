@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using num = System.Double;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 /// Base class for an action that touches a conical or circular swath of tiles.
-abstract class RayActionBase : Action {
+abstract class RayActionBase : Action
+{
   /// The centerpoint that the cone is radiating from.
   public Vec _from;
 
@@ -15,14 +16,14 @@ abstract class RayActionBase : Action {
 
   /// The tiles that have already been touched by the effect. Used to make sure
   /// we don't hit the same tile multiple times.
-  public List<Vec> _hitTiles = new List<Vec>{};
+  public List<Vec> _hitTiles = new List<Vec> { };
 
   /// The cone incrementally spreads outward. This is how far we currently are.
   public float _radius = 1.0f;
 
   /// We "fill" the cone by tracing a number of rays, each of which can get
   /// obstructed. This is the angle of each ray still being traced.
-  public List<double> _rays = new List<double>{};
+  public List<double> _rays = new List<double> { };
 
   public override bool isImmediate => false;
 
@@ -32,7 +33,8 @@ abstract class RayActionBase : Action {
   /// may be the same as [_from] if the ray is a full circle. The rays cover a
   /// chord whose width is [fraction] which varies from 0 (an infinitely narrow
   /// line) to 1.0 (a full circle).
-  public RayActionBase(Vec _from, Vec _to, double fraction) {
+  public RayActionBase(Vec _from, Vec _to, double fraction)
+  {
     this._from = _from;
     this._to = _to;
 
@@ -41,31 +43,39 @@ abstract class RayActionBase : Action {
     var circumference = Mathf.PI * 2 * range;
     var numRays = Mathf.Ceil((float)(circumference * fraction * 2.0f));
 
-    if (fraction < 1.0) {
+    if (fraction < 1.0)
+    {
       // Figure out the center angle of the cone.
       var offset = _to - _from;
       // TODO: Make atan2 getter on Vec?
       var centerTheta = 0.0;
-      if (_from != _to) {
+      if (_from != _to)
+      {
         centerTheta = Mathf.Atan2(offset.x, offset.y);
       }
 
       // Create the rays centered on the line from [_from] to [_to].
-      for (var i = 0; i < numRays; i++) {
+      for (var i = 0; i < numRays; i++)
+      {
         var theta = (i / (numRays - 1)) - 0.5;
         _rays.Add(centerTheta + theta * (Mathf.PI * 2.0 * fraction));
       }
-    } else {
+    }
+    else
+    {
       // Create the rays all the way around the circle.
       var thetaStep = Mathf.PI * 2.0 / numRays;
-      for (var i = 0; i < numRays; i++) {
+      for (var i = 0; i < numRays; i++)
+      {
         _rays.Add(i * thetaStep);
       }
     }
   }
 
-  public override ActionResult onPerform() {
-    if (_radius == 0.0) {
+  public override ActionResult onPerform()
+  {
+    if (_radius == 0.0)
+    {
       reachStartTile(_from);
       _radius += 1.0f;
       return ActionResult.notDone;
@@ -75,7 +85,8 @@ abstract class RayActionBase : Action {
     // tile too.
 
     // See which new tiles each ray hit now.
-    _rays.RemoveAll((ray) => {
+    _rays.RemoveAll((ray) =>
+    {
       var pos = new Vec(_from.x + Mathf.RoundToInt(Mathf.Sin((float)ray) * _radius),
           _from.y + Mathf.RoundToInt(Mathf.Cos((float)ray) * _radius));
 
@@ -100,13 +111,14 @@ abstract class RayActionBase : Action {
     return ActionResult.notDone;
   }
 
-  void reachStartTile(Vec pos) {}
+  void reachStartTile(Vec pos) { }
 
-    public abstract void reachTile(Vec pos, num distance);
+  public abstract void reachTile(Vec pos, num distance);
 }
 
 /// Creates a swath of damage that radiates out from a point.
-class RayAction : RayActionBase {
+class RayAction : RayActionBase
+{
   public Hit _hit;
   public ElementActionMixin _elementMixin;
 
@@ -122,12 +134,13 @@ class RayAction : RayActionBase {
 
   public RayAction(Hit _hit, Vec from, Vec to, double fraction)
       : base(from, to, fraction)
-    {
-        this._hit = _hit;
-        _elementMixin = new ElementActionMixin(this);
-    }
+  {
+    this._hit = _hit;
+    _elementMixin = new ElementActionMixin(this);
+  }
 
-  public override void reachTile(Vec pos, num distance) {
+  public override void reachTile(Vec pos, num distance)
+  {
     _elementMixin.hitTile(_hit, pos, distance);
   }
 }
@@ -135,7 +148,8 @@ class RayAction : RayActionBase {
 /// Creates an expanding ring of damage centered on the [Actor].
 ///
 /// This class mainly exists as an [Action] that [Item]s can use.
-class RingSelfAction : Action {
+class RingSelfAction : Action
+{
   public Attack _attack;
 
   public RingSelfAction(Attack _attack)
@@ -145,12 +159,14 @@ class RingSelfAction : Action {
 
   public override bool isImmediate => false;
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     return alternate(RayAction.ring(actor!.pos, _attack.createHit()));
   }
 }
 
-class RingFromAction : Action {
+class RingFromAction : Action
+{
   public Attack _attack;
   // public Vec _pos;
 
@@ -162,7 +178,8 @@ class RingFromAction : Action {
 
   public override bool isImmediate => false;
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     return alternate(RayAction.ring(_pos, _attack.createHit()));
   }
 }

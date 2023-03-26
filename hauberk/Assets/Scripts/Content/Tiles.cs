@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityTerminal;
 
 /// Static class containing all of the [TileType]s.
-class Tiles {
+class Tiles
+{
 
   // Note: Not using lambdas for these because that prevents [Tiles.openDoor] and
   // [Tiles.closedDoor] from having their types inferred.
@@ -230,9 +231,11 @@ class Tiles {
       new _TileBuilder(name, ch, fore, back);
 
   public static List<TileType> multi(string name, object ch, Color fore, Color? back,
-      int count, System.Func<_TileBuilder, int, TileType> generate) {
+      int count, System.Func<_TileBuilder, int, TileType> generate)
+  {
     var result = new List<TileType>();
-    for (var i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++)
+    {
       var builder = tile(name, ch, fore, back);
       result.Add(generate(builder, i));
     }
@@ -308,10 +311,11 @@ class Tiles {
   };
 
   /// What types [tile] can turn into when it finishes burning.
-  public static List<TileType> burnResult(TileType tile) {
+  public static List<TileType> burnResult(TileType tile)
+  {
     if (_burnTypes.ContainsKey(tile)) return _burnTypes[tile]!;
 
-    return new List<TileType>(){burntFloor, burntFloor2};
+    return new List<TileType>() { burntFloor, burntFloor2 };
   }
 
   public static Dictionary<TileType, List<TileType>> _burnTypes = new Dictionary<TileType, List<TileType>>(){
@@ -327,7 +331,8 @@ class Tiles {
   };
 }
 
-class _TileBuilder {
+class _TileBuilder
+{
   public string name;
   public List<Glyph> glyphs;
 
@@ -336,7 +341,7 @@ class _TileBuilder {
   TilePortal _portal;
   int _emanation = 0;
 
-  public _TileBuilder(string name, object ch, Color fore, Color? back) 
+  public _TileBuilder(string name, object ch, Color fore, Color? back)
   {
     try
     {
@@ -345,7 +350,7 @@ class _TileBuilder {
       var charCode = ch is int ? ch : (ch as string)[0];
 
       this.name = name;
-      glyphs = new List<Glyph>(){new Glyph((char)charCode, fore, back)};
+      glyphs = new List<Glyph>() { new Glyph((char)charCode, fore, back) };
     }
     catch (System.Exception ex)
     {
@@ -356,11 +361,13 @@ class _TileBuilder {
   public _TileBuilder(string name, Glyph glyph)
   {
     this.name = name;
-    glyphs = new List<Glyph>(){glyph};
+    glyphs = new List<Glyph>() { glyph };
   }
 
-  public _TileBuilder blend(double amount, Color fore, Color back) {
-    for (var i = 0; i < glyphs.Count; i++) {
+  public _TileBuilder blend(double amount, Color fore, Color back)
+  {
+    for (var i = 0; i < glyphs.Count; i++)
+    {
       var glyph = glyphs[i];
       glyphs[i] = new Glyph(glyph.ch, glyph.fore.blend(fore, (float)amount),
           glyph.back.blend(back, (float)amount));
@@ -369,9 +376,11 @@ class _TileBuilder {
     return this;
   }
 
-  public _TileBuilder animate(int count, double maxMix, Color fore, Color back) {
+  public _TileBuilder animate(int count, double maxMix, Color fore, Color back)
+  {
     var glyph = glyphs[0];
-    for (var i = 1; i < count; i++) {
+    for (var i = 1; i < count; i++)
+    {
       var mixedFore =
           glyph.fore.blend(fore, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
       var mixedBack =
@@ -383,22 +392,26 @@ class _TileBuilder {
     return this;
   }
 
-  public _TileBuilder emanate(int emanation) {
+  public _TileBuilder emanate(int emanation)
+  {
     _emanation = emanation;
     return this;
   }
 
-  public _TileBuilder to(TilePortal portal) {
+  public _TileBuilder to(TilePortal portal)
+  {
     _portal = portal;
     return this;
   }
 
-  public _TileBuilder onClose(System.Func<Vec, Action> onClose) {
+  public _TileBuilder onClose(System.Func<Vec, Action> onClose)
+  {
     _onClose = onClose;
     return this;
   }
 
-  public _TileBuilder onOpen(System.Func<Vec, Action> onOpen) {
+  public _TileBuilder onOpen(System.Func<Vec, Action> onOpen)
+  {
     _onOpen = onOpen;
     return this;
   }
@@ -415,23 +428,25 @@ class _TileBuilder {
 
   public TileType water() => _motility(Motility.fly | Motility.swim);
 
-  public TileType _motility(Motility motility) {
+  public TileType _motility(Motility motility)
+  {
     if (glyphs.Count == 1)
-        return new TileType(name, glyphs[0], motility,
+      return new TileType(name, glyphs[0], motility,
+        portal: _portal,
+        emanation: _emanation,
+        onClose: _onClose,
+        onOpen: _onOpen);
+    else
+      return new TileType(name, glyphs, motility,
           portal: _portal,
           emanation: _emanation,
           onClose: _onClose,
           onOpen: _onOpen);
-    else
-        return new TileType(name, glyphs, motility,
-            portal: _portal,
-            emanation: _emanation,
-            onClose: _onClose,
-            onOpen: _onOpen);
   }
 }
 
-class TilePortals {
+class TilePortals
+{
   /// Stairs to exit the dungeon.
   public static TilePortal exit = new TilePortal("exit");
 

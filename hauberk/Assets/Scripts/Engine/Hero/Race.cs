@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 
 /// The hero's species.
-public class Race {
+public class Race
+{
   public string name;
 
   public string description;
@@ -22,17 +23,19 @@ public class Race {
 
   /// Determines how the hero's stats should increase at each level based on
   /// this race.
-  public RaceStats rollStats() 
+  public RaceStats rollStats()
   {
     // Pick specific values for each stat.
     var rolled = new Dictionary<Stat, int>();
-    foreach (var stat in stats.Keys) {
+    foreach (var stat in stats.Keys)
+    {
       var _base = stats[stat]!;
       var value = _base;
 
       // Randomly boost the max some.
-      value +=  Rng.rng.range(4);
-      while (value < 50 && Rng.rng.percent(_base / 2 + 30)) {
+      value += Rng.rng.range(4);
+      while (value < 50 && Rng.rng.percent(_base / 2 + 30))
+      {
         value++;
       }
       rolled[stat] = value;
@@ -43,7 +46,8 @@ public class Race {
 }
 
 /// Tracks the stat points gained at each level due to the hero's race.
-public class RaceStats {
+public class RaceStats
+{
   public Race _race;
   public Dictionary<Stat, int> _max;
 
@@ -58,7 +62,7 @@ public class RaceStats {
   /// hero level 1.
   public List<Dictionary<Stat, int>> _stats = new List<Dictionary<Stat, int>>();
 
-  public RaceStats(Race _race, Dictionary<Stat, int> _max, int seed) 
+  public RaceStats(Race _race, Dictionary<Stat, int> _max, int seed)
   {
     this._race = _race;
     this._max = _max;
@@ -68,7 +72,8 @@ public class RaceStats {
     var current = new Dictionary<Stat, int>();
     var totalMin = 0;
     var totalMax = 0;
-    foreach (var stat in _max.Keys) {
+    foreach (var stat in _max.Keys)
+    {
       min[stat] = 10 + _max[stat]! / 15;
       totalMin += min[stat]!;
       totalMax += _max[stat]!;
@@ -79,8 +84,10 @@ public class RaceStats {
 
     // Distribute the total points evenly across the levels.
     var previous = 0;
-    for (var level = 0; level < Hero.maxLevel; level++) {
-      double lerp(int from, int to) {
+    for (var level = 0; level < Hero.maxLevel; level++)
+    {
+      double lerp(int from, int to)
+      {
         var t = level / (Hero.maxLevel - 1);
         return (1.0 - t) * from + t * to;
       }
@@ -91,21 +98,26 @@ public class RaceStats {
       var gained = points - previous;
 
       // Distribute the points across the stats.
-      for (var point = 0; point < gained; point++) {
+      for (var point = 0; point < gained; point++)
+      {
         // The "error" is how far a stat's current value is from where it
         // should ideally be at this level. The stat with the largest error is
         // the one who gets this point.
         var worstError = -100.0;
         var worstStats = new List<Stat>();
 
-        foreach (var stat1 in _max.Keys) {
+        foreach (var stat1 in _max.Keys)
+        {
           var ideal = lerp(min[stat1]!, _max[stat1]!);
           var error = ideal - current[stat1]!;
 
-          if (error > worstError) {
-            worstStats = new List<Stat>(){stat1};
+          if (error > worstError)
+          {
+            worstStats = new List<Stat>() { stat1 };
             worstError = error;
-          } else if (error == worstError) {
+          }
+          else if (error == worstError)
+          {
             worstStats.Add(stat1);
           }
         }

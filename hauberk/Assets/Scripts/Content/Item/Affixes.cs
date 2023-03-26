@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-class Affixes {
+class Affixes
+{
   public static ResourceSet<Affix> prefixes = new ResourceSet<Affix>();
   public static ResourceSet<Affix> suffixes = new ResourceSet<Affix>();
 
   /// Creates a new [Item] of [itemType] and chooses affixes for it.
   public static Item createItem(ItemType itemType, int droppedDepth,
-      int? affixChance) {
+      int? affixChance)
+  {
 
     affixChance = affixChance ?? 0;
 
     // Only equipped items have affixes.
-    if (itemType.equipSlot == null) 
+    if (itemType.equipSlot == null)
       return new Item(itemType, 1);
 
     // Calculate the effective depth of the item for generating affixes. This
@@ -28,11 +30,14 @@ class Affixes {
     var affixDepth = droppedDepth;
     var outOfDepth = itemType.depth - droppedDepth;
 
-    if (outOfDepth > 0) {
+    if (outOfDepth > 0)
+    {
       // Generating a stronger item than expected, so it will have weaker
       // affixes.
       affixDepth -= outOfDepth;
-    } else {
+    }
+    else
+    {
       // Generating a weaker item than expected, so boost its affix. Reduce the
       // boost as the hero gets deeper in the dungeon. Otherwise, near 100, the
       // boost ends up pushing almost everything past 100 since most equipment
@@ -61,10 +66,14 @@ class Affixes {
     var prefix = _chooseAffix(prefixes, itemType, affixDepth);
     var suffix = _chooseAffix(suffixes, itemType, affixDepth);
 
-    if (affixes == 1 && prefix != null && suffix != null) {
-      if (Rng.rng.oneIn(2)) {
+    if (affixes == 1 && prefix != null && suffix != null)
+    {
+      if (Rng.rng.oneIn(2))
+      {
         prefix = null;
-      } else {
+      }
+      else
+      {
         suffix = null;
       }
     }
@@ -72,7 +81,8 @@ class Affixes {
     return new Item(itemType, 1, prefix, suffix);
   }
 
-  public static Affix find(string name) {
+  public static Affix find(string name)
+  {
     var type = prefixes.tryFind(name);
     if (type != null) return type;
 
@@ -80,11 +90,13 @@ class Affixes {
   }
 
   static Affix _chooseAffix(
-      ResourceSet<Affix> affixes, ItemType itemType, int depth) {
+      ResourceSet<Affix> affixes, ItemType itemType, int depth)
+  {
     return affixes.tryChooseMatching(depth, Items.types.getTags(itemType.name));
   }
 
-  public static void initialize() {
+  public static void initialize()
+  {
     _elven();
     _dwarven();
     _resists();
@@ -95,7 +107,8 @@ class Affixes {
     // TODO: More stat bonus affixes.
 
     _AffixBuilder.affixCategory("helm");
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 2; i++)
+    {
       var a = _AffixBuilder.affix("_ of Acumen", 1.0);
       a.depth(35, to: 55);
       a.price(300, 2.0);
@@ -120,7 +133,8 @@ class Affixes {
     _AffixBuilder.finishAffix();
   }
 
-  static void _elven() {
+  static void _elven()
+  {
     _AffixBuilder.affixCategory("body");
     var a = _AffixBuilder.affix("Elven _", 1.0);
     a.depth(40, to: 80);
@@ -194,7 +208,8 @@ class Affixes {
     a.resist(Elements.light);
   }
 
-  static void _dwarven() {
+  static void _dwarven()
+  {
     // TODO: These prices need tuning.
     _AffixBuilder.affixCategory("body");
     var a = _AffixBuilder.affix("Dwarven _", 1.0);
@@ -235,7 +250,7 @@ class Affixes {
     a.depth(50);
     a.price(300, 2.0);
     a.weight(1);
-      // TODO: Encumbrance.
+    // TODO: Encumbrance.
     a.armor(3);
     a.strength(1);
     a.resist(Elements.earth);
@@ -276,7 +291,8 @@ class Affixes {
     a.resist(Elements.dark);
   }
 
-  static void _resists() {
+  static void _resists()
+  {
     // TODO: Don't apply to all armor types?
     _AffixBuilder.affixCategory("armor");
     var a = _AffixBuilder.affix("_ of Resist Air", 0.5);
@@ -288,7 +304,7 @@ class Affixes {
     a.depth(11, to: 51);
     a.price(230, 1.2);
     a.resist(Elements.earth);
-    
+
     a = _AffixBuilder.affix("_ of Resist Fire", 0.5);
     a.depth(12, to: 52);
     a.price(260, 1.3);
@@ -431,7 +447,8 @@ class Affixes {
     a.resist(Elements.spirit, 2);
   }
 
-  static void _extraDamage() {
+  static void _extraDamage()
+  {
     // TODO: Exclude bows?
     _AffixBuilder.affixCategory("weapon");
     var a = _AffixBuilder.affix("_ of Harming", 1.0);
@@ -472,7 +489,8 @@ class Affixes {
     a.damage(bonus: 5);
   }
 
-  static void _brands() {
+  static void _brands()
+  {
     _AffixBuilder.affixCategory("weapon");
 
     var a = _AffixBuilder.affix("Glimmering _", 0.3);
@@ -580,7 +598,8 @@ class Affixes {
     a.brand(Elements.spirit, resist: 2);
   }
 
-  public static void defineItemTag(string tag) {
+  public static void defineItemTag(string tag)
+  {
     prefixes.defineTags(tag);
     suffixes.defineTags(tag);
   }

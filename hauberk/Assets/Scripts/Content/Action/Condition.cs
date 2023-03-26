@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class HasteAction : ConditionAction {
+class HasteAction : ConditionAction
+{
   public int _speed;
   public int _duration;
 
@@ -20,7 +21,8 @@ class HasteAction : ConditionAction {
   public override void onIntensify() => log("{1} move[s] even faster.", actor);
 }
 
-class FreezeActorAction : ConditionAction {
+class FreezeActorAction : ConditionAction
+{
   public int _damage;
   public DestroyActionMixin _destroyMixin;
 
@@ -32,7 +34,8 @@ class FreezeActorAction : ConditionAction {
 
   Condition condition => actor!.cold;
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     _destroyMixin.destroyHeldItems(Elements.cold);
     return base.onPerform();
   }
@@ -44,7 +47,8 @@ class FreezeActorAction : ConditionAction {
   public override void onIntensify() => log("{1} feel[s] the cold intensify!", actor);
 }
 
-class PoisonAction : ConditionAction {
+class PoisonAction : ConditionAction
+{
   public int _damage;
 
   public PoisonAction(int _damage)
@@ -61,7 +65,8 @@ class PoisonAction : ConditionAction {
   public override void onIntensify() => log("{1} feel[s] the poison intensify!", actor);
 }
 
-class BlindAction : ConditionAction {
+class BlindAction : ConditionAction
+{
   public int _damage;
 
   public BlindAction(int _damage)
@@ -73,7 +78,8 @@ class BlindAction : ConditionAction {
 
   public override int getDuration() => 3 + Rng.rng.triangleInt(_damage * 2, _damage / 2);
 
-  public override void onActivate() {
+  public override void onActivate()
+  {
     log("{1 his} vision dims!", actor);
     game.stage.heroVisibilityChanged();
   }
@@ -81,7 +87,8 @@ class BlindAction : ConditionAction {
   public override void onExtend() => log("{1 his} vision dims!", actor);
 }
 
-class DazzleAction : ConditionAction {
+class DazzleAction : ConditionAction
+{
   public int _damage;
 
   public DazzleAction(int _damage)
@@ -96,7 +103,8 @@ class DazzleAction : ConditionAction {
   public override void onExtend() => log("{1} [are|is] dazzled by the light!", actor);
 }
 
-class ResistAction : ConditionAction {
+class ResistAction : ConditionAction
+{
   public int _duration;
   public Element _element;
 

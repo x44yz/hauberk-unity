@@ -6,7 +6,8 @@ using num = System.Double;
 /// A [Move] is an action that a [Monster] can perform aside from the basic
 /// walking and melee attack actions. Moves include things like spells, breaths,
 /// and missiles.
-public abstract class Move {
+public abstract class Move
+{
   /// The frequency at which the monster can perform this move (with some
   /// randomness added in).
   ///
@@ -38,7 +39,8 @@ public abstract class Move {
 
   /// Called when the [Monster] has selected this move. Returns an [Action] that
   /// performs the move.
-  public Action getAction(Monster monster) {
+  public Action getAction(Monster monster)
+  {
     monster.useMove(this);
     return onGetAction(monster);
   }
@@ -51,12 +53,13 @@ public abstract class Move {
 ///
 /// The monster AI looks for this to determine whether it should go for melee
 /// or ranged behavior.
-abstract class RangedMove : Move {
+abstract class RangedMove : Move
+{
   public Attack attack;
 
   public override int range => attack.range;
 
-  public RangedMove(num rate, Attack attack) 
+  public RangedMove(num rate, Attack attack)
     : base(rate)
   {
     this.attack = attack;

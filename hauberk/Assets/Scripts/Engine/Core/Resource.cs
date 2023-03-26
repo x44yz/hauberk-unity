@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ResourceSet<T> where T : class {
+public class ResourceSet<T> where T : class
+{
   public Dictionary<string, _Tag<T>> _tags = new Dictionary<string, _Tag<T>>();
   public Dictionary<string, _Resource<T>> _resources = new Dictionary<string, _Resource<T>>();
 
@@ -16,7 +17,7 @@ public class ResourceSet<T> where T : class {
 
   public IEnumerable<T> all => _resources.Values.ToList().Select((resource) => resource.obj);
 
-  public void add(T obj, string name = null, int? depth = null, 
+  public void add(T obj, string name = null, int? depth = null,
     double? frequency = null, string tags = null)
   {
     _add(obj, name, depth, depth, frequency, frequency, tags);
@@ -28,7 +29,8 @@ public class ResourceSet<T> where T : class {
       int? end = null,
       double? startFrequency = null,
       double? endFrequency = null,
-      string tags = null) {
+      string tags = null)
+  {
     _add(obj, name, start, end, startFrequency, endFrequency, tags);
   }
 
@@ -41,17 +43,20 @@ public class ResourceSet<T> where T : class {
     startFrequency ??= 1.0;
     endFrequency ??= startFrequency;
 
-    if (_resources.ContainsKey(name)) {
+    if (_resources.ContainsKey(name))
+    {
       throw new System.ArgumentException($"Already have a resource named \"{name}\".");
     }
 
     var resource =
-        new _Resource<T>(obj, startDepth.Value, endDepth.Value, 
+        new _Resource<T>(obj, startDepth.Value, endDepth.Value,
         startFrequency.Value, endFrequency.Value);
     _resources[name] = resource;
 
-    if (tags != null && tags != "") {
-      foreach (var tagName in tags.Split(' ')) {
+    if (tags != null && tags != "")
+    {
+      foreach (var tagName in tags.Split(' '))
+      {
         var tag = _tags[tagName];
         if (tag == null) throw new System.ArgumentException($"Unknown tag \"{tagName}\".");
         resource._tags.Add(tag);
@@ -62,14 +67,17 @@ public class ResourceSet<T> where T : class {
   /// Given a string like "a/b/c d/e" defines tags for "a", "b", "c", "d", and
   /// "e" (if not already defined) and wires them up such that "c"'s parent is
   /// "b", "b"'s is "a", and "e"'s parent is "d".
-  public void defineTags(string paths) {
-    foreach (var path in paths.Split(' ')) 
+  public void defineTags(string paths)
+  {
+    foreach (var path in paths.Split(' '))
     {
       _Tag<T> parent = null;
       _Tag<T> tag = null;
       var names = path.Split('/');
-      foreach (var name in names) {
-        if (_tags.TryGetValue(name, out tag) == false) {
+      foreach (var name in names)
+      {
+        if (_tags.TryGetValue(name, out tag) == false)
+        {
           tag = new _Tag<T>(name, parent);
           _tags[name] = tag;
         }
@@ -79,14 +87,16 @@ public class ResourceSet<T> where T : class {
   }
 
   /// Returns the resource with [name].
-  public T find(string name) {
+  public T find(string name)
+  {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     return resource.obj;
   }
 
   /// Returns the resource with [name], if any, or else `null`.
-  public T tryFind(string name) {
+  public T tryFind(string name)
+  {
     if (_resources.ContainsKey(name))
     {
       var resource = _resources[name];
@@ -97,7 +107,8 @@ public class ResourceSet<T> where T : class {
 
   /// Returns whether the resource with [name] has [tagName] as one of its
   /// immediate tags or one of their parents.
-  public bool hasTag(string name, string tagName) {
+  public bool hasTag(string name, string tagName)
+  {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
 
@@ -108,7 +119,8 @@ public class ResourceSet<T> where T : class {
   }
 
   /// Gets the names of the tags for the resource with [name].
-  public IEnumerable<string> getTags(string name) {
+  public IEnumerable<string> getTags(string name)
+  {
     var resource = _resources[name];
     if (resource == null) throw new System.ArgumentException($"Unknown resource \"{name}\".");
     // return new List<string>().Add(resource._tags.ToList((tag) => tag.name);
@@ -134,7 +146,8 @@ public class ResourceSet<T> where T : class {
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  public T tryChoose(int depth, string tag = null, bool includeParents = true) {
+  public T tryChoose(int depth, string tag = null, bool includeParents = true)
+  {
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
 
@@ -143,12 +156,15 @@ public class ResourceSet<T> where T : class {
     var label = goalTag.name;
     if (!includeParents) label += " (only)";
 
-    return _runQuery(label, depth, (_Resource<T> resource) => {
+    return _runQuery(label, depth, (_Resource<T> resource) =>
+    {
       var scale = 1.0;
       for (_Tag<T> thisTag = goalTag;
           thisTag != null;
-          thisTag = thisTag.parent) {
-        foreach (var resourceTag in resource._tags) {
+          thisTag = thisTag.parent)
+      {
+        foreach (var resourceTag in resource._tags)
+        {
           if (resourceTag.contains(thisTag)) return scale;
         }
 
@@ -171,8 +187,10 @@ public class ResourceSet<T> where T : class {
   /// For example, given tag path "equipment/weapon/sword", if [tags] is
   /// "weapon", this will permit resources tagged "weapon" or "equipment", but
   /// not "sword".
-  public T tryChooseMatching(int depth, IEnumerable<string> tags) {
-    var tagObjects = tags.Select((name) => {
+  public T tryChooseMatching(int depth, IEnumerable<string> tags)
+  {
+    var tagObjects = tags.Select((name) =>
+    {
       var tag = _tags[name];
       if (tag == null) throw new System.Exception($"Unknown tag \"{name}.");
       return tag;
@@ -181,8 +199,10 @@ public class ResourceSet<T> where T : class {
     var tagNames = tags.ToList();
     tagNames.Sort();
 
-    return _runQuery($"{string.Join("|", tagNames)} (match)", depth, (resource) => {
-      foreach (var resourceTag in resource._tags) {
+    return _runQuery($"{string.Join("|", tagNames)} (match)", depth, (resource) =>
+    {
+      foreach (var resourceTag in resource._tags)
+      {
         if (tagObjects.Any((tag) => tag.contains(resourceTag))) return 1.0;
       }
 
@@ -191,23 +211,28 @@ public class ResourceSet<T> where T : class {
   }
 
   T _runQuery(
-      string name, int depth, System.Func<_Resource<T>, double> scale) {
+      string name, int depth, System.Func<_Resource<T>, double> scale)
+  {
     // Reuse a cached query, if possible.
     var key = new _QueryKey(name, depth);
     _ResourceQuery<T> query = null;
-    foreach (var kv in _queries) {
-      if (kv.Key.name == name && kv.Key.depth == depth) {
+    foreach (var kv in _queries)
+    {
+      if (kv.Key.name == name && kv.Key.depth == depth)
+      {
         query = kv.Value;
         break;
       }
     }
-    if (query == null) {
+    if (query == null)
+    {
       var resources = new List<_Resource<T>>();
       var chances = new List<double>();
       var totalChance = 0.0;
 
       // Determine the weighted chance for each resource.
-      foreach (var resource in _resources.Values) {
+      foreach (var resource in _resources.Values)
+      {
         var chance = scale(resource);
         if (chance == 0.0) continue;
 
@@ -233,7 +258,8 @@ public class ResourceSet<T> where T : class {
   }
 }
 
-public class _Resource<T> {
+public class _Resource<T>
+{
   public T obj;
   public int startDepth;
   public int endDepth;
@@ -258,7 +284,7 @@ public class _Resource<T> {
   /// Between the [startDepth] and [endDepth], this linearly interpolates
   /// between [startFrequency] and [endFrequency]. Outside of that range, it
   /// uses either the start or end.
-  public double frequencyAtDepth(int depth) 
+  public double frequencyAtDepth(int depth)
   {
     if (startDepth == endDepth) return startFrequency;
     return MathUtils.lerpDouble(
@@ -283,13 +309,17 @@ public class _Resource<T> {
   /// things are.
   ///
   /// https://en.wikipedia.org/wiki/Normal_distribution
-  public double chanceAtDepth(int depth) {
-    if (depth < startDepth) {
+  public double chanceAtDepth(int depth)
+  {
+    if (depth < startDepth)
+    {
       var relative = startDepth - depth;
       var deviation = 0.6f + depth * 0.2f;
 
       return Math.Exp(-0.5f * relative * relative / (deviation * deviation));
-    } else if (depth > endDepth) {
+    }
+    else if (depth > endDepth)
+    {
       var relative = depth - endDepth;
 
       // As you get deeper in the dungeon, the probability curve widens so that
@@ -297,14 +327,17 @@ public class _Resource<T> {
       var deviation = 1.0f + depth * 0.1f;
 
       return Math.Exp(-0.5f * relative * relative / (deviation * deviation));
-    } else {
+    }
+    else
+    {
       // Within the resource's depth range.
       return 1.0;
     }
   }
 }
 
-public class _Tag<T> {
+public class _Tag<T>
+{
   public string name;
   public _Tag<T> parent;
 
@@ -315,22 +348,26 @@ public class _Tag<T> {
   }
 
   /// Returns `true` if this tag is [tag] or one of this tag's parents is.
-  public bool contains(_Tag<T> tag) {
-    for (_Tag<T> thisTag = this; thisTag != null; thisTag = thisTag.parent) {
+  public bool contains(_Tag<T> tag)
+  {
+    for (_Tag<T> thisTag = this; thisTag != null; thisTag = thisTag.parent)
+    {
       if (tag == thisTag) return true;
     }
 
     return false;
   }
 
-  public override string ToString() {
+  public override string ToString()
+  {
     if (parent == null) return name;
     return $"{parent}/{name}";
   }
 }
 
 /// Uniquely identifies a query.
-public class _QueryKey {
+public class _QueryKey
+{
   public string name;
   public int depth;
 
@@ -342,11 +379,13 @@ public class _QueryKey {
 
   int hashCode => name.GetHashCode() ^ depth.GetHashCode();
 
-  public static bool operator ==(_QueryKey a, object other) {
+  public static bool operator ==(_QueryKey a, object other)
+  {
     var query = other as _QueryKey;
     return a.name == query.name && a.depth == query.depth;
   }
-  public static bool operator !=(_QueryKey a, object other) { 
+  public static bool operator !=(_QueryKey a, object other)
+  {
     return !(a == other);
   }
 
@@ -383,13 +422,14 @@ public class _QueryKey {
 /// [ResourceSet.tryChooseMatching] with the same arguments.
 ///
 /// This caches that state.
-public class _ResourceQuery<T> where T : class {
+public class _ResourceQuery<T> where T : class
+{
   public int depth;
   public List<_Resource<T>> resources;
   public List<double> chances;
   public double totalChance;
 
-  public _ResourceQuery(int depth, List<_Resource<T>> resources, 
+  public _ResourceQuery(int depth, List<_Resource<T>> resources,
     List<double> chances, double totalChance)
   {
     this.depth = depth;
@@ -399,7 +439,8 @@ public class _ResourceQuery<T> where T : class {
   }
 
   /// Choose a random resource that matches this query.
-  public T choose() {
+  public T choose()
+  {
     if (resources.Count == 0) return null;
 
     // Pick a point in the probability range.
@@ -409,21 +450,29 @@ public class _ResourceQuery<T> where T : class {
     var first = 0;
     var last = resources.Count - 1;
 
-    while (true) {
+    while (true)
+    {
       var middle = (first + last) / 2;
-      if (middle > 0 && t < chances[middle - 1]) {
+      if (middle > 0 && t < chances[middle - 1])
+      {
         last = middle - 1;
-      } else if (t < chances[middle]) {
+      }
+      else if (t < chances[middle])
+      {
         return resources[middle].obj;
-      } else {
+      }
+      else
+      {
         first = middle + 1;
       }
     }
   }
 
-  void dump(_QueryKey key) {
+  void dump(_QueryKey key)
+  {
     DartUtils.print(key.ToString());
-    for (var i = 0; i < resources.Count; i++) {
+    for (var i = 0; i < resources.Count; i++)
+    {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =

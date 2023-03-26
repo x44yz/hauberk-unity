@@ -6,19 +6,22 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 // TODO: Fix this and its subscreens to work with the resizable UI.
-abstract class HeroInfoDialog : Screen {
+abstract class HeroInfoDialog : Screen
+{
   static public List<HeroInfoDialog> _screens = new List<HeroInfoDialog>();
 
   public Content content;
   public HeroSave hero;
 
-  public static HeroInfoDialog create(Content content, HeroSave hero) {
-    if (_screens.isEmpty()) {
+  public static HeroInfoDialog create(Content content, HeroSave hero)
+  {
+    if (_screens.isEmpty())
+    {
       _screens.Add(new HeroEquipmentDialog(content, hero));
       _screens.Add(new HeroResistancesDialog(content, hero));
       _screens.Add(new HeroMonsterLoreDialog(content, hero));
       _screens.Add(new HeroItemLoreDialog(content, hero));
-        // TODO: Affixes.
+      // TODO: Affixes.
     }
 
     return _screens.First();
@@ -34,20 +37,26 @@ abstract class HeroInfoDialog : Screen {
 
   public virtual string extraHelp => null;
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
 
     if (alt) return false;
 
-    if (keyCode == KeyCode.Tab) {
+    if (keyCode == KeyCode.Tab)
+    {
       var index = _screens.IndexOf(this);
 
-      if (shift) {
+      if (shift)
+      {
         index += _screens.Count - 1;
-      } else {
+      }
+      else
+      {
         index++;
       }
 
@@ -59,12 +68,14 @@ abstract class HeroInfoDialog : Screen {
     return false;
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     terminal.Clear();
 
     var nextScreen = _screens[(_screens.IndexOf(this) + 1) % _screens.Count];
     var helpText = $"[Esc] Exit, [Tab] View {nextScreen.name}";
-    if (extraHelp != null) {
+    if (extraHelp != null)
+    {
       helpText += $", {extraHelp}";
     }
 
@@ -72,16 +83,18 @@ abstract class HeroInfoDialog : Screen {
   }
 
   public void drawEquipmentTable(
-      Terminal terminal, System.Action<Item, int> callback) 
+      Terminal terminal, System.Action<Item, int> callback)
   {
     terminal.WriteAt(2, 1, "Equipment", Hues.gold);
 
     var y = 3;
-    for (var i = 0; i < hero.equipment.slots.Count; i++) {
+    for (var i = 0; i < hero.equipment.slots.Count; i++)
+    {
       var item = hero.equipment.slots[i];
       callback(item, y);
 
-      if (item == null) {
+      if (item == null)
+      {
         terminal.WriteAt(
             2, y, $"({hero.equipment.slotTypes[i]})", Hues.darkCoolGray);
         y += 2;

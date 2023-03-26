@@ -4,7 +4,8 @@ using System.Linq;
 
 /// Creates a swath of damage that flows out from a point through reachable
 /// tiles.
-class FlowAction : Action {
+class FlowAction : Action
+{
   /// The centerpoint that the flow is radiating from.
   public Vec _from;
   public Hit _hit;
@@ -26,24 +27,27 @@ class FlowAction : Action {
   // them. That would let fire flow attacks that can set closed doors on fire.
 
   public FlowAction(Vec _from, Hit _hit, Motility _motility, int? slowness = null)
-    {
-        this._from = _from; 
-        this._hit = _hit;
-        this._motility = _motility;
-      this._slowness = slowness ?? 1;
+  {
+    this._from = _from;
+    this._hit = _hit;
+    this._motility = _motility;
+    this._slowness = slowness ?? 1;
 
-      _elementMixin = new ElementActionMixin(this);
-    }
+    _elementMixin = new ElementActionMixin(this);
+  }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     // Only animate 1/slowness frames.
     _frame = (_frame + 1) % _slowness;
-    if (_frame != 0) {
+    if (_frame != 0)
+    {
       addEvent(EventType.pause);
       return ActionResult.notDone;
     }
 
-    if (_tiles == null) {
+    if (_tiles == null)
+    {
       // TODO: Use a different flow that makes diagonal moves more expensive to
       // give more natural circular behavior?
       _flow = new MotilityFlow(game.stage, _from, _motility, avoidActors: false);
@@ -56,11 +60,13 @@ class FlowAction : Action {
     // Hit all tiles at the same distance.
     var distance = _flow.costAt(_tiles!.First())!;
     int end;
-    for (end = 0; end < _tiles!.Count; end++) {
+    for (end = 0; end < _tiles!.Count; end++)
+    {
       if (_flow.costAt(_tiles![end]) != distance) break;
     }
 
-    foreach (var pos in _tiles!.GetRange(0, end)) {
+    foreach (var pos in _tiles!.GetRange(0, end))
+    {
       _elementMixin.hitTile(_hit, pos, distance.Value);
     }
 
@@ -74,7 +80,8 @@ class FlowAction : Action {
 /// Creates an expanding flow of damage centered on the [Actor].
 ///
 /// This class mainly exists as an [Action] that [Item]s can use.
-class FlowSelfAction : Action {
+class FlowSelfAction : Action
+{
   public Attack _attack;
   public Motility _motility;
 
@@ -84,12 +91,14 @@ class FlowSelfAction : Action {
     this._motility = _motility;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     return alternate(new FlowAction(actor!.pos, _attack.createHit(), _motility));
   }
 }
 
-class FlowFromAction : Action {
+class FlowFromAction : Action
+{
   public Attack _attack;
   // public Vec _pos;
   public Motility _motility;
@@ -101,7 +110,8 @@ class FlowFromAction : Action {
     this._motility = _motility;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     return alternate(new FlowAction(_pos, _attack.createHit(), _motility));
   }
 }

@@ -1,10 +1,12 @@
 
 
 /// Static class containing all of the [Monster] [Breed]s.
-public partial class Monsters {
+public partial class Monsters
+{
   public static ResourceSet<Breed> breeds = new ResourceSet<Breed>();
 
-  public static void initialize() {
+  public static void initialize()
+  {
     // Define the tag path and store the leaf tag which is what gets used by
     // the item types.
     var groups = new string[]{
@@ -33,7 +35,8 @@ public partial class Monsters {
       "natural/plant/vine",
       "undead/skeleton",
     };
-    foreach (var group in groups) {
+    foreach (var group in groups)
+    {
       breeds.defineTags($"monster/{group}");
     }
 

@@ -5,7 +5,8 @@ using KeyCode = UnityEngine.KeyCode;
 using Mathf = UnityEngine.Mathf;
 using System.Linq;
 
-class _Field {
+class _Field
+{
   public const int name = 0;
   public const int race = 1;
   public const int heroClass = 2;
@@ -13,7 +14,8 @@ class _Field {
 }
 
 // TODO: Update to handle resizable UI.
-class NewHeroScreen : UnityTerminal.Screen {
+class NewHeroScreen : UnityTerminal.Screen
+{
 
   // From: http://medieval.stormthecastle.com/medieval-names.htm.
   private static string[] _defaultNames = new string[]{
@@ -117,8 +119,9 @@ class NewHeroScreen : UnityTerminal.Screen {
     _renderClass(terminal);
     _renderMenu(terminal);
 
-    var help = new List<string>(){"[Tab] Next field"};
-    switch (_field) {
+    var help = new List<string>() { "[Tab] Next field" };
+    switch (_field)
+    {
       case _Field.name:
         help.Add("[A-Z Del] Edit name");
         break;
@@ -135,7 +138,8 @@ class NewHeroScreen : UnityTerminal.Screen {
     terminal.WriteAt(0, terminal.height - 1, string.Join(", ", help), UIHue.helpText);
   }
 
-  void _renderName(Terminal terminal) {
+  void _renderName(Terminal terminal)
+  {
     terminal = terminal.Rect(0, 0, 40, 10);
 
     TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
@@ -151,21 +155,26 @@ class NewHeroScreen : UnityTerminal.Screen {
     if (string.IsNullOrEmpty(_name) == false)
     {
       terminal.WriteAt(3, 6, _name, UIHue.primary);
-      if (_field == _Field.name) {
+      if (_field == _Field.name)
+      {
         terminal.WriteAt(3 + _name.Length, 6, " ", Color.black, UIHue.selection);
       }
     }
     else
     {
-      if (_field == _Field.name) {
+      if (_field == _Field.name)
+      {
         terminal.WriteAt(3, 6, _defaultName, Color.black, UIHue.selection);
-      } else {
+      }
+      else
+      {
         terminal.WriteAt(3, 6, _defaultName, UIHue.primary);
       }
     }
   }
 
-  void _renderRace(Terminal terminal) {
+  void _renderRace(Terminal terminal)
+  {
     terminal = terminal.Rect(0, 10, 40, 29);
 
     TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
@@ -176,13 +185,15 @@ class NewHeroScreen : UnityTerminal.Screen {
     terminal.WriteAt(1, 2, race.name, UIHue.primary);
 
     var y = 4;
-    foreach (var line in Log.wordWrap(38, race.description)) {
+    foreach (var line in Log.wordWrap(38, race.description))
+    {
       terminal.WriteAt(1, y, line, UIHue.text);
       y++;
     }
 
     y = 18;
-    foreach (var stat in Stat.all) {
+    foreach (var stat in Stat.all)
+    {
       terminal.WriteAt(2, y, stat.name, UIHue.secondary);
       var width = 25 * race.stats[stat]! / 45;
       terminal.WriteAt(12, y, new string(' ', width), Hues.ash, Hues.red);
@@ -191,7 +202,8 @@ class NewHeroScreen : UnityTerminal.Screen {
     }
   }
 
-  void _renderClass(Terminal terminal) {
+  void _renderClass(Terminal terminal)
+  {
     terminal = terminal.Rect(40, 10, 40, 29);
 
     TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height,
@@ -203,13 +215,15 @@ class NewHeroScreen : UnityTerminal.Screen {
     terminal.WriteAt(1, 2, heroClass.name, UIHue.primary);
 
     var y = 4;
-    foreach (var line in Log.wordWrap(38, heroClass.description)) {
+    foreach (var line in Log.wordWrap(38, heroClass.description))
+    {
       terminal.WriteAt(1, y, line, UIHue.text);
       y++;
     }
   }
 
-  void _renderMenu(Terminal terminal) {
+  void _renderMenu(Terminal terminal)
+  {
     terminal = terminal.Rect(40, 0, 40, 10);
 
     TerminalUtils.DrawFrame(terminal, 0, 0, terminal.width, terminal.height);
@@ -219,11 +233,14 @@ class NewHeroScreen : UnityTerminal.Screen {
     string label = "";
     var items = new List<string>();
     int selected;
-    if (_field == _Field.race) {
+    if (_field == _Field.race)
+    {
       label = "race";
       items.AddRange(content.races.Select((race) => race.name));
       selected = _race;
-    } else {
+    }
+    else
+    {
       label = "class";
       items.AddRange(content.classes.Select((c) => c.name));
       selected = _class;
@@ -232,11 +249,13 @@ class NewHeroScreen : UnityTerminal.Screen {
     terminal.WriteAt(1, 0, $"Choose a {label}:", UIHue.selection);
 
     var y = 2;
-    for (var i = 0; i < items.Count; i++) {
+    for (var i = 0; i < items.Count; i++)
+    {
       var item = items[i];
       var isSelected = i == selected;
       terminal.WriteAt(2, y, item, isSelected ? UIHue.selection : UIHue.primary);
-      if (isSelected) {
+      if (isSelected)
+      {
         terminal.WriteAt(1, y, "►", UIHue.selection);
       }
       y++;
@@ -250,68 +269,75 @@ class NewHeroScreen : UnityTerminal.Screen {
       terminal.Pop();
       return true;
     }
-    
+
     if (_field == _Field.race)
     {
       if (keyCode == InputX.n)
       {
-          _changeRace(-1);
-          return true;
+        _changeRace(-1);
+        return true;
       }
       else if (keyCode == InputX.s)
       {
-          _changeRace(1);
-          return true;
+        _changeRace(1);
+        return true;
       }
     }
     else if (_field == _Field.heroClass)
     {
       if (keyCode == InputX.n)
       {
-          _changeClass(-1);
+        _changeClass(-1);
         return true;
       }
       else if (keyCode == InputX.s)
       {
-          _changeClass(1);
+        _changeClass(1);
         return true;
       }
     }
 
     if (keyCode == KeyCode.Return)
     {
-        var hero = content.createHero(_name.isNotEmpty() ? _name : _defaultName,
-            content.races[_race], content.classes[_class]);
-        storage.heroes.Add(hero);
-        storage.save();
-        terminal.GoTo(GameScreen.town(storage, content, hero));
-        return true;
+      var hero = content.createHero(_name.isNotEmpty() ? _name : _defaultName,
+          content.races[_race], content.classes[_class]);
+      storage.heroes.Add(hero);
+      storage.save();
+      terminal.GoTo(GameScreen.town(storage, content, hero));
+      return true;
     }
     else if (keyCode == KeyCode.Tab)
     {
-      if (shift) {
+      if (shift)
+      {
         _changeField(-1);
-      } else {
+      }
+      else
+      {
         _changeField(1);
       }
       return true;
     }
     else if (keyCode == KeyCode.Space)
     {
-        if (_field == _Field.name) {
-          // TODO: Handle modifiers.
-          _appendToName(" ");
-        }
-        return true;
+      if (_field == _Field.name)
+      {
+        // TODO: Handle modifiers.
+        _appendToName(" ");
+      }
+      return true;
     }
     else if (keyCode == KeyCode.Delete)
     {
-      if (_field == _Field.name) {
-        if (_name.isNotEmpty()) {
+      if (_field == _Field.name)
+      {
+        if (_name.isNotEmpty())
+        {
           _name = _name.Substring(0, _name.Length - 1);
 
           // Pick a new default name.
-          if (_name.isEmpty()) {
+          if (_name.isEmpty())
+          {
             _defaultName = Rng.rng.item<string>(_defaultNames);
           }
 
@@ -322,54 +348,63 @@ class NewHeroScreen : UnityTerminal.Screen {
     }
     else
     {
-      if (_field == _Field.name && !alt) {
-          if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
+      if (_field == _Field.name && !alt)
+      {
+        if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
+        {
+          var charCode = 'a' + (keyCode - KeyCode.A);
+          // TODO: Handle other modifiers.
+          if (shift)
           {
-            var charCode = 'a' + (keyCode - KeyCode.A);
-            // TODO: Handle other modifiers.
-            if (shift) {
-              charCode = 'A' + (keyCode - KeyCode.A);
-            }
-            _appendToName(char.ConvertFromUtf32(charCode));
-            return true;
+            charCode = 'A' + (keyCode - KeyCode.A);
           }
-          else if (keyCode >= KeyCode.Alpha0 && keyCode <= KeyCode.Alpha9)
-          {
-              var charCode = '0' + (keyCode - KeyCode.Alpha0);
-              _appendToName(char.ConvertFromUtf32(charCode));
-            return true;
-          }
+          _appendToName(char.ConvertFromUtf32(charCode));
+          return true;
+        }
+        else if (keyCode >= KeyCode.Alpha0 && keyCode <= KeyCode.Alpha9)
+        {
+          var charCode = '0' + (keyCode - KeyCode.Alpha0);
+          _appendToName(char.ConvertFromUtf32(charCode));
+          return true;
+        }
       }
     }
 
     return false;
   }
 
-  void _changeField(int offset) {
+  void _changeField(int offset)
+  {
     _field = (_field + offset + _Field.count) % _Field.count;
     Dirty();
   }
 
-  void _appendToName(string text) {
+  void _appendToName(string text)
+  {
     _name += text;
-    if (_name.Length > _maxNameLength) {
+    if (_name.Length > _maxNameLength)
+    {
       _name = _name.Substring(0, _maxNameLength);
     }
 
     Dirty();
   }
 
-  void _changeRace(int offset) {
+  void _changeRace(int offset)
+  {
     var race = Mathf.Clamp(_race + offset, 0, content.races.Count - 1);
-    if (race != _race) {
+    if (race != _race)
+    {
       _race = race;
       Dirty();
     }
   }
 
-  void _changeClass(int offset) {
+  void _changeClass(int offset)
+  {
     var heroClass = Mathf.Clamp(_class + offset, 0, content.classes.Count - 1);
-    if (heroClass != _class) {
+    if (heroClass != _class)
+    {
       _class = heroClass;
       Dirty();
     }

@@ -5,7 +5,8 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class LogPanel : Panel {
+class LogPanel : Panel
+{
   public Log _log;
 
   public LogPanel(Log _log)
@@ -13,17 +14,20 @@ class LogPanel : Panel {
     this._log = _log;
   }
 
-  public override void renderPanel(Terminal terminal) {
+  public override void renderPanel(Terminal terminal)
+  {
     Draw.frame(terminal, 0, 0, terminal.width, terminal.height);
     terminal.WriteAt(2, 0, " Messages ", UIHue.text);
 
     var y = terminal.height - 2;
-    for (var i = _log.messages.Count - 1; i >= 0 && y > 0; i--) {
+    for (var i = _log.messages.Count - 1; i >= 0 && y > 0; i--)
+    {
       var message = _log.messages[i];
 
       Color color = Color.white;
 
-      switch (message.type) {
+      switch (message.type)
+      {
         case LogType.message:
           color = Hues.ash;
           break;
@@ -44,13 +48,15 @@ class LogPanel : Panel {
           break;
       }
 
-      if (i != _log.messages.Count - 1) {
+      if (i != _log.messages.Count - 1)
+      {
         color = color.blend(Color.black, 0.5f);
       }
 
       terminal.WriteAt(1, y, message.text, color);
 
-      if (message.count > 1) {
+      if (message.count > 1)
+      {
         terminal.WriteAt(
             message.text.Length + 1, y, $" (x{message.count})", Hues.darkCoolGray);
       }

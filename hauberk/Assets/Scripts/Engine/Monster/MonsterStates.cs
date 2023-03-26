@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using System.Linq;
 
 /// This defines the monster AI. AI is broken into a three level hierarchy.
@@ -55,86 +55,102 @@ using System.Linq;
 /// If it decides to go melee, it simply pathfinds to the hero and goes for it.
 /// In either case, the end result is walking one tile (or possibly standing
 /// in place.)
-public abstract class MonsterState {
-    public Monster _monster;
+public abstract class MonsterState
+{
+  public Monster _monster;
 
-    public void bind(Monster monster) {
-        _monster = monster;
+  public void bind(Monster monster)
+  {
+    _monster = monster;
+  }
+
+  public Monster monster => _monster;
+
+  public Breed breed => _monster.breed;
+
+  public Game game => _monster.game;
+
+  public Vec pos => _monster.pos;
+
+  void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
+    monster.log(message, noun1, noun2, noun3);
+  }
+
+  public abstract Action getAction();
+
+  /// Applies the monster's meandering to [dir].
+  public Direction _meander(Direction dir)
+  {
+    var meander = breed.meander;
+
+    if (monster.isBlinded)
+    {
+      // Being blinded makes the monster stumble around.
+      meander += (int)(monster.sightReliance * 50);
+    }
+    else if (pos + dir == game.hero.pos)
+    {
+      // Monsters are (mostly) smart enough to not meander when they're about
+      // to melee. A small chance of meandering is still useful to get a
+      // monster out of a doorway sometimes.
+      meander /= 4;
     }
 
-    public Monster monster => _monster;
+    // Should always have a chance to go the right direction.
+    meander = Mathf.Min(meander, 90);
 
-    public Breed breed => _monster.breed;
+    if (!Rng.rng.percent(meander)) return dir;
 
-    public Game game => _monster.game;
-
-    public Vec pos => _monster.pos;
-
-    void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
-        monster.log(message, noun1, noun2, noun3);
+    List<Direction> dirs;
+    if (dir == Direction.none)
+    {
+      // Since the monster has no direction, any is equally valid.
+      dirs = Direction.all;
     }
+    else
+    {
+      dirs = new List<Direction>();
 
-    public abstract Action getAction();
-
-    /// Applies the monster's meandering to [dir].
-    public Direction _meander(Direction dir) {
-      var meander = breed.meander;
-
-      if (monster.isBlinded) {
-          // Being blinded makes the monster stumble around.
-          meander += (int)(monster.sightReliance * 50);
-      } else if (pos + dir == game.hero.pos) {
-          // Monsters are (mostly) smart enough to not meander when they're about
-          // to melee. A small chance of meandering is still useful to get a
-          // monster out of a doorway sometimes.
-          meander /= 4;
+      // Otherwise, bias towards the direction the monster is headed.
+      for (var i = 0; i < 3; i++)
+      {
+        dirs.Add(dir.rotateLeft45);
+        dirs.Add(dir.rotateRight45);
       }
 
-      // Should always have a chance to go the right direction.
-      meander = Mathf.Min(meander, 90);
-
-      if (!Rng.rng.percent(meander)) return dir;
-
-      List<Direction> dirs;
-      if (dir == Direction.none) {
-          // Since the monster has no direction, any is equally valid.
-          dirs = Direction.all;
-      } else {
-          dirs = new List<Direction>();
-
-          // Otherwise, bias towards the direction the monster is headed.
-          for (var i = 0; i < 3; i++) {
-            dirs.Add(dir.rotateLeft45);
-            dirs.Add(dir.rotateRight45);
-          }
-
-          for (var i = 0; i < 2; i++) {
-            dirs.Add(dir.rotateLeft90);
-            dirs.Add(dir.rotateRight90);
-          }
-
-          dirs.Add(dir.rotateLeft90.rotateLeft45);
-          dirs.Add(dir.rotateRight90.rotateRight45);
+      for (var i = 0; i < 2; i++)
+      {
+        dirs.Add(dir.rotateLeft90);
+        dirs.Add(dir.rotateRight90);
       }
 
-      dirs = dirs.Where((dir) => {
-          var here = pos + dir;
-          if (!monster.willOccupy(here)) return false;
-          var actor = game.stage.actorAt(here);
-          return actor == null || actor == game.hero;
-      }).ToList();
-
-      if (dirs.Count == 0) return dir;
-      return Rng.rng.item(dirs);
+      dirs.Add(dir.rotateLeft90.rotateLeft45);
+      dirs.Add(dir.rotateRight90.rotateRight45);
     }
+
+    dirs = dirs.Where((dir) =>
+    {
+      var here = pos + dir;
+      if (!monster.willOccupy(here)) return false;
+      var actor = game.stage.actorAt(here);
+      return actor == null || actor == game.hero;
+    }).ToList();
+
+    if (dirs.Count == 0) return dir;
+    return Rng.rng.item(dirs);
+  }
 }
 
-class AsleepState : MonsterState {
+class AsleepState : MonsterState
+{
   public override Action getAction() => new RestAction();
 }
 
-class AwakeState : MonsterState {
-  public override Action getAction() {
+class AwakeState : MonsterState
+{
+  public override Action getAction()
+  {
     // If on a burning etc. tile, try to get out.
     // TODO: Should consider moves like teleport that will help it escape.
     var escape = _escapeSubstance();
@@ -147,7 +163,8 @@ class AwakeState : MonsterState {
     if (moves.Count > 0) return Rng.rng.item(moves).getAction(monster);
 
     // If the monster doesn't pursue, then it does melee or waits.
-    if (breed.flags.immobile) {
+    if (breed.flags.immobile)
+    {
       var toHero = game.hero.pos - pos;
       if (toHero.kingLength != 1) return new RestAction();
       return new WalkAction(toHero.nearestDirection);
@@ -164,7 +181,8 @@ class AwakeState : MonsterState {
     var rangedDamage = 0.0;
     var rangedAttacks = 0.0;
 
-    foreach (var move in breed.moves) {
+    foreach (var move in breed.moves)
+    {
       if (!(move is RangedMove)) continue;
 
       var rmove = move as RangedMove;
@@ -176,12 +194,14 @@ class AwakeState : MonsterState {
       // TODO: Smart monsters should take hero resists into account.
     }
 
-    if (rangedAttacks != 0) {
+    if (rangedAttacks != 0)
+    {
       // Determine how much melee damage it can dish out per turn.
       var meleeDamage = 0.0;
       var meleeAttacks = 0.0;
 
-      foreach (var attack in breed.attacks) {
+      foreach (var attack in breed.attacks)
+      {
         // Monsters don't have any raw ranged attacks, just ranged moves.
         DartUtils.assert(!attack.isRanged);
         meleeDamage += attack.damage;
@@ -209,9 +229,12 @@ class AwakeState : MonsterState {
 
       // Less likely to break away for a ranged attack if already in melee
       // distance.
-      if (pos - game.hero.pos <= 1) {
+      if (pos - game.hero.pos <= 1)
+      {
         monster.wantsToMelee = caution < 60;
-      } else {
+      }
+      else
+      {
         monster.wantsToMelee = caution < 30;
       }
     }
@@ -222,9 +245,12 @@ class AwakeState : MonsterState {
     var rangedDir = rangedAttacks > 0 ? _findRangedPath() : null;
 
     Direction walkDir;
-    if (monster.wantsToMelee) {
+    if (monster.wantsToMelee)
+    {
       walkDir = meleeDir ?? rangedDir;
-    } else {
+    }
+    else
+    {
       walkDir = rangedDir ?? meleeDir;
     }
 
@@ -237,7 +263,8 @@ class AwakeState : MonsterState {
   /// out of the substance.
   ///
   /// Otherwise, returns [Direction.none].
-  Direction _escapeSubstance() {
+  Direction _escapeSubstance()
+  {
     // If we're not on a bad tile, don't worry.
     if (game.stage[monster.pos].substance == 0) return Direction.none;
 
@@ -252,13 +279,16 @@ class AwakeState : MonsterState {
   /// Returns the [Direction] to take along the path. Returns [Direction.none]
   /// if the monster's current position is a good ranged spot. Returns `null`
   /// if no good ranged position could be found.
-  Direction _findRangedPath() {
+  Direction _findRangedPath()
+  {
     var maxRange = 9999;
-    foreach (var move in breed.moves) {
+    foreach (var move in breed.moves)
+    {
       if (move.range > 0 && move.range < maxRange) maxRange = move.range;
     }
 
-    bool isValidRangedPosition(Vec pos) {
+    bool isValidRangedPosition(Vec pos)
+    {
       // Ignore tiles that are out of range.
       var toHero = pos - game.hero.pos;
       if (toHero > maxRange) return false;
@@ -284,18 +314,21 @@ class AwakeState : MonsterState {
     Direction best = null;
     var bestDistance = 0;
 
-    if (isValidRangedPosition(pos)) {
+    if (isValidRangedPosition(pos))
+    {
       best = Direction.none;
       bestDistance = (pos - game.hero.pos).kingLength;
     }
 
-    foreach (var dir2 in Direction.all) {
+    foreach (var dir2 in Direction.all)
+    {
       var pos = monster.pos + dir2;
       if (!monster.willEnter(pos)) continue;
       if (!isValidRangedPosition(pos)) continue;
 
       var distance = (pos - game.hero.pos).kingLength;
-      if (distance > bestDistance) {
+      if (distance > bestDistance)
+      {
         best = dir2;
         bestDistance = distance;
       }
@@ -307,7 +340,8 @@ class AwakeState : MonsterState {
     var flow = new MotilityFlow(game.stage, pos, monster.motility,
         maxDistance: maxRange, avoidSubstances: true);
     var dir = flow.directionToBestWhere(isValidRangedPosition);
-    if (dir != Direction.none) {
+    if (dir != Direction.none)
+    {
       Debugger.monsterLog(monster, "ranged position $dir");
       return dir;
     }
@@ -318,7 +352,8 @@ class AwakeState : MonsterState {
     return null;
   }
 
-  Direction _findMeleePath() {
+  Direction _findMeleePath()
+  {
     var losDir = _findLosWalkPath();
     if (losDir != null) return losDir;
 
@@ -337,12 +372,14 @@ class AwakeState : MonsterState {
   ///    to the hero, A* will always prefer an intercardinal move direction,
   ///    even if the hero is almost a cardinal direction away. Bresenham will
   ///    pick a direction that's closest to the direction pointing at the hero.
-  Direction _findLosWalkPath() {
+  Direction _findLosWalkPath()
+  {
     // TODO: Need to verify that this does actually help performance.
     Vec first = null;
     var length = 1;
 
-    foreach (var pos in new Line(pos, game.hero.pos)) {
+    foreach (var pos in new Line(pos, game.hero.pos))
+    {
       first ??= pos;
 
       // Don't walk into fire, etc.
@@ -363,34 +400,54 @@ class AwakeState : MonsterState {
     }
 
     var step = first! - pos;
-    if (step.y == -1) {
-      if (step.x == -1) {
+    if (step.y == -1)
+    {
+      if (step.x == -1)
+      {
         return Direction.nw;
-      } else if (step.x == 0) {
+      }
+      else if (step.x == 0)
+      {
         return Direction.n;
-      } else {
+      }
+      else
+      {
         return Direction.ne;
       }
-    } else if (step.y == 0) {
-      if (step.x == -1) {
+    }
+    else if (step.y == 0)
+    {
+      if (step.x == -1)
+      {
         return Direction.w;
-      } else {
+      }
+      else
+      {
         return Direction.e;
       }
-    } else {
-      if (step.x == -1) {
+    }
+    else
+    {
+      if (step.x == -1)
+      {
         return Direction.sw;
-      } else if (step.x == 0) {
+      }
+      else if (step.x == 0)
+      {
         return Direction.s;
-      } else {
+      }
+      else
+      {
         return Direction.se;
       }
     }
   }
 
   /// Returns `true` if there is an open LOS from [from] to the hero.
-  bool _hasLosFrom(Vec from) {
-    foreach (var step in new Line(from, game.hero.pos)) {
+  bool _hasLosFrom(Vec from)
+  {
+    foreach (var step in new Line(from, game.hero.pos))
+    {
       if (step == game.hero.pos) return true;
       if (game.stage[step].blocksView) return false;
       var actor = game.stage.actorAt(step);
@@ -401,8 +458,10 @@ class AwakeState : MonsterState {
   }
 }
 
-class AfraidState : MonsterState {
-  public override Action getAction() {
+class AfraidState : MonsterState
+{
+  public override Action getAction()
+  {
     // TODO: Take light and the breed's light preference into account.
     // If we're already hidden, rest.
     if (game.stage[pos].isOccluded) return new RestAction();
@@ -414,20 +473,23 @@ class AfraidState : MonsterState {
     // TODO: Should monsters prefer darkness too?
     var dir = flow.directionToBestWhere((pos) => game.stage[pos].isOccluded);
 
-    if (dir != Direction.none) {
+    if (dir != Direction.none)
+    {
       Debugger.monsterLog(monster, "fleeing $dir out of sight");
       return new WalkAction(_meander(dir));
     }
 
     // If we couldn't find a hidden tile, at least try to get some distance.
     var heroDistance = (pos - game.hero.pos).kingLength;
-    var farther = Direction.all.Where((dir) => {
+    var farther = Direction.all.Where((dir) =>
+    {
       var here = pos + dir;
       if (!monster.willEnter(here)) return false;
       return (here - game.hero.pos).kingLength > heroDistance;
     }).ToList();
 
-    if (farther.Count > 0) {
+    if (farther.Count > 0)
+    {
       dir = Rng.rng.item(farther);
       Debugger.monsterLog(monster, "fleeing $dir away from hero");
       return new WalkAction(_meander(dir));

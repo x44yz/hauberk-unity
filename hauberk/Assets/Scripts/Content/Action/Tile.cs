@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// Base class for actions that open a container tile.
-abstract class _OpenTileAction : Action {
+abstract class _OpenTileAction : Action
+{
   // public Vec _pos;
 
   public _OpenTileAction(Vec _pos)
@@ -21,16 +22,20 @@ abstract class _OpenTileAction : Action {
 
   int _maxDepthEmptyChance;
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     game.stage[_pos].type = _openTile;
     addEvent(EventType.openBarrel, pos: _pos);
 
     // TODO: Chance of monster in it?
     // TODO: Traps. Locks.
     if (Rng.rng.percent(MathUtils.lerpInt(game.depth, 1, Option.maxDepth,
-        _minDepthEmptyChance, _maxDepthEmptyChance))) {
+        _minDepthEmptyChance, _maxDepthEmptyChance)))
+    {
       log($"The {_name} is empty.", actor);
-    } else {
+    }
+    else
+    {
       game.stage.placeDrops(_pos, Motility.walk, _createDrop());
 
       log($"{1} open[s] the {_name}.", actor);
@@ -43,7 +48,8 @@ abstract class _OpenTileAction : Action {
 }
 
 /// Open a barrel and place its drops.
-class OpenBarrelAction : _OpenTileAction {
+class OpenBarrelAction : _OpenTileAction
+{
   public OpenBarrelAction(Vec pos) : base(pos)
   {
   }
@@ -61,7 +67,8 @@ class OpenBarrelAction : _OpenTileAction {
 }
 
 /// Open a chest and place its drops.
-class OpenChestAction : _OpenTileAction {
+class OpenChestAction : _OpenTileAction
+{
   public OpenChestAction(Vec pos) : base(pos)
   {
 

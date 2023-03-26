@@ -5,7 +5,8 @@ using System.Collections.Generic;
 // - Monsters that have a "public form" when killed.
 // - Werewolves and other shapeshifters.
 /// Turns the monster into [Breed].
-class PolymorphAction : Action {
+class PolymorphAction : Action
+{
   public Breed _breed;
 
   public PolymorphAction(Breed _breed)
@@ -13,7 +14,8 @@ class PolymorphAction : Action {
     this._breed = _breed;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     monster.breed = _breed;
     addEvent(EventType.polymorph, actor: actor);
 
@@ -24,7 +26,8 @@ class PolymorphAction : Action {
 
 /// "Amputates" part of the monster by spawning a new one for the part and
 /// polymorphing the original into a different breed that lacks the part.
-class AmputateAction : Action {
+class AmputateAction : Action
+{
   public Breed _bodyBreed;
   public Breed _partBreed;
   public string _message;
@@ -36,7 +39,8 @@ class AmputateAction : Action {
     this._message = _message;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     // Hack off the part.
     addAction(new PolymorphAction(_bodyBreed));
 
@@ -47,14 +51,16 @@ class AmputateAction : Action {
     part.awaken();
 
     // Pick an open adjacent tile.
-    var positions = new List<Vec>{};
-    foreach (var dir in Direction.all) {
+    var positions = new List<Vec> { };
+    foreach (var dir in Direction.all)
+    {
       var pos = actor!.pos + dir;
       if (part.canEnter(pos)) positions.Add(pos);
     }
 
     // If there's no room for the part, it disappears.
-    if (positions.Count > 0) {
+    if (positions.Count > 0)
+    {
       part.pos = Rng.rng.item(positions);
       game.stage.addActor(part);
 

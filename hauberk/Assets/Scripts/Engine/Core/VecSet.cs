@@ -8,17 +8,17 @@ using System.Collections.Generic;
 ///
 /// It's relatively slow to construct, but can be reused efficiently using
 /// [clear].
-class VecSet : IEnumerable<Vec> 
+class VecSet : IEnumerable<Vec>
 {
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-       return (IEnumerator) GetEnumerator();
-    }
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return (IEnumerator)GetEnumerator();
+  }
 
-    public IEnumerator<Vec> GetEnumerator()
-    {
-        return iterator;
-    }
+  public IEnumerator<Vec> GetEnumerator()
+  {
+    return iterator;
+  }
 
   /// The current value at each cell.
   ///
@@ -43,27 +43,32 @@ class VecSet : IEnumerable<Vec>
 
   public VecSet(int width, int height)
   {
-        _values = new Array2D<int>(width, height, 0);
-        _xMin = width;
-        _xMax = 0;
-        _yMin = height;
-        _yMax = 0;
+    _values = new Array2D<int>(width, height, 0);
+    _xMin = width;
+    _xMax = 0;
+    _yMin = height;
+    _yMax = 0;
   }
 
-  IEnumerator<Vec> iterator {
-    get {
-        var result = new List<Vec>{};
-        for (var y = _yMin; y <= _yMax; y++) {
-        for (var x = _xMin; x <= _xMax; x++) {
-            if (_values._get(x, y) == _sentinel) result.Add(new Vec(x, y));
+  IEnumerator<Vec> iterator
+  {
+    get
+    {
+      var result = new List<Vec> { };
+      for (var y = _yMin; y <= _yMax; y++)
+      {
+        for (var x = _xMin; x <= _xMax; x++)
+        {
+          if (_values._get(x, y) == _sentinel) result.Add(new Vec(x, y));
         }
-        }
+      }
 
-        return result.GetEnumerator();
+      return result.GetEnumerator();
     }
   }
 
-  public void clear() {
+  public void clear()
+  {
     _sentinel++;
     // TODO: Check for overflow?
 
@@ -73,7 +78,8 @@ class VecSet : IEnumerable<Vec>
     _yMax = 0;
   }
 
-  public void add(Vec pos) {
+  public void add(Vec pos)
+  {
     _values[pos] = _sentinel;
     _xMin = Math.Min(_xMin, pos.x);
     _xMax = Math.Max(_xMax, pos.x);

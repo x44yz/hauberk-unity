@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 
-class Skills {
+class Skills
+{
   /// All of the known skills.
   public static List<Skill> m_all;
-  public static List<Skill> all {
-    get {
-        if (m_all == null)
-        {
-            m_all = new List<Skill>(){
+  public static List<Skill> all
+  {
+    get
+    {
+      if (m_all == null)
+      {
+        m_all = new List<Skill>(){
             // Disciplines.
                 new BattleHardening(),
                 new DualWield(),
@@ -49,25 +52,28 @@ class Skills {
                 new FireBarrier(),
                 new TidalWave(),
             };
-        }
-        return m_all;
+      }
+      return m_all;
     }
   }
 
-    static Dictionary<string, Skill> m_byName;
-  public static Dictionary<string, Skill> _byName {
-    get {
-        if (m_byName == null)
-        {
-            m_byName = new Dictionary<string, Skill>();
-            foreach (var skill in all) 
-                m_byName.Add(skill.name, skill);
-        }
-        return m_byName;
+  static Dictionary<string, Skill> m_byName;
+  public static Dictionary<string, Skill> _byName
+  {
+    get
+    {
+      if (m_byName == null)
+      {
+        m_byName = new Dictionary<string, Skill>();
+        foreach (var skill in all)
+          m_byName.Add(skill.name, skill);
+      }
+      return m_byName;
     }
   }
 
-  public static Skill find(string name) {
+  public static Skill find(string name)
+  {
     var skill = _byName[name];
     if (skill == null) throw new System.Exception($"Unknown skill '{name}'.");
     return skill;

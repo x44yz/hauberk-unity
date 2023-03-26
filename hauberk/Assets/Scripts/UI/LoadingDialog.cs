@@ -7,14 +7,17 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 /// Dialog shown while a new level is being generated.
-class LoadingDialog : Screen {
+class LoadingDialog : Screen
+{
   public Game _game;
   IEnumerator<string> m_steps = null;
-  public IEnumerator<string> _steps {
-    get {
-        if (m_steps == null)
-          m_steps = _game.generate().GetEnumerator();
-        return m_steps;
+  public IEnumerator<string> _steps
+  {
+    get
+    {
+      if (m_steps == null)
+        m_steps = _game.generate().GetEnumerator();
+      return m_steps;
     }
   }
   int _frame = 0;
@@ -26,15 +29,18 @@ class LoadingDialog : Screen {
     _game = new Game(content, save.clone(), depth);
   }
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop(false);
       return true;
     }
 
     if (shift || alt) return false;
 
-    switch (keyCode) {
+    switch (keyCode)
+    {
       case KeyCode.N:
         terminal.Pop(false);
         break;
@@ -47,14 +53,19 @@ class LoadingDialog : Screen {
     return true;
   }
 
-  public override void Tick(float dt) {
+  public override void Tick(float dt)
+  {
     var stopwatch = new Stopwatch();
     stopwatch.Start();
 
-    while (stopwatch.ElapsedMilliseconds < 16) {
-      if (_steps.MoveNext()) {
+    while (stopwatch.ElapsedMilliseconds < 16)
+    {
+      if (_steps.MoveNext())
+      {
         Dirty();
-      } else {
+      }
+      else
+      {
         terminal.Pop(_game);
         return;
       }
@@ -63,7 +74,8 @@ class LoadingDialog : Screen {
     _frame = (_frame + 1) % 10;
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     var width = 30;
     var height = 7;
 

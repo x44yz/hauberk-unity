@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// Static class containing all of the [Shop]s.
-class Shops {
+class Shops
+{
   public static Dictionary<string, Shop> all = new Dictionary<string, Shop>();
 
-  public static void shop(string name, Dictionary<string, double> itemTypes) {
-    var drops = new Dictionary<Drop, double>{};
-    foreach (var kv in itemTypes) {
+  public static void shop(string name, Dictionary<string, double> itemTypes)
+  {
+    var drops = new Dictionary<Drop, double> { };
+    foreach (var kv in itemTypes)
+    {
       var _name = kv.Key;
       var frequency = kv.Value;
       drops[DropUtils.parseDrop(_name, depth: 1)] = frequency;
@@ -17,7 +20,8 @@ class Shops {
     Shops.all[name] = new Shop(name, DropUtils.dropOneOf(drops));
   }
 
-  public static void initialize() {
+  public static void initialize()
+  {
     shop("The General's General Store", new Dictionary<string, double>{
       {"Loaf of Bread", 2.0},
       {"Chunk of Meat", 0.6},
@@ -113,7 +117,7 @@ class Shops {
     });
   }
 
-/*
-  Glur's Rare Artifacts
-  */
+  /*
+    Glur's Rare Artifacts
+    */
 }

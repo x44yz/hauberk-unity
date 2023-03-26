@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 // TODO: Consider regions that are randomly placed blobs in the middle too.
-public class Region {
+public class Region
+{
   public string name;
 
   /// Cover the whole stage.
@@ -17,7 +18,7 @@ public class Region {
   public static Region w = new Region("w");
   public static Region nw = new Region("nw");
 
-  public static Region[] directions = new Region[]{n, ne, e, se, s, sw, w, nw};
+  public static Region[] directions = new Region[] { n, ne, e, se, s, sw, w, nw };
 
   Region(string name)
   {
@@ -26,7 +27,8 @@ public class Region {
 }
 
 /// The main class that orchestrates painting and populating the stage.
-public class Architect {
+public class Architect
+{
   static Array2D<Architecture> debugOwners;
 
   public Lore lore;
@@ -45,19 +47,23 @@ public class Architect {
     debugOwners = _owners;
   }
 
-  public IEnumerable<string> buildStage(System.Action<Vec> placeHero) {
+  public IEnumerable<string> buildStage(System.Action<Vec> placeHero)
+  {
     var rt = new List<string>();
     // Initialize the stage with an edge of solid and everything else open but
     // fillable.
-    foreach (var pos in stage.bounds) {
+    foreach (var pos in stage.bounds)
+    {
       stage[pos].type = Tiles.unformed;
     }
 
     var styles = ArchitecturalStyle.pick(depth);
 
     var lastFillable = -1;
-    for (var i = styles.Count - 1; i >= 0; i--) {
-      if (styles[i].canFill) {
+    for (var i = styles.Count - 1; i >= 0; i--)
+    {
+      if (styles[i].canFill)
+      {
         lastFillable = i;
         break;
       }
@@ -66,26 +72,32 @@ public class Architect {
     // Pick unique regions for each style. The last non-aquatic one always
     // gets "everywhere" to ensure the entire stage is covered.
     var possibleRegions = Region.directions.ToList();
-    var regions = new List<Region>{};
-    for (var i = 0; i < styles.Count; i++) {
-      if (i == lastFillable || !styles[i].canFill) {
+    var regions = new List<Region> { };
+    for (var i = 0; i < styles.Count; i++)
+    {
+      if (i == lastFillable || !styles[i].canFill)
+      {
         regions.Add(Region.everywhere);
-      } else {
+      }
+      else
+      {
         regions.Add(Rng.rng.take<Region>(possibleRegions));
       }
     }
 
-    for (var i = 0; i < styles.Count; i++) {
+    for (var i = 0; i < styles.Count; i++)
+    {
       var architect = styles[i].create(this, regions[i]);
       rt.AddRange(architect.build());
     }
 
-    foreach (var pos in stage.bounds.trace()) {
+    foreach (var pos in stage.bounds.trace())
+    {
       stage[pos].type = Tiles.solid;
     }
 
     // Fill in the remaining fillable tiles and keep everything connected.
-    var unownedPassages = new List<Vec>{};
+    var unownedPassages = new List<Vec> { };
 
     rt.AddRange(_fillPassages(unownedPassages));
     rt.AddRange(_addShortcuts(unownedPassages));
@@ -102,7 +114,8 @@ public class Architect {
   public Architecture ownerAt(Vec pos) => _owners[pos];
 
   /// Marks the tile at [x], [y] as open floor for [architecture].
-  public void _carve(Architecture architecture, int x, int y, TileType tile) {
+  public void _carve(Architecture architecture, int x, int y, TileType tile)
+  {
     DartUtils.assert(_owners._get(x, y) == null || _owners._get(x, y) == architecture);
     DartUtils.assert(stage.get(x, y).type == Tiles.unformed);
 
@@ -112,16 +125,19 @@ public class Architect {
     // Claim all neighboring dry tiles too. This way the architecture can paint
     // the surrounding solid tiles however it wants.
     _owners._set(x, y, architecture);
-    foreach (var dir in Direction.all) {
+    foreach (var dir in Direction.all)
+    {
       var here = dir.offset(x, y);
       if (_owners.bounds.contains(here) &&
-          stage[here].type != Tiles.unformedWet) {
+          stage[here].type != Tiles.unformedWet)
+      {
         _owners[here] = architecture;
       }
     }
   }
 
-  public bool _canCarve(Architecture architecture, Vec pos) {
+  public bool _canCarve(Architecture architecture, Vec pos)
+  {
     if (!stage.bounds.contains(pos)) return false;
 
     // Can't already be in use.
@@ -136,7 +152,8 @@ public class Architect {
     // solid tiles between two open tiles of different architectures, one owned
     // by each. That way, if they style their walls differently, one doesn't
     // bleed into the other.
-    foreach (var here in pos.neighbors) {
+    foreach (var here in pos.neighbors)
+    {
       if (!stage.bounds.contains(here)) continue;
 
       if (stage[here].type == Tiles.unformedWet) continue;
@@ -150,26 +167,32 @@ public class Architect {
 
   /// Takes all of the remaining fillable tiles and fills them randomly with
   /// solid tiles or open tiles, making sure to preserve reachability.
-  IEnumerable<string> _fillPassages(List<Vec> unownedPassages) {
+  IEnumerable<string> _fillPassages(List<Vec> unownedPassages)
+  {
     var rt = new List<string>();
 
     var openCount = 0;
     var start = Vec.zero;
     var startDistance = 99999;
 
-    var unformed = new List<Vec>{};
-    foreach (var pos in stage.bounds.inflate(-1)) {
+    var unformed = new List<Vec> { };
+    foreach (var pos in stage.bounds.inflate(-1))
+    {
       var tile = stage[pos].type;
-      if (tile == Tiles.open) {
+      if (tile == Tiles.open)
+      {
         openCount++;
 
         // Prefer a starting tile near the center.
         var distance = (pos - stage.bounds.center).rookLength;
-        if (distance < startDistance) {
+        if (distance < startDistance)
+        {
           start = pos;
           startDistance = distance;
         }
-      } else if (!_isFormed(tile)) {
+      }
+      else if (!_isFormed(tile))
+      {
         unformed.Add(pos);
       }
     }
@@ -179,18 +202,24 @@ public class Architect {
     var reachability = new Reachability(stage, start);
 
     var count = 0;
-    foreach (var pos in unformed) {
+    foreach (var pos in unformed)
+    {
       var tile = stage[pos];
 
       // We may have already processed it.
       if (_isFormed(tile.type)) continue;
 
       // Try to fill this tile.
-      if (tile.type == Tiles.unformed) {
+      if (tile.type == Tiles.unformed)
+      {
         tile.type = Tiles.solid;
-      } else if (tile.type == Tiles.unformedWet) {
+      }
+      else if (tile.type == Tiles.unformedWet)
+      {
         tile.type = Tiles.solidWet;
-      } else {
+      }
+      else
+      {
         DartUtils.assert(tile.type == Tiles.solid || tile.type == Tiles.solidWet,
             "Unexpected tile type.");
       }
@@ -201,7 +230,8 @@ public class Architect {
       reachability.fill(pos);
 
       // See if we can still reach all the unfillable tiles.
-      if (reachability.reachedOpenCount != openCount) {
+      if (reachability.reachedOpenCount != openCount)
+      {
         // Filling this tile would cause something to be unreachable, so it must
         // be a passage.
         _makePassage(unownedPassages, pos);
@@ -215,14 +245,17 @@ public class Architect {
     return rt;
   }
 
-  IEnumerable<string> _addShortcuts(List<Vec> unownedPassages) {
+  IEnumerable<string> _addShortcuts(List<Vec> unownedPassages)
+  {
     var rt = new List<string>();
 
-    var possibleStarts = new List<_Path>{};
-    foreach (var pos in stage.bounds.inflate(-1)) {
+    var possibleStarts = new List<_Path> { };
+    foreach (var pos in stage.bounds.inflate(-1))
+    {
       if (!_isOpenAt(pos)) continue;
 
-      foreach (var dir in Direction.cardinal) {
+      foreach (var dir in Direction.cardinal)
+      {
         // Needs to be in an open area going into a solid area, like:
         //
         //     .#
@@ -247,7 +280,8 @@ public class Architect {
     // TODO: Vary this?
     var maxShortcuts = Rng.rng.range(5, 40);
 
-    foreach (var path in possibleStarts) {
+    foreach (var path in possibleStarts)
+    {
       if (!_tryShortcut(unownedPassages, path.pos, path.dir)) continue;
 
       rt.Add("Shortcut");
@@ -264,21 +298,26 @@ public class Architect {
   /// will begin.
   ///
   /// Returns `true` if a shortcut was added.
-  bool _tryShortcut(List<Vec> unownedPassages, Vec start, Direction heading) {
+  bool _tryShortcut(List<Vec> unownedPassages, Vec start, Direction heading)
+  {
     // A shortcut can start here, so try to walk it until it hits another open
     // area.
-    var tiles = new List<Vec>{};
+    var tiles = new List<Vec> { };
     var pos = start + heading;
 
-    while (true) {
+    while (true)
+    {
       tiles.Add(pos);
 
       var next = pos + heading;
       if (!stage.bounds.contains(next)) return false;
 
-      if (_isOpenAt(next)) {
-        if (_isShortcut(start, next, tiles.Count)) {
-          foreach (var pos2 in tiles) {
+      if (_isOpenAt(next))
+      {
+        if (_isShortcut(start, next, tiles.Count))
+        {
+          foreach (var pos2 in tiles)
+          {
             _makePassage(unownedPassages, pos2);
           }
           return true;
@@ -307,7 +346,8 @@ public class Architect {
   /// significantly shorter than the current shortest path between those points.
   ///
   /// Used to avoid placing pointless shortcuts on the stage.
-  bool _isShortcut(Vec from, Vec to, int passageLength) {
+  bool _isShortcut(Vec from, Vec to, int passageLength)
+  {
     // If the current path from [from] to [to] is this long or longer, then
     // the shortcut is worth adding.
     var longLength = passageLength * 2 + Rng.rng.range(8, 16);
@@ -318,23 +358,32 @@ public class Architect {
     return !pathfinder.search();
   }
 
-  void _makePassage(List<Vec> unownedPassages, Vec pos) {
+  void _makePassage(List<Vec> unownedPassages, Vec pos)
+  {
     var tile = stage[pos];
 
     // Filling this tile would cause something to be unreachable, so it must
     // be a passage.
-    if (tile.type == Tiles.solid) {
+    if (tile.type == Tiles.solid)
+    {
       tile.type = Tiles.passage;
-    } else if (tile.type == Tiles.solidWet) {
+    }
+    else if (tile.type == Tiles.solidWet)
+    {
       tile.type = Tiles.passageWet;
-    } else {
+    }
+    else
+    {
       DartUtils.assert(false, "Unexpected tile type.");
     }
 
     var owner = _owners[pos];
-    if (owner == null) {
+    if (owner == null)
+    {
       unownedPassages.Add(pos);
-    } else {
+    }
+    else
+    {
       // The passage is within the edge of an architecture, so extend the
       // boundary around it too.
       _claimNeighbors(pos, owner);
@@ -346,23 +395,30 @@ public class Architect {
   /// This works by finding the passage tiles that have a neighboring owner and
   /// spreading that owner to this one. It does that repeatedly until all tiles
   /// are claimed.
-  IEnumerable<string> _claimPassages(List<Vec> unownedPassages) {
+  IEnumerable<string> _claimPassages(List<Vec> unownedPassages)
+  {
     var rt = new List<string>();
 
-    while (true) {
-      var stillUnowned = new List<Vec>{};
-      foreach (var pos in unownedPassages) {
-        var neighbors = new List<Architecture>{};
-        foreach (var neighbor in pos.neighbors) {
+    while (true)
+    {
+      var stillUnowned = new List<Vec> { };
+      foreach (var pos in unownedPassages)
+      {
+        var neighbors = new List<Architecture> { };
+        foreach (var neighbor in pos.neighbors)
+        {
           var owner = _owners[neighbor];
           if (owner != null) neighbors.Add(owner);
         }
 
-        if (neighbors.isNotEmpty<Architecture>()) {
+        if (neighbors.isNotEmpty<Architecture>())
+        {
           var owner = Rng.rng.item(neighbors);
           _owners[pos] = owner;
           _claimNeighbors(pos, owner);
-        } else {
+        }
+        else
+        {
           stillUnowned.Add(pos);
         }
       }
@@ -378,8 +434,10 @@ public class Architect {
 
   /// Claims any neighboring tiles of [pos] for [owner] if they don't already
   /// have an owner.
-  public void _claimNeighbors(Vec pos, Architecture owner) {
-    foreach (var neighbor in pos.neighbors) {
+  public void _claimNeighbors(Vec pos, Architecture owner)
+  {
+    foreach (var neighbor in pos.neighbors)
+    {
       if (_owners[neighbor] == null) _owners[neighbor] = owner;
     }
   }
@@ -387,20 +445,23 @@ public class Architect {
   public bool _isFormed(TileType type) =>
       type != Tiles.unformed && type != Tiles.unformedWet;
 
-  public bool _isOpenAt(Vec pos) {
+  public bool _isOpenAt(Vec pos)
+  {
     var type = stage[pos].type;
     return type == Tiles.open ||
         type == Tiles.passage ||
         type == Tiles.passageWet;
   }
 
-  bool _isSolidAt(Vec pos) {
+  bool _isSolidAt(Vec pos)
+  {
     var type = stage[pos].type;
     return type == Tiles.solid || type == Tiles.solidWet;
   }
 }
 
-class _Path {
+class _Path
+{
   public Vec pos;
   public Direction dir;
 
@@ -413,7 +474,8 @@ class _Path {
 
 /// Each architecture is a separate algorithm and some tuning parameters for it
 /// that generates part of a stage.
-public abstract class Architecture {
+public abstract class Architecture
+{
   public Architect _architect;
   public ArchitecturalStyle _style;
   public Region _region;
@@ -435,8 +497,10 @@ public abstract class Architecture {
   /// Gets the ratio of carved tiles to carvable tiles.
   ///
   /// This tells you how much of the stage has been opened up by architectures.
-  public double carvedDensity {
-    get {
+  public double carvedDensity
+  {
+    get
+    {
       var possible = (width - 2) * (height - 2);
       return _architect._carvedTiles / possible;
     }
@@ -444,7 +508,8 @@ public abstract class Architecture {
 
   public ArchitecturalStyle style => _style;
 
-  public void bind(ArchitecturalStyle style, Architect architect, Region region) {
+  public void bind(ArchitecturalStyle style, Architect architect, Region region)
+  {
     _architect = architect;
     _style = style;
     _region = region;
@@ -463,7 +528,8 @@ public abstract class Architecture {
   /// Whether this architecture can carve the tile at [pos].
   public bool canCarve(Vec pos) => _architect._canCarve(this, pos);
 
-  public void placeWater(Vec pos) {
+  public void placeWater(Vec pos)
+  {
     _architect.stage[pos].type = Tiles.unformedWet;
     _architect._owners[pos] = this;
 
@@ -471,12 +537,14 @@ public abstract class Architecture {
   }
 
   /// Marks the tile at [pos] as not allowing a passage to be dug through it.
-  public void preventPassage(Vec pos) {
+  public void preventPassage(Vec pos)
+  {
     DartUtils.assert(_architect._owners[pos] == null ||
         _architect._owners[pos] == this ||
         _architect.stage[pos].type == Tiles.unformedWet);
 
-    if (_architect.stage[pos].type == Tiles.unformed) {
+    if (_architect.stage[pos].type == Tiles.unformed)
+    {
       _architect.stage[pos].type = Tiles.solid;
     }
   }
@@ -487,16 +555,18 @@ public abstract class Architecture {
 ///
 /// Returns `true` if it can find an existing path shorter or as short as the
 /// given max length.
-class _LengthPathfinder : Pathfinder<bool> {
+class _LengthPathfinder : Pathfinder<bool>
+{
   public int _maxLength;
 
   public _LengthPathfinder(Stage stage, Vec start, Vec end, int _maxLength)
       : base(stage, start, end)
-      {
-        this._maxLength = _maxLength;
-      }
+  {
+    this._maxLength = _maxLength;
+  }
 
-  public override bool processStep(Path path, out bool result) {
+  public override bool processStep(Path path, out bool result)
+  {
     if (path.length >= _maxLength)
     {
       result = false;
@@ -508,7 +578,8 @@ class _LengthPathfinder : Pathfinder<bool> {
 
   public override bool reachedGoal(Path path) => true;
 
-  public override int? stepCost(Vec pos, Tile tile) {
+  public override int? stepCost(Vec pos, Tile tile)
+  {
     if (tile.canEnter(Motility.doorAndWalk)) return 1;
 
     return null;

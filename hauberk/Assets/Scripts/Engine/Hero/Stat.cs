@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 /// A derived property of the hero that needs to log a message when it changes.
 ///
@@ -27,7 +27,8 @@ public class Property<T> where T : IComparable
   /// Stores the new base [value]. If [value] is different from the current
   /// base value, calls [onChange], passing in the previous value. Does not take
   /// any modification into account.
-  public void update(T value, Action<T> onChange) {
+  public void update(T value, Action<T> onChange)
+  {
     if (_value.Equals(value)) return;
 
     var previous = _value;
@@ -38,7 +39,7 @@ public class Property<T> where T : IComparable
   }
 }
 
-public class Stat 
+public class Stat
 {
   public static int max = 60;
 
@@ -64,7 +65,7 @@ public class Stat
   }
 }
 
-public abstract class StatBase : Property<int> 
+public abstract class StatBase : Property<int>
 {
   public HeroSave _hero;
 
@@ -73,7 +74,7 @@ public abstract class StatBase : Property<int>
   public virtual string _gainAdjective => "";
   public virtual string _loseAdjective => "";
 
-  public override int _modify(int _base) => 
+  public override int _modify(int _base) =>
       Mathf.Clamp(_base + _statOffset + _hero.statBonus(_stat), 1, Stat.max);
 
   int _statOffset => 0;
@@ -88,12 +89,16 @@ public abstract class StatBase : Property<int>
   {
     var newValue = Mathf.Clamp(
         _hero.race.valueAtLevel(_stat, _hero.level), 1, Stat.max);
-    update(newValue, (previous) => {
+    update(newValue, (previous) =>
+    {
       var gain = newValue - previous;
-      if (gain > 0) {
+      if (gain > 0)
+      {
         game.log
             .gain($"You feel {_gainAdjective!} Your {name} increased by {gain}.");
-      } else {
+      }
+      else
+      {
         game.log.error(
             $"You feel {_loseAdjective!} Your {name} decreased by {-gain}.");
       }
@@ -101,22 +106,26 @@ public abstract class StatBase : Property<int>
   }
 }
 
-public class Strength : StatBase 
+public class Strength : StatBase
 {
   public override Stat _stat => Stat.strength;
   public override string _gainAdjective => "mighty";
   public override string _loseAdjective => "weak";
   int _statOffset => -_hero.weight;
 
-  public int maxFury {
-    get {
-        if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
-        return MathUtils.lerpInt(value, 10, 60, 100, 200);
+  public int maxFury
+  {
+    get
+    {
+      if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
+      return MathUtils.lerpInt(value, 10, 60, 100, 200);
     }
   }
 
-  public double tossRangeScale {
-    get {
+  public double tossRangeScale
+  {
+    get
+    {
       if (value <= 20) return MathUtils.lerpDouble(value, 1, 20, 0.1, 1.0);
       if (value <= 30) return MathUtils.lerpDouble(value, 20, 30, 1.0, 1.5);
       if (value <= 40) return MathUtils.lerpDouble(value, 30, 40, 1.5, 1.8);
@@ -127,39 +136,52 @@ public class Strength : StatBase
 
   /// Calculates the melee damage scaling factor based on the hero's strength
   /// relative to the weapon's [heft].
-  public double heftScale(int heft) {
+  public double heftScale(int heft)
+  {
     var relative = Mathf.Clamp(value - heft, -20, 50);
 
-    if (relative < -10) {
+    if (relative < -10)
+    {
       return MathUtils.lerpDouble(relative, -20, -10, 0.05, 0.3);
-    } else if (relative < 0) {
+    }
+    else if (relative < 0)
+    {
       // Note that there is an immediate step down to 0.8 at -1.
       return MathUtils.lerpDouble(relative, -10, -1, 0.3, 0.8);
-    } else if (relative < 30) {
+    }
+    else if (relative < 30)
+    {
       return MathUtils.lerpDouble(relative, 0, 30, 1.0, 2.0);
-    } else {
+    }
+    else
+    {
       return MathUtils.lerpDouble(relative, 30, 50, 2.0, 3.0);
     }
   }
 }
 
-public class Agility : StatBase {
+public class Agility : StatBase
+{
   public override Stat _stat => Stat.agility;
   public override string _gainAdjective => "dextrous";
   public override string _loseAdjective => "clumsy";
 
   // TODO: Subtract encumbrance.
 
-  public int dodgeBonus {
-    get {
+  public int dodgeBonus
+  {
+    get
+    {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -50, 0);
       if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);
       return MathUtils.lerpInt(value, 30, 60, 20, 60);
     }
   }
 
-  public int strikeBonus {
-    get {
+  public int strikeBonus
+  {
+    get
+    {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, -30, 0);
       if (value <= 30) return MathUtils.lerpInt(value, 10, 30, 0, 20);
       return MathUtils.lerpInt(value, 30, 60, 20, 50);
@@ -168,7 +190,8 @@ public class Agility : StatBase {
 }
 
 // TODO: "Vitality"?
-public class Fortitude : StatBase {
+public class Fortitude : StatBase
+{
   public override Stat _stat => Stat.fortitude;
   public override string _gainAdjective => "tough";
   public override string _loseAdjective => "sickly";
@@ -176,40 +199,49 @@ public class Fortitude : StatBase {
   public int maxHealth => (int)(Mathf.Pow(value, 1.4f) + 1.23 * value + 18);
 }
 
-public class Intellect : StatBase {
+public class Intellect : StatBase
+{
   public override Stat _stat => Stat.intellect;
   public override string _gainAdjective => "smart";
   public override string _loseAdjective => "stupid";
 
-  public int maxFocus {
-    get {
+  public int maxFocus
+  {
+    get
+    {
       if (value <= 10) return MathUtils.lerpInt(value, 1, 10, 40, 100);
       return MathUtils.lerpInt(value, 10, 60, 100, 200);
     }
   }
 
-  public double spellFocusScale(int complexity) {
+  public double spellFocusScale(int complexity)
+  {
     var relative = value - Mathf.Clamp(complexity, 0, 50);
     return MathUtils.lerpDouble(relative, 0, 50, 1.0, 0.2);
   }
 }
 
-public class Will : StatBase {
+public class Will : StatBase
+{
   public override Stat _stat => Stat.will;
   public override string _gainAdjective => "driven";
   public override string _loseAdjective => "foolish";
 
   /// Scales how much focus is lost when taking damage.
-  public double damageFocusScale {
-    get {
+  public double damageFocusScale
+  {
+    get
+    {
       if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 800, 400);
       return MathUtils.lerpDouble(value, 10, 60, 400, 80);
     }
   }
 
   /// Scales how much fury is lost when regenerating focus.
-  public double restFuryScale {
-    get {
+  public double restFuryScale
+  {
+    get
+    {
       if (value <= 10) return MathUtils.lerpDouble(value, 1, 10, 4.0, 1.0);
       return MathUtils.lerpDouble(value, 10, 60, 1.0, 0.2);
     }

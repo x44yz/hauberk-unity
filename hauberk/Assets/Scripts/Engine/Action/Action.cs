@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public abstract class Action 
+public abstract class Action
 {
   Actor _actor;
 
@@ -30,7 +30,8 @@ public abstract class Action
   /// ongoing action or should wait until the current action is finished.
   public virtual bool isImmediate => true;
 
-  public void bind(Actor actor, bool consumesEnergy = true) {
+  public void bind(Actor actor, bool consumesEnergy = true)
+  {
     _actor = actor;
     _pos = actor.pos;
     _game = actor.game;
@@ -38,21 +39,24 @@ public abstract class Action
   }
 
   /// Binds an action created passively by the dungeon.
-  public void bindPassive(Game game, Vec pos) {
+  public void bindPassive(Game game, Vec pos)
+  {
     _pos = pos;
     _game = game;
     _consumesEnergy = false;
   }
 
   /// Binds an action created passively by the dungeon.
-  void _bind(Actor actor, Vec pos, Game game) {
+  void _bind(Actor actor, Vec pos, Game game)
+  {
     _actor = actor;
     _pos = pos;
     _game = game;
     _consumesEnergy = false;
   }
 
-  public ActionResult perform() {
+  public ActionResult perform()
+  {
     return onPerform();
   }
 
@@ -64,7 +68,8 @@ public abstract class Action
   /// will be performed in the current tick before the current action continues
   /// to process. Otherwise, it will be enqueued and run once the current action
   /// and any other enqueued actions are done.
-  public void addAction(Action action, Actor actor = null) {
+  public void addAction(Action action, Actor actor = null)
+  {
     action._bind(actor ?? _actor!, _pos, _game);
     _game.addAction(action);
   }
@@ -74,7 +79,7 @@ public abstract class Action
       Element element = null,
       object other = null,
       Vec pos = default(Vec),
-      Direction dir = default(Direction)) 
+      Direction dir = default(Direction))
   {
     _game.addEvent(type,
         actor: actor, element: element, pos: pos, dir: dir, other: other);
@@ -84,46 +89,53 @@ public abstract class Action
   /// actions quieter or louder.
   public virtual double noise => Sound.normalNoise;
 
-  void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     if (!game.stage[_pos].isVisible) return;
     _game.log.error(message, noun1, noun2, noun3);
   }
 
-  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     if (!game.stage[_pos].isVisible) return;
     _game.log.message(message, noun1, noun2, noun3);
   }
 
-  void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     if (!game.stage[_pos].isVisible) return;
     _game.log.gain(message, noun1, noun2, noun3);
   }
 
   public ActionResult succeed(
-      string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
+      string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
   {
     if (message != null) log(message, noun1, noun2, noun3);
     return ActionResult.success;
   }
 
-  public ActionResult fail(string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public ActionResult fail(string message = null, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     if (message != null) error(message, noun1, noun2, noun3);
     return ActionResult.failure;
   }
 
-  public ActionResult alternate(Action action) {
+  public ActionResult alternate(Action action)
+  {
     action.bind(_actor!, consumesEnergy: _consumesEnergy);
     return new ActionResult(action);
   }
 
   /// Returns [ActionResult.success] if [done] is `true`, otherwise returns
   /// [ActionResult.notDone].
-  public ActionResult doneIf(bool done) {
+  public ActionResult doneIf(bool done)
+  {
     return done ? ActionResult.success : ActionResult.notDone;
   }
 }
 
-public class ActionResult {
+public class ActionResult
+{
   public static ActionResult success => new ActionResult(succeeded: true, done: true);
   public static ActionResult failure => new ActionResult(succeeded: false, done: true);
   public static ActionResult notDone => new ActionResult(succeeded: true, done: false);
@@ -149,14 +161,15 @@ public class ActionResult {
 
   public ActionResult(Action alternative)
   {
-      this.alternative = alternative;
-      succeeded = false;
-      done = true;
+    this.alternative = alternative;
+    succeeded = false;
+    done = true;
   }
 }
 
 /// Attempts to perform an action that spends focus.
-public class FocusAction : Action {
+public class FocusAction : Action
+{
   /// The focus cost of the action.
   public int _focus;
 
@@ -169,7 +182,8 @@ public class FocusAction : Action {
     this._action = _action;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     if (hero.focus < _focus) return fail("You aren't focused enough.");
 
     hero.spendFocus(_focus);
@@ -178,7 +192,8 @@ public class FocusAction : Action {
 }
 
 /// Attempts to perform an action that spends fury.
-class FuryAction : Action {
+class FuryAction : Action
+{
   /// The fury cost of the action.
   public int _fury;
 
@@ -191,7 +206,8 @@ class FuryAction : Action {
     this._action = _action;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     if (hero.fury < _fury) return fail("You aren't angry enough.");
 
     hero.spendFury(_fury);
@@ -202,7 +218,8 @@ class FuryAction : Action {
 // TODO: Use this for more actions.
 /// For multi-step actions, lets you define one using a `sync*` function and
 /// `yield` instead of building the state machine manually.
-class GeneratorActionMixin {
+class GeneratorActionMixin
+{
   /// Start the generator the first time through.
   // public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
 

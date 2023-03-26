@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 
 /// The hero's class.
-public class HeroClass {
+public class HeroClass
+{
   public string name;
 
   public string description;

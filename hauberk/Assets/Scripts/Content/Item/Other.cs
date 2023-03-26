@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityTerminal;
 
-public partial class Items {
-    public static void litter() {
-      var b =_CategoryBuilder.category(CharCode.latinCapitalLetterCWithCedilla, stack: 10);
-      b.tag("item");
-      b.toss(damage: 3, range: 7, element: Elements.earth, breakage: 10);
-      _ItemBuilder.item("Rock", Hues.tan, frequency: 0.1).depth(1);
+public partial class Items
+{
+  public static void litter()
+  {
+    var b = _CategoryBuilder.category(CharCode.latinCapitalLetterCWithCedilla, stack: 10);
+    b.tag("item");
+    b.toss(damage: 3, range: 7, element: Elements.earth, breakage: 10);
+    _ItemBuilder.item("Rock", Hues.tan, frequency: 0.1).depth(1);
 
-      b = _CategoryBuilder.category(CharCode.latinSmallLetterUWithDiaeresis, stack: 4);
-      b.tag("item");
-      b.toss(damage: 2, range: 5, breakage: 30);
-      _ItemBuilder.item("Skull", Hues.lightCoolGray, frequency: 0.1).depth(1);
+    b = _CategoryBuilder.category(CharCode.latinSmallLetterUWithDiaeresis, stack: 4);
+    b.tag("item");
+    b.toss(damage: 2, range: 5, breakage: 30);
+    _ItemBuilder.item("Skull", Hues.lightCoolGray, frequency: 0.1).depth(1);
   }
 
-  public static void treasure() {
+  public static void treasure()
+  {
     // Coins.
-    var b =_CategoryBuilder.category(CharCode.centSign);
+    var b = _CategoryBuilder.category(CharCode.centSign);
     b.tag("treasure/coin");
     b.treasure();
     _ItemBuilder.item("Copper Coins", Hues.persimmon, price: 4).depth(1, to: 11);
@@ -28,7 +31,7 @@ public partial class Items {
     _ItemBuilder.item("Platinum Coins", Hues.lightCoolGray, price: 300).depth(40, to: 70);
 
     // Bars.
-    b =_CategoryBuilder.category(CharCode.dollarSign);
+    b = _CategoryBuilder.category(CharCode.dollarSign);
     b.tag("treasure/bar");
     b.treasure();
     _ItemBuilder.item("Copper Bar", Hues.persimmon, price: 150).depth(35, to: 60);
@@ -38,34 +41,35 @@ public partial class Items {
     _ItemBuilder.item("Gold Bar", Hues.gold, price: 2000).depth(80);
     _ItemBuilder.item("Platinum Bar", Hues.lightCoolGray, price: 3000).depth(90);
 
-  /*
-    // TODO: Could add more treasure using other currency symbols.
+    /*
+      // TODO: Could add more treasure using other currency symbols.
 
-    // TODO: Instead of treasure, make these recipe components.
-    // Gems
-    category(r"$", "treasure/gem");
-    tossable(damage: 2, range: 7, breakage: 5);
-    treasure("Amethyst",      3,  lightPurple,   100);
-    treasure("Sapphire",      12, blue,          200);
-    treasure("Emerald",       20, green,         300);
-    treasure("Ruby",          35, red,           500);
-    treasure("Diamond",       60, white,        1000);
-    treasure("Blue Diamond",  80, lightBlue,    2000);
+      // TODO: Instead of treasure, make these recipe components.
+      // Gems
+      category(r"$", "treasure/gem");
+      tossable(damage: 2, range: 7, breakage: 5);
+      treasure("Amethyst",      3,  lightPurple,   100);
+      treasure("Sapphire",      12, blue,          200);
+      treasure("Emerald",       20, green,         300);
+      treasure("Ruby",          35, red,           500);
+      treasure("Diamond",       60, white,        1000);
+      treasure("Blue Diamond",  80, lightBlue,    2000);
 
-    // Rocks
-    category(r"$", "treasure/rock");
-    tossable(damage: 2, range: 7, breakage: 5);
-    treasure("Turquoise Stone", 15, aqua,         60);
-    treasure("Onyx Stone",      20, darkGray,    160);
-    treasure("Malachite Stone", 25, lightGreen,  400);
-    treasure("Jade Stone",      30, darkGreen,   400);
-    treasure("Pearl",           35, lightYellow, 600);
-    treasure("Opal",            40, lightPurple, 800);
-    treasure("Fire Opal",       50, lightOrange, 900);
-  */
+      // Rocks
+      category(r"$", "treasure/rock");
+      tossable(damage: 2, range: 7, breakage: 5);
+      treasure("Turquoise Stone", 15, aqua,         60);
+      treasure("Onyx Stone",      20, darkGray,    160);
+      treasure("Malachite Stone", 25, lightGreen,  400);
+      treasure("Jade Stone",      30, darkGreen,   400);
+      treasure("Pearl",           35, lightYellow, 600);
+      treasure("Opal",            40, lightPurple, 800);
+      treasure("Fire Opal",       50, lightOrange, 900);
+    */
   }
 
-  public static void pelts() {
+  public static void pelts()
+  {
     // TODO: Should these appear on the floor?
     // TODO: Better pictogram than a pelt?
     // TODO: These currently have no use. Either remove them, or add crafting
@@ -84,8 +88,9 @@ public partial class Items {
     */
   }
 
-  public static void food() {
-    var b =_CategoryBuilder.category(CharCode.invertedExclamationMark);
+  public static void food()
+  {
+    var b = _CategoryBuilder.category(CharCode.invertedExclamationMark);
     b.tag("item/food");
     b.destroy(Elements.fire, chance: 20, fuel: 3);
     var t = _ItemBuilder.item("Stale Biscuit", Hues.sandal);
@@ -97,7 +102,7 @@ public partial class Items {
     t.stack(6);
     t.food(200);
 
-    b =_CategoryBuilder.category(CharCode.vulgarFractionOneQuarter);
+    b = _CategoryBuilder.category(CharCode.vulgarFractionOneQuarter);
     b.tag("item/food");
     b.destroy(Elements.fire, chance: 15, fuel: 2);
     t = _ItemBuilder.item("Chunk[s] of Meat", Hues.brown, price: 10);
@@ -113,8 +118,9 @@ public partial class Items {
     // TODO: More foods. Some should also cure minor conditions or cause them.
   }
 
-  public static void lightSources() {
-    var b =_CategoryBuilder.category(CharCode.notSign, verb: "hit[s]");
+  public static void lightSources()
+  {
+    var b = _CategoryBuilder.category(CharCode.notSign, verb: "hit[s]");
     b.tag("equipment/light");
     b.toss(breakage: 70);
 

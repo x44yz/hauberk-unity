@@ -40,20 +40,20 @@ public class Affix
       int? armor,
       int? priceBonus,
       double? priceScale)
-    {
-      this.name = name;
-      this.displayName = displayName;
+  {
+    this.name = name;
+    this.displayName = displayName;
 
-      this.heftScale = heftScale ?? 1.0;
-      this.weightBonus = weightBonus ?? 0;
-      this.strikeBonus = strikeBonus ?? 0;
-      this.damageScale = damageScale ?? 1.0;
-      this.damageBonus = damageBonus ?? 1;
-      this.brand = brand ?? Element.none;
-      this.armor = armor ?? 0;
-      this.priceBonus = priceBonus ?? 0;
-      this.priceScale = priceScale ?? 1.0;
-    }
+    this.heftScale = heftScale ?? 1.0;
+    this.weightBonus = weightBonus ?? 0;
+    this.strikeBonus = strikeBonus ?? 0;
+    this.damageScale = damageScale ?? 1.0;
+    this.damageBonus = damageBonus ?? 1;
+    this.brand = brand ?? Element.none;
+    this.armor = armor ?? 0;
+    this.priceBonus = priceBonus ?? 0;
+    this.priceScale = priceScale ?? 1.0;
+  }
 
   public int resistance(Element element)
   {
@@ -62,7 +62,8 @@ public class Affix
     return val;
   }
 
-  public void resist(Element element, int power) {
+  public void resist(Element element, int power)
+  {
     _resists[element] = power;
   }
 
@@ -73,7 +74,8 @@ public class Affix
     return val;
   }
 
-  public void setStatBonus(Stat stat, int bonus) {
+  public void setStatBonus(Stat stat, int bonus)
+  {
     _statBonuses[stat] = bonus;
   }
 

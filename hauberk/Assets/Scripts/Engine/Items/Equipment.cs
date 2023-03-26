@@ -5,7 +5,8 @@ using System.Linq;
 
 /// The collection of wielded [Item]s held by the hero. Unlike [Inventory], the
 /// [Equipment] holds each item in a categorized slot.
-public class Equipment : ItemCollection {
+public class Equipment : ItemCollection
+{
   public override IEnumerator<Item> GetEnumerator()
   {
     return iterator;
@@ -39,14 +40,17 @@ public class Equipment : ItemCollection {
   /// Gets the currently-equipped weapons, if any.
   public List<Item> weapons
   {
-    get {
+    get
+    {
       return slots.Where<Item>((item) => item != null && item.type.weaponType != null).ToList();
     }
   }
 
   /// Gets the number of equipped items. Ignores empty slots.
-  public override int length {
-    get {
+  public override int length
+  {
+    get
+    {
       int count = 0;
       slots.ForEach((item) => count += (item == null) ? 0 : 1);
       return count;
@@ -54,11 +58,15 @@ public class Equipment : ItemCollection {
   }
 
   /// Gets the equipped item at the given index. Ignores empty slots.
-  Item this[int index] {
-    get {
+  Item this[int index]
+  {
+    get
+    {
       // Find the slot, skipping over empty ones.
-      for (var i = 0; i < slotTypes.Count; i++) {
-        if (slots[i] != null) {
+      for (var i = 0; i < slotTypes.Count; i++)
+      {
+        if (slots[i] != null)
+        {
           if (index == 0) return slots[i]!;
           index--;
         }
@@ -71,10 +79,13 @@ public class Equipment : ItemCollection {
   /// Creates a new copy of this [Equipment]. This is done when the hero enters
   /// the dungeon so that any inventory changes that happen there are discarded
   /// if the hero dies.
-  public Equipment clone() {
+  public Equipment clone()
+  {
     var equipment = new Equipment();
-    for (var i = 0; i < slotTypes.Count; i++) {
-      if (slots[i] != null) {
+    for (var i = 0; i < slotTypes.Count; i++)
+    {
+      if (slots[i] != null)
+      {
         equipment.slots[i] = slots[i]!.clone();
       }
     }
@@ -83,13 +94,16 @@ public class Equipment : ItemCollection {
   }
 
   /// Gets whether or not there is a slot to equip [item].
-  public bool canEquip(Item item) {
+  public bool canEquip(Item item)
+  {
     return slotTypes.Any((slot) => item.equipSlot == slot);
   }
 
-  public override bool canAdd(Item item) {
+  public override bool canAdd(Item item)
+  {
     // Look for an empty slot of the right type.
-    for (var i = 0; i < slots.Count; i++) {
+    for (var i = 0; i < slots.Count; i++)
+    {
       if (slotTypes[i] == item.equipSlot && slots[i] == null) return true;
     }
 
@@ -99,14 +113,16 @@ public class Equipment : ItemCollection {
   /// Tries to add the item. This will only succeed if there is an empty slot
   /// that allows the item. Unlike [equip], this will not swap items. It is
   /// used by the ItemScreen.
-  public override AddItemResult tryAdd(Item item) {
+  public override AddItemResult tryAdd(Item item)
+  {
     // Should not be able to equip stackable items. If we want to make, say,
     // knives stackable, we'll have to add support for splitting stacks here.
     DartUtils.assert(item.count == 1);
 
-    for (var i = 0; i < slotTypes.Count; i++) 
+    for (var i = 0; i < slotTypes.Count; i++)
     {
-      if (slotTypes[i] == item.equipSlot && slots[i] == null) {
+      if (slotTypes[i] == item.equipSlot && slots[i] == null)
+      {
         slots[i] = item;
         return new AddItemResult(item.count, 0);
       }
@@ -115,7 +131,8 @@ public class Equipment : ItemCollection {
     return new AddItemResult(0, item.count);
   }
 
-  public override void countChanged() {
+  public override void countChanged()
+  {
     // Do nothing. Equipment doesn't stack.
   }
 
@@ -124,39 +141,47 @@ public class Equipment : ItemCollection {
   /// Returns any items that had to be unequipped to make room for it. This is
   /// usually nothing or a single item, but can be two held items if equipping
   /// a two-handed item.
-  public List<Item> equip(Item item) {
+  public List<Item> equip(Item item)
+  {
     DartUtils.assert(item.count == 1, "Must split the stack before equipping.");
 
     // Handle hands and two-handed items specially. We need to preserve the
     // invariant that you can never get into a state where you are holding a
     // two-handed item and something else.
-    if (item.equipSlot == "hand") {
+    if (item.equipSlot == "hand")
+    {
       var handSlots = new List<int>();
       var heldSlots = new List<int>();
-      for (var i = 0; i < slotTypes.Count; i++) {
-        if (slotTypes[i] == "hand") {
+      for (var i = 0; i < slotTypes.Count; i++)
+      {
+        if (slotTypes[i] == "hand")
+        {
           handSlots.Add(i);
           if (slots[i] != null) heldSlots.Add(i);
         }
       }
 
       // Nothing held, so hold it.
-      if (heldSlots.Count == 0) {
+      if (heldSlots.Count == 0)
+      {
         slots[handSlots[0]] = item;
         return new List<Item>();
       }
 
       // Holding a two-handed item, so unequip it.
-      if (heldSlots.Count == 1 && slots[heldSlots[0]]!.type.isTwoHanded) {
+      if (heldSlots.Count == 1 && slots[heldSlots[0]]!.type.isTwoHanded)
+      {
         var unequipped0 = slots[heldSlots[0]]!;
         slots[handSlots[0]] = item;
-        return new List<Item>(){unequipped0};
+        return new List<Item>() { unequipped0 };
       }
 
       // Equipping a two-handed, so unequip anything held.
-      if (item.type.isTwoHanded) {
+      if (item.type.isTwoHanded)
+      {
         var unequipped1 = new List<Item>();
-        foreach (var slot in heldSlots) {
+        foreach (var slot in heldSlots)
+        {
           unequipped1.Add(slots[slot]!);
           slots[slot] = null;
         }
@@ -166,29 +191,38 @@ public class Equipment : ItemCollection {
       }
 
       // Both hands full, so empty one.
-      if (heldSlots.Count == 2) {
+      if (heldSlots.Count == 2)
+      {
         var unequipped2 = slots[heldSlots[0]]!;
         slots[heldSlots[0]] = item;
-        return new List<Item>(){unequipped2};
+        return new List<Item>() { unequipped2 };
       }
 
       // One empty hand, so use it.
-      if (heldSlots[0] == handSlots[0]) {
+      if (heldSlots[0] == handSlots[0])
+      {
         slots[handSlots[1]] = item;
-      } else {
+      }
+      else
+      {
         slots[handSlots[0]] = item;
       }
       return new List<Item>();
     }
 
     var usedSlot = -1;
-    for (var i = 0; i < slotTypes.Count; i++) {
-      if (slotTypes[i] == item.equipSlot) {
-        if (slots[i] == null) {
+    for (var i = 0; i < slotTypes.Count; i++)
+    {
+      if (slotTypes[i] == item.equipSlot)
+      {
+        if (slots[i] == null)
+        {
           // Found an empty slot, so put it there.
           slots[i] = item;
           return new List<Item>();
-        } else {
+        }
+        else
+        {
           // Found the slot, but it's occupied.
           usedSlot = i;
         }
@@ -197,14 +231,17 @@ public class Equipment : ItemCollection {
 
     // If we get here, all matching slots were already full. Swap out an item.
     DartUtils.assert(usedSlot != -1, "Should have at least one of every slot.");
-    var unequipped = new List<Item>(){slots[usedSlot]!};
+    var unequipped = new List<Item>() { slots[usedSlot]! };
     slots[usedSlot] = item;
     return unequipped;
   }
 
-  public override void remove(Item item) {
-    for (var i = 0; i < slots.Count; i++) {
-      if (slots[i] == item) {
+  public override void remove(Item item)
+  {
+    for (var i = 0; i < slots.Count; i++)
+    {
+      if (slots[i] == item)
+      {
         slots[i] = null;
         break;
       }
@@ -212,11 +249,14 @@ public class Equipment : ItemCollection {
   }
 
   /// Unequips and returns the [Item] at [index].
-  public override Item removeAt(int index) {
+  public override Item removeAt(int index)
+  {
     // Find the slot, skipping over empty ones.
-    for (var i = 0; i < slotTypes.Count; i++) {
+    for (var i = 0; i < slotTypes.Count; i++)
+    {
       if (slots[i] == null) continue;
-      if (index == 0) {
+      if (index == 0)
+      {
         var item = slots[i];
         slots[i] = null;
         return item!;

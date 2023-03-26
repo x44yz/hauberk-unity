@@ -30,8 +30,10 @@ public abstract class Actor : Noun
   public Dictionary<Element, ResistCondition> resistances = new Dictionary<Element, ResistCondition>();
 
   // All [Condition]s for the actor.
-  List<Condition> conditions {
-    get {
+  List<Condition> conditions
+  {
+    get
+    {
       var rt = new List<Condition>() {
         haste,
         cold,
@@ -46,50 +48,59 @@ public abstract class Actor : Noun
   }
 
   Vec _pos;
-  public Vec pos {
+  public Vec pos
+  {
     get { return _pos; }
-    set {
-        if (value != _pos) {
-            changePosition(_pos, value);
-            _pos = value;
-        }
+    set
+    {
+      if (value != _pos)
+      {
+        changePosition(_pos, value);
+        _pos = value;
+      }
     }
   }
 
-  public int x {
+  public int x
+  {
     get { return pos.x; }
-    set {
-        pos = new Vec(value, y);
+    set
+    {
+      pos = new Vec(value, y);
     }
   }
 
-  public int y {
+  public int y
+  {
     get { return pos.y; }
-    set {
-        pos = new Vec(x, value);
+    set
+    {
+      pos = new Vec(x, value);
     }
   }
 
   int _health = 0;
-  public int health {
+  public int health
+  {
     get { return _health; }
-    set {
-        _health = Mathf.Clamp(value, 0, maxHealth);
+    set
+    {
+      _health = Mathf.Clamp(value, 0, maxHealth);
     }
   }
 
   public Actor(Game game, int x, int y)
-  :base("")
+  : base("")
   {
     this.game = game;
     _pos = new Vec(x, y);
 
-    foreach (var element in game.content.elements) 
+    foreach (var element in game.content.elements)
     {
       resistances[element] = new ResistCondition(element);
     }
 
-    foreach (var condition in conditions) 
+    foreach (var condition in conditions)
     {
       condition.bind(this);
     }
@@ -117,30 +128,34 @@ public abstract class Actor : Noun
 
   /// Gets the actor's current speed, taking into any account any active
   /// [Condition]s.
-  public int speed {
-    get {
-        var speed = baseSpeed;
-        speed += haste.intensity;
-        speed -= cold.intensity;
-        return speed;
+  public int speed
+  {
+    get
+    {
+      var speed = baseSpeed;
+      speed += haste.intensity;
+      speed -= cold.intensity;
+      return speed;
     }
   }
 
   /// Additional ways the actor can avoid a hit beyond dodging it.
-  public List<Defense> defenses {
-      get {
-        var rt = new List<Defense>();
+  public List<Defense> defenses
+  {
+    get
+    {
+      var rt = new List<Defense>();
 
-        var dodge = baseDodge;
+      var dodge = baseDodge;
 
-        // Hard to dodge an attack you can't see coming.
-        if (isBlinded) dodge /= 2;
+      // Hard to dodge an attack you can't see coming.
+      if (isBlinded) dodge /= 2;
 
-        if (dodge != 0) rt.Add(new Defense(dodge, "{1} dodge[s] {2}."));
+      if (dodge != 0) rt.Add(new Defense(dodge, "{1} dodge[s] {2}."));
 
-        rt.AddRange(onGetDefenses());
-        return rt;
-      }
+      rt.AddRange(onGetDefenses());
+      return rt;
+    }
   }
 
   /// The amount of protection against damage the actor has.
@@ -153,7 +168,8 @@ public abstract class Actor : Noun
   public virtual int emanationLevel => 0;
 
   /// Called when the actor's position is about to change from [from] to [to].
-  public virtual void changePosition(Vec from, Vec to) {
+  public virtual void changePosition(Vec from, Vec to)
+  {
     game.stage.moveActor(from, to);
 
     if (emanationLevel > 0) game.stage.actorEmanationChanged();
@@ -167,7 +183,8 @@ public abstract class Actor : Noun
 
   public abstract List<Defense> onGetDefenses();
 
-  public Action getAction() {
+  public Action getAction()
+  {
     var action = onGetAction();
     action.bind(this);
     return action;
@@ -179,9 +196,11 @@ public abstract class Actor : Noun
   ///
   /// Note that [defender] may be null if this hit is being created for
   /// something like a bolt attack or whether the targeted actor isn't known.
-  public List<Hit> createMeleeHits(Actor defender) {
+  public List<Hit> createMeleeHits(Actor defender)
+  {
     var hits = onCreateMeleeHits(defender);
-    foreach (var hit in hits) {
+    foreach (var hit in hits)
+    {
       modifyHit(hit, HitType.melee);
     }
     return hits;
@@ -190,10 +209,13 @@ public abstract class Actor : Noun
   public abstract List<Hit> onCreateMeleeHits(Actor defender);
 
   /// Applies the hit modifications from the actor.
-  public void modifyHit(Hit hit, HitType type) {
+  public void modifyHit(Hit hit, HitType type)
+  {
     // Hard to hit an actor you can't see.
-    if (isBlinded) {
-      switch (type) {
+    if (isBlinded)
+    {
+      switch (type)
+      {
         case HitType.melee:
           hit.scaleStrike(0.5);
           break;
@@ -210,14 +232,15 @@ public abstract class Actor : Noun
     onModifyHit(hit, type);
   }
 
-  void onModifyHit(Hit hit, HitType type) {}
+  void onModifyHit(Hit hit, HitType type) { }
 
   /// The amount of resistance the actor currently has to [element].
   ///
   /// Every level of resist reduces the damage taken by an attack of that
   /// element by 1/(resistance + 1), so that 1 resist is half damange, 2 is
   /// third, etc.
-  public int resistance(Element element) {
+  public int resistance(Element element)
+  {
     // TODO: What about negative resists?
 
     // Get the base resist from the subclass.
@@ -225,7 +248,8 @@ public abstract class Actor : Noun
 
     // Apply temporary resistance.
     var resistance = resistances[element]!;
-    if (resistance.isActive) {
+    if (resistance.isActive)
+    {
       result += resistance.intensity;
     }
 
@@ -237,7 +261,8 @@ public abstract class Actor : Noun
   /// Reduces the actor's health by [damage], and handles its death. Returns
   /// `true` if the actor died.
   public bool takeDamage(Action action, int damage, Noun attackNoun,
-      Actor attacker = null) {
+      Actor attacker = null)
+  {
     health -= damage;
     onTakeDamage(action, attacker, damage);
 
@@ -255,7 +280,8 @@ public abstract class Actor : Noun
   }
 
   /// Called when this actor has successfully hit [defender].
-  public virtual void onGiveDamage(Action action, Actor defender, int damage) {
+  public virtual void onGiveDamage(Action action, Actor defender, int damage)
+  {
     // Do nothing.
   }
 
@@ -263,27 +289,32 @@ public abstract class Actor : Noun
   ///
   /// [attacker] may be `null` if the damage is not the direct result of an
   /// attack (for example, poison).
-  void onTakeDamage(Action action, Actor attacker, int damage) {
+  void onTakeDamage(Action action, Actor attacker, int damage)
+  {
     // Do nothing.
   }
 
   /// Called when this Actor has been killed by [attackNoun].
-  void onDied(Noun attackNoun) {
+  void onDied(Noun attackNoun)
+  {
     // Do nothing.
   }
 
   /// Called when this Actor has killed [defender].
-  void onKilled(Action action, Actor defender) {
+  void onKilled(Action action, Actor defender)
+  {
     // Do nothing.
   }
 
   /// Called when this Actor has completed a turn.
-  void onFinishTurn(Action action) {
+  void onFinishTurn(Action action)
+  {
     // Do nothing.
   }
 
   /// Whether it's possible for the actor to ever be on the tile at [pos].
-  public bool canOccupy(Vec pos) {
+  public bool canOccupy(Vec pos)
+  {
     if (pos.x < 0) return false;
     if (pos.x >= game.stage.width) return false;
     if (pos.y < 0) return false;
@@ -311,10 +342,12 @@ public abstract class Actor : Noun
 
   // TODO: Take resistance and immunities into account.
 
-  public void finishTurn(Action action) {
+  public void finishTurn(Action action)
+  {
     energy.spend();
 
-    foreach (var condition in conditions) {
+    foreach (var condition in conditions)
+    {
       condition.update(action);
     }
 
@@ -322,7 +355,7 @@ public abstract class Actor : Noun
   }
 
   /// Logs [message] if the actor is visible to the hero.
-  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
+  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
   {
     if (!game.hero.canPerceive(this)) return;
     game.log.message(message, noun1, noun2, noun3);

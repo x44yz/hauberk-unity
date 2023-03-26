@@ -6,9 +6,9 @@ using UnityTerminal;
 
 public static class _MBaseBuilderUtils
 {
-    public static Regex collapseNewlines = new Regex("\n\\s*");
+  public static Regex collapseNewlines = new Regex("\n\\s*");
 
-    public static Dictionary<Element, List<string>> _elementText = new Dictionary<Element, List<string>>(){
+  public static Dictionary<Element, List<string>> _elementText = new Dictionary<Element, List<string>>(){
         {Elements.air, new List<string>{"the wind", "buffets"}},
         {Elements.earth, new List<string>{"the soil", "buries"}},
         {Elements.fire, new List<string>{"the flame", "burns"}},
@@ -22,75 +22,79 @@ public static class _MBaseBuilderUtils
         {Elements.spirit, new List<string>{"the spirit", "haunts"}},
     };
 
-    /// The last builder that was created. It gets implicitly finished when the
-    /// next family or breed starts, or at the end of initialization. This way, we
-    /// don't need an explicit `build()` call at the end of each builder.
-    public static _BreedBuilder _builder;
+  /// The last builder that was created. It gets implicitly finished when the
+  /// next family or breed starts, or at the end of initialization. This way, we
+  /// don't need an explicit `build()` call at the end of each builder.
+  public static _BreedBuilder _builder;
 
-    public static _FamilyBuilder _family;
+  public static _FamilyBuilder _family;
 
-    public static _FamilyBuilder family(string character,
-        double? frequency = null,
-        int? meander = null,
-        int? speed = null,
-        int? dodge = null,
-        int? tracking = null,
-        string flags = null) 
-    {
-        finishBreed();
+  public static _FamilyBuilder family(string character,
+      double? frequency = null,
+      int? meander = null,
+      int? speed = null,
+      int? dodge = null,
+      int? tracking = null,
+      string flags = null)
+  {
+    finishBreed();
 
-        _family = new _FamilyBuilder(frequency, character);
-        _family._meander = meander;
-        _family._speed = speed;
-        _family._dodge = dodge;
-        _family._tracking = tracking;
-        _family._flags = flags;
+    _family = new _FamilyBuilder(frequency, character);
+    _family._meander = meander;
+    _family._speed = speed;
+    _family._dodge = dodge;
+    _family._tracking = tracking;
+    _family._flags = flags;
 
-        return _family;
-    }
+    return _family;
+  }
 
-    public static void finishBreed() {
-        var builder = _builder;
-        if (builder == null) return;
+  public static void finishBreed()
+  {
+    var builder = _builder;
+    if (builder == null) return;
 
-        var tags = new List<string>();
-        tags.AddRange(_family._groups);
-        tags.AddRange(builder._groups);
+    var tags = new List<string>();
+    tags.AddRange(_family._groups);
+    tags.AddRange(builder._groups);
 
-        if (tags.Count == 0) tags.Add("monster");
+    if (tags.Count == 0) tags.Add("monster");
 
-        var breed = builder.build();
+    var breed = builder.build();
 
-        Monsters.breeds.add(breed,
-            name: breed.name,
-            depth: breed.depth,
-            frequency: builder._frequency ?? _family._frequency,
-            tags: string.Join(" ", tags));
-        _builder = null;
-    }
+    Monsters.breeds.add(breed,
+        name: breed.name,
+        depth: breed.depth,
+        frequency: builder._frequency ?? _family._frequency,
+        tags: string.Join(" ", tags));
+    _builder = null;
+  }
 
-    // TODO: Move more named params into builder methods?
-    public static _BreedBuilder breed(string name, int depth, Color color, int health,
-        double? frequency = null, int speed = 0, int? dodge = null, int? meander = null) {
-        finishBreed();
+  // TODO: Move more named params into builder methods?
+  public static _BreedBuilder breed(string name, int depth, Color color, int health,
+      double? frequency = null, int speed = 0, int? dodge = null, int? meander = null)
+  {
+    finishBreed();
 
-        var glyph = new Glyph(_family._character[0], color);
-        var builder = new _BreedBuilder(name, depth, frequency, glyph, health);
-        builder._speed = speed;
-        builder._dodge = dodge;
-        builder._meander = meander;
-        _builder = builder;
-        return builder;
-    }
+    var glyph = new Glyph(_family._character[0], color);
+    var builder = new _BreedBuilder(name, depth, frequency, glyph, health);
+    builder._speed = speed;
+    builder._dodge = dodge;
+    builder._meander = meander;
+    _builder = builder;
+    return builder;
+  }
 
-    public static void describe(string description) {
-        // description = description.replaceAll(collapseNewlines, " ");
-        description = Regex.Replace(description, collapseNewlines.ToString(), " ");
-        _builder!._description = description;
-    }
+  public static void describe(string description)
+  {
+    // description = description.replaceAll(collapseNewlines, " ");
+    description = Regex.Replace(description, collapseNewlines.ToString(), " ");
+    _builder!._description = description;
+  }
 }
 
-public class _MBaseBuilder {
+public class _MBaseBuilder
+{
   public double? _frequency;
 
   public int? _tracking;
@@ -133,69 +137,86 @@ public class _MBaseBuilder {
     this._frequency = _frequency;
   }
 
-  public void flags(string flags) {
+  public void flags(string flags)
+  {
     // TODO: Allow negated flags.
     _flags = flags;
   }
 
-  public void emanate(int level) {
+  public void emanate(int level)
+  {
     _emanationLevel = level;
   }
 
-  public void sense(int? see = null, int? hear = null) {
+  public void sense(int? see = null, int? hear = null)
+  {
     _vision = see;
     _hearing = hear;
   }
 
-  public void preferWall() {
+  public void preferWall()
+  {
     _location = SpawnLocation.wall;
   }
 
-  public void preferCorner() {
+  public void preferCorner()
+  {
     _location = SpawnLocation.corner;
   }
 
-  public void preferOpen() {
+  public void preferOpen()
+  {
     _location = SpawnLocation.open;
   }
 
   /// How many monsters of this kind are spawned.
-  public void count(int minOrMax, int? max = null) {
-    if (max == null) {
+  public void count(int minOrMax, int? max = null)
+  {
+    if (max == null)
+    {
       _countMin = 1;
       _countMax = minOrMax;
-    } else {
+    }
+    else
+    {
       _countMin = minOrMax;
       _countMax = max;
     }
   }
 
-  public void stain(TileType type) {
+  public void stain(TileType type)
+  {
     _stain = type;
   }
 
-  public void fly() {
+  public void fly()
+  {
     _motility |= Motility.fly;
   }
 
-  public void swim() {
+  public void swim()
+  {
     _motility |= Motility.swim;
   }
 
-  public void openDoors() {
+  public void openDoors()
+  {
     _motility |= Motility.door;
   }
 
-  public void defense(int amount, string message) {
+  public void defense(int amount, string message)
+  {
     _defenses.Add(new Defense(amount, message));
   }
 
-  public void groups(string names) {
+  public void groups(string names)
+  {
     _groups.AddRange(names.Split(' '));
   }
 }
 
-public class _FamilyBuilder : _MBaseBuilder {
+public class _FamilyBuilder : _MBaseBuilder
+{
   /// Character for the current monster.
   public string _character;
 
@@ -205,7 +226,8 @@ public class _FamilyBuilder : _MBaseBuilder {
   }
 }
 
-public class _BreedBuilder : _MBaseBuilder {
+public class _BreedBuilder : _MBaseBuilder
+{
   public string _name;
   public int _depth;
   public object _appearance;
@@ -219,31 +241,39 @@ public class _BreedBuilder : _MBaseBuilder {
 
   public _BreedBuilder(string _name, int _depth, double? frequency, object _appearance, int _health)
       : base(frequency)
-    {
-        this._name = _name;
-        this._depth = _depth; 
-        this._appearance = _appearance;
-        this._health = _health;
-    }
+  {
+    this._name = _name;
+    this._depth = _depth;
+    this._appearance = _appearance;
+    this._health = _health;
+  }
 
-  public void minion(string name, int? minOrMax = null, int? max = null) {
+  public void minion(string name, int? minOrMax = null, int? max = null)
+  {
     Spawn spawn;
-    if (Monsters.breeds.tagExists(name)) {
+    if (Monsters.breeds.tagExists(name))
+    {
       spawn = SpawnUtils.spawnTag(name);
-    } else {
+    }
+    else
+    {
       spawn = SpawnUtils.spawnBreed(name);
     }
 
-    if (max != null) {
+    if (max != null)
+    {
       spawn = SpawnUtils.repeatSpawn(minOrMax.Value, max.Value, spawn);
-    } else if (minOrMax != null) {
+    }
+    else if (minOrMax != null)
+    {
       spawn = SpawnUtils.repeatSpawn(1, minOrMax.Value, spawn);
     }
 
     _minions.Add(spawn);
   }
 
-  public void attack(string verb, int damage, Element element = null, Noun noun = null) {
+  public void attack(string verb, int damage, Element element = null, Noun noun = null)
+  {
     _attacks.Add(new Attack(noun, verb, damage, 0, element));
   }
 
@@ -252,17 +282,20 @@ public class _BreedBuilder : _MBaseBuilder {
       int percent = 100,
       int count = 1,
       int depthOffset = 0,
-      int? affixChance = null) {
+      int? affixChance = null)
+  {
     var drop = DropUtils.percentDrop(percent, name, _depth + depthOffset, affixChance);
     if (count > 1) drop = DropUtils.repeatDrop(count, drop);
     _drops.Add(drop);
   }
 
-  public void he() {
+  public void he()
+  {
     _pronoun = Pronoun.he;
   }
 
-  public void she() {
+  public void she()
+  {
     _pronoun = Pronoun.she;
   }
 
@@ -281,7 +314,8 @@ public class _BreedBuilder : _MBaseBuilder {
           rate: rate, damage: damage, range: range);
 
   void bolt(Element element,
-      num rate, int damage, int range) {
+      num rate, int damage, int range)
+  {
     _bolt(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
@@ -323,7 +357,8 @@ public class _BreedBuilder : _MBaseBuilder {
   void poisonBolt(num rate = 5, int damage = 0) =>
       bolt(Elements.poison, rate: rate, damage: damage, range: 8);
 
-  public void cone(Element element, num? rate = null, int damage = 0, int? range = null) {
+  public void cone(Element element, num? rate = null, int damage = 0, int? range = null)
+  {
     _cone(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
@@ -368,40 +403,47 @@ public class _BreedBuilder : _MBaseBuilder {
       _addMove(new AmputateMove(new BreedRef(body), new BreedRef(part), message));
 
   void _bolt(string noun, string verb, Element element,
-      num rate, int damage, int range) {
+      num rate, int damage, int range)
+  {
     var nounObject = noun != null ? new Noun(noun) : null;
     _addMove(new BoltMove(rate, new Attack(nounObject, verb, damage, range, element)));
   }
 
   void _cone(string noun, string verb, Element element,
-      num? rate, int damage, int? range) {
+      num? rate, int damage, int? range)
+  {
     rate ??= 5;
     range ??= 10;
 
     _addMove(new ConeMove(rate.Value, new Attack(new Noun(noun), verb, damage, range.Value, element)));
   }
 
-  void _addMove(Move move) {
+  void _addMove(Move move)
+  {
     _moves.Add(move);
   }
 
   public _FamilyBuilder _family => _MBaseBuilderUtils._family;
 
-  public Breed build() {
-    List<string> flags = new List<string>(){};
+  public Breed build()
+  {
+    List<string> flags = new List<string>() { };
     // TODO: Use ?. and ...?.
     if (_family._flags != null)
-        flags.AddRange(_family._flags!.Split(' '));
+      flags.AddRange(_family._flags!.Split(' '));
     if (_flags != null)
-        flags.AddRange(_flags!.Split(' '));
+      flags.AddRange(_flags!.Split(' '));
 
     var dodge = _dodge ?? _family._dodge;
     if (flags.Contains("immobile")) dodge = 0;
 
     Spawn minions = null;
-    if (_minions.Count == 1) {
+    if (_minions.Count == 1)
+    {
       minions = _minions[0];
-    } else if (_minions.Count > 1) {
+    }
+    else if (_minions.Count > 1)
+    {
       minions = SpawnUtils.spawnAll(_minions);
     }
 

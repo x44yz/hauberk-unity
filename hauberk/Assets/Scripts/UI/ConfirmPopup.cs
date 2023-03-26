@@ -6,7 +6,7 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 /// Modal dialog for letting the user confirm an action.
-class ConfirmPopup : Popup 
+class ConfirmPopup : Popup
 {
   public string _message;
   public object _result;
@@ -17,24 +17,25 @@ class ConfirmPopup : Popup
     this._result = _result;
   }
 
-  public override List<string> message => new List<string>(){_message};
+  public override List<string> message => new List<string>() { _message };
 
   public override Dictionary<string, string> helpKeys =>
       new Dictionary<string, string>() {
-        {"Y", "Yes"}, 
-        {"N", "No"}, 
+        {"Y", "Yes"},
+        {"N", "No"},
         {"Esc", "No"}
       };
 
   public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
   {
-    if (keyCode == InputX.cancel) {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
 
     if (shift || alt) return false;
-    
+
     if (keyCode == KeyCode.N)
     {
       terminal.Pop();

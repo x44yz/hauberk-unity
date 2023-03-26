@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public abstract partial class Decor {
-  public enum Symmetry {
+public abstract partial class Decor
+{
+  public enum Symmetry
+  {
     none,
     mirrorHorizontal,
     mirrorVertical,
@@ -77,7 +79,8 @@ public abstract partial class Decor {
   };
 
   public static void category(
-      string themes, double? frequency = null, Dictionary<string, Cell> cells = null) {
+      string themes, double? frequency = null, Dictionary<string, Cell> cells = null)
+  {
     _themes = themes;
     _categoryFrequency = frequency;
     _categoryCells = cells;
@@ -90,7 +93,8 @@ public abstract partial class Decor {
   public static Cell require(TileType type) => new Cell(require: type);
 
   public static void furnishing(
-      double? frequency = null, Symmetry? symmetry = null, string template = null) {
+      double? frequency = null, Symmetry? symmetry = null, string template = null)
+  {
     _furnishingFrequency = frequency;
     symmetry ??= Symmetry.none;
 
@@ -98,9 +102,11 @@ public abstract partial class Decor {
     _singleFurnishing(lines);
 
     if (symmetry == Symmetry.mirrorHorizontal ||
-        symmetry == Symmetry.mirrorBoth) {
+        symmetry == Symmetry.mirrorBoth)
+    {
       var mirrorLines = lines.ToList();
-      for (var i = 0; i < lines.Count; i++) {
+      for (var i = 0; i < lines.Count; i++)
+      {
         mirrorLines[i] = _mapString(
             new string(lines[i].Reverse().ToArray()),
             _mirrorCharHorizontal);
@@ -109,9 +115,11 @@ public abstract partial class Decor {
       _singleFurnishing(mirrorLines);
     }
 
-    if (symmetry == Symmetry.mirrorVertical || symmetry == Symmetry.mirrorBoth) {
+    if (symmetry == Symmetry.mirrorVertical || symmetry == Symmetry.mirrorBoth)
+    {
       var mirrorLines = lines.ToList();
-      for (var i = 0; i < lines.Count; i++) {
+      for (var i = 0; i < lines.Count; i++)
+      {
         mirrorLines[lines.Count - i - 1] =
             _mapString(lines[i], _mirrorCharVertical);
       }
@@ -121,9 +129,11 @@ public abstract partial class Decor {
 
     if (symmetry == Symmetry.mirrorBoth ||
         symmetry == Symmetry.rotate180 ||
-        symmetry == Symmetry.rotate90) {
+        symmetry == Symmetry.rotate90)
+    {
       var mirrorLines = lines.ToList();
-      for (var i = 0; i < lines.Count; i++) {
+      for (var i = 0; i < lines.Count; i++)
+      {
         mirrorLines[lines.Count - i - 1] = _mapString(
             new string(lines[i].Reverse().ToArray()), _mirrorCharBoth);
       }
@@ -131,12 +141,15 @@ public abstract partial class Decor {
       _singleFurnishing(mirrorLines);
     }
 
-    if (symmetry == Symmetry.rotate90) {
+    if (symmetry == Symmetry.rotate90)
+    {
       // Rotate 90°.
-      var rotateLines = new List<string>{};
-      for (var x = 0; x < lines[0].Length; x++) {
+      var rotateLines = new List<string> { };
+      for (var x = 0; x < lines[0].Length; x++)
+      {
         var buffer = new StringBuilder();
-        for (var y = 0; y < lines.Count; y++) {
+        for (var y = 0; y < lines.Count; y++)
+        {
           buffer.Append(_rotateChar90(lines[y][x].ToString()));
         }
         rotateLines.Add(buffer.ToString());
@@ -146,7 +159,8 @@ public abstract partial class Decor {
 
       // Rotate 270° by mirroring the 90°.
       var mirrorLines = rotateLines.ToList();
-      for (var i = 0; i < rotateLines.Count; i++) {
+      for (var i = 0; i < rotateLines.Count; i++)
+      {
         mirrorLines[rotateLines.Count - i - 1] = _mapString(
             new string(rotateLines[i].Reverse().ToArray()),
             _mirrorCharBoth);
@@ -156,9 +170,11 @@ public abstract partial class Decor {
     }
   }
 
-  public static string _mapString(string input, System.Func<string, string> map) {
+  public static string _mapString(string input, System.Func<string, string> map)
+  {
     var buffer = new StringBuilder();
-    for (var i = 0; i < input.Length; i++) {
+    for (var i = 0; i < input.Length; i++)
+    {
       buffer.Append(map(input[i].ToString()));
     }
     return buffer.ToString();
@@ -167,8 +183,10 @@ public abstract partial class Decor {
   public static string _mirrorCharBoth(string input) =>
       _mirrorCharHorizontal(_mirrorCharVertical(input));
 
-  public static string _mirrorCharHorizontal(string input) {
-    foreach (var mirror in _mirrorHorizontal) {
+  public static string _mirrorCharHorizontal(string input)
+  {
+    foreach (var mirror in _mirrorHorizontal)
+    {
       var index = mirror.IndexOf(input);
       if (index != -1) return mirror[1 - index].ToString();
     }
@@ -177,8 +195,10 @@ public abstract partial class Decor {
     return input;
   }
 
-  public static string _mirrorCharVertical(string input) {
-    foreach (var mirror in _mirrorVertical) {
+  public static string _mirrorCharVertical(string input)
+  {
+    foreach (var mirror in _mirrorVertical)
+    {
       var index = mirror.IndexOf(input);
       if (index != -1) return mirror[1 - index].ToString();
     }
@@ -187,8 +207,10 @@ public abstract partial class Decor {
     return input;
   }
 
-  public static string _rotateChar90(string input) {
-    foreach (var rotate in _rotate) {
+  public static string _rotateChar90(string input)
+  {
+    foreach (var rotate in _rotate)
+    {
       var index = rotate.IndexOf(input);
       if (index != -1) return rotate[(index + 1) % 4].ToString();
     }
@@ -197,18 +219,26 @@ public abstract partial class Decor {
     return input;
   }
 
-  public static void _singleFurnishing(List<string> lines) {
+  public static void _singleFurnishing(List<string> lines)
+  {
     var cells =
         new Array2D<Cell>(lines.First().Length, lines.Count, Cell.uninitialized);
-    for (var y = 0; y < lines.Count; y++) {
-      for (var x = 0; x < lines.First().Length; x++) {
+    for (var y = 0; y < lines.Count; y++)
+    {
+      for (var x = 0; x < lines.First().Length; x++)
+      {
         var _char = lines[y][x].ToString();
         Cell cell;
-        if (_categoryCells != null && _categoryCells!.ContainsKey(_char)) {
+        if (_categoryCells != null && _categoryCells!.ContainsKey(_char))
+        {
           cell = _categoryCells![_char]!;
-        } else if (_applyCells.ContainsKey(_char)) {
+        }
+        else if (_applyCells.ContainsKey(_char))
+        {
           cell = _applyCells[_char]!;
-        } else {
+        }
+        else
+        {
           cell = _requireCells[_char]!;
         }
 

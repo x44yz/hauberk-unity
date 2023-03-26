@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using System.Text;
 
 /// A lazy named reference to a Breed.
 ///
 /// This allows cyclic references while the breeds are still being defined.
-class BreedRef {
+class BreedRef
+{
   public static List<BreedRef> _unresolved = new List<BreedRef>();
 
-  public static void resolve(Func<string, Breed> resolver) {
-    foreach (var _ref in _unresolved) {
+  public static void resolve(Func<string, Breed> resolver)
+  {
+    foreach (var _ref in _unresolved)
+    {
       _ref._breed = resolver(_ref._name);
     }
 
@@ -22,14 +25,16 @@ class BreedRef {
   public Breed _breed;
   public Breed breed => _breed;
 
-  public BreedRef(string name) {
+  public BreedRef(string name)
+  {
     this._name = name;
     _unresolved.Add(this);
   }
 }
 
 /// A single kind of [Monster] in the game.
-public class Breed {
+public class Breed
+{
   public Pronoun pronoun;
   public string name => Log.singular(_name);
 
@@ -110,7 +115,7 @@ public class Breed {
 
   public string description;
 
-  public Breed(string _name, Pronoun pronoun, object appearance, List<Attack> attacks, 
+  public Breed(string _name, Pronoun pronoun, object appearance, List<Attack> attacks,
       List<Move> moves,
       Drop drop, SpawnLocation location, Motility motility,
       int depth,
@@ -160,14 +165,17 @@ public class Breed {
   ///
   /// The basic idea is that experience roughly correlates to how much damage
   /// the monster can dish out to the hero before it dies.
-  public int experience {
-    get {
+  public int experience
+  {
+    get
+    {
       // The more health it has, the longer it can hurt the hero.
       var exp = (double)maxHealth;
 
       // The more it can dodge, the longer it lives.
       var totalDodge = dodge;
-      foreach (var defense in defenses) {
+      foreach (var defense in defenses)
+      {
         totalDodge += defense.amount;
       }
 
@@ -178,7 +186,8 @@ public class Breed {
 
       // Average the attacks, since they are selected randomly.
       var attackTotal = 0.0;
-      foreach (var attack in attacks) {
+      foreach (var attack in attacks)
+      {
         // TODO: Take range into account?
         attackTotal += attack.damage * attack.element.experience;
       }
@@ -188,7 +197,8 @@ public class Breed {
       // Average the moves.
       var moveTotal = 0.0;
       var moveRateTotal = 0.0;
-      foreach (var move in moves) {
+      foreach (var move in moves)
+      {
         // Scale by the move rate. The less frequently a move can be performed,
         // the less it affects experience.
         moveTotal += move.experience / move.rate;
@@ -220,7 +230,8 @@ public class Breed {
     }
   }
 
-  public Monster spawn(Game game, Vec pos, Monster parent = null) {
+  public Monster spawn(Game game, Vec pos, Monster parent = null)
+  {
     var generation = 1;
     if (parent != null) generation = parent.generation + 1;
 
@@ -231,16 +242,19 @@ public class Breed {
   ///
   /// Each item in the list represents a breed that should spawn a single
   /// monster. Takes into account this breed's count and minions.
-  public List<Breed> spawnAll() {
+  public List<Breed> spawnAll()
+  {
     var breeds = new List<Breed>();
 
     // This breed.
     var count = Rng.rng.inclusive(countMin, countMax);
-    for (var i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++)
+    {
       breeds.Add(this);
     }
 
-    if (minions != null) {
+    if (minions != null)
+    {
       // Minions are weaker than the main breed.
       var minionDepth = Math.Floor(depth * 0.9);
       minions!.spawnBreed((int)minionDepth, breeds.Add);
@@ -254,7 +268,8 @@ public class Breed {
 
 // TODO: Should this affect how the monster moves during the game too?
 /// Where in the dungeon the breed prefers to spawn.
-public enum SpawnLocation {
+public enum SpawnLocation
+{
   anywhere,
 
   /// Away from walls.
@@ -269,11 +284,13 @@ public enum SpawnLocation {
 
 // typedef AddMonster = void Function(Breed breed);
 
-public abstract class Spawn {
+public abstract class Spawn
+{
   public abstract void spawnBreed(int depth, System.Action<Breed> addMonster);
 }
 
-public class BreedFlags {
+public class BreedFlags
+{
   public bool berzerk;
   public bool cowardly;
   public bool fearless;
@@ -281,7 +298,7 @@ public class BreedFlags {
   public bool protective;
   public bool unique;
 
-  BreedFlags(bool berzerk, bool cowardly, bool fearless, 
+  BreedFlags(bool berzerk, bool cowardly, bool fearless,
             bool immobile, bool protective, bool unique)
   {
     this.berzerk = berzerk;
@@ -294,8 +311,10 @@ public class BreedFlags {
 
   /// The way this set of flags affects the experience gained when killing a
   /// monster.
-  public double experienceScale {
-    get {
+  public double experienceScale
+  {
+    get
+    {
       var scale = 1.0;
 
       if (berzerk) scale *= 1.1;
@@ -309,12 +328,14 @@ public class BreedFlags {
 
   }
 
-  public static BreedFlags fromSet(List<string> names) {
+  public static BreedFlags fromSet(List<string> names)
+  {
     var kk = new HashSet<string>(names);
     return fromSet(kk);
   }
 
-  public static BreedFlags fromSet(HashSet<string> names) {
+  public static BreedFlags fromSet(HashSet<string> names)
+  {
     //names = names.toSet();
 
     var flags = new BreedFlags(
@@ -325,21 +346,23 @@ public class BreedFlags {
         protective: names.Remove("protective"),
         unique: names.Remove("unique"));
 
-    if (names.Count != 0) {
+    if (names.Count != 0)
+    {
       throw new System.ArgumentException($"Unknown flags \"{string.Join(", ", names)}\"");
     }
 
     return flags;
   }
 
-  public override string ToString() {
-      List<string> rt = new List<string>();
-        if (berzerk) rt.Add("berzerk");
-        if (cowardly) rt.Add("cowardly");
-        if (fearless) rt.Add("fearless");
-        if (immobile) rt.Add("immobile");
-        if (protective) rt.Add("protective");
-        if (unique) rt.Add("unique");
-        return string.Join(" ", rt);
+  public override string ToString()
+  {
+    List<string> rt = new List<string>();
+    if (berzerk) rt.Add("berzerk");
+    if (cowardly) rt.Add("cowardly");
+    if (fearless) rt.Add("fearless");
+    if (immobile) rt.Add("immobile");
+    if (protective) rt.Add("protective");
+    if (unique) rt.Add("unique");
+    return string.Join(" ", rt);
   }
 }

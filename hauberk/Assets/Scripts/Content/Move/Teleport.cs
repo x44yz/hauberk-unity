@@ -4,7 +4,8 @@ using num = System.Double;
 
 
 /// Teleports the [Monster] randomly from its current position.
-class TeleportMove : Move {
+class TeleportMove : Move
+{
   public int _range;
 
   public override num experience => _range * 0.7;
@@ -14,7 +15,8 @@ class TeleportMove : Move {
     this._range = _range;
   }
 
-  public override bool shouldUse(Monster monster) {
+  public override bool shouldUse(Monster monster)
+  {
     if (monster.isAfraid) return true;
 
     var target = monster.game.hero.pos;

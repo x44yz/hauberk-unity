@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using num = System.Double;
 using System.Text;
 using System.Linq;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 /// A class for storing debugging information.
 ///
 /// Unlike the rest of the engine, this is static state to make it easier for
 /// the engine to punch debug info all the way to where the UI can get it. It
 /// should not be used outside of a debugging scenario.
-class Debugger {
+class Debugger
+{
   public static bool enabled = true;
 
   /// If true, all monsters are rendered, regardless of in-game visibility.
@@ -35,13 +36,15 @@ class Debugger {
   static object _gameScreen;
   static object gameScreen => _gameScreen;
 
-  public static void bindGameScreen(object screen) {
+  public static void bindGameScreen(object screen)
+  {
     _gameScreen = screen;
     _monsters.Clear();
   }
 
   /// Appends [message] to the debug log for [monster].
-  public static void monsterLog(Monster monster, string message) {
+  public static void monsterLog(Monster monster, string message)
+  {
     if (!enabled) return;
 
     _MonsterLog monsterLog = null;
@@ -58,7 +61,8 @@ class Debugger {
   /// The value should range from 0.0 to 1.0. If there is a descriptive [reason]
   /// for the value, that can be provided too.
   public static void monsterStat(Monster monster, string stat, num value,
-      string reason = null) {
+      string reason = null)
+  {
     if (!enabled) return;
 
     _MonsterLog monsterLog = null;
@@ -81,7 +85,8 @@ class Debugger {
   }
 
   /// Updates [stat]'s [reason] text without appending a new value.
-  public static void monsterReason(Monster monster, string stat, string reason) {
+  public static void monsterReason(Monster monster, string stat, string reason)
+  {
     if (!enabled) return;
 
     _MonsterLog monsterLog = null;
@@ -94,7 +99,8 @@ class Debugger {
   }
 
   /// Gets the debug info for [monster].
-  static string monsterInfo(Monster monster) {
+  static string monsterInfo(Monster monster)
+  {
     if (!enabled || _gameScreen == null) return null;
 
     var log = _monsters[monster];
@@ -103,7 +109,8 @@ class Debugger {
   }
 }
 
-class _MonsterLog {
+class _MonsterLog
+{
   public Monster monster;
   public Queue<string> log = new Queue<string>();
 
@@ -115,46 +122,55 @@ class _MonsterLog {
     this.monster = monster;
   }
 
-  public void add(string logItem) {
+  public void add(string logItem)
+  {
     log.Enqueue(logItem);
     if (log.Count > 10) log.Dequeue();
   }
 
-  public override string ToString() {
+  public override string ToString()
+  {
     var buffer = new StringBuilder();
 
     buffer.Append(monster.breed.name);
 
     var state = "asleep";
-    if (monster.isAfraid) {
+    if (monster.isAfraid)
+    {
       state = "afraid";
-    } else if (monster.isAwake) {
+    }
+    else if (monster.isAwake)
+    {
       state = "awake";
     }
     buffer.Append($" ({state})");
 
     var statNames = stats.Keys.ToList();
     statNames.Sort();
-    var length = 
+    var length =
       statNames.fold<string>(0, (length, name) => Math.Max(length, name.Length));
 
     var barChars = " ▁▂▃▄▅▆▇█";
-    foreach (var name in statNames) {
+    foreach (var name in statNames)
+    {
       var barBuffer = new StringBuilder($"{name.PadRight(length)} ");
       var showBar = false;
 
       var values = stats[name]!;
-      foreach (var value in values) {
+      foreach (var value in values)
+      {
         var i = Mathf.Clamp(Mathf.CeilToInt((float)(value * barChars.Length)), 0, barChars.Length - 1);
         barBuffer.Append(barChars[i]);
         if (i > 0) showBar = true;
       }
 
-      if (values.Count > 0) {
+      if (values.Count > 0)
+      {
         barBuffer.Append($" {values[values.Count - 1].ToString("F4").PadLeft(6)}");
       }
 
-      if (statReason[name] != null) {
+      if (statReason[name] != null)
+      {
         barBuffer.Append($" {statReason[name]}");
         showBar = true;
       }

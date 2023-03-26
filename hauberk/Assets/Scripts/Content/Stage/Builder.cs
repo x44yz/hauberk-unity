@@ -15,7 +15,8 @@ public partial class ArchitecturalStyle
       double? monsterDensity = null,
       double? itemDensity = null,
       System.Func<Architecture> create = null,
-      bool? canFill = null) {
+      bool? canFill = null)
+  {
     monsters ??= "monster";
 
     var style = new ArchitecturalStyle(name, decor, decorDensity, monsters.Split(' ').ToList(),
@@ -29,7 +30,8 @@ public partial class ArchitecturalStyle
         endFrequency: endFrequency);
   }
 
-  public static void dungeon() {
+  public static void dungeon()
+  {
     _addStyle("dungeon",
         startFrequency: 10.0,
         decor: "dungeon",
@@ -38,7 +40,8 @@ public partial class ArchitecturalStyle
   }
 
   public static void catacomb(string monsters,
-       double startFrequency, double endFrequency) {
+       double startFrequency, double endFrequency)
+  {
     _addStyle("catacomb",
         startFrequency: startFrequency,
         endFrequency: endFrequency,
@@ -49,7 +52,8 @@ public partial class ArchitecturalStyle
   }
 
   public static void cavern(string monsters,
-       double startFrequency, double endFrequency) {
+       double startFrequency, double endFrequency)
+  {
     _addStyle("cavern",
         startFrequency: startFrequency,
         endFrequency: endFrequency,
@@ -59,7 +63,8 @@ public partial class ArchitecturalStyle
         create: () => new Cavern());
   }
 
-  public static void lake(string monsters, int start, int end) {
+  public static void lake(string monsters, int start, int end)
+  {
     _addStyle("lake",
         start: start,
         end: end,
@@ -71,7 +76,8 @@ public partial class ArchitecturalStyle
         create: () => new Lake());
   }
 
-  public static void river(string monsters, int start, int end) {
+  public static void river(string monsters, int start, int end)
+  {
     _addStyle("river",
         start: start,
         end: end,
@@ -83,7 +89,8 @@ public partial class ArchitecturalStyle
         create: () => new River());
   }
 
-  public static void keep(string monsters, int start, int end) {
+  public static void keep(string monsters, int start, int end)
+  {
     _addStyle($"{monsters} keep",
         start: start,
         end: end,
@@ -98,7 +105,8 @@ public partial class ArchitecturalStyle
         create: () => Keep.create(5));
   }
 
-  public static void pit(string monsterGroup, int start, int end) {
+  public static void pit(string monsterGroup, int start, int end)
+  {
     _addStyle($"monsterGroup pit",
         start: start,
         end: end,

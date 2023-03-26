@@ -7,16 +7,17 @@ using System.Collections.Generic;
 /// [end] point using Bresenham's line drawing algorithm.
 ///
 /// Useful for line-of-sight calculation, tracing missile paths, etc.
-class Line : IEnumerable<Vec> {
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-       return (IEnumerator) GetEnumerator();
-    }
+class Line : IEnumerable<Vec>
+{
+  IEnumerator IEnumerable.GetEnumerator()
+  {
+    return (IEnumerator)GetEnumerator();
+  }
 
-    public IEnumerator<Vec> GetEnumerator()
-    {
-        return new _LineIterator(start, end);
-    }
+  public IEnumerator<Vec> GetEnumerator()
+  {
+    return new _LineIterator(start, end);
+  }
 
   public Vec start;
   public Vec end;
@@ -32,23 +33,24 @@ class Line : IEnumerable<Vec> {
   int length => throw new System.NotSupportedException("Line iteration is unbounded.");
 }
 
-class _LineIterator : IEnumerator<Vec> {
+class _LineIterator : IEnumerator<Vec>
+{
 
-    object IEnumerator.Current => current;
-    public Vec Current => current;
-    public bool MoveNext() => moveNext();
-    public void Reset()
-    {
-        this._current = Vec.zero;
-        this._error = 0;
-        this._primary = 0;
-        this._secondary = 0;
-        this._primaryStep = Vec.zero;
-        this._secondaryStep = Vec.zero;
-    }
-    public void Dispose()
-    {
-    }
+  object IEnumerator.Current => current;
+  public Vec Current => current;
+  public bool MoveNext() => moveNext();
+  public void Reset()
+  {
+    this._current = Vec.zero;
+    this._error = 0;
+    this._primary = 0;
+    this._secondary = 0;
+    this._primaryStep = Vec.zero;
+    this._secondaryStep = Vec.zero;
+  }
+  public void Dispose()
+  {
+  }
 
   Vec _current;
   Vec current => _current;
@@ -68,7 +70,8 @@ class _LineIterator : IEnumerator<Vec> {
   /// unit this direction when the accumulated error overflows.
   Vec _secondaryStep;
 
-    public _LineIterator(Vec start, Vec end) {
+  public _LineIterator(Vec start, Vec end)
+  {
     var delta = end - start;
 
     // Figure which octant the line is in and increment appropriately.
@@ -83,7 +86,8 @@ class _LineIterator : IEnumerator<Vec> {
     var secondary = delta.y;
 
     // Swap the order if the y magnitude is greater.
-    if (delta.y > delta.x) {
+    if (delta.y > delta.x)
+    {
       var temp = primary;
       primary = secondary;
       secondary = temp;
@@ -106,23 +110,25 @@ class _LineIterator : IEnumerator<Vec> {
 
   public _LineIterator(Vec _current, int _error, int _primary, int _secondary,
       Vec _primaryStep, Vec _secondaryStep)
-    {
-        this._current = _current;
-        this._error = _error;
-        this._primary = _primary;
-        this._secondary = _secondary;
-        this._primaryStep = _primaryStep;
-        this._secondaryStep = _secondaryStep;
-    }
+  {
+    this._current = _current;
+    this._error = _error;
+    this._primary = _primary;
+    this._secondary = _secondary;
+    this._primaryStep = _primaryStep;
+    this._secondaryStep = _secondaryStep;
+  }
 
   /// Always returns `true` to allow a line to overshoot the end point. Make
   /// sure you terminate iteration yourself.
-  bool moveNext() {
+  bool moveNext()
+  {
     _current += _primaryStep;
 
     // See if we need to step in the secondary direction.
     _error += _secondary;
-    if (_error * 2 >= _primary) {
+    if (_error * 2 >= _primary)
+    {
       _current += _secondaryStep;
       _error -= _primary;
     }

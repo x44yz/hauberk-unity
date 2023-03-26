@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 // TODO: Move to piecemeal?
 /// A fast priority queue optimized for non-zero integer priorities in a narrow
@@ -24,11 +24,13 @@ public class BucketQueue<T> where T : class
   public List<Queue<T>> _buckets = new List<Queue<T>>();
   int _bucket = 0;
 
-  public void reset() {
+  public void reset()
+  {
     _buckets.Clear();
   }
 
-  public void add(T value, int cost) {
+  public void add(T value, int cost)
+  {
     _bucket = Mathf.Min(_bucket, cost);
 
     // Grow the bucket array if needed.
@@ -41,7 +43,8 @@ public class BucketQueue<T> where T : class
 
     // Find the bucket, or create it if needed.
     var bucket = _buckets[cost];
-    if (bucket == null) {
+    if (bucket == null)
+    {
       bucket = new Queue<T>();
       _buckets[cost] = bucket;
     }
@@ -51,10 +54,12 @@ public class BucketQueue<T> where T : class
 
   /// Removes the best item from the queue or returns `null` if the queue is
   /// empty.
-  public T removeNext() {
+  public T removeNext()
+  {
     // Advance past any empty buckets.
-    while (_bucket < _buckets.Count && 
-        (_buckets[_bucket] == null || _buckets[_bucket].Count == 0)) {
+    while (_bucket < _buckets.Count &&
+        (_buckets[_bucket] == null || _buckets[_bucket].Count == 0))
+    {
       _bucket++;
     }
 

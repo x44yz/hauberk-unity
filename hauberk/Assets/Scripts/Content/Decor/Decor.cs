@@ -6,8 +6,10 @@ using System.Linq;
 // of a few items. This should help reduce the number of useless-for-this-hero
 // items that are dropped.
 
-abstract partial class Decor {
-  public static void initialize() {
+abstract partial class Decor
+{
+  public static void initialize()
+  {
     all.defineTags("built/room/dungeon");
     all.defineTags("built/room/keep");
     all.defineTags("catacomb");
@@ -20,10 +22,11 @@ abstract partial class Decor {
     waterDecor();
 
     // TODO: Doesn't look great. Remove or redo.
-//    all.addUnnamed(Blast(), 1, 0.01, "laboratory");
+    //    all.addUnnamed(Blast(), 1, 0.01, "laboratory");
   }
 
-  public static Decor choose(int depth, string theme) {
+  public static Decor choose(int depth, string theme)
+  {
     if (!all.tagExists(theme)) return null;
     return all.tryChoose(depth, tag: theme);
   }

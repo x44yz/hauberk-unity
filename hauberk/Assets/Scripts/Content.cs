@@ -1,25 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-class GameContent : Content {
-    public static Content createContent() {
-        // Note: The order is significant here. For example, monster drops will
-        // reference items, which need to have already been created.
-        Items.initialize();
-        Monsters.initialize();
-        Affixes.initialize();
-        Shops.initialize();
-        FloorDrops.initialize();
-        ArchitecturalStyle.initialize();
-        Decor.initialize();
+class GameContent : Content
+{
+  public static Content createContent()
+  {
+    // Note: The order is significant here. For example, monster drops will
+    // reference items, which need to have already been created.
+    Items.initialize();
+    Monsters.initialize();
+    Affixes.initialize();
+    Shops.initialize();
+    FloorDrops.initialize();
+    ArchitecturalStyle.initialize();
+    Decor.initialize();
 
-        return new GameContent();
-    }
+    return new GameContent();
+  }
 
   public override IEnumerable<string> buildStage(
-      Lore lore, Stage stage, int depth, System.Action<Vec> placeHero) {
+      Lore lore, Stage stage, int depth, System.Action<Vec> placeHero)
+  {
     if (depth == 0) return new Town(stage).buildStage(placeHero);
     return new Architect(lore, stage, depth).buildStage(placeHero);
   }
@@ -37,7 +40,8 @@ class GameContent : Content {
   public override List<Skill> skills => Skills.all;
   public override Dictionary<string, Shop> shops => Shops.all;
 
-  public override HeroSave createHero(string name, Race race = null, HeroClass heroClass = null) {
+  public override HeroSave createHero(string name, Race race = null, HeroClass heroClass = null)
+  {
     race ??= Races.human;
     heroClass ??= Classes.adventurer;
 
@@ -50,7 +54,8 @@ class GameContent : Content {
       {"Loaf of Bread", 5}
     };
 
-    foreach (var kv in initialItems) {
+    foreach (var kv in initialItems)
+    {
       var type = kv.Key;
       var amount = kv.Value;
 
@@ -63,7 +68,8 @@ class GameContent : Content {
     // letting the rescue shopkeepers from the dungeon to unlock better and
     // better shops over time.
     // Populate the shops.
-    foreach (var shop in shops.Values) {
+    foreach (var shop in shops.Values)
+    {
       hero.shops[shop] = shop.create();
     }
 
@@ -72,7 +78,8 @@ class GameContent : Content {
 
   // TODO: Putting this right here in content is kind of lame. Is there a
   // better place for it?
-  public override Action updateSubstance(Stage stage, Vec pos) {
+  public override Action updateSubstance(Stage stage, Vec pos)
+  {
     // TODO: More interactions:
     // fire:
     // - burns fuel (amount) and goes out when it hits zero
@@ -98,33 +105,46 @@ class GameContent : Content {
     // - freezes actors
     var tile = stage[pos];
 
-    if (tile.substance == 0) {
+    if (tile.substance == 0)
+    {
       // TODO: Water first.
 
-      if (_tryToIgniteTile(stage, pos, tile)) {
+      if (_tryToIgniteTile(stage, pos, tile))
+      {
         // Done.
-      } else {
+      }
+      else
+      {
         _spreadPoison(stage, pos, tile);
       }
 
       // TODO: Cold?
-    } else {
-      if (tile.element == Elements.fire) {
+    }
+    else
+    {
+      if (tile.element == Elements.fire)
+      {
         // Consume fuel.
         tile.substance--;
 
-        if (tile.substance <= 0) {
+        if (tile.substance <= 0)
+        {
           // If the floor itself burns, change its type. If it's only burning
           // because of items on it, don't.
-          if (Tiles.ignition(tile.type) > 0) {
+          if (Tiles.ignition(tile.type) > 0)
+          {
             tile.type = Rng.rng.item(Tiles.burnResult(tile.type));
           }
 
           stage.floorEmanationChanged();
-        } else {
+        }
+        else
+        {
           return new BurningFloorAction(pos);
         }
-      } else if (tile.element == Elements.poison) {
+      }
+      else if (tile.element == Elements.poison)
+      {
         _spreadPoison(stage, pos, tile);
 
         if (tile.substance > 0) return new PoisonedFloorAction(pos);
@@ -138,7 +158,8 @@ class GameContent : Content {
   }
 
   /// Attempts to catch [tile] on fire.
-  bool _tryToIgniteTile(Stage stage, Vec pos, Tile tile) {
+  bool _tryToIgniteTile(Stage stage, Vec pos, Tile tile)
+  {
     // See if this tile catches fire.
     var ignition = Tiles.ignition(tile.type);
     if (ignition == 0) return false;
@@ -147,7 +168,8 @@ class GameContent : Content {
     // one catching fire.
     var fire = 0;
 
-    void neighbor(int x, int y, int amount) {
+    void neighbor(int x, int y, int amount)
+    {
       var neighbor = stage.get(pos.x + x, pos.y + y);
       if (neighbor.substance == 0) return;
       if (neighbor.element == Elements.fire) fire += amount;
@@ -173,17 +195,20 @@ class GameContent : Content {
     return true;
   }
 
-  void _spreadPoison(Stage stage, Vec pos, Tile tile) {
+  void _spreadPoison(Stage stage, Vec pos, Tile tile)
+  {
     if (!tile.isFlyable) return;
 
     // Average the poison with this tile and its neighbors.
     var poison = tile.element == Elements.poison ? tile.substance * 4 : 0;
     var open = 4;
 
-    void neighbor(int x, int y) {
+    void neighbor(int x, int y)
+    {
       var neighbor = stage.get(pos.x + x, pos.y + y);
 
-      if (neighbor.isFlyable) {
+      if (neighbor.isFlyable)
+      {
         open++;
         if (neighbor.element == Elements.poison) poison += neighbor.substance;
       }

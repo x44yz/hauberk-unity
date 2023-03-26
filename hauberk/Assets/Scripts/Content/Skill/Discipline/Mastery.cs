@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using System.Linq;
 
 // TODO: More disciplines:
@@ -8,7 +8,8 @@ using System.Linq;
 // - Fury. Increases damage when health is low. Trained by killing monsters
 //   when near death.
 
-abstract class MasteryDiscipline : Discipline {
+abstract class MasteryDiscipline : Discipline
+{
   // TODO: Tune.
   public override int maxLevel => 20;
 
@@ -16,19 +17,22 @@ abstract class MasteryDiscipline : Discipline {
 
   double _damageScale(int level) => MathUtils.lerpDouble(level, 1, maxLevel, 1.0, 2.0);
 
-  public override void modifyAttack(Hero hero, Monster monster, Hit hit, int level) {
+  public override void modifyAttack(Hero hero, Monster monster, Hit hit, int level)
+  {
     if (!_hasWeapon(hero)) return;
 
     // TODO: Tune.
     hit.scaleDamage(_damageScale(level));
   }
 
-  public override string levelDescription(int level) {
+  public override string levelDescription(int level)
+  {
     var damage = (int)((_damageScale(level) - 1.0) * 100);
     return $"Melee attacks inflict {damage}% more damage when using a {weaponType}.";
   }
 
-  string unusableReason(Game game) {
+  string unusableReason(Game game)
+  {
     if (_hasWeapon(game.hero)) return null;
 
     return $"No {weaponType} equipped.";
@@ -37,7 +41,8 @@ abstract class MasteryDiscipline : Discipline {
   bool _hasWeapon(Hero hero) =>
       hero.equipment.weapons.Any((item) => item.type.weaponType == weaponType);
 
-  public override void killMonster(Hero hero, Action action, Monster monster) {
+  public override void killMonster(Hero hero, Action action, Monster monster)
+  {
     // Have to have killed the monster by hitting it.
     if ((action is AttackAction) == false) return;
 
@@ -47,7 +52,8 @@ abstract class MasteryDiscipline : Discipline {
     hero.refreshSkill(this);
   }
 
-  public override int baseTrainingNeeded(int level) {
+  public override int baseTrainingNeeded(int level)
+  {
     if (level == 0) return 0;
 
     // Get the mastery and unlock the action as soon as it's first used.
@@ -59,7 +65,8 @@ abstract class MasteryDiscipline : Discipline {
   }
 }
 
-abstract class MasteryAction : Action {
+abstract class MasteryAction : Action
+{
   public double damageScale;
 
   public MasteryAction(double damageScale)
@@ -70,7 +77,8 @@ abstract class MasteryAction : Action {
   public virtual string weaponType => "";
 
   /// Attempts to hit the [Actor] at [pos], if any.
-  public int? attack(Vec pos) {
+  public int? attack(Vec pos)
+  {
     var defender = game.stage.actorAt(pos);
     if (defender == null) return null;
 
@@ -80,7 +88,8 @@ abstract class MasteryAction : Action {
     DartUtils.assert(weapons.Count == hits.Count);
 
     var damage = 0;
-    for (var i = 0; i < weapons.Count; i++) {
+    for (var i = 0; i < weapons.Count; i++)
+    {
       if (weapons[i].type.weaponType != weaponType) continue;
 
       var hit = hits[i];

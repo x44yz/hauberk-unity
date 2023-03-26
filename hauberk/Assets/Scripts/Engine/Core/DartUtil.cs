@@ -7,98 +7,102 @@ using UnityTerminal;
 
 public static class DartUtils
 {
-    public static void assert(bool v, string msg = null)
+  public static void assert(bool v, string msg = null)
+  {
+    if (msg != null)
+      UnityEngine.Debug.Assert(v, msg);
+    else
+      UnityEngine.Debug.Assert(v);
+  }
+
+  public static void print(string s)
+  {
+    UnityEngine.Debug.Log(s);
+  }
+
+  public static T2 putIfAbsent<T1, T2>(this Dictionary<T1, T2> map, T1 k) where T2 : new()
+  {
+    if (map.ContainsKey(k) == false)
+      map[k] = new T2();
+    return map[k];
+  }
+
+  public static bool isOdd(this int k)
+  {
+    return k % 2 == 1;
+  }
+
+  public static bool isEmpty<T>(this List<T> k)
+  {
+    return k.Count == 0;
+  }
+
+  public static bool isNotEmpty<T>(this List<T> k)
+  {
+    return k.Count > 0;
+  }
+
+  // https://api.dart.dev/stable/2.19.4/dart-core/Iterable/firstWhere.html
+  public static T firstWhere<T>(this List<T> list, System.Func<T, bool> test, System.Func<T> orElse)
+  {
+    foreach (var k in list)
     {
-        if (msg != null)
-            UnityEngine.Debug.Assert(v, msg);
-        else
-            UnityEngine.Debug.Assert(v);
+      if (test(k))
+        return k;
     }
+    return orElse == null ? default(T) : orElse();
+  }
 
-    public static void print(string s)
-    {
-        UnityEngine.Debug.Log(s);
-    }
+  // public static Color blend(this Color color, Color other, float fractionOther)
+  // {
+  //   var fractionThis = 1.0 - fractionOther;
+  //   return new Color(
+  //       (int)(color.r * fractionThis + other.r * fractionOther),
+  //       (int)(color.g * fractionThis + other.g * fractionOther),
+  //       (int)(color.b * fractionThis + other.b * fractionOther));
+  // }
 
-    public static T2 putIfAbsent<T1, T2>(this Dictionary<T1, T2> map, T1 k) where T2 : new()
-    {
-      if (map.ContainsKey(k) == false)
-        map[k] = new T2();
-      return map[k];
-    }
+  // public static Color add(this Color a, Color other, double? fractionOther = null) {
+  //   fractionOther ??= 1.0;
+  //   return new Color(
+  //       (int)(a.r + other.r * fractionOther),
+  //       (int)(a.g + other.g * fractionOther),
+  //       (int)(a.b + other.b * fractionOther)
+  //   );
+  // }
 
-    public static bool isOdd(this int k) {
-      return k % 2 == 1;
-    }
+  public static bool isEmpty(this string s)
+  {
+    return string.IsNullOrEmpty(s);
+  }
 
-    public static bool isEmpty<T>(this List<T> k)
-    {
-      return k.Count == 0;
-    }
+  public static bool isNotEmpty(this string s)
+  {
+    return !string.IsNullOrEmpty(s);
+  }
 
-    public static bool isNotEmpty<T>(this List<T> k)
-    {
-      return k.Count > 0;
-    }
-
-    // https://api.dart.dev/stable/2.19.4/dart-core/Iterable/firstWhere.html
-    public static T firstWhere<T>(this List<T> list, System.Func<T, bool> test, System.Func<T> orElse)
-    {
-      foreach (var k in list)
-      {
-        if (test(k))
-          return k;
-      }
-      return orElse == null ? default(T) : orElse();
-    }
-
-    public static Color blend(this Color color, Color other, float fractionOther)
-    {
-      var fractionThis = 1.0 - fractionOther;
-      return new Color(
-          (int)(color.r * fractionThis + other.r * fractionOther),
-          (int)(color.g * fractionThis + other.g * fractionOther),
-          (int)(color.b * fractionThis + other.b * fractionOther));
-    }
-
-    public static Color add(this Color a, Color other, double? fractionOther = null) {
-      fractionOther ??= 1.0;
-      return new Color(
-          (int)(a.r + other.r * fractionOther),
-          (int)(a.g + other.g * fractionOther),
-          (int)(a.b + other.b * fractionOther)
-      );
-    }
-
-    public static bool isEmpty(this string s)
-    {
-      return string.IsNullOrEmpty(s);
-    }
-
-    public static bool isNotEmpty(this string s)
-    {
-      return !string.IsNullOrEmpty(s);
-    }
-
-    public static int fold<T>(this List<T> list, int initialValue, Func<int, T, int> combine)
-    {
-      int value = initialValue;
-      foreach (var element in list)
-        value = combine(value, element);
-      return value;
-    }
+  public static int fold<T>(this List<T> list, int initialValue, Func<int, T, int> combine)
+  {
+    int value = initialValue;
+    foreach (var element in list)
+      value = combine(value, element);
+    return value;
+  }
 
   /// Finds the item in [collection] whose score is lowest.
   ///
   /// The score for an item is determined by calling [callback] on it. Returns
   /// `null` if the [collection] is `null` or empty.
-  public static T _findLowest<T>(List<T> collection, System.Func<T, int> callback) {
+  public static T _findLowest<T>(List<T> collection, System.Func<T, int> callback)
+  {
     T bestItem = default(T);
     int? bestScore = null;
 
-    foreach (var item in collection) {
+    foreach (var item in collection)
+    {
       var score = callback(item);
-      if (bestScore == null || score < bestScore) {
+      if (bestScore == null || score < bestScore)
+      {
         bestItem = item;
         bestScore = score;
       }
@@ -111,13 +115,16 @@ public static class DartUtils
   ///
   /// The score for an item is determined by calling [callback] on it. Returns
   /// `null` if the [collection] is `null` or empty.
-  public static T _findHighest<T>(List<T> collection, System.Func<T, int> callback) {
+  public static T _findHighest<T>(List<T> collection, System.Func<T, int> callback)
+  {
     T bestItem = default(T);
     int? bestScore = null;
 
-    foreach (var item in collection) {
+    foreach (var item in collection)
+    {
       var score = callback(item);
-      if (bestScore == null || score > bestScore) {
+      if (bestScore == null || score > bestScore)
+      {
         bestItem = item;
         bestScore = score;
       }
@@ -132,21 +139,25 @@ public static class DartUtils
   }
 
   // TODO: Move this elsewhere?
-  public static string formatMoney(int price) {
+  public static string formatMoney(int price)
+  {
     var result = price.ToString();
-    if (price > 999999999) {
+    if (price > 999999999)
+    {
       result = result.Substring(0, result.Length - 9) +
           "," +
           result.Substring(result.Length - 9);
     }
 
-    if (price > 999999) {
+    if (price > 999999)
+    {
       result = result.Substring(0, result.Length - 6) +
           "," +
           result.Substring(result.Length - 6);
     }
 
-    if (price > 999) {
+    if (price > 999)
+    {
       result = result.Substring(0, result.Length - 3) +
           "," +
           result.Substring(result.Length - 3);

@@ -4,18 +4,19 @@ using AddMonster = System.Action<Breed>;
 
 public static class SpawnUtils
 {
-    public static Spawn spawnBreed(string name) => new _BreedSpawn(new BreedRef(name));
+  public static Spawn spawnBreed(string name) => new _BreedSpawn(new BreedRef(name));
 
-    public static Spawn spawnTag(string tag) => new _TagSpawn(tag);
+  public static Spawn spawnTag(string tag) => new _TagSpawn(tag);
 
-    public static Spawn repeatSpawn(int min, int max, Spawn spawn) =>
-        new _RepeatSpawn(min, max, spawn);
+  public static Spawn repeatSpawn(int min, int max, Spawn spawn) =>
+      new _RepeatSpawn(min, max, spawn);
 
-    public static Spawn spawnAll(List<Spawn> spawns) => new _AllOfSpawn(spawns);
+  public static Spawn spawnAll(List<Spawn> spawns) => new _AllOfSpawn(spawns);
 }
 
 /// Spawns a monster of a given breed.
-class _BreedSpawn : Spawn {
+class _BreedSpawn : Spawn
+{
   public BreedRef _breed;
 
   public _BreedSpawn(BreedRef _breed)
@@ -23,13 +24,15 @@ class _BreedSpawn : Spawn {
     this._breed = _breed;
   }
 
-  public override void spawnBreed(int depth, AddMonster addMonster) {
+  public override void spawnBreed(int depth, AddMonster addMonster)
+  {
     addMonster(_breed.breed);
   }
 }
 
 /// Drops a randomly selected breed with a given tag.
-class _TagSpawn : Spawn {
+class _TagSpawn : Spawn
+{
   /// The tag to choose from.
   public string _tag;
 
@@ -39,8 +42,10 @@ class _TagSpawn : Spawn {
   }
 
   // TODO: Should the spawn be able to override or modify the depth?
-  public override void spawnBreed(int depth, AddMonster addMonster) {
-    for (var tries = 0; tries < 10; tries++) {
+  public override void spawnBreed(int depth, AddMonster addMonster)
+  {
+    for (var tries = 0; tries < 10; tries++)
+    {
       var breed =
           Monsters.breeds.tryChoose(depth, tag: _tag, includeParents: false);
       if (breed == null) continue;
@@ -53,7 +58,8 @@ class _TagSpawn : Spawn {
 }
 
 /// A [Spawn] that repeats a spawn more than once.
-class _RepeatSpawn : Spawn {
+class _RepeatSpawn : Spawn
+{
   public int _minCount;
   public int _maxCount;
   public Spawn _spawn;
@@ -65,20 +71,23 @@ class _RepeatSpawn : Spawn {
     this._spawn = _spawn;
   }
 
-  public override void spawnBreed(int depth, AddMonster addMonster) {
+  public override void spawnBreed(int depth, AddMonster addMonster)
+  {
     var taper = 5;
     if (_maxCount > 3) taper = 4;
     if (_maxCount > 6) taper = 3;
 
     var count = Rng.rng.inclusive(_minCount, _maxCount) + Rng.rng.taper(0, taper);
-    for (var i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++)
+    {
       _spawn.spawnBreed(depth, addMonster);
     }
   }
 }
 
 /// A [Spawn] that spawns all of a list of child spawns.
-class _AllOfSpawn : Spawn {
+class _AllOfSpawn : Spawn
+{
   public List<Spawn> _spawns;
 
   public _AllOfSpawn(List<Spawn> _spawns)
@@ -86,8 +95,10 @@ class _AllOfSpawn : Spawn {
     this._spawns = _spawns;
   }
 
-  public override void spawnBreed(int depth, AddMonster addMonster) {
-    foreach (var spawn in _spawns) {
+  public override void spawnBreed(int depth, AddMonster addMonster)
+  {
+    foreach (var spawn in _spawns)
+    {
       spawn.spawnBreed(depth, addMonster);
     }
   }

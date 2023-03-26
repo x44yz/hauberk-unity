@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-class Races {
+class Races
+{
   public static Race dwarf = _race("Dwarf",
       strength: 35,
       agility: 25,
@@ -87,7 +88,8 @@ class Races {
       int fortitude,
       int intellect,
       int will,
-      string description) {
+      string description)
+  {
     return new Race(name, description, new Dictionary<Stat, int>(){
       {Stat.strength, strength},
       {Stat.agility, agility},

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-class Swordfighting : MasteryDiscipline {
+class Swordfighting : MasteryDiscipline
+{
   static int _parryDefense(int level) => MathUtils.lerpInt(level, 1, 20, 1, 20);
 
   public override string name => "Swordfighting";
@@ -17,7 +18,8 @@ class Swordfighting : MasteryDiscipline {
       base.levelDescription(level) +
       " Parrying increases dodge by ${_parryDefense(level)}.";
 
-  public override Defense getDefense(Hero hero, int level) {
+  public override Defense getDefense(Hero hero, int level)
+  {
     var swords = hero.equipment.weapons
         .Where((weapon) => weapon.type.weaponType == "sword")
         .Count();

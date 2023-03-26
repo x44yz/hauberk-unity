@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-class MonsterPathfinder : Pathfinder<Direction> {
+class MonsterPathfinder : Pathfinder<Direction>
+{
   /// When calculating pathfinding, how much it "costs" to move one step on
   /// an open floor tile.
   public const int _floorCost = 10;
@@ -25,7 +26,8 @@ class MonsterPathfinder : Pathfinder<Direction> {
   /// available.
   public const int _diagonalCost = 11;
 
-  public static Direction findDirection(Stage stage, Monster monster) {
+  public static Direction findDirection(Stage stage, Monster monster)
+  {
     return new MonsterPathfinder(stage, monster).search();
   }
 
@@ -34,17 +36,20 @@ class MonsterPathfinder : Pathfinder<Direction> {
 
   MonsterPathfinder(Stage stage, Monster _monster)
       : base(stage, _monster.pos, stage.game.hero.pos)
-      {
-        this._monster = _monster;
-      }
+  {
+    this._monster = _monster;
+  }
 
-  public override bool processStep(Path path, out Direction result) {
+  public override bool processStep(Path path, out Direction result)
+  {
     if (_nearest == null ||
-        heuristic(path.pos, end) < heuristic(_nearest!.pos, end)) {
+        heuristic(path.pos, end) < heuristic(_nearest!.pos, end))
+    {
       _nearest = path;
     }
 
-    if (path.length >= _monster.breed.tracking) {
+    if (path.length >= _monster.breed.tracking)
+    {
       result = _nearest!.startDirection;
       return true;
     }
@@ -62,14 +67,16 @@ class MonsterPathfinder : Pathfinder<Direction> {
   ///     ...*...
   ///     s.*.*.g
   ///     .*...*.
-  int heuristic(Vec pos, Vec end) {
+  int heuristic(Vec pos, Vec end)
+  {
     var offset = (end - pos).abs();
     var diagonal = Mathf.Min(offset.x, offset.y);
     var straight = Mathf.Max(offset.x, offset.y) - diagonal;
     return straight * _floorCost + diagonal * _diagonalCost;
   }
 
-  public override int? stepCost(Vec pos, Tile tile) {
+  public override int? stepCost(Vec pos, Tile tile)
+  {
     // Don't enter tiles that are on fire, etc.
     // TODO: Take resistance and immunity into account.
     if (tile.substance != 0) return null;
@@ -81,7 +88,8 @@ class MonsterPathfinder : Pathfinder<Direction> {
     // Pathfind around other actors. We assume here that the monster AI does
     // not apply pathfinding when already next to the hero. Otherwise, this
     // will prevent them from actually attacking.
-    if (stage.actorAt(pos) != null) {
+    if (stage.actorAt(pos) != null)
+    {
       // Don't make a first step directly onto an actor.
       if (firstStep) return null;
 
@@ -93,14 +101,20 @@ class MonsterPathfinder : Pathfinder<Direction> {
     }
 
     // Handle closed doors specially.
-    if (tile.isClosedDoor) {
-      if (_monster.motility.overlaps(Motility.door)) {
+    if (tile.isClosedDoor)
+    {
+      if (_monster.motility.overlaps(Motility.door))
+      {
         // One to open the door and one to enter the tile.
         return _floorCost * 2;
-      } else if (firstStep) {
+      }
+      else if (firstStep)
+      {
         // Can't open the door.
         return null;
-      } else {
+      }
+      else
+      {
         // Even though the monster can't open the door, we don't consider it
         // totally impassable because there's a chance the door will be
         // opened by someone else (like the hero).
@@ -119,7 +133,8 @@ class MonsterPathfinder : Pathfinder<Direction> {
   /// There's no path to the goal so, just pick the path that gets nearest to
   /// it and hope for the best. (Maybe someone will open a door later or
   /// something.)
-  public override Direction unreachableGoal() {
+  public override Direction unreachableGoal()
+  {
     // If the monster was totally blocked in, there is no path.
     if (_nearest == null) return null;
 

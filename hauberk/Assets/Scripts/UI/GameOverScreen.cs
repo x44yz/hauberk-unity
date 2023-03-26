@@ -6,7 +6,7 @@ using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
 // TODO: Update to handle resizable UI.
-class GameOverScreen : Screen 
+class GameOverScreen : Screen
 {
   public Log log;
 
@@ -26,7 +26,8 @@ class GameOverScreen : Screen
     return false;
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     terminal.Clear();
 
     terminal.WriteAt(0, 0, log.messages.Last().text);

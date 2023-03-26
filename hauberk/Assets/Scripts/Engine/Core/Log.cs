@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 /// The message log.
-public class Log {
+public class Log
+{
   /// Given a noun pattern, returns the unquantified singular form of it.
   /// Examples:
   ///
@@ -15,7 +16,8 @@ public class Log {
   public static string singular(string text) => _categorize(text, isFirst: true);
 
   /// Conjugates the verb pattern in [text] to agree with [pronoun].
-  public static string conjugate(string text, Pronoun pronoun) {
+  public static string conjugate(string text, Pronoun pronoun)
+  {
     var isFirst = pronoun == Pronoun.you || pronoun == Pronoun.they;
     return _categorize(text, isFirst: isFirst);
   }
@@ -28,39 +30,52 @@ public class Log {
   ///     quantify("bunn[y|ies]", 2); // -> "2 bunnies"
   ///     quantify("(a) unicorn", 1); // -> "a unicorn"
   ///     quantify("ocelot", 1);      // -> "an ocelot"
-  public static string quantify(string text, int count) {
+  public static string quantify(string text, int count)
+  {
     string quantity;
-    if (count == 1) {
+    if (count == 1)
+    {
       // Handle irregular nouns that start with a vowel but use "a", like
       // "a unicorn".
-      if (text.StartsWith("(a) ")) {
+      if (text.StartsWith("(a) "))
+      {
         quantity = "a";
         text = text.Substring(4);
-      } else if ("aeiouAEIOU".Contains(text[0].ToString())) {
+      }
+      else if ("aeiouAEIOU".Contains(text[0].ToString()))
+      {
         quantity = "an";
-      } else {
+      }
+      else
+      {
         quantity = "a";
       }
-    } else {
+    }
+    else
+    {
       quantity = count.ToString();
     }
 
     return $"{quantity} {_categorize(text, isFirst: count == 1, force: true)}";
   }
 
-  public static List<string> wordWrap(int width, string text) {
+  public static List<string> wordWrap(int width, string text)
+  {
     var lines = new List<string>();
     var start = 0;
     int? wordBreak = null;
-    for (var i = 0; i < text.Length; i++) {
+    for (var i = 0; i < text.Length; i++)
+    {
       if (text[i] == ' ') wordBreak = i + 1;
 
-      if (i - start >= width) {
+      if (i - start >= width)
+      {
         // No space to break at, so character wrap.
         wordBreak ??= i;
         lines.Add(text.Substring(start, wordBreak.Value - start).Trim());
         start = wordBreak.Value;
-        while (start < text.Length && text[start] == ' ') {
+        while (start < text.Length && text[start] == ' ')
+        {
           start++;
         }
       }
@@ -75,32 +90,38 @@ public class Log {
 
   public List<Message> messages = new List<Message>();
 
-  public void message(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void message(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.message, message, noun1, noun2, noun3);
   }
 
-  public void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void error(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.error, message, noun1, noun2, noun3);
   }
 
-  void quest(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  void quest(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.quest, message, noun1, noun2, noun3);
   }
 
-  public void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void gain(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.gain, message, noun1, noun2, noun3);
   }
 
-  void help(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  void help(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.help, message, noun1, noun2, noun3);
   }
 
-  public void cheat(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) {
+  public void cheat(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
+  {
     add(LogType.cheat, message, noun1, noun2, noun3);
   }
 
   void add(LogType type, string message,
-      Noun noun1 = null, Noun noun2 = null, Noun noun3 = null) 
+      Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
   {
     message = _format(message, noun1, noun2, noun3);
 
@@ -108,7 +129,8 @@ public class Log {
     if (messages.Count > 0)
     {
       var last = messages[messages.Count - 1];
-      if (last.text == message) {
+      if (last.text == message)
+      {
         // It is, so just repeat the count.
         last.count++;
         return;
@@ -183,11 +205,13 @@ public class Log {
   {
     var result = text;
 
-    var nouns = new List<Noun>(){noun1, noun2, noun3};
-    for (var i = 1; i <= nouns.Count; i++) {
+    var nouns = new List<Noun>() { noun1, noun2, noun3 };
+    for (var i = 1; i <= nouns.Count; i++)
+    {
       var noun = nouns[i - 1];
 
-      if (noun != null) {
+      if (noun != null)
+      {
         result = result.Replace($"{{{i}}}", noun.nounText);
 
         // Handle pronouns.
@@ -198,7 +222,8 @@ public class Log {
     }
 
     // Make the verb match the subject (which is assumed to be the first noun).
-    if (noun1 != null) {
+    if (noun1 != null)
+    {
       result = Log.conjugate(result, noun1.pronoun);
     }
 
@@ -225,7 +250,8 @@ public class Log {
   /// If [force] is `true`, then a trailing "s" will be added to the end if
   /// [isFirst] is `false` and [text] doesn't have any formatting.
   static string _categorize(string text,
-      bool isFirst, bool force = false) {
+      bool isFirst, bool force = false)
+  {
     UnityEngine.Debug.Log($"_categorize:{text} - {isFirst} - {force}");
 
     var optionalSuffix = new Regex("\\[(\\w+?)\\]");
@@ -235,16 +261,20 @@ public class Log {
     if (force && !isFirst && !text.Contains("[")) return $"{text}s";
 
     // Handle words with optional suffixes like `close[s]` and `sword[s]`.
-    while (true) {
+    while (true)
+    {
       var match = optionalSuffix.Match(text);
       if (match == null || match.Success == false) break;
 
       var before = text.Substring(0, match.Index);
       var after = text.Substring(match.Index + match.Length);
-      if (isFirst) {
+      if (isFirst)
+      {
         // Omit the optional part.
         text = $"{before}{after}";
-      } else {
+      }
+      else
+      {
         // Include the optional part.
         string m1 = match.Value.Substring(1, match.Length - 2);
         text = $"{before}{m1}{after}";
@@ -252,17 +282,21 @@ public class Log {
     }
 
     // Handle irregular words like `[are|is]` and `sta[ff|aves]`.
-    while (true) {
+    while (true)
+    {
       var match = irregular.Match(text);
       if (match == null || match.Success == false) break;
 
       var before = text.Substring(0, match.Index);
       var after = text.Substring(match.Index + match.Length);
-      if (isFirst) {
+      if (isFirst)
+      {
         // Use the first form.
         string m1 = match.Value.Substring(1, match.Value.IndexOf('|') - 1);
         text = $"{before}{m1}{after}";
-      } else {
+      }
+      else
+      {
         // Use the second form.
         string m2 = match.Value.Substring(match.Value.IndexOf('|') + 1, match.Length - match.Value.IndexOf('|') - 2);
         text = $"{before}{m2}{after}";
@@ -274,7 +308,8 @@ public class Log {
   }
 }
 
-public class Noun {
+public class Noun
+{
   public virtual string nounText => _nounText;
   protected string _nounText;
 
@@ -288,7 +323,8 @@ public class Noun {
   public override string ToString() => nounText;
 }
 
-public class Pronoun {
+public class Pronoun
+{
   // See http://en.wikipedia.org/wiki/English_personal_pronouns.
   public static Pronoun you = new Pronoun("you", "you", "your");
   public static Pronoun she = new Pronoun("she", "her", "her");
@@ -308,7 +344,8 @@ public class Pronoun {
   }
 }
 
-public enum LogType {
+public enum LogType
+{
   /// Normal log messages.
   message,
 
@@ -329,7 +366,8 @@ public enum LogType {
 }
 
 /// A single log entry.
-public class Message {
+public class Message
+{
   public LogType type;
   public string text;
 

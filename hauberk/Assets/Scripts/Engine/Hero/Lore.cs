@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// The history of interesting events the hero has experienced.
-  /// The number of monsters of each breed the hero has detected.
-public class Lore {
+/// The number of monsters of each breed the hero has detected.
+public class Lore
+{
   ///
   /// (Or, more specifically, that have died.)
   public Dictionary<Breed, int> _seenBreeds;
@@ -28,8 +29,10 @@ public class Lore {
   List<Breed> slainBreeds => _slainBreeds.Keys.ToList();
 
   /// The total number of monsters slain.
-  public int allSlain {
-    get {
+  public int allSlain
+  {
+    get
+    {
       int rt = 0;
       foreach (var kv in _slainBreeds)
         rt += kv.Value;
@@ -46,34 +49,38 @@ public class Lore {
     this._usedItems = new Dictionary<ItemType, int>();
   }
 
-    public Lore(Dictionary<Breed, int> _seenBreeds, 
-        Dictionary<Breed, int> _slainBreeds, 
-        Dictionary<ItemType, int> _foundItems,
-        Dictionary<Affix, int> _foundAffixes, 
-        Dictionary<ItemType, int> _usedItems)
-    {
-        this._seenBreeds = _seenBreeds;
-        this._slainBreeds = _slainBreeds;
-        this._foundItems = _foundItems;
-        this._foundAffixes = _foundAffixes;
-        this._usedItems = _usedItems;
-    }
+  public Lore(Dictionary<Breed, int> _seenBreeds,
+      Dictionary<Breed, int> _slainBreeds,
+      Dictionary<ItemType, int> _foundItems,
+      Dictionary<Affix, int> _foundAffixes,
+      Dictionary<ItemType, int> _usedItems)
+  {
+    this._seenBreeds = _seenBreeds;
+    this._slainBreeds = _slainBreeds;
+    this._foundItems = _foundItems;
+    this._foundAffixes = _foundAffixes;
+    this._usedItems = _usedItems;
+  }
 
-  public void seeBreed(Breed breed) {
+  public void seeBreed(Breed breed)
+  {
     if (!_seenBreeds.ContainsKey(breed)) _seenBreeds.Add(breed, 0);
     _seenBreeds[breed] = _seenBreeds[breed] + 1;
   }
 
-  public void slay(Breed breed) {
+  public void slay(Breed breed)
+  {
     if (!_slainBreeds.ContainsKey(breed)) _slainBreeds.Add(breed, 0);
     _slainBreeds[breed] = _slainBreeds[breed] + 1;
   }
 
-  public void findItem(Item item) {
+  public void findItem(Item item)
+  {
     if (!_foundItems.ContainsKey(item.type)) _foundItems.Add(item.type, 0);
     _foundItems[item.type] = _foundItems[item.type]! + 1;
 
-    void findAffix(Affix affix) {
+    void findAffix(Affix affix)
+    {
       if (affix == null) return;
 
       if (!_foundAffixes.ContainsKey(affix)) _foundAffixes.Add(affix, 0);
@@ -84,7 +91,8 @@ public class Lore {
     findAffix(item.suffix);
   }
 
-  public void useItem(Item item) {
+  public void useItem(Item item)
+  {
     if (!_usedItems.ContainsKey(item.type)) _usedItems.Add(item.type, 0);
     _usedItems[item.type] = _usedItems[item.type]! + 1;
   }
@@ -129,7 +137,8 @@ public class Lore {
     return val;
   }
 
-  public Lore clone() {
+  public Lore clone()
+  {
     return new Lore(new Dictionary<Breed, int>(_seenBreeds),
       new Dictionary<Breed, int>(_slainBreeds),
       new Dictionary<ItemType, int>(_foundItems),

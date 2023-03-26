@@ -14,10 +14,13 @@ using System.Linq;
 // - fire pit
 
 /// Base class for architectures that work with [Room]s.
-abstract class RoomArchitecture : Architecture {
+abstract class RoomArchitecture : Architecture
+{
   /// Determines whether [room] can be placed on the stage at [x], [y].
-  public bool canPlaceRoom(Array2D<RoomTile> room, int x, int y) {
-    foreach (var pos in room.bounds) {
+  public bool canPlaceRoom(Array2D<RoomTile> room, int x, int y)
+  {
+    foreach (var pos in room.bounds)
+    {
       var here = pos.offset(x, y);
       var tile = room[pos];
 
@@ -30,14 +33,17 @@ abstract class RoomArchitecture : Architecture {
 }
 
 /// Generates random rooms.
-class Room {
-  public static Array2D<RoomTile> create(int depth) {
+class Room
+{
+  public static Array2D<RoomTile> create(int depth)
+  {
     // TODO: Instead of picking from these randomly, different architectural
     // styles should prefer certain room shapes.
     // TODO: More room shapes:
     // - Plus
     // - T
-    switch (Rng.rng.inclusive(10)) {
+    switch (Rng.rng.inclusive(10))
+    {
       case 0:
         return _diamond(depth);
       case 1:
@@ -50,7 +56,8 @@ class Room {
     }
   }
 
-  static Array2D<RoomTile> _rectangle(int depth) {
+  static Array2D<RoomTile> _rectangle(int depth)
+  {
     // Make a randomly-sized room but keep the aspect ratio reasonable.
     var _short = Rng.rng.inclusive(3, 10);
     var _long = Rng.rng.inclusive(_short, Math.Min(16, _short + 4));
@@ -60,22 +67,27 @@ class Room {
     var height = horizontal ? _short : _long;
 
     var tiles = new Array2D<RoomTile>(width + 2, height + 2, RoomTile.unused);
-    for (var y = 0; y < height; y++) {
-      for (var x = 0; x < width; x++) {
+    for (var y = 0; y < height; y++)
+    {
+      for (var x = 0; x < width; x++)
+      {
         tiles._set(x + 1, y + 1, RoomTile.floor);
       }
     }
 
-    var lights = new List<List<Vec>>{};
+    var lights = new List<List<Vec>> { };
 
     // Center.
-    if (_short <= 9 && width.isOdd() && height.isOdd()) {
-      lights.Add(new List<Vec>{new Vec(width / 2 + 1, height / 2 + 1)});
+    if (_short <= 9 && width.isOdd() && height.isOdd())
+    {
+      lights.Add(new List<Vec> { new Vec(width / 2 + 1, height / 2 + 1) });
     }
 
     // Braziers in corners.
-    if (_long >= 5) {
-      for (var i = 0; i < (_short - 1) / 2; i++) {
+    if (_long >= 5)
+    {
+      for (var i = 0; i < (_short - 1) / 2; i++)
+      {
         lights.Add(new List<Vec>{
           new Vec(1 + i, 1 + i),
           new Vec(width - i, 1 + i),
@@ -92,7 +104,8 @@ class Room {
     return tiles;
   }
 
-  static Array2D<RoomTile> _angled(int depth) {
+  static Array2D<RoomTile> _angled(int depth)
+  {
     // Make a randomly-sized room but keep the aspect ratio reasonable.
     var _short = Rng.rng.inclusive(5, 10);
     var _long = Rng.rng.inclusive(_short, Math.Min(16, _short + 4));
@@ -109,8 +122,10 @@ class Room {
 
     // Open the whole rect.
     var tiles = new Array2D<RoomTile>(width + 2, height + 2, RoomTile.unused);
-    for (var y = 0; y < height; y++) {
-      for (var x = 0; x < width; x++) {
+    for (var y = 0; y < height; y++)
+    {
+      for (var x = 0; x < width; x++)
+      {
         tiles._set(x + 1, y + 1, RoomTile.floor);
       }
     }
@@ -120,37 +135,49 @@ class Room {
     var xMax = isLeft ? cutWidth : width;
     var yMin = isTop ? 0 : height - cutHeight;
     var yMax = isTop ? cutHeight : height;
-    for (var y = yMin; y < yMax; y++) {
-      for (var x = xMin; x < xMax; x++) {
+    for (var y = yMin; y < yMax; y++)
+    {
+      for (var x = xMin; x < xMax; x++)
+      {
         tiles._set(x + 1, y + 1, RoomTile.unused);
       }
     }
 
-    var lights = new List<List<Vec>>{};
+    var lights = new List<List<Vec>> { };
 
     // Braziers in corners.
     var narrowest = Math.Min(width - cutWidth, height - cutHeight);
-    for (var i = 0; i < (narrowest - 1) / 2; i++) {
-      var cornerLights = new List<Vec>{};
+    for (var i = 0; i < (narrowest - 1) / 2; i++)
+    {
+      var cornerLights = new List<Vec> { };
       lights.Add(cornerLights);
       if (!isTop || !isLeft) cornerLights.Add(new Vec(1 + i, 1 + i));
       if (!isTop || isLeft) cornerLights.Add(new Vec(width - i, 1 + i));
       if (isTop || !isLeft) cornerLights.Add(new Vec(1 + i, height - i));
       if (isTop || isLeft) cornerLights.Add(new Vec(width - i, height - i));
 
-      if (isTop) {
-        if (isLeft) {
+      if (isTop)
+      {
+        if (isLeft)
+        {
           cornerLights.Add(new Vec(cutWidth + 1 + i, 1 + i));
           cornerLights.Add(new Vec(1 + i, cutHeight + 1 + i));
-        } else {
+        }
+        else
+        {
           cornerLights.Add(new Vec(width - cutWidth - i, 1 + i));
           cornerLights.Add(new Vec(width - i, cutHeight + 1 + i));
         }
-      } else {
-        if (isLeft) {
+      }
+      else
+      {
+        if (isLeft)
+        {
           cornerLights.Add(new Vec(cutWidth + 1 + i, height - i));
           cornerLights.Add(new Vec(1 + i, height - cutHeight - i));
-        } else {
+        }
+        else
+        {
           cornerLights.Add(new Vec(width - i, height - cutHeight - i));
           cornerLights.Add(new Vec(width - cutWidth - i, height - i));
         }
@@ -162,22 +189,27 @@ class Room {
     return tiles;
   }
 
-  static Array2D<RoomTile> _diamond(int depth) {
+  static Array2D<RoomTile> _diamond(int depth)
+  {
     var size = Rng.rng.inclusive(5, 17);
     return _angledCorners(size, (size - 1) / 2, depth);
   }
 
-  static Array2D<RoomTile> _octagon(int depth) {
+  static Array2D<RoomTile> _octagon(int depth)
+  {
     var size = Rng.rng.inclusive(6, 13);
     var corner = Rng.rng.inclusive(2, size / 2 - 1);
 
     return _angledCorners(size, corner, depth);
   }
 
-  static Array2D<RoomTile> _angledCorners(int size, int corner, int depth) {
+  static Array2D<RoomTile> _angledCorners(int size, int corner, int depth)
+  {
     var tiles = new Array2D<RoomTile>(size + 2, size + 2, RoomTile.unused);
-    for (var y = 0; y < size; y++) {
-      for (var x = 0; x < size; x++) {
+    for (var y = 0; y < size; y++)
+    {
+      for (var x = 0; x < size; x++)
+      {
         if (x + y < corner) continue;
         if (size - x - 1 + y < corner) continue;
         if (x + size - y - 1 < corner) continue;
@@ -187,16 +219,19 @@ class Room {
       }
     }
 
-    var lights = new List<List<Vec>>{};
+    var lights = new List<List<Vec>> { };
 
     // Center.
-    if (size <= 9 && size.isOdd()) {
-      lights.Add(new List<Vec>{new Vec(size / 2 + 1, size / 2 + 1)});
+    if (size <= 9 && size.isOdd())
+    {
+      lights.Add(new List<Vec> { new Vec(size / 2 + 1, size / 2 + 1) });
     }
 
     // Diamonds.
-    if (size.isOdd()) {
-      for (var i = 2; i < size / 2 - 1; i++) {
+    if (size.isOdd())
+    {
+      for (var i = 2; i < size / 2 - 1; i++)
+      {
         lights.Add(new List<Vec>{
           new Vec(size / 2 + 1, size / 2 + 1 - i),
           new Vec(size / 2 + 1 + i, size / 2 + 1),
@@ -208,7 +243,8 @@ class Room {
 
     // Squares.
     var maxSquare = (size + 1) / 2 - (corner + 1) / 2 - 3;
-    for (var i = 0; i <= maxSquare; i++) {
+    for (var i = 0; i <= maxSquare; i++)
+    {
       lights.Add(new List<Vec>{
         new Vec((size - 1) / 2 - i, (size - 1) / 2 - i),
         new Vec((size + 4) / 2 + i, (size - 1) / 2 - i),
@@ -224,11 +260,14 @@ class Room {
 
   /// Given a set of floor tiles, marks the boundary tiles as junctions or walls
   /// as appropriate.
-  static void _calculateEdges(Array2D<RoomTile> room) {
-    foreach (var pos in room.bounds) {
+  static void _calculateEdges(Array2D<RoomTile> room)
+  {
+    foreach (var pos in room.bounds)
+    {
       if (!room[pos].isUnused) continue;
 
-      bool isFloor(Direction dir) {
+      bool isFloor(Direction dir)
+      {
         var here = pos + dir;
         if (!room.bounds.contains(here)) return false;
         return room[here].isTile;
@@ -237,12 +276,17 @@ class Room {
       var cardinalFloors = Direction.cardinal.Where(x => isFloor(x)).ToList();
       var hasCornerFloor = Direction.intercardinal.Any(x => isFloor(x));
 
-      if (cardinalFloors.Count == 1) {
+      if (cardinalFloors.Count == 1)
+      {
         // Place junctions next to floors.
         room[pos] = new RoomTile(cardinalFloors[0].rotate180);
-      } else if (cardinalFloors.Count > 1) {
+      }
+      else if (cardinalFloors.Count > 1)
+      {
         // Don't allow junctions at inside corners.
-      } else if (hasCornerFloor) {
+      }
+      else if (hasCornerFloor)
+      {
         // Don't allow passages at outside corners.
         room[pos] = RoomTile.wall;
       }
@@ -253,18 +297,21 @@ class Room {
   // generate every possible lighting setup for a room before picking one or
   // even deciding if the room should be lit.
   static void _addLights(
-      int depth, Array2D<RoomTile> room, List<List<Vec>> lights) {
+      int depth, Array2D<RoomTile> room, List<List<Vec>> lights)
+  {
     if (lights.isEmpty<List<Vec>>()) return;
 
     if (!Rng.rng.percent(MathUtils.lerpInt(depth, 1, Option.maxDepth, 90, 20))) return;
 
-    foreach (var light in Rng.rng.item(lights)) {
+    foreach (var light in Rng.rng.item(lights))
+    {
       room[light] = new RoomTile(Rng.rng.item(Tiles.braziers));
     }
   }
 }
 
-class RoomTile {
+class RoomTile
+{
   /// Not part of the room.
   public static RoomTile unused = new RoomTile(Direction.none);
 

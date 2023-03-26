@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// Places a number of random blobs.
-class Catacomb : Architecture {
+class Catacomb : Architecture
+{
   /// How much open space it tries to carve.
   public double _density;
 
@@ -15,13 +16,14 @@ class Catacomb : Architecture {
 
   public Catacomb(double? density = null, int? minSize = null, int? maxSize = null)
   {
-      _density = density ?? 0.3;
-      _minSize = minSize ?? 8;
-      _maxSize = maxSize ?? 32;
+    _density = density ?? 0.3;
+    _minSize = minSize ?? 8;
+    _maxSize = maxSize ?? 32;
   }
 
 
-  public override IEnumerable<string> build() {
+  public override IEnumerable<string> build()
+  {
     var rt = new List<string>();
 
     // Don't try to make chambers bigger than the stage.
@@ -35,14 +37,16 @@ class Catacomb : Architecture {
     minSize = Math.Min(minSize, maxSize);
 
     var failed = 0;
-    while (carvedDensity < _density && failed < 100) {
+    while (carvedDensity < _density && failed < 100)
+    {
       // Square the size to skew the distribution so that larges ones are
       // rarer than smaller ones.
       var size = (int)Math.Pow(Rng.rng.rfloat(minSize, maxSize), 2.0);
       var cave = Blob.make(size);
 
       var placed = false;
-      for (var i = 0; i < 400; i++) {
+      for (var i = 0; i < 400; i++)
+      {
         // TODO: dungeon.dart has similar code for placing the starting room.
         // Unify.
         // TODO: This puts pretty hard boundaries around the region. Is there
@@ -54,43 +58,43 @@ class Catacomb : Architecture {
 
         if (region == Region.everywhere)
         {
-            // Do nothing.
+          // Do nothing.
         }
         else if (region == Region.n)
         {
-            yMax = height / 2 - cave.height;
+          yMax = height / 2 - cave.height;
         }
         else if (region == Region.ne)
         {
-            xMin = width / 2;
-            yMax = height / 2 - cave.height;
+          xMin = width / 2;
+          yMax = height / 2 - cave.height;
         }
         else if (region == Region.e)
         {
-            xMin = width / 2;
+          xMin = width / 2;
         }
         else if (region == Region.se)
         {
-            xMin = width / 2;
-            yMin = height / 2;
+          xMin = width / 2;
+          yMin = height / 2;
         }
         else if (region == Region.s)
         {
-            yMin = height / 2;
+          yMin = height / 2;
         }
         else if (region == Region.sw)
         {
-            xMax = width / 2 - cave.width;
-            yMin = height / 2;
+          xMax = width / 2 - cave.width;
+          yMin = height / 2;
         }
         else if (region == Region.w)
         {
-            xMax = width / 2 - cave.width;
+          xMax = width / 2 - cave.width;
         }
         else if (region == Region.nw)
         {
-            xMax = width / 2 - cave.width;
-            yMax = height / 2 - cave.height;
+          xMax = width / 2 - cave.width;
+          yMax = height / 2 - cave.height;
         }
 
         if (xMin >= xMax) continue;
@@ -99,7 +103,8 @@ class Catacomb : Architecture {
         var x = Rng.rng.range(xMin, xMax);
         var y = Rng.rng.range(yMin, yMax);
 
-        if (_tryPlaceCave(cave, x, y)) {
+        if (_tryPlaceCave(cave, x, y))
+        {
           rt.Add("cave");
           placed = true;
           break;
@@ -112,14 +117,18 @@ class Catacomb : Architecture {
     return rt;
   }
 
-  bool _tryPlaceCave(Array2D<bool> cave, int x, int y) {
-    foreach (var pos in cave.bounds) {
-      if (cave[pos]) {
+  bool _tryPlaceCave(Array2D<bool> cave, int x, int y)
+  {
+    foreach (var pos in cave.bounds)
+    {
+      if (cave[pos])
+      {
         if (!canCarve(pos.offset(x, y))) return false;
       }
     }
 
-    foreach (var pos in cave.bounds) {
+    foreach (var pos in cave.bounds)
+    {
       if (cave[pos]) carve(pos.x + x, pos.y + y);
     }
 

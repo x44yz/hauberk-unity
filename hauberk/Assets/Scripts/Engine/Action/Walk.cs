@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-public class WalkAction : Action {
+public class WalkAction : Action
+{
   public Direction dir;
   public WalkAction(Direction dir)
   {
     this.dir = dir;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     // Rest if we aren't moving anywhere.
-    if (dir == Direction.none) {
+    if (dir == Direction.none)
+    {
       return alternate(new RestAction());
     }
 
@@ -19,21 +22,25 @@ public class WalkAction : Action {
 
     // See if there is an actor there.
     var target = game.stage.actorAt(pos);
-    if (target != null && target != actor) {
+    if (target != null && target != actor)
+    {
       return alternate(new AttackAction(target));
     }
 
     // See if it can be opened.
     var tile = game.stage[pos].type;
-    if (tile.canOpen) {
+    if (tile.canOpen)
+    {
       return alternate(tile.onOpen!(pos));
     }
 
     // See if we can walk there.
-    if (!actor!.canOccupy(pos)) {
+    if (!actor!.canOccupy(pos))
+    {
       // If the hero runs into something in the dark, they can figure out what
       // it is.
-      if (actor is Hero) {
+      if (actor is Hero)
+      {
         game.stage.explore(pos, force: true);
       }
 
@@ -43,12 +50,15 @@ public class WalkAction : Action {
     actor!.pos = pos;
 
     // See if the hero stepped on anything interesting.
-    if (actor is Hero) {
-      foreach (var item in game.stage.itemsAt(pos)) {
+    if (actor is Hero)
+    {
+      foreach (var item in game.stage.itemsAt(pos))
+      {
         hero.disturb();
 
         // Treasure is immediately, freely acquired.
-        if (item.isTreasure) {
+        if (item.isTreasure)
+        {
           // Pick a random value near the price.
           var min = Mathf.CeilToInt(item.price * 0.5f);
           var max = Mathf.CeilToInt(item.price * 1.5f);
@@ -58,7 +68,9 @@ public class WalkAction : Action {
           game.stage.removeItem(item, pos);
 
           addEvent(EventType.gold, actor: actor, pos: actor!.pos, other: item);
-        } else {
+        }
+        else
+        {
           log("{1} [are|is] standing on {2}.", actor, item);
         }
       }
@@ -72,7 +84,8 @@ public class WalkAction : Action {
   public override string ToString() => $"{actor} walks {dir}";
 }
 
-class OpenDoorAction : Action {
+class OpenDoorAction : Action
+{
   public Vec pos;
   public TileType openDoor;
 
@@ -82,7 +95,8 @@ class OpenDoorAction : Action {
     this.openDoor = openDoor;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     game.stage[pos].type = openDoor;
     game.stage.tileOpacityChanged();
 
@@ -91,7 +105,8 @@ class OpenDoorAction : Action {
   }
 }
 
-class CloseDoorAction : Action {
+class CloseDoorAction : Action
+{
   public Vec doorPos;
   public TileType closedDoor;
 
@@ -101,9 +116,11 @@ class CloseDoorAction : Action {
     this.closedDoor = closedDoor;
   }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     var blockingActor = game.stage.actorAt(doorPos);
-    if (blockingActor != null) {
+    if (blockingActor != null)
+    {
       return fail("{1} [are|is] in the way!", blockingActor);
     }
 
@@ -117,10 +134,14 @@ class CloseDoorAction : Action {
 }
 
 /// Action for doing nothing for a turn.
-class RestAction : Action {
-  public override ActionResult onPerform() {
-    if (actor is Hero) {
-      if (hero.stomach > 0 && !hero.poison.isActive) {
+class RestAction : Action
+{
+  public override ActionResult onPerform()
+  {
+    if (actor is Hero)
+    {
+      if (hero.stomach > 0 && !hero.poison.isActive)
+      {
         // TODO: Does this scale well when the hero has very high max health?
         // Might need to go up by more than one point then.
         hero.health++;
@@ -128,7 +149,9 @@ class RestAction : Action {
 
       // TODO: Have this amount increase over successive resting turns?
       hero.regenerateFocus(10);
-    } else if (!actor!.isVisibleToHero) {
+    }
+    else if (!actor!.isVisibleToHero)
+    {
       // Monsters can rest if out of sight.
       actor!.health++;
     }

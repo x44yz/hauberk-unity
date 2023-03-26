@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using num = System.Double;
 
-class HasteMove : Move {
+class HasteMove : Move
+{
   public int _duration;
   public int _speed;
 
@@ -14,7 +15,8 @@ class HasteMove : Move {
     this._speed = _speed;
   }
 
-  public override bool shouldUse(Monster monster) {
+  public override bool shouldUse(Monster monster)
+  {
     // Don't use if already hasted.
     return !monster.haste.isActive;
   }

@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// Items that are spawned on the ground when a dungeon is first generated.
-class FloorDrops {
-    public static ResourceSet<FloorDrop> _floorDrops = new ResourceSet<FloorDrop>();
+class FloorDrops
+{
+  public static ResourceSet<FloorDrop> _floorDrops = new ResourceSet<FloorDrop>();
 
-    public static void floorDrop(
-        double? startFrequency = null,
-        double? endFrequency = null,
-        SpawnLocation? location = null,
-        Drop drop = null) {
-        location ??= SpawnLocation.anywhere;
-        var floorDrop = new FloorDrop(location.Value, drop);
-        _floorDrops.addRanged(floorDrop,
-            start: 1,
-            end: 100,
-            startFrequency: startFrequency,
-            endFrequency: endFrequency);
-    }
+  public static void floorDrop(
+      double? startFrequency = null,
+      double? endFrequency = null,
+      SpawnLocation? location = null,
+      Drop drop = null)
+  {
+    location ??= SpawnLocation.anywhere;
+    var floorDrop = new FloorDrop(location.Value, drop);
+    _floorDrops.addRanged(floorDrop,
+        start: 1,
+        end: 100,
+        startFrequency: startFrequency,
+        endFrequency: endFrequency);
+  }
 
-  public static void initialize() {
+  public static void initialize()
+  {
     // Add generic stuff at every depth.
 
     // TODO: Tune this.
@@ -66,7 +69,8 @@ class FloorDrops {
   public static FloorDrop choose(int depth) => _floorDrops.tryChoose(depth)!;
 }
 
-class FloorDrop {
+class FloorDrop
+{
   public SpawnLocation location;
   public Drop drop;
 

@@ -8,16 +8,19 @@ using Debug = UnityEngine.Debug;
 using SimpleJson;
 
 /// The entrypoint for all persisted save data.
-class Storage {
+class Storage
+{
   public Content content;
   public List<HeroSave> heroes = new List<HeroSave>();
 
-  public Storage(Content content) {
+  public Storage(Content content)
+  {
     this.content = content;
     _load();
   }
 
-  void _load() {
+  void _load()
+  {
     // TODO: For debugging. If the query is "?clear", then ditch saved heroes.
     // if (html.window.location.search == '?clear') {
     //   save();
@@ -32,113 +35,128 @@ class Storage {
       return;
 
     // TODO: Check version.
-    
+
     var heros = data["heroes"] as IList<object>;
-    foreach (var hero_ in heros) {
+    foreach (var hero_ in heros)
+    {
       // try {
-        var hero =  hero_ as IDictionary<string, object>;
+      var hero = hero_ as IDictionary<string, object>;
 
-        var name = hero["name"] as string;
-        var race = _loadRace(hero["race"] as IDictionary<string, object>);
+      var name = hero["name"] as string;
+      var race = _loadRace(hero["race"] as IDictionary<string, object>);
 
-        HeroClass heroClass;
-        if (hero["class"] == null) {
-          // TODO: Temp for characters before classes.
-          heroClass = content.classes[0];
-        } else {
-          var className = hero["class"] as string;
-          heroClass = content.classes.First((c) => c.name == className);
-        }
+      HeroClass heroClass;
+      if (hero["class"] == null)
+      {
+        // TODO: Temp for characters before classes.
+        heroClass = content.classes[0];
+      }
+      else
+      {
+        var className = hero["class"] as string;
+        heroClass = content.classes.First((c) => c.name == className);
+      }
 
-        var inventoryItems = _loadItems(hero["inventory"] as List<object>);
-        var inventory = new Inventory(
-            ItemLocation.inventory, Option.inventoryCapacity, inventoryItems);
+      var inventoryItems = _loadItems(hero["inventory"] as List<object>);
+      var inventory = new Inventory(
+          ItemLocation.inventory, Option.inventoryCapacity, inventoryItems);
 
-        var equipment = new Equipment();
-        foreach (var item in _loadItems(hero["equipment"] as List<object>)) {
-          // TODO: If there are multiple slots of the same type, this may
-          // shuffle items around.
-          equipment.equip(item);
-        }
+      var equipment = new Equipment();
+      foreach (var item in _loadItems(hero["equipment"] as List<object>))
+      {
+        // TODO: If there are multiple slots of the same type, this may
+        // shuffle items around.
+        equipment.equip(item);
+      }
 
-        var homeItems = _loadItems(hero["home"] as List<object>);
-        var home = new Inventory(ItemLocation.home, Option.homeCapacity, homeItems);
+      var homeItems = _loadItems(hero["home"] as List<object>);
+      var home = new Inventory(ItemLocation.home, Option.homeCapacity, homeItems);
 
-        var crucibleItems = _loadItems(hero["crucible"] as List<object>);
-        var crucible = new Inventory(
-            ItemLocation.crucible, Option.crucibleCapacity, crucibleItems);
+      var crucibleItems = _loadItems(hero["crucible"] as List<object>);
+      var crucible = new Inventory(
+          ItemLocation.crucible, Option.crucibleCapacity, crucibleItems);
 
-        // TODO: What if shops are added or changed?
-        var shops = new Dictionary<Shop, Inventory>{};
-        if (hero.ContainsKey("shops")) {
-          foreach (var kv in content.shops) {
-            var shopName = kv.Key;
-            var shop = kv.Value;
+      // TODO: What if shops are added or changed?
+      var shops = new Dictionary<Shop, Inventory> { };
+      if (hero.ContainsKey("shops"))
+      {
+        foreach (var kv in content.shops)
+        {
+          var shopName = kv.Key;
+          var shop = kv.Value;
 
-            var kk = hero["shops"] as IDictionary<string, object>;
-            var shopData = kk[shopName] as IList<object>;
-            if (shopData != null) {
-              shops[shop] = shop.load(_loadItems(shopData));
-            } else {
-              Debug.LogError($"No data for {shopName}, so regenerating.");
-              shops[shop] = shop.create();
-            }
-          };
-        }
+          var kk = hero["shops"] as IDictionary<string, object>;
+          var shopData = kk[shopName] as IList<object>;
+          if (shopData != null)
+          {
+            shops[shop] = shop.load(_loadItems(shopData));
+          }
+          else
+          {
+            Debug.LogError($"No data for {shopName}, so regenerating.");
+            shops[shop] = shop.create();
+          }
+        };
+      }
 
-        // Clean up legacy heroes before item stacks.
-        // TODO: Remove this once we don't need to worry about it anymore.
-        inventory.countChanged();
-        home.countChanged();
-        crucible.countChanged();
+      // Clean up legacy heroes before item stacks.
+      // TODO: Remove this once we don't need to worry about it anymore.
+      inventory.countChanged();
+      home.countChanged();
+      crucible.countChanged();
 
-        // Defaults are to support legacy saves.
+      // Defaults are to support legacy saves.
 
-        var experience = Convert.ToInt32(hero["experience"]);
+      var experience = Convert.ToInt32(hero["experience"]);
 
-        var levels = new Dictionary<Skill, int>{};
-        var points = new Dictionary<Skill, int>{};
-        var skills = hero["skills"] as IDictionary<string, object>;
-        if (skills != null) {
-          foreach (var skillName in skills.Keys) {
-            var skill = content.findSkill(skillName);
-            // Handle old storage without points.
-            // TODO: Remove when no longer needed.
-            if (skills[skillName] is int) {
-              levels[skill] = (int)skills[skillName];
-              points[skill] = 0;
-            } else {
-              var kk = skills[skillName] as IDictionary<string, int>;
-              levels[skill] = (int)kk["level"];
-              points[skill] = (int)kk["points"];
-            }
+      var levels = new Dictionary<Skill, int> { };
+      var points = new Dictionary<Skill, int> { };
+      var skills = hero["skills"] as IDictionary<string, object>;
+      if (skills != null)
+      {
+        foreach (var skillName in skills.Keys)
+        {
+          var skill = content.findSkill(skillName);
+          // Handle old storage without points.
+          // TODO: Remove when no longer needed.
+          if (skills[skillName] is int)
+          {
+            levels[skill] = (int)skills[skillName];
+            points[skill] = 0;
+          }
+          else
+          {
+            var kk = skills[skillName] as IDictionary<string, int>;
+            levels[skill] = (int)kk["level"];
+            points[skill] = (int)kk["points"];
           }
         }
+      }
 
-        var skillSet = new SkillSet(levels, points);
+      var skillSet = new SkillSet(levels, points);
 
-        var lore = _loadLore(hero["lore"] as IDictionary<string, object>);
+      var lore = _loadLore(hero["lore"] as IDictionary<string, object>);
 
-        var gold = Convert.ToInt32(hero["gold"]);
-        var maxDepth = 0;
-        if (hero.ContainsKey("maxDepth"))
-          maxDepth = Convert.ToInt32(hero["maxDepth"]);
+      var gold = Convert.ToInt32(hero["gold"]);
+      var maxDepth = 0;
+      if (hero.ContainsKey("maxDepth"))
+        maxDepth = Convert.ToInt32(hero["maxDepth"]);
 
-        var heroSave = new HeroSave(
-            name,
-            race,
-            heroClass,
-            inventory,
-            equipment,
-            home,
-            crucible,
-            shops,
-            experience,
-            skillSet,
-            lore,
-            gold,
-            maxDepth);
-        heroes.Add(heroSave);
+      var heroSave = new HeroSave(
+          name,
+          race,
+          heroClass,
+          inventory,
+          equipment,
+          home,
+          crucible,
+          shops,
+          experience,
+          skillSet,
+          lore,
+          gold,
+          maxDepth);
+      heroes.Add(heroSave);
       // } catch (Exception ex) {
       //   Debug.LogError("Could not load hero. Data:");
       //   // Debug.Log(heroStr);
@@ -147,9 +165,11 @@ class Storage {
     }
   }
 
-  RaceStats _loadRace(IDictionary<string, object> data) {
+  RaceStats _loadRace(IDictionary<string, object> data)
+  {
     // TODO: Temp to handle heros from before races.
-    if (data == null) {
+    if (data == null)
+    {
       return content.races.elementAt(4).rollStats();
     }
 
@@ -157,10 +177,12 @@ class Storage {
     var race = content.races.First((race) => race.name == name);
 
     var statData = data["stats"] as IDictionary<string, object>;
-    var stats = new Dictionary<Stat, int>{};
+    var stats = new Dictionary<Stat, int> { };
 
-    foreach (var stat in Stat.all) {
-      if (statData.ContainsKey(stat.name)) {
+    foreach (var stat in Stat.all)
+    {
+      if (statData.ContainsKey(stat.name))
+      {
         stats[stat] = Convert.ToInt32(statData[stat.name]);
       }
     }
@@ -173,12 +195,14 @@ class Storage {
     return new RaceStats(race, stats, seed);
   }
 
-  List<Item> _loadItems(IList<object> data) {
+  List<Item> _loadItems(IList<object> data)
+  {
     var items = new List<Item>();
     if (data == null)
       return items;
 
-    foreach (var itemData in data) {
+    foreach (var itemData in data)
+    {
       var item = _loadItem(itemData as IDictionary<string, object>);
       if (item != null) items.Add(item);
     }
@@ -186,36 +210,47 @@ class Storage {
     return items;
   }
 
-  Item _loadItem(IDictionary<string, object> data) {
+  Item _loadItem(IDictionary<string, object> data)
+  {
     var type = content.tryFindItem(data["type"] as string);
-    if (type == null) {
+    if (type == null)
+    {
       Debug.LogError($"Couldn't find item type {data["type"]}, discarding item.");
       return null;
     }
 
     var count = 1;
     // Existing save files don't store count, so allow it to be missing.
-    if (data.ContainsKey("count")) {
+    if (data.ContainsKey("count"))
+    {
       count = Convert.ToInt32(data["count"]);
     }
 
     Affix prefix = null;
-    if (data.ContainsKey("prefix")) {
+    if (data.ContainsKey("prefix"))
+    {
       // TODO: Older save from back when affixes had types.
-      if (data["prefix"] is string) {
+      if (data["prefix"] is string)
+      {
         prefix = content.findAffix(data["prefix"] as string);
-      } else {
+      }
+      else
+      {
         var kk = data["prefix"] as IDictionary<string, object>;
         prefix = content.findAffix(kk["name"] as string);
       }
     }
 
     Affix suffix = null;
-    if (data.ContainsKey("suffix")) {
+    if (data.ContainsKey("suffix"))
+    {
       // TODO: Older save from back when affixes had types.
-      if (data["suffix"] is string) {
+      if (data["suffix"] is string)
+      {
         suffix = content.findAffix(data["suffix"] as string);
-      } else {
+      }
+      else
+      {
         var kk = data["suffix"] as IDictionary<string, object>;
         suffix = content.findAffix(kk["name"] as string);
       }
@@ -224,18 +259,22 @@ class Storage {
     return new Item(type, count, prefix, suffix);
   }
 
-  Lore _loadLore(IDictionary<string, object> data) {
-    var seenBreeds = new Dictionary<Breed, int>{};
-    var slain = new Dictionary<Breed, int>{};
-    var foundItems = new Dictionary<ItemType, int>{};
-    var foundAffixes = new Dictionary<Affix, int>{};
-    var usedItems = new Dictionary<ItemType, int>{};
+  Lore _loadLore(IDictionary<string, object> data)
+  {
+    var seenBreeds = new Dictionary<Breed, int> { };
+    var slain = new Dictionary<Breed, int> { };
+    var foundItems = new Dictionary<ItemType, int> { };
+    var foundAffixes = new Dictionary<Affix, int> { };
+    var usedItems = new Dictionary<ItemType, int> { };
 
     // TODO: Older saves before lore.
-    if (data != null) {
+    if (data != null)
+    {
       var seenMap = data["seen"] as IDictionary<string, object>;
-      if (seenMap != null) {
-        foreach (var kv in seenMap) {
+      if (seenMap != null)
+      {
+        foreach (var kv in seenMap)
+        {
           var breedName = kv.Key;
           var count = kv.Value;
 
@@ -245,20 +284,25 @@ class Storage {
       }
 
       var slainMap = data["slain"] as IDictionary<string, object>;
-      if (slainMap != null) {
-        foreach (var kv in slainMap) {
+      if (slainMap != null)
+      {
+        foreach (var kv in slainMap)
+        {
           var breedName = kv.Key;
           var count = kv.Value;
-  
+
           var breed = content.tryFindBreed(breedName);
           if (breed != null) slain[breed] = (int)count;
         };
       }
 
-      if (data.ContainsKey("foundItems")) {
+      if (data.ContainsKey("foundItems"))
+      {
         var foundItemMap = data["foundItems"] as IDictionary<string, object>;
-        if (foundItemMap != null) {
-          foreach (var kv in foundItemMap) {
+        if (foundItemMap != null)
+        {
+          foreach (var kv in foundItemMap)
+          {
             var itemName = kv.Key;
             var count = kv.Value;
 
@@ -268,10 +312,13 @@ class Storage {
         }
       }
 
-      if (data.ContainsKey("foundAffixes")) {
+      if (data.ContainsKey("foundAffixes"))
+      {
         var foundAffixMap = data["foundAffixes"] as IDictionary<string, object>;
-        if (foundAffixMap != null) {
-          foreach (var kv in foundAffixMap) {
+        if (foundAffixMap != null)
+        {
+          foreach (var kv in foundAffixMap)
+          {
             var affixName = kv.Key;
             var count = kv.Value;
 
@@ -281,10 +328,13 @@ class Storage {
         }
       }
 
-      if (data.ContainsKey("usedItems")) {
+      if (data.ContainsKey("usedItems"))
+      {
         var usedItemMap = data["usedItems"] as IDictionary<string, object>;
-        if (usedItemMap != null) {
-          foreach (var kv in usedItemMap) {
+        if (usedItemMap != null)
+        {
+          foreach (var kv in usedItemMap)
+          {
             var itemName = kv.Key;
             var count = kv.Value;
 
@@ -298,11 +348,14 @@ class Storage {
     return new Lore(seenBreeds, slain, foundItems, foundAffixes, usedItems);
   }
 
-  public void save() {
+  public void save()
+  {
     var heroData = new List<object>();
-    foreach (var hero in heroes) {
-      var raceStats = new Dictionary<string, object>{};
-      foreach (var stat in Stat.all) {
+    foreach (var hero in heroes)
+    {
+      var raceStats = new Dictionary<string, object> { };
+      foreach (var stat in Stat.all)
+      {
         raceStats[stat.name] = hero.race.max(stat);
       }
 
@@ -317,27 +370,30 @@ class Storage {
       var home = _saveItems(hero.home);
       var crucible = _saveItems(hero.crucible);
 
-      var shops = new Dictionary<string, object>{};
-      foreach (var kv in hero.shops) {
+      var shops = new Dictionary<string, object> { };
+      foreach (var kv in hero.shops)
+      {
         var shop = kv.Key;
         shops[shop.name] = _saveItems(kv.Value);
       };
 
-      var skills = new Dictionary<string, object>{};
-      foreach (var skill in hero.skills.discovered) {
+      var skills = new Dictionary<string, object> { };
+      foreach (var skill in hero.skills.discovered)
+      {
         skills[skill.name] = new Dictionary<string, object>(){
           {"level", hero.skills.level(skill)},
           {"points", hero.skills.points(skill)}
         };
       }
 
-      var seen = new Dictionary<string, object>{};
-      var slain = new Dictionary<string, object>{};
+      var seen = new Dictionary<string, object> { };
+      var slain = new Dictionary<string, object> { };
       var lore = new Dictionary<string, object>{
         {"seen", seen},
         {"slain", slain}
       };
-      foreach (var breed in content.breeds) {
+      foreach (var breed in content.breeds)
+      {
         var count = hero.lore.seenBreed(breed);
         if (count != 0) seen[breed.name] = count;
 
@@ -374,19 +430,21 @@ class Storage {
     Debug.Log("Saved.");
   }
 
-  List<Dictionary<string, object>> _saveItems(IEnumerable<Item> items) {
+  List<Dictionary<string, object>> _saveItems(IEnumerable<Item> items)
+  {
     var rt = new List<Dictionary<string, object>>();
     foreach (var item in items)
       rt.Add(_saveItem(item));
     return rt;
   }
 
-  Dictionary<string, object> _saveItem(Item item) {
+  Dictionary<string, object> _saveItem(Item item)
+  {
     var kk = new Dictionary<string, object>{
       {"type", item.type.name},
       {"count", item.count},
     };
-    if (item.prefix != null) 
+    if (item.prefix != null)
       kk["prefix"] = item.prefix!.name;
     if (item.suffix != null)
       kk["suffix"] = item.suffix!.name;

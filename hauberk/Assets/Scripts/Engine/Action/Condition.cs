@@ -5,7 +5,8 @@ using System.Collections.Generic;
 /// Base class for an [Action] that applies (or extends/intensifies) a
 /// [Condition]. It handles cases where the condition is already in effect with
 /// possibly a different intensity.
-abstract class ConditionAction : Action {
+abstract class ConditionAction : Action
+{
   /// The [Condition] on the actor that should be affected.
   Condition condition;
 
@@ -24,19 +25,22 @@ abstract class ConditionAction : Action {
 
   /// Override this to log the message when the condition is already in effect
   /// at a weaker intensity and the intensity increases.
-  public virtual void onIntensify() {}
+  public virtual void onIntensify() { }
 
-  public override ActionResult onPerform() {
+  public override ActionResult onPerform()
+  {
     var intensity = getIntensity();
     var duration = getDuration();
 
-    if (!condition.isActive) {
+    if (!condition.isActive)
+    {
       condition.activate(duration, intensity);
       onActivate();
       return ActionResult.success;
     }
 
-    if (condition.intensity >= intensity) {
+    if (condition.intensity >= intensity)
+    {
       // Scale down the new duration by how much weaker the new intensity is.
       duration = (duration * intensity) / condition.intensity;
 

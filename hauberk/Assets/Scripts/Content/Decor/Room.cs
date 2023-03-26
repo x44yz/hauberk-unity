@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-partial class Decor {
-  public static void roomDecor() {
+partial class Decor
+{
+  public static void roomDecor()
+  {
     var tableCells = new Dictionary<string, Cell>{
       {"┌", applyOpen(Tiles.tableTopLeft)},
       {"─", applyOpen(Tiles.tableTop)},
@@ -481,7 +483,7 @@ partial class Decor {
     category(
         themes: "built",
         frequency: 0.7,
-        cells: new Dictionary<string, Cell>{{"%", applyOpen(Tiles.closedBarrel)}});
+        cells: new Dictionary<string, Cell> { { "%", applyOpen(Tiles.closedBarrel) } });
 
     furnishing(symmetry: Symmetry.rotate90, template: @"
       ##?
@@ -518,7 +520,7 @@ partial class Decor {
     category(
         themes: "built",
         frequency: 0.5,
-        cells: new Dictionary<string, Cell>{{"&", applyOpen(Tiles.closedChest)}});
+        cells: new Dictionary<string, Cell> { { "&", applyOpen(Tiles.closedChest) } });
 
     furnishing(symmetry: Symmetry.rotate90, template: @"
       ##?

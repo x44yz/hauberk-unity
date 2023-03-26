@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 using num = System.Int32;
 
 /// Calculates the hero's field of view of the dungeon, which tiles are occluded
 /// by other tiles and which are not.
-public class Fov {
+public class Fov
+{
   public const int _maxViewDistance = 24;
 
-public static Vec[,] _octantCoordinates = new Vec[,]{
+  public static Vec[,] _octantCoordinates = new Vec[,]{
     // y, x
     {new Vec(0, -1), new Vec(1, 0)},
     {new Vec(1, 0), new Vec(0, -1)},
@@ -30,14 +31,17 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
   }
 
   /// Updates the visible flags in [_stage] given the hero's [pos].
-  public void refresh(Vec pos) {
-    if (_stage.game.hero.blindness.isActive) {
+  public void refresh(Vec pos)
+  {
+    if (_stage.game.hero.blindness.isActive)
+    {
       _hideAll();
       return;
     }
 
     // Sweep through the octants.
-    for (var octant = 0; octant < 8; octant++) {
+    for (var octant = 0; octant < 8; octant++)
+    {
       _refreshOctant(pos, octant);
     }
 
@@ -45,8 +49,10 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
     _stage.setVisibility(pos, false, 0);
   }
 
-  void _hideAll() {
-    foreach (var pos in _stage.bounds) {
+  void _hideAll()
+  {
+    foreach (var pos in _stage.bounds)
+    {
       _stage.setVisibility(pos, true, 0);
     }
 
@@ -54,20 +60,22 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
     _stage.setVisibility(_stage.game.hero.pos, false, 0);
   }
 
-  void _refreshOctant(Vec start, int octant) {
+  void _refreshOctant(Vec start, int octant)
+  {
     // Figure out which direction to increment based on the octant. Octant 0
     // starts at 12 - 2 o'clock, and octants proceed clockwise from there.
     var rowInc = _octantCoordinates[octant, 0];
     var colInc = _octantCoordinates[octant, 1];
 
-    _shadows = new List<_Shadow>{};
+    _shadows = new List<_Shadow> { };
 
     var bounds = _stage.bounds;
     var fullShadow = false;
 
     // Sweep through the rows ('rows' may be vertical or horizontal based on
     // the incrementors). Start at row 1 to skip the center position.
-    for (var row = 1;; row++) {
+    for (var row = 1; ; row++)
+    {
       var pos = start + (rowInc * row);
 
       // If we've traversed out of bounds, bail.
@@ -80,20 +88,27 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
       // always farther.
       var pastMaxDistance = false;
 
-      for (var col = 0; col <= row; col++) {
+      for (var col = 0; col <= row; col++)
+      {
         var fallOff = 255;
 
-        if (fullShadow || pastMaxDistance) {
+        if (fullShadow || pastMaxDistance)
+        {
           // If we know the entire row is in shadow, we don't need to be more
           // specific.
           _stage.setVisibility(pos, true, fallOff);
-        } else {
+        }
+        else
+        {
           fallOff = 0;
           var distance = (start - pos).length;
-          if (distance > _maxViewDistance) {
+          if (distance > _maxViewDistance)
+          {
             fallOff = 255;
             pastMaxDistance = true;
-          } else {
+          }
+          else
+          {
             var normalized = distance / _maxViewDistance;
             normalized = normalized * normalized;
             fallOff = (int)(normalized * 255);
@@ -103,7 +118,8 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
           _stage.setVisibility(pos, _isInShadow(projection), fallOff);
 
           // Add any opaque tiles to the shadow map.
-          if (_stage[pos].blocksView) {
+          if (_stage[pos].blocksView)
+          {
             fullShadow = _addShadow(projection);
           }
         }
@@ -126,7 +142,8 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
   /// corners. From the perspective of octant zero, we know the square is
   /// above and to the right of the viewpoint, so it will be the top left and
   /// bottom right corners.
-  static _Shadow getProjection(int col, int row) {
+  static _Shadow getProjection(int col, int row)
+  {
     // The top edge of row 0 is 2 wide.
     var topLeft = col / (row + 2);
 
@@ -136,20 +153,25 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
     return new _Shadow(topLeft, bottomRight);
   }
 
-  bool _isInShadow(_Shadow projection) {
+  bool _isInShadow(_Shadow projection)
+  {
     // Check the shadow list.
-    foreach (var shadow in _shadows) {
+    foreach (var shadow in _shadows)
+    {
       if (shadow.contains(projection)) return true;
     }
 
     return false;
   }
 
-  bool _addShadow(_Shadow shadow) {
+  bool _addShadow(_Shadow shadow)
+  {
     var index = 0;
-    for (index = 0; index < _shadows.Count; index++) {
+    for (index = 0; index < _shadows.Count; index++)
+    {
       // See if we are at the insertion point for this shadow.
-      if (_shadows[index].start > shadow.start) {
+      if (_shadows[index].start > shadow.start)
+      {
         // Break out and handle inserting below.
         break;
       }
@@ -161,21 +183,30 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
         (index < _shadows.Count) && (_shadows[index].start < shadow.end);
 
     // Insert and unify with overlapping shadows.
-    if (overlapsNext) {
-      if (overlapsPrev) {
+    if (overlapsNext)
+    {
+      if (overlapsPrev)
+      {
         // Overlaps both, so unify one and delete the other.
         _shadows[index - 1].end =
             Mathf.Max(_shadows[index - 1].end, _shadows[index].end);
         _shadows.RemoveAt(index);
-      } else {
+      }
+      else
+      {
         // Just overlaps the next shadow, so unify it with that.
         _shadows[index].start = Mathf.Min(_shadows[index].start, shadow.start);
       }
-    } else {
-      if (overlapsPrev) {
+    }
+    else
+    {
+      if (overlapsPrev)
+      {
         // Just overlaps the previous shadow, so unify it with that.
         _shadows[index - 1].end = Mathf.Max(_shadows[index - 1].end, shadow.end);
-      } else {
+      }
+      else
+      {
         // Does not overlap anything, so insert.
         _shadows.Insert(index, shadow);
       }
@@ -190,7 +221,8 @@ public static Vec[,] _octantCoordinates = new Vec[,]{
 
 /// Represents the 1D projection of a 2D shadow onto a normalized line. In
 /// other words, a range from 0.0 to 1.0.
-class _Shadow {
+class _Shadow
+{
   public num start;
   public num end;
 
@@ -202,7 +234,8 @@ class _Shadow {
 
   public override string ToString() => $"({start}-{end})";
 
-  public bool contains(_Shadow projection) {
+  public bool contains(_Shadow projection)
+  {
     return (start <= projection.start) && (end >= projection.end);
   }
 }

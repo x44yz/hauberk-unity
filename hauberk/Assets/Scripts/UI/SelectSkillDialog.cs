@@ -5,29 +5,35 @@ using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class SelectSkillDialog : Screen {
+class SelectSkillDialog : Screen
+{
   public GameScreen _gameScreen;
   public List<UsableSkill> _skills = new List<UsableSkill>();
 
   public override bool isTransparent => true;
 
-  public SelectSkillDialog(GameScreen _gameScreen) {
+  public SelectSkillDialog(GameScreen _gameScreen)
+  {
     this._gameScreen = _gameScreen;
 
-    foreach (var skill in _gameScreen.game.hero.skills.acquired) {
+    foreach (var skill in _gameScreen.game.hero.skills.acquired)
+    {
       if (skill is UsableSkill) _skills.Add((UsableSkill)skill);
     }
   }
 
-  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt) {
-    if (keyCode == InputX.cancel) {
+  public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
+  {
+    if (keyCode == InputX.cancel)
+    {
       terminal.Pop();
       return true;
     }
 
     if (shift || alt) return false;
 
-    if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
+    if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z)
+    {
       selectCommand(keyCode - KeyCode.A);
       return true;
     }
@@ -36,14 +42,16 @@ class SelectSkillDialog : Screen {
     return false;
   }
 
-  void selectCommand(int index) {
+  void selectCommand(int index)
+  {
     if (index >= _skills.Count) return;
     if (_skills[index].unusableReason(_gameScreen.game) != null) return;
 
     terminal.Pop(_skills[index]);
   }
 
-  public override void Render(Terminal terminal) {
+  public override void Render(Terminal terminal)
+  {
     Draw.helpKeys(terminal, new Dictionary<string, string>{
       {"A-Z", "Select skill"},
       // "1-9": "Bind quick key",
@@ -52,13 +60,16 @@ class SelectSkillDialog : Screen {
 
     // If the item panel is visible, put it there. Otherwise, put it in the
     // stage area.
-    if (_gameScreen.itemPanel.isVisible) {
+    if (_gameScreen.itemPanel.isVisible)
+    {
       terminal = terminal.Rect(
           _gameScreen.itemPanel.bounds.left,
           _gameScreen.itemPanel.bounds.top,
           _gameScreen.itemPanel.bounds.width,
           _gameScreen.itemPanel.bounds.height);
-    } else {
+    }
+    else
+    {
       terminal = terminal.Rect(
           _gameScreen.stagePanel.bounds.left,
           _gameScreen.stagePanel.bounds.top,
@@ -74,13 +85,15 @@ class SelectSkillDialog : Screen {
 
     terminal = terminal.Rect(1, 1, terminal.width - 2, terminal.height - 2);
 
-    if (_skills.isEmpty()) {
+    if (_skills.isEmpty())
+    {
       terminal.WriteAt(0, 0, "(You don't have any skills yet)", UIHue.disabled);
       return;
     }
 
     // TODO: Handle this being taller than the screen.
-    for (var y = 0; y < _skills.Count; y++) {
+    for (var y = 0; y < _skills.Count; y++)
+    {
       var skill = _skills[y];
 
       var borderColor = UIHue.secondary;
@@ -88,13 +101,15 @@ class SelectSkillDialog : Screen {
       var textColor = UIHue.disabled;
 
       var reason = skill.unusableReason(_gameScreen.game);
-      if (reason == null) {
+      if (reason == null)
+      {
         borderColor = UIHue.primary;
         letterColor = UIHue.selection;
         textColor = UIHue.selection;
       }
 
-      if (reason != null) {
+      if (reason != null)
+      {
         terminal.WriteAt(
             terminal.width - reason.Length - 2, y, $"({reason})", textColor);
       }

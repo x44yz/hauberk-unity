@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using num = System.Double;
 
-class HowlMove : Move {
+class HowlMove : Move
+{
   public int _range;
   public string _verb;
 
@@ -14,19 +15,22 @@ class HowlMove : Move {
     this._verb = _verb;
   }
 
-  public override bool shouldUse(Monster monster) {
+  public override bool shouldUse(Monster monster)
+  {
     // Don't wake up others unless the hero is around.
     // TODO: Should take sight into account.
     if (!monster.isVisibleToHero) return false;
 
     // See if there are any sleeping monsters nearby.
-    foreach (var actor in monster.game.stage.actors) {
+    foreach (var actor in monster.game.stage.actors)
+    {
       if (actor == monster) continue;
 
       // If we found someone asleep, howl.
       if (actor is Monster &&
           (actor as Monster).isAsleep &&
-          (actor.pos - monster.pos) <= _range) {
+          (actor.pos - monster.pos) <= _range)
+      {
         return true;
       }
     }

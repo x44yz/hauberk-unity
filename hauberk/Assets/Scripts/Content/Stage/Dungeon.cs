@@ -6,26 +6,30 @@ using System.Linq;
 // worth trying to refactor and share some code.
 
 /// Places a number of random rooms.
-class Dungeon : RoomArchitecture {
+class Dungeon : RoomArchitecture
+{
   /// How much open space it tries to carve.
   public double _density;
 
   public override PaintStyle paintStyle => PaintStyle.flagstone;
 
-  public Dungeon(double? density = null) 
+  public Dungeon(double? density = null)
   {
     _density = density ?? 0.3;
   }
 
-  public override IEnumerable<string> build() {
+  public override IEnumerable<string> build()
+  {
     var rt = new List<string>();
 
     var failed = 0;
-    while (carvedDensity < _density && failed < 100) {
+    while (carvedDensity < _density && failed < 100)
+    {
       var room = Room.create(depth);
 
       var placed = false;
-      for (var i = 0; i < 400; i++) {
+      for (var i = 0; i < 400; i++)
+      {
         // TODO: This puts pretty hard boundaries around the region. Is there
         // a way to more softly distribute the rooms?
         var xMin = 1;
@@ -34,45 +38,45 @@ class Dungeon : RoomArchitecture {
         var yMax = height - room.height;
 
         if (region == Region.everywhere)
-            // Do nothing.
-          {
-          }
+        // Do nothing.
+        {
+        }
         else if (region == Region.n)
         {
-            yMax = height / 2 - room.height;
+          yMax = height / 2 - room.height;
         }
 
         else if (region == Region.ne)
         {
-            xMin = width / 2;
-            yMax = height / 2 - room.height;
+          xMin = width / 2;
+          yMax = height / 2 - room.height;
         }
         else if (region == Region.e)
         {
-            xMin = width / 2;
+          xMin = width / 2;
         }
         else if (region == Region.se)
         {
-            xMin = width / 2;
-            yMin = height / 2;
+          xMin = width / 2;
+          yMin = height / 2;
         }
         else if (region == Region.s)
         {
-            yMin = height / 2;
+          yMin = height / 2;
         }
         else if (region == Region.sw)
         {
-            xMax = width / 2 - room.width;
-            yMin = height / 2;
+          xMax = width / 2 - room.width;
+          yMin = height / 2;
         }
         else if (region == Region.w)
         {
-            xMax = width / 2 - room.width;
+          xMax = width / 2 - room.width;
         }
         else if (region == Region.nw)
         {
-            xMax = width / 2 - room.width;
-            yMax = height / 2 - room.height;
+          xMax = width / 2 - room.width;
+          yMax = height / 2 - room.height;
         }
 
         // TODO: Instead of purely random, it would be good if it tried to
@@ -81,7 +85,8 @@ class Dungeon : RoomArchitecture {
         var x = Rng.rng.range(xMin, xMax);
         var y = Rng.rng.range(yMin, yMax);
 
-        if (_tryPlaceRoom(room, x, y)) {
+        if (_tryPlaceRoom(room, x, y))
+        {
           rt.Add("room");
           placed = true;
           break;
@@ -94,16 +99,21 @@ class Dungeon : RoomArchitecture {
     return rt;
   }
 
-  bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y) {
+  bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y)
+  {
     if (!canPlaceRoom(room, x, y)) return false;
 
-    foreach (var pos in room.bounds) {
+    foreach (var pos in room.bounds)
+    {
       var here = pos.offset(x, y);
       var tile = room[pos];
 
-      if (tile.isTile) {
+      if (tile.isTile)
+      {
         carve(here.x, here.y, tile.tile);
-      } else if (tile.isWall) {
+      }
+      else if (tile.isWall)
+      {
         preventPassage(here);
       }
     }

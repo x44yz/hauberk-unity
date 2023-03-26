@@ -5,7 +5,8 @@ using System.Collections.Generic;
 // TODO: Should this be in content?
 /// This contains all of the tunable game engine parameters. Tweaking these can
 /// massively affect all aspects of gameplay.
-class Option {
+class Option
+{
   public const int maxDepth = 100;
 
   public const int skillPointsPerLevel = 3;

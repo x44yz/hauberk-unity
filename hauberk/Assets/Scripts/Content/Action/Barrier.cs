@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
 /// Creates a swath of damage that radiates out from a point.
-public class BarrierAction : Action {
+public class BarrierAction : Action
+{
   /// The center of the barrier.
   public Vec _center;
 
@@ -14,7 +15,7 @@ public class BarrierAction : Action {
 
   /// The tiles that have already been touched by the effect. Used to make sure
   /// we don't hit the same tile multiple times.
-  public List<Vec> _hitTiles = new List<Vec>{};
+  public List<Vec> _hitTiles = new List<Vec> { };
 
   /// The barrier incrementally spreads outward. This is how far we currently
   /// are.
@@ -32,7 +33,8 @@ public class BarrierAction : Action {
 
   /// Creates a [BarrierAction] radiating from [from] perpendicular to a line
   /// from there to [to]. It applies [hit] to each touched tile.
-  public static BarrierAction create(Vec from, Vec to, Hit hit) {
+  public static BarrierAction create(Vec from, Vec to, Hit hit)
+  {
     // The barrier spreads out perpendicular to the line from the actor to the
     // target. Swapping the coordinates does a 90° rotation.
     var offset = from - to;
@@ -49,28 +51,33 @@ public class BarrierAction : Action {
 
   public BarrierAction(Vec _center, double _h, double _v, Hit _hit)
   {
-      this._center = _center;
-      this._h = _h;
-      this._v = _v;
-      this._hit = _hit;
+    this._center = _center;
+    this._h = _h;
+    this._v = _v;
+    this._hit = _hit;
 
-      _elementMixin = new ElementActionMixin(this);
+    _elementMixin = new ElementActionMixin(this);
   }
 
-  public override ActionResult onPerform() {
-    while (_distance < 6.0) {
+  public override ActionResult onPerform()
+  {
+    while (_distance < 6.0)
+    {
       var madeProgress = false;
 
-      bool tryDirection(bool going, int sign) {
+      bool tryDirection(bool going, int sign)
+      {
         if (!going) return false;
 
-        bool tryOffset(double h, double v) {
+        bool tryOffset(double h, double v)
+        {
           var offset =
               new Vec(Mathf.RoundToInt((float)(_h * _distance + h)), Mathf.RoundToInt((float)(_v * _distance + v)));
           var pos = _center + offset * sign;
           if (!game.stage[pos].isFlyable) return false;
 
-          if (_hitTiles.Contains(pos) == false) {
+          if (_hitTiles.Contains(pos) == false)
+          {
             _hitTiles.Add(pos);
             // TODO: Tune fuel.
             _elementMixin.hitTile(_hit, pos, _distance, Rng.rng.range(30, 40));

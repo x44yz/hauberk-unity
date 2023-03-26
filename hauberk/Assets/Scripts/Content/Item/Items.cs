@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// Static class containing all of the [ItemType]s.
-public partial class Items {
-    public static ResourceSet<ItemType> types = new ResourceSet<ItemType>();
+public partial class Items
+{
+  public static ResourceSet<ItemType> types = new ResourceSet<ItemType>();
 
-  public static void initialize() {
+  public static void initialize()
+  {
     types.defineTags("item");
 
     litter();

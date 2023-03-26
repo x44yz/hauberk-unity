@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class Elements {
+class Elements
+{
   // TODO: Teleport items.
   static public Element air = new Element("air", "Ai", 1.2, attack: (_) => new WindAction());
   static public Element earth = new Element("earth", "Ea", 1.1);

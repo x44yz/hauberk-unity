@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using KeyCode = UnityEngine.KeyCode;
 using UnityTerminal;
 
-class MainMenuScreen : UnityTerminal.Screen {
+class MainMenuScreen : UnityTerminal.Screen
+{
   string[] _chars = new string[]{
     "______ ______                     _____                          _____",
     "\\ .  / \\  . /                     \\ . |                          \\  .|",
@@ -55,7 +56,7 @@ class MainMenuScreen : UnityTerminal.Screen {
   public Storage storage;
   int selectedHero = 0;
 
-  public MainMenuScreen(Content content) 
+  public MainMenuScreen(Content content)
   {
     this.content = content;
     storage = new Storage(content);
@@ -75,11 +76,12 @@ class MainMenuScreen : UnityTerminal.Screen {
     }
     else if (keyCode == KeyCode.L)
     {
-        if (selectedHero < storage.heroes.Count) {
-          var save = storage.heroes[selectedHero];
-          terminal.Push(GameScreen.town(storage, content, save));
-        }
-        return true;
+      if (selectedHero < storage.heroes.Count)
+      {
+        var save = storage.heroes[selectedHero];
+        terminal.Push(GameScreen.town(storage, content, save));
+      }
+      return true;
     }
 
     if (shift || alt) return false;
@@ -91,21 +93,24 @@ class MainMenuScreen : UnityTerminal.Screen {
     }
     else if (keyCode == KeyCode.D)
     {
-        if (selectedHero < storage.heroes.Count) {
-          var name = storage.heroes[selectedHero].name;
-          terminal.Push(
-              new ConfirmPopup($"Are you sure you want to delete {name}?", "delete"));
-        }
-        return true;
+      if (selectedHero < storage.heroes.Count)
+      {
+        var name = storage.heroes[selectedHero].name;
+        terminal.Push(
+            new ConfirmPopup($"Are you sure you want to delete {name}?", "delete"));
+      }
+      return true;
     }
     return false;
   }
 
-  public override void Active(UnityTerminal.Screen popped, object result) 
+  public override void Active(UnityTerminal.Screen popped, object result)
   {
-    if (popped is ConfirmPopup && result.Equals("delete")) {
+    if (popped is ConfirmPopup && result.Equals("delete"))
+    {
       storage.heroes.RemoveAt(selectedHero);
-      if (selectedHero > 0 && selectedHero >= storage.heroes.Count) {
+      if (selectedHero > 0 && selectedHero >= storage.heroes.Count)
+      {
         selectedHero--;
       }
       storage.save();
@@ -118,7 +123,7 @@ class MainMenuScreen : UnityTerminal.Screen {
     base.Render(terminal);
 
     // Center everything horizontally.
-    var pterminal= terminal.Rect((terminal.width - 78) / 2, 0, 80, terminal.height);
+    var pterminal = terminal.Rect((terminal.width - 78) / 2, 0, 80, terminal.height);
 
     pterminal.WriteAt(0,
         pterminal.height - 1,
@@ -127,8 +132,10 @@ class MainMenuScreen : UnityTerminal.Screen {
 
     // Center the content vertically.
     pterminal = pterminal.Rect(0, (pterminal.height - 40) / 2, pterminal.width, 40);
-    for (var y = 0; y < _chars.Length; y++) {
-      for (var x = 0; x < _chars[y].Length; x++) {
+    for (var y = 0; y < _chars.Length; y++)
+    {
+      for (var x = 0; x < _chars[y].Length; x++)
+      {
         if (_chars[y][x] == CharCode.space)
           continue;
         var k = _charColors[y][x].ToString();
@@ -144,16 +151,19 @@ class MainMenuScreen : UnityTerminal.Screen {
 
     pterminal.WriteAt(10, 18, "Which hero shall you play?", UIHue.text);
 
-    if (storage.heroes.Count == 0) {
+    if (storage.heroes.Count == 0)
+    {
       pterminal.WriteAt(10, 20, "(No heroes. Please create a new one.)", UIHue.helpText);
     }
 
-    for (var i = 0; i < storage.heroes.Count; i++) {
+    for (var i = 0; i < storage.heroes.Count; i++)
+    {
       var hero = storage.heroes[i];
 
       var primary = UIHue.primary;
       var secondary = UIHue.secondary;
-      if (i == selectedHero) {
+      if (i == selectedHero)
+      {
         primary = UIHue.selection;
         secondary = UIHue.selection;
 

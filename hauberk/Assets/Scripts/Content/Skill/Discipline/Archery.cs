@@ -1,7 +1,8 @@
 using System.Linq;
-using Mathf  = UnityEngine.Mathf;
+using Mathf = UnityEngine.Mathf;
 
-class Archery : Discipline {
+class Archery : Discipline
+{
   // TODO: Tune.
   public override int maxLevel => 20;
 
@@ -16,7 +17,8 @@ class Archery : Discipline {
   public override string levelDescription(int level) =>
       $"Scales strike by {(int)(_strikeScale(level) * 100)}%.";
 
-  string unusableReason(Game game) {
+  string unusableReason(Game game)
+  {
     if (_hasBow(game.hero)) return null;
 
     return "No bow equipped.";
@@ -26,7 +28,8 @@ class Archery : Discipline {
       hero.equipment.weapons.Any((item) => item.type.weaponType == "bow");
 
   // TODO: Tune.
-  public override int baseTrainingNeeded(int level) {
+  public override int baseTrainingNeeded(int level)
+  {
     // Reach level 1 immediately so that the hero can begin using the bow.
     level--;
 
@@ -36,14 +39,16 @@ class Archery : Discipline {
   /// Focus cost goes down with level.
   int focusCost(HeroSave hero, int level) => 21 - level;
 
-  int getRange(Game game) {
+  int getRange(Game game)
+  {
     var hit = game.hero.createRangedHit();
     var level = game.hero.skills.level(this);
     hit.scaleStrike(_strikeScale(level));
     return hit.range;
   }
 
-  Action onGetTargetAction(Game game, int level, Vec target) {
+  Action onGetTargetAction(Game game, int level, Vec target)
+  {
     var hit = game.hero.createRangedHit();
     return new ArrowAction(this, target, hit);
   }
@@ -51,16 +56,18 @@ class Archery : Discipline {
 
 /// Fires a bolt, a straight line of an elemental attack that stops at the
 /// first [Actor] is hits or opaque tile.
-class ArrowAction : BoltAction {
+class ArrowAction : BoltAction
+{
   public Archery _skill;
 
   public ArrowAction(Archery _skill, Vec target, Hit hit)
       : base(target, hit, canMiss: true)
-      {
-        this._skill = _skill;
-      }
+  {
+    this._skill = _skill;
+  }
 
-  public override bool onHitActor(Vec pos, Actor target) {
+  public override bool onHitActor(Vec pos, Actor target)
+  {
     base.onHitActor(pos, target);
 
     var monster = target as Monster;
