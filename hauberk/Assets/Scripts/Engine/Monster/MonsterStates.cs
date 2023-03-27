@@ -342,7 +342,7 @@ class AwakeState : MonsterState
     var dir = flow.directionToBestWhere(isValidRangedPosition);
     if (dir != Direction.none)
     {
-      Debugger.monsterLog(monster, "ranged position $dir");
+      Debugger.monsterLog(monster, $"ranged position {dir}");
       return dir;
     }
 
@@ -475,7 +475,7 @@ class AfraidState : MonsterState
 
     if (dir != Direction.none)
     {
-      Debugger.monsterLog(monster, "fleeing $dir out of sight");
+      Debugger.monsterLog(monster, $"fleeing {dir} out of sight");
       return new WalkAction(_meander(dir));
     }
 
@@ -491,7 +491,7 @@ class AfraidState : MonsterState
     if (farther.Count > 0)
     {
       dir = Rng.rng.item(farther);
-      Debugger.monsterLog(monster, "fleeing $dir away from hero");
+      Debugger.monsterLog(monster, $"fleeing {dir} away from hero");
       return new WalkAction(_meander(dir));
     }
 

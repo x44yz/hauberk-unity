@@ -116,7 +116,7 @@ class HeroItemLoreDialog : HeroInfoDialog
       else
       {
         terminal.WriteAt(
-            2, y, "(undiscovered ${_scroll + i + 1})", UIHue.disabled);
+            2, y, $"(undiscovered {_scroll + i + 1})", UIHue.disabled);
       }
     }
 

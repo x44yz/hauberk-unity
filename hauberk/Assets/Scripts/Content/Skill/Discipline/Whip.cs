@@ -20,7 +20,7 @@ class WhipMastery : MasteryDiscipline
   {
     var damage = (int)(_whipScale(level) * 100);
     return base.levelDescription(level) +
-        " Ranged whip attacks inflict $damage% of the damage of a regular attack.";
+        $" Ranged whip attacks inflict {damage}% of the damage of a regular attack.";
   }
 
   int furyCost(HeroSave hero, int level) => 20;

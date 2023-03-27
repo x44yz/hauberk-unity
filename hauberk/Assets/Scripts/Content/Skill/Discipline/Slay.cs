@@ -54,7 +54,7 @@ class SlayDiscipline : Discipline
   public override string levelDescription(int level)
   {
     var damage = (int)((_damageScale(level) - 1.0) * 100);
-    return $"Melee attacks inflict $damage% more damage against {_displayName.ToLower()}.";
+    return $"Melee attacks inflict {damage}% more damage against {_displayName.ToLower()}.";
   }
 
   // TODO: Tune.

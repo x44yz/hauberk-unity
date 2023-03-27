@@ -113,8 +113,8 @@ public class Item : Noun, System.IComparable<Item>
     {
       var name = type.quantifiableName;
 
-      if (prefix != null) name = "${prefix!.displayName} $name";
-      if (suffix != null) name = "$name ${suffix!.displayName}";
+      if (prefix != null) name = $"{prefix!.displayName} {name}";
+      if (suffix != null) name = $"{name} {suffix!.displayName}";
 
       return Log.quantify(name, count);
     }

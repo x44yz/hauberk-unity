@@ -16,7 +16,7 @@ class Swordfighting : MasteryDiscipline
 
   public override string levelDescription(int level) =>
       base.levelDescription(level) +
-      " Parrying increases dodge by ${_parryDefense(level)}.";
+      $" Parrying increases dodge by {_parryDefense(level)}.";
 
   public override Defense getDefense(Hero hero, int level)
   {

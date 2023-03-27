@@ -350,14 +350,14 @@ public class DestroyActionMixin : ActionMixin
       if (destroyedCount == item.count)
       {
         // TODO: Effect.
-        log("{1} ${element.destroyMessage}!", item);
+        log($"{1} {element.destroyMessage}!", item);
         removeItem(item);
       }
       else if (destroyedCount > 0)
       {
         var destroyedPart = item.splitStack(destroyedCount);
         // TODO: Effect.
-        log("{1} ${element.destroyMessage}!", destroyedPart);
+        log($"{1} {element.destroyMessage}!", destroyedPart);
       }
 
       fuel += item.type.fuel * destroyedCount;

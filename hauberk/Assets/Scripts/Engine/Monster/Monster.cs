@@ -382,7 +382,7 @@ public class Monster : Actor
 
     _modifyFear(-fear);
     Debugger.monsterReason(this, "fear",
-        "hit for $damage/${game.hero.maxHealth} decrease by $fear");
+        $"hit for {damage}/{game.hero.maxHealth} decrease by {fear}");
 
     // Nearby monsters may witness it.
     _updateWitnesses((witness) =>
@@ -401,7 +401,7 @@ public class Monster : Actor
 
     _modifyFear(-fear);
     Debugger.monsterReason(
-        this, "fear", "witness $damage/$maxHealth decrease by $fear");
+        this, "fear", $"witness {damage}/{maxHealth} decrease by {fear}");
   }
 
   /// Taking damage increases fear.
@@ -417,7 +417,7 @@ public class Monster : Actor
 
     _modifyFear(fear);
     Debugger.monsterReason(
-        this, "fear", "hit for $damage/$maxHealth increases by $fear");
+        this, "fear", $"hit for {damage}/{maxHealth} increases by {fear}");
 
     // Nearby monsters may witness it.
     _updateWitnesses((witness) =>
@@ -456,7 +456,7 @@ public class Monster : Actor
 
     _modifyFear(fear);
     Debugger.monsterReason(
-        this, "fear", "witness $damage/$maxHealth increase by $fear");
+        this, "fear", $"witness {damage}/{maxHealth} increase by {fear}");
   }
 
   /// Called when this Actor has been killed by [attackNoun].

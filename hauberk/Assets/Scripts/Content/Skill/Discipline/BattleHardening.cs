@@ -21,7 +21,7 @@ public class BattleHardening : Discipline
 
   public override int modifyArmor(HeroSave hero, int level, int armor) => armor + level;
 
-  public override string levelDescription(int level) => "Increases armor by $level.";
+  public override string levelDescription(int level) => $"Increases armor by {level}.";
 
   public override int baseTrainingNeeded(int level) => Mathf.CeilToInt(60 * Mathf.Pow(level, 1.5f));
 }

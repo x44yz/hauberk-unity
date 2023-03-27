@@ -74,7 +74,7 @@ class ExitPopup : Popup
 
   public override void renderPopup(Terminal terminal)
   {
-    terminal.WriteAt(1, 1, "You survived depth ${_game.depth}!", UIHue.text);
+    terminal.WriteAt(1, 1, $"You survived depth {_game.depth}!", UIHue.text);
 
     terminal.WriteAt(1, 3, "You gained:", UIHue.text);
     terminal.WriteAt(1, 15, "You slayed:", UIHue.text);
@@ -83,7 +83,7 @@ class ExitPopup : Popup
     {
       terminal.WriteAt(
           5, value.y, "................................", UIHue.disabled);
-      terminal.WriteAt(5, value.y, "${value.name}:",
+      terminal.WriteAt(5, value.y, $"{value.name}:",
           value.value == 0 ? UIHue.disabled : UIHue.primary);
 
       var number = value.current.ToString();

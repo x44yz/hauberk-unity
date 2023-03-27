@@ -229,7 +229,7 @@ abstract class ItemScreen : Screen
     var destination = _destination!;
     if (!destination.canAdd(item))
     {
-      _error = "Not enough room for ${item.clone(count)}.";
+      _error = $"Not enough room for {item.clone(count)}.";
       Dirty();
       return false;
     }
@@ -465,7 +465,7 @@ class _ShopBuyScreen : _ItemVerbScreen
   {
     var price = item.price * count;
     _gameScreen.game.log
-        .message("You buy ${item.clone(count)} for $price gold.");
+        .message($"You buy {item.clone(count)} for {price} gold.");
     _save.gold -= price;
 
     // Acquiring an item may unlock skills.

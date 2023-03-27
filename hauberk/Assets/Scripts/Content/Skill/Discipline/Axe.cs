@@ -19,7 +19,7 @@ class AxeMastery : MasteryDiscipline
   {
     var damage = (int)(_sweepScale(level) * 100);
     return base.levelDescription(level) +
-        " Sweep attacks inflict $damage% of the damage of a regular attack.";
+        $" Sweep attacks inflict {damage}% of the damage of a regular attack.";
   }
 
   int furyCost(HeroSave hero, int level) => 20;

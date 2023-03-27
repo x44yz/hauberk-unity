@@ -383,7 +383,7 @@ abstract class _ItemCommand
     if (!destination.canAdd(item))
     {
       dialog._gameScreen.game.log
-          .error("Not enough room for ${item.clone(count)}.");
+          .error($"Not enough room for {item.clone(count)}.");
       dialog.Dirty();
       return;
     }
@@ -573,7 +573,7 @@ class _PutItemCommand : _ItemCommand
   void afterTransfer(ItemDialog dialog, Item item, int count)
   {
     dialog._gameScreen.game.log
-        .message("You put ${item.clone(count)} safely into your home.");
+        .message($"You put {item.clone(count)} safely into your home.");
   }
 }
 

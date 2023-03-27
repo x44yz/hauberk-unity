@@ -723,7 +723,7 @@ class GameScreen : UnityTerminal.Screen
       else
       {
         var tile = game.stage[game.hero.pos + dir].type.name;
-        game.log.error("There is a $tile in the way.");
+        game.log.error($"There is a {tile} in the way.");
         Dirty();
       }
     }

@@ -53,5 +53,5 @@ class BoltMove : RangedMove
   public override Action onGetAction(Monster monster) =>
       new BoltAction(monster.game.hero.pos, attack.createHit());
 
-  public override string ToString() => $"Bolt $attack rate: {rate}";
+  public override string ToString() => $"Bolt {attack} rate: {rate}";
 }

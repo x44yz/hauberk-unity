@@ -266,7 +266,7 @@ class _ItemBuilder : _BaseBuilder
   public void mapping(int distance, bool illuminate = false)
   {
     var description =
-        "Imparts knowledge of the dungeon up to $distance steps from the hero.";
+        $"Imparts knowledge of the dungeon up to {distance} steps from the hero.";
     if (illuminate)
     {
       description += " Illuminates the dungeon.";
@@ -277,20 +277,20 @@ class _ItemBuilder : _BaseBuilder
 
   public void haste(int amount, int duration)
   {
-    use("Raises speed by $amount for $duration turns.",
+    use($"Raises speed by {amount} for {duration} turns.",
         () => new HasteAction(amount, duration));
   }
 
   public void teleport(int distance)
   {
-    use("Attempts to teleport up to $distance steps away.",
+    use($"Attempts to teleport up to {distance} steps away.",
         () => new TeleportAction(distance));
   }
 
   // TODO: Take list of conditions to cure?
   public void heal(int amount, bool curePoison = false)
   {
-    use("Instantly heals $amount lost health.",
+    use($"Instantly heals {amount} lost health.",
         () => new HealAction(amount, curePoison: curePoison));
   }
 
@@ -329,7 +329,7 @@ class _ItemBuilder : _BaseBuilder
 
     if (range != null)
     {
-      use("Illuminates out to a range of $range.",
+      use($"Illuminates out to a range of {range}.",
           () => new IlluminateSelfAction(range.Value));
     }
   }
@@ -345,7 +345,7 @@ class _ItemBuilder : _BaseBuilder
     var tossDamage = builder._tossDamage ?? _category._tossDamage;
     if (tossDamage != null)
     {
-      var noun = new Noun("the ${builder._name.toLowerCase()}");
+      var noun = new Noun($"the {builder._name.ToLower()}");
       var verb = "hits";
       if (_category._verb != null)
       {

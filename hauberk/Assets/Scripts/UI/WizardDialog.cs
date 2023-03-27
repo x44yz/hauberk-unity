@@ -36,19 +36,19 @@ class WizardDialog : Screen
     _menuItems["Toggle Show All Monsters"] = () =>
     {
       Debugger.showAllMonsters = !Debugger.showAllMonsters;
-      _game.log.cheat("Show all monsters = ${Debug.showAllMonsters}");
+      _game.log.cheat($"Show all monsters = {Debugger.showAllMonsters}");
       terminal.Pop();
     };
     _menuItems["Toggle Show Monster Alertness"] = () =>
     {
       Debugger.showMonsterAlertness = !Debugger.showMonsterAlertness;
-      _game.log.cheat("Show monster alertness = ${Debug.showMonsterAlertness}");
+      _game.log.cheat($"Show monster alertness = {Debugger.showMonsterAlertness}");
       terminal.Pop();
     };
     _menuItems["Toggle Show Hero Volume"] = () =>
     {
       Debugger.showHeroVolume = !Debugger.showHeroVolume;
-      _game.log.cheat("Show hero volume = ${Debug.showHeroVolume}");
+      _game.log.cheat($"Show hero volume = {Debugger.showHeroVolume}");
       terminal.Pop();
     };
   }
