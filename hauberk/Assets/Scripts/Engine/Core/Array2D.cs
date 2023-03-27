@@ -88,14 +88,16 @@ public class Array2D<T>
   /// Gets the element in the array at [x], [y].
   public T _get(int x, int y)
   {
-    _checkBounds(x, y);
+    if (!_checkBounds(x, y))
+      return default(T);
     return _elements[y * width + x];
   }
 
   /// Sets the element in the array at [x], [y] to [value].
   public void _set(int x, int y, T value)
   {
-    _checkBounds(x, y);
+    if (!_checkBounds(x, y))
+      return;
     _elements[y * width + x] = value;
   }
 
@@ -116,9 +118,14 @@ public class Array2D<T>
 
   IEnumerator<T> iterator => _elements.GetEnumerator();
 
-  void _checkBounds(int x, int y)
+  bool _checkBounds(int x, int y)
   {
-    if (x < 0 || x >= width) throw new System.ArgumentOutOfRangeException("x", x.ToString());
-    if (y < 0 || y >= height) throw new System.ArgumentOutOfRangeException("y", y.ToString());
+    if (x < 0 || x >= width) 
+      // throw new System.ArgumentOutOfRangeException("x", x.ToString());
+      return false;
+    if (y < 0 || y >= height)
+      // throw new System.ArgumentOutOfRangeException("y", y.ToString());
+      return false;
+    return true;
   }
 }

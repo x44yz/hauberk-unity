@@ -6,7 +6,7 @@ using num = System.Double;
 
 public class Element
 {
-  public static Element none => new Element("none", "No", 1.0);
+  public static Element none = new Element("none", "No", 1.0);
 
   public string name;
   public string abbreviation;
