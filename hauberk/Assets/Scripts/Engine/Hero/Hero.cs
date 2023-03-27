@@ -262,7 +262,7 @@ public class Hero : Actor
   }
 
   /// Applies the hero-specific modifications to [hit].
-  void onModifyHit(Hit hit, HitType type)
+  public override void onModifyHit(Hit hit, HitType type)
   {
     // TODO: Use agility to affect strike.
 
@@ -301,7 +301,7 @@ public class Hero : Actor
     _gainFury(damage / defender.maxHealth * maxHealth / 100);
   }
 
-  void onTakeDamage(Action action, Actor attacker, int damage)
+  public override void onTakeDamage(Action action, Actor attacker, int damage)
   {
     // Getting hit loses focus and gains fury.
     // TODO: Lose less focus for ranged attacks?
@@ -319,7 +319,7 @@ public class Hero : Actor
     }
   }
 
-  void onKilled(Action action, Actor defender)
+  public override void onKilled(Action action, Actor defender)
   {
     var monster = defender as Monster;
 
@@ -340,12 +340,12 @@ public class Hero : Actor
     refreshProperties();
   }
 
-  void onDied(Noun attackNoun)
+  public override void onDied(Noun attackNoun)
   {
     game.log.message("you were slain by {1}.", attackNoun);
   }
 
-  void onFinishTurn(Action action)
+  public override void onFinishTurn(Action action)
   {
     // Make some noise.
     _lastNoise = action.noise;

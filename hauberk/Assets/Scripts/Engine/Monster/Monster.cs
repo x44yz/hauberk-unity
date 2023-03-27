@@ -326,7 +326,7 @@ public class Monster : Actor
     var volume =
         game.stage.heroVolume(pos) * game.hero.lastNoise * breed.hearing / 10;
     Debugger.monsterStat(
-        this, "hear", volume, "noise ${game.hero.lastNoise}, volume $volume");
+        this, "hear", volume, $"noise {game.hero.lastNoise}, volume {volume}");
     return volume;
   }
 
@@ -405,7 +405,7 @@ public class Monster : Actor
   }
 
   /// Taking damage increases fear.
-  void onTakeDamage(Action action, Actor attacker, int damage)
+  public override void onTakeDamage(Action action, Actor attacker, int damage)
   {
     _alertness = _maxAlertness;
 
@@ -460,7 +460,7 @@ public class Monster : Actor
   }
 
   /// Called when this Actor has been killed by [attackNoun].
-  void onDied(Noun attackNoun)
+  public override void onDied(Noun attackNoun)
   {
     // TODO: Is using the breed's motility correct? We probably don't want
     // drops going through doors.

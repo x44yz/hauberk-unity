@@ -232,7 +232,7 @@ public abstract class Actor : Noun
     onModifyHit(hit, type);
   }
 
-  void onModifyHit(Hit hit, HitType type) { }
+  public virtual void onModifyHit(Hit hit, HitType type) { }
 
   /// The amount of resistance the actor currently has to [element].
   ///
@@ -289,25 +289,25 @@ public abstract class Actor : Noun
   ///
   /// [attacker] may be `null` if the damage is not the direct result of an
   /// attack (for example, poison).
-  void onTakeDamage(Action action, Actor attacker, int damage)
+  public virtual void onTakeDamage(Action action, Actor attacker, int damage)
   {
     // Do nothing.
   }
 
   /// Called when this Actor has been killed by [attackNoun].
-  void onDied(Noun attackNoun)
+  public virtual void onDied(Noun attackNoun)
   {
     // Do nothing.
   }
 
   /// Called when this Actor has killed [defender].
-  void onKilled(Action action, Actor defender)
+  public virtual void onKilled(Action action, Actor defender)
   {
     // Do nothing.
   }
 
   /// Called when this Actor has completed a turn.
-  void onFinishTurn(Action action)
+  public virtual void onFinishTurn(Action action)
   {
     // Do nothing.
   }
