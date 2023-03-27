@@ -363,6 +363,9 @@ class GameScreen : UnityTerminal.Screen
       }
     }
 
+    if (Debugger.debugSelectDepth && keyCode == KeyCode.RightBracket)
+      terminal.Push(new SelectDepthPopup(game.content, game.hero.save));
+
     if (action != null)
       game.hero.setNextAction(action);
 

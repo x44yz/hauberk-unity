@@ -123,8 +123,7 @@ public class Lighting
   {
     if (_floorLightDirty) _lightFloor();
     if (_actorLightDirty) _lightActors();
-    // TEMP:@dongl1n
-    // if (_visibilityDirty) _fov.refresh(_stage.game.hero.pos);
+    if (_visibilityDirty && !Debugger.debugHideFov) _fov.refresh(_stage.game.hero.pos);
 
     if (_floorLightDirty || _actorLightDirty || _visibilityDirty)
     {

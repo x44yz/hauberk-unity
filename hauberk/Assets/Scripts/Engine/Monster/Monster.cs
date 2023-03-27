@@ -305,7 +305,7 @@ public class Monster : Actor
       return 0.0;
     }
 
-    var visibility = (breed.vision - distance) / breed.vision;
+    var visibility = (breed.vision - distance) * 1f / breed.vision;
     Debugger.monsterStat(this, "see", illumination * visibility);
     return illumination * visibility;
 
