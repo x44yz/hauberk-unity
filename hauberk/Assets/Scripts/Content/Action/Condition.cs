@@ -12,9 +12,9 @@ class HasteAction : ConditionAction
     this._duration = _duration;
   }
 
-  Condition condition => actor!.haste;
+  protected override Condition condition => actor!.haste;
 
-  int getIntensity() => _speed;
+  protected override int getIntensity() => _speed;
   public override int getDuration() => _duration;
   public override void onActivate() => log("{1} start[s] moving faster.", actor);
   public override void onExtend() => log("{1} [feel]s the haste lasting longer.", actor);
@@ -32,7 +32,7 @@ class FreezeActorAction : ConditionAction
     _destroyMixin = new DestroyActionMixin(this);
   }
 
-  Condition condition => actor!.cold;
+  protected override Condition condition => actor!.cold;
 
   public override ActionResult onPerform()
   {
@@ -40,7 +40,7 @@ class FreezeActorAction : ConditionAction
     return base.onPerform();
   }
 
-  int getIntensity() => 1 + _damage / 40;
+  protected override int getIntensity() => 1 + _damage / 40;
   public override int getDuration() => 3 + Rng.rng.triangleInt(_damage * 2, _damage / 2);
   public override void onActivate() => log("{1} [are|is] frozen!", actor);
   public override void onExtend() => log("{1} feel[s] the cold linger!", actor);
@@ -56,9 +56,9 @@ class PoisonAction : ConditionAction
     this._damage = _damage;
   }
 
-  Condition condition => actor!.poison;
+  protected override Condition condition => actor!.poison;
 
-  int getIntensity() => 1 + _damage / 20;
+  protected override int getIntensity() => 1 + _damage / 20;
   public override int getDuration() => 1 + Rng.rng.triangleInt(_damage * 2, _damage / 2);
   public override void onActivate() => log("{1} [are|is] poisoned!", actor);
   public override void onExtend() => log("{1} feel[s] the poison linger!", actor);
@@ -74,7 +74,7 @@ class BlindAction : ConditionAction
     this._damage = _damage;
   }
 
-  Condition condition => actor!.blindness;
+  protected override Condition condition => actor!.blindness;
 
   public override int getDuration() => 3 + Rng.rng.triangleInt(_damage * 2, _damage / 2);
 
@@ -96,7 +96,7 @@ class DazzleAction : ConditionAction
     this._damage = _damage;
   }
 
-  Condition condition => actor!.dazzle;
+  protected override Condition condition => actor!.dazzle;
 
   public override int getDuration() => 3 + Rng.rng.triangleInt(_damage * 2, _damage / 2);
   public override void onActivate() => log("{1} [are|is] dazzled by the light!", actor);
@@ -114,7 +114,7 @@ class ResistAction : ConditionAction
     this._element = _element;
   }
 
-  Condition condition => actor!.resistances[_element]!;
+  protected override Condition condition => actor!.resistances[_element]!;
 
   public override int getDuration() => _duration;
   // TODO: Resistances of different intensity.

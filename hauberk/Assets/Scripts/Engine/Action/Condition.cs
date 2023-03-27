@@ -8,10 +8,10 @@ using System.Collections.Generic;
 abstract class ConditionAction : Action
 {
   /// The [Condition] on the actor that should be affected.
-  Condition condition;
+  protected virtual Condition condition => null;
 
   /// The intensity of the condition to apply.
-  int getIntensity() => 1;
+  protected virtual int getIntensity() => 1;
 
   /// The number of turns the condition should last.
   public abstract int getDuration();
@@ -49,7 +49,7 @@ abstract class ConditionAction : Action
       if (duration == 0) return succeed();
 
       condition.extend(duration);
-      onExtend();
+      onExtend(); 
       return ActionResult.success;
     }
 
