@@ -41,13 +41,13 @@ public class Attack
 
   public Element element;
 
-  public Attack(Noun noun, string verb, int damage, int range = 0, Element element = default(Element))
+  public Attack(Noun noun, string verb, int damage, int range = 0, Element element = null)
   {
     this.noun = noun;
     this.verb = verb;
     this.damage = damage;
     this.range = range;
-    this.element = element;
+    this.element = element ?? Element.none;
   }
 
   public bool isRanged => range > 0;

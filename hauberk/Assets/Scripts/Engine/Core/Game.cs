@@ -54,13 +54,11 @@ public class Game
     Rng.rng.shuffle(_substanceUpdateOrder);
   }
 
-  public List<string> generate()
+  public IEnumerator generate()
   {
     // TODO: Do something useful with depth.
-    var rt = new List<string>();
-
     Vec heroPos = Vec.zero;
-    rt.AddRange(content.buildStage(_save.lore, _stage, depth, (pos) =>
+    yield return Main.Inst.StartCoroutine(content.buildStage(_save.lore, _stage, depth, (pos) =>
     {
       heroPos = pos;
     }));
@@ -68,9 +66,8 @@ public class Game
     hero = new Hero(this, heroPos, _save);
     _stage.addActor(hero);
 
-    rt.Add("Calculating visibility");
+    yield return "Calculating visibility";
     _stage.refreshView();
-    return rt;
   }
 
   public GameResult update()
@@ -256,7 +253,7 @@ public abstract class Content
 {
   // TODO: Temp. Figure out where dungeon generator lives.
   // TODO: Using a callback to set the hero position is kind of hokey.
-  public abstract IEnumerable<string> buildStage(
+  public abstract IEnumerator buildStage(
       Lore lore, Stage stage, int depth, Action<Vec> placeHero);
 
   public abstract Affix findAffix(string name);

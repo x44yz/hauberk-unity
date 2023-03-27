@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
@@ -30,10 +31,8 @@ public class Decorator
   public List<Vec> tilesFor(Architecture architecture) =>
       _tilesByArchitecture[architecture]!;
 
-  public IEnumerable<string> decorate()
+  public IEnumerator decorate()
   {
-    var rt = new List<string>();
-
     _findDoorways();
 
     foreach (var pos in _stage.bounds)
@@ -52,7 +51,7 @@ public class Decorator
     _paintTiles();
 
     // TODO: Should this happen before or after painting?
-    rt.AddRange(_placeDecor());
+    yield return Main.Inst.StartCoroutine(_placeDecor());
 
     // Place stairs.
     // TODO: Choose more interesting places for them.
@@ -77,10 +76,8 @@ public class Decorator
     // monsters, the hero can end up surrounded by monsters.
     _heroPos = _stage.findOpenTile();
 
-    rt.AddRange(_spawnMonsters());
-    rt.AddRange(_dropItems());
-
-    return rt;
+    yield return Main.Inst.StartCoroutine(_spawnMonsters());
+    yield return Main.Inst.StartCoroutine(_dropItems());
   }
 
   /// Marks doorway tiles on the endpoints of passages.
@@ -160,10 +157,8 @@ public class Decorator
     }
   }
 
-  public IEnumerable<string> _placeDecor()
+  public IEnumerator _placeDecor()
   {
-    var rt = new List<string>();
-
     foreach (var entry in _tilesByArchitecture)
     {
       var architecture = entry.Key;
@@ -204,18 +199,15 @@ public class Decorator
           tiles[i] = tiles[j];
           tiles[j] = tile;
 
-          rt.Add("Placed decor");
+          yield return "Placed decor";
           break;
         }
       }
     }
-    return rt;
   }
 
-  public IEnumerable<string> _spawnMonsters()
+  public IEnumerator _spawnMonsters()
   {
-    var rt = new List<string>();
-
     // Let the architectures that control their own monsters go.
     var spawned = new List<Architecture> { };
     foreach (var architecture in _tilesByArchitecture.Keys.ToList())
@@ -281,14 +273,12 @@ public class Decorator
       if (!_canSpawn(breed)) continue;
 
       var experience = _spawnMonster(densityMap, pos, breed);
-      rt.Add("Spawned monster");
+      yield return "Spawned monster";
 
       totalExperience += experience;
     }
 
     Debugger.densityMap = null;
-
-    return rt;
   }
 
   public Breed chooseBreed(int depth, string tag = null, bool? includeParentTags = null)
@@ -401,10 +391,8 @@ public class Decorator
   //    }
   //  }
 
-  IEnumerable<string> _dropItems()
+  IEnumerator _dropItems()
   {
-    var rt = new List<string>();
-
     // Build a density map for where items should drop.
     var densityMap = new DensityMap(_stage.width, _stage.height);
     Debugger.densityMap = densityMap;
@@ -467,12 +455,10 @@ public class Decorator
 
       densityMap.reduceAround(_stage, pos, Motility.doorAndWalk, 3);
 
-      rt.Add("Spawned item");
+      yield return "Spawned item";
     }
 
     Debugger.densityMap = null;
-
-    return rt;
   }
 }
 

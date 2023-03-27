@@ -123,8 +123,16 @@ class GameScreen : UnityTerminal.Screen
   public static GameScreen town(Storage storage, Content content, HeroSave save)
   {
     var game = new Game(content, save, 0, width: 60, height: 34);
-    foreach (var _ in game.generate()) { }
+    // foreach (var _ in game.generate()) { }
+    // CHECK:
+    var tt = game.generate();
+    UnityEngine.Debug.Log("xx-- town 0");
+    while (tt.MoveNext())
+    {
+      UnityEngine.Debug.Log("xx-- town 1");
+    }
 
+    UnityEngine.Debug.Log("xx-- town 2");
     return new GameScreen(storage, game, null);
   }
 

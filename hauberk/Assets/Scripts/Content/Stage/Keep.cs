@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,10 +41,8 @@ class Keep : RoomArchitecture
   // TODO: Different paint styles for different monsters.
   public override PaintStyle paintStyle => PaintStyle.granite;
 
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
-
     debugJunctions = _junctions;
 
     // If we are covering the whole area, attempt to place multiple rooms.
@@ -57,10 +56,8 @@ class Keep : RoomArchitecture
 
     for (var i = 0; i < startingRooms; i++)
     {
-      rt.AddRange(_growRooms());
+      yield return Main.Inst.StartCoroutine(_growRooms());
     }
-
-    return rt;
   }
 
   public override bool spawnMonsters(Painter painter)
@@ -83,11 +80,9 @@ class Keep : RoomArchitecture
     return true;
   }
 
-  IEnumerable<string> _growRooms()
+  IEnumerator _growRooms()
   {
-    var rt = new List<string>();
-
-    if (!_tryPlaceStartingRoom()) return rt;
+    if (!_tryPlaceStartingRoom()) yield break;
 
     // Expand outward from it.
     while (_junctions.isNotEmpty)
@@ -100,7 +95,7 @@ class Keep : RoomArchitecture
 
       if (_tryAttachRoom(junction))
       {
-        rt.Add("Room");
+        yield return "Room";
 
         _placedRooms++;
         if (_maxRooms != null && _placedRooms >= _maxRooms!) break;
@@ -112,8 +107,6 @@ class Keep : RoomArchitecture
         if (junction.tries < 5) _junctions.add(junction);
       }
     }
-
-    return rt;
   }
 
   bool _tryPlaceStartingRoom()
@@ -299,7 +292,9 @@ class JunctionSet
 
   public void add(Junction junction)
   {
-    DartUtils.assert(_byPosition[junction.position] == null);
+    if (_byPosition.ContainsKey(junction.position))
+      // DartUtils.assert(_byPosition[junction.position] == null);
+      UnityEngine.Debug.LogError("xx-- had contain vec > " + junction.position.ToString());
 
     _byPosition[junction.position] = junction;
     _junctions.Add(junction);

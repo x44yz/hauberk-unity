@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,9 +48,8 @@ public class Architect
     debugOwners = _owners;
   }
 
-  public IEnumerable<string> buildStage(System.Action<Vec> placeHero)
+  public IEnumerator buildStage(System.Action<Vec> placeHero)
   {
-    var rt = new List<string>();
     // Initialize the stage with an edge of solid and everything else open but
     // fillable.
     foreach (var pos in stage.bounds)
@@ -88,7 +88,7 @@ public class Architect
     for (var i = 0; i < styles.Count; i++)
     {
       var architect = styles[i].create(this, regions[i]);
-      rt.AddRange(architect.build());
+      yield return Main.Inst.StartCoroutine(architect.build());
     }
 
     foreach (var pos in stage.bounds.trace())
@@ -99,16 +99,14 @@ public class Architect
     // Fill in the remaining fillable tiles and keep everything connected.
     var unownedPassages = new List<Vec> { };
 
-    rt.AddRange(_fillPassages(unownedPassages));
-    rt.AddRange(_addShortcuts(unownedPassages));
-    rt.AddRange(_claimPassages(unownedPassages));
+    yield return Main.Inst.StartCoroutine(_fillPassages(unownedPassages));
+    yield return Main.Inst.StartCoroutine(_addShortcuts(unownedPassages));
+    yield return Main.Inst.StartCoroutine(_claimPassages(unownedPassages));
 
     var decorator = new Decorator(this);
-    rt.AddRange(decorator.decorate());
+    yield return Main.Inst.StartCoroutine(decorator.decorate());
 
     placeHero(decorator.heroPos);
-
-    return rt;
   }
 
   public Architecture ownerAt(Vec pos) => _owners[pos];
@@ -167,10 +165,8 @@ public class Architect
 
   /// Takes all of the remaining fillable tiles and fills them randomly with
   /// solid tiles or open tiles, making sure to preserve reachability.
-  IEnumerable<string> _fillPassages(List<Vec> unownedPassages)
+  IEnumerator _fillPassages(List<Vec> unownedPassages)
   {
-    var rt = new List<string>();
-
     var openCount = 0;
     var start = Vec.zero;
     var startDistance = 99999;
@@ -239,16 +235,12 @@ public class Architect
       }
 
       // Yielding is slow, so don't do it often.
-      if (count++ % 20 == 0) rt.Add($"{pos}");
+      if (count++ % 20 == 0) yield return $"{pos}";
     }
-
-    return rt;
   }
 
-  IEnumerable<string> _addShortcuts(List<Vec> unownedPassages)
+  IEnumerator _addShortcuts(List<Vec> unownedPassages)
   {
-    var rt = new List<string>();
-
     var possibleStarts = new List<_Path> { };
     foreach (var pos in stage.bounds.inflate(-1))
     {
@@ -284,12 +276,10 @@ public class Architect
     {
       if (!_tryShortcut(unownedPassages, path.pos, path.dir)) continue;
 
-      rt.Add("Shortcut");
+      yield return "Shortcut";
       shortcuts++;
       if (shortcuts >= maxShortcuts) break;
     }
-
-    return rt;
   }
 
   /// Tries to place a shortcut from [start] going towards [heading].
@@ -395,10 +385,8 @@ public class Architect
   /// This works by finding the passage tiles that have a neighboring owner and
   /// spreading that owner to this one. It does that repeatedly until all tiles
   /// are claimed.
-  IEnumerable<string> _claimPassages(List<Vec> unownedPassages)
+  IEnumerator _claimPassages(List<Vec> unownedPassages)
   {
-    var rt = new List<string>();
-
     while (true)
     {
       var stillUnowned = new List<Vec> { };
@@ -426,10 +414,8 @@ public class Architect
       if (stillUnowned.isEmpty<Vec>()) break;
       unownedPassages = stillUnowned;
 
-      rt.Add("Claim");
+      yield return "Claim";
     }
-
-    return rt;
   }
 
   /// Claims any neighboring tiles of [pos] for [owner] if they don't already
@@ -480,7 +466,7 @@ public abstract class Architecture
   public ArchitecturalStyle _style;
   public Region _region;
 
-  public abstract IEnumerable<string> build();
+  public abstract IEnumerator build();
 
   public int depth => _architect.depth;
 

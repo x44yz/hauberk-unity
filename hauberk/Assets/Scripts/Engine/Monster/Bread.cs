@@ -188,6 +188,11 @@ public class Breed
       var attackTotal = 0.0;
       foreach (var attack in attacks)
       {
+        if (attack == null)
+          UnityEngine.Debug.LogError("xx-- attack is null");
+        else if (attack.element == null)
+          UnityEngine.Debug.LogError("xx-- attack element is null");
+
         // TODO: Take range into account?
         attackTotal += attack.damage * attack.element.experience;
       }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
@@ -6,9 +7,8 @@ using Mathf = UnityEngine.Mathf;
 /// Uses a cellular automata to carve out rounded open cavernous areas.
 class River : Architecture
 {
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
     // TODO: Branching tributaries?
 
     // Pick the start and end points. Rivers always flow from one edge of the
@@ -23,7 +23,7 @@ class River : Architecture
     _displace(_makePoint(startSide), mid);
     _displace(mid, _makePoint(endSide));
 
-    return rt;
+    yield break;
   }
 
   /// Makes a random end- or midpoint for the river. If [side] is a cardinal

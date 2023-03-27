@@ -20,7 +20,7 @@ class GameContent : Content
     return new GameContent();
   }
 
-  public override IEnumerable<string> buildStage(
+  public override IEnumerator buildStage(
       Lore lore, Stage stage, int depth, System.Action<Vec> placeHero)
   {
     if (depth == 0) return new Town(stage).buildStage(placeHero);

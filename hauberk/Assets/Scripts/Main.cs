@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+  public static Main Inst;
+
   public RetroCanvas retroCanvas;
   public int width;
   public int height;
@@ -12,6 +14,10 @@ public class Main : MonoBehaviour
   [Header("RUNTIME")]
   // public float terminalScale;
   public RetroTerminal retroTerminal;
+
+  private void Awake() {
+    Inst = this;
+  }
 
   // Start is called before the first frame update
   void Start()

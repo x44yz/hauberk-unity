@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,10 +9,8 @@ class Cavern : Architecture
   // TODO: Fields to tune density distribution, thresholds, and number of
   // rounds of smoothing.
 
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
-
     // True is wall, false is floor, null is untouchable tiles that belong to
     // other architectures.
     var cells1 = new Array2D<bool?>(width, height, null);
@@ -51,15 +50,13 @@ class Cavern : Architecture
       var temp = cells1;
       cells1 = cells2;
       cells2 = temp;
-      rt.Add("Round");
+      yield return "Round";
     }
 
     foreach (var pos in cells1.bounds)
     {
       if (cells1[pos] == false) carve(pos.x, pos.y);
     }
-
-    return rt;
   }
 
   double _density(Region region, Vec pos)

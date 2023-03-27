@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Input = UnityEngine.Input;
@@ -10,13 +11,14 @@ using UnityTerminal;
 class LoadingDialog : Screen
 {
   public Game _game;
-  IEnumerator<string> m_steps = null;
-  public IEnumerator<string> _steps
+  // CHECK
+  IEnumerator m_steps = null;
+  public IEnumerator _steps
   {
     get
     {
       if (m_steps == null)
-        m_steps = _game.generate().GetEnumerator();
+        m_steps = _game.generate();
       return m_steps;
     }
   }
@@ -70,7 +72,7 @@ class LoadingDialog : Screen
         return;
       }
     }
-
+    
     _frame = (_frame + 1) % 10;
   }
 

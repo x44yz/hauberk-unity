@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,10 +19,8 @@ class Dungeon : RoomArchitecture
     _density = density ?? 0.3;
   }
 
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
-
     var failed = 0;
     while (carvedDensity < _density && failed < 100)
     {
@@ -87,7 +86,7 @@ class Dungeon : RoomArchitecture
 
         if (_tryPlaceRoom(room, x, y))
         {
-          rt.Add("room");
+          yield return "room";
           placed = true;
           break;
         }
@@ -95,8 +94,6 @@ class Dungeon : RoomArchitecture
 
       if (!placed) failed++;
     }
-
-    return rt;
   }
 
   bool _tryPlaceRoom(Array2D<RoomTile> room, int x, int y)

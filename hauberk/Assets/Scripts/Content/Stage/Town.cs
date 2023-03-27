@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,10 +13,8 @@ class Town
     this.stage = stage;
   }
 
-  public IEnumerable<string> buildStage(System.Action<Vec> placeHero)
+  public IEnumerator buildStage(System.Action<Vec> placeHero)
   {
-    var rt = new List<string>();
-
     foreach (var pos in stage.bounds)
     {
       // TODO: Grass? Something else?
@@ -79,6 +78,6 @@ class Town
 
     placeHero(stage.bounds.center);
 
-    return rt;
+    yield break;
   }
 }

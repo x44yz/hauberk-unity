@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,10 +23,8 @@ class Catacomb : Architecture
   }
 
 
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
-
     // Don't try to make chambers bigger than the stage.
     var maxSize = (double)_maxSize;
     maxSize = Math.Min(maxSize, height);
@@ -105,7 +104,7 @@ class Catacomb : Architecture
 
         if (_tryPlaceCave(cave, x, y))
         {
-          rt.Add("cave");
+          yield return "cave";
           placed = true;
           break;
         }
@@ -113,8 +112,6 @@ class Catacomb : Architecture
 
       if (!placed) failed++;
     }
-
-    return rt;
   }
 
   bool _tryPlaceCave(Array2D<bool> cave, int x, int y)

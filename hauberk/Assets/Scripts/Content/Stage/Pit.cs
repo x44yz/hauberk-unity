@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
@@ -26,10 +27,8 @@ class Pit : Architecture
     _maxSize = maxSize ?? 24;
   }
 
-  public override IEnumerable<string> build()
+  public override IEnumerator build()
   {
-    var rt = new List<string>();
-
     for (var i = 0; i < 20; i++)
     {
       var size = Rng.rng.range(_minSize, _maxSize);
@@ -38,7 +37,7 @@ class Pit : Architecture
       var bounds = _tryPlaceCave(cave, this.bounds);
       if (bounds != null)
       {
-        rt.Add("pit");
+        yield return "pit";
 
         foreach (var pos in cave.bounds)
         {
@@ -48,12 +47,10 @@ class Pit : Architecture
           }
         }
 
-        rt.AddRange(_placeAntechambers(bounds));
-        return rt;
+        yield return Main.Inst.StartCoroutine(_placeAntechambers(bounds));
+        yield break;
       }
     }
-
-    return rt;
   }
 
   public override bool spawnMonsters(Painter painter)
@@ -127,10 +124,8 @@ class Pit : Architecture
 
   /// Try to place a few small caves around the main pit. This gives some
   /// foreshadowing that the hero is about to enter a pit.
-  IEnumerable<string> _placeAntechambers(Rect pitBounds)
+  IEnumerator _placeAntechambers(Rect pitBounds)
   {
-    var rt = new List<string>();
-
     for (var i = 0; i < 8; i++)
     {
       var size = Rng.rng.range(6, 10);
@@ -143,9 +138,7 @@ class Pit : Architecture
           pitBounds.bottom + cave.height);
       allowed = Rect.intersect(allowed, bounds.inflate(-1));
 
-      if (_tryPlaceCave(cave, allowed) != null) rt.Add("antechamber");
+      if (_tryPlaceCave(cave, allowed) != null) yield return "antechamber";
     }
-
-    return rt;
   }
 }
