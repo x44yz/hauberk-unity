@@ -54,7 +54,7 @@ public class Game
     Rng.rng.shuffle(_substanceUpdateOrder);
   }
 
-  public IEnumerator generate()
+  public IEnumerator generate(System.Action callback)
   {
     // TODO: Do something useful with depth.
     Vec heroPos = Vec.zero;
@@ -68,6 +68,7 @@ public class Game
 
     yield return "Calculating visibility";
     _stage.refreshView();
+    callback.Invoke();
   }
 
   public GameResult update()

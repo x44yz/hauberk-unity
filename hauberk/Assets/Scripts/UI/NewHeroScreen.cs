@@ -303,7 +303,8 @@ class NewHeroScreen : UnityTerminal.Screen
           content.races[_race], content.classes[_class]);
       storage.heroes.Add(hero);
       storage.save();
-      terminal.GoTo(GameScreen.town(storage, content, hero));
+      // terminal.GoTo(GameScreen.town(storage, content, hero));
+      throw new System.NotImplementedException();
       return true;
     }
     else if (keyCode == KeyCode.Tab)

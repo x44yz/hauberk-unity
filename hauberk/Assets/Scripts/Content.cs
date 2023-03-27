@@ -23,8 +23,10 @@ class GameContent : Content
   public override IEnumerator buildStage(
       Lore lore, Stage stage, int depth, System.Action<Vec> placeHero)
   {
-    if (depth == 0) return new Town(stage).buildStage(placeHero);
-    return new Architect(lore, stage, depth).buildStage(placeHero);
+    if (depth == 0)
+      yield return Main.Inst.StartCoroutine(new Town(stage).buildStage(placeHero));
+    else
+      yield return Main.Inst.StartCoroutine(new Architect(lore, stage, depth).buildStage(placeHero));
   }
 
   public override Affix findAffix(string name) => Affixes.find(name);

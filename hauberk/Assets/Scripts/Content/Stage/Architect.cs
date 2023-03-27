@@ -105,7 +105,7 @@ public class Architect
 
     var decorator = new Decorator(this);
     yield return Main.Inst.StartCoroutine(decorator.decorate());
-
+    
     placeHero(decorator.heroPos);
   }
 

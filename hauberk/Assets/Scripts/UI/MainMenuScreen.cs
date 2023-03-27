@@ -79,7 +79,9 @@ class MainMenuScreen : UnityTerminal.Screen
       if (selectedHero < storage.heroes.Count)
       {
         var save = storage.heroes[selectedHero];
-        terminal.Push(GameScreen.town(storage, content, save));
+        GameScreen.town(storage, content, save, (scene)=>{
+          terminal.Push(scene);
+        });
       }
       return true;
     }

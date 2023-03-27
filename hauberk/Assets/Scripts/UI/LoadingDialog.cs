@@ -11,24 +11,22 @@ using UnityTerminal;
 class LoadingDialog : Screen
 {
   public Game _game;
-  // CHECK
-  IEnumerator m_steps = null;
-  public IEnumerator _steps
-  {
-    get
-    {
-      if (m_steps == null)
-        m_steps = _game.generate();
-      return m_steps;
-    }
-  }
   int _frame = 0;
+  private bool isLoading = false;
+  private float loadingTick = 0;
 
   public override bool isTransparent => true;
 
   public LoadingDialog(HeroSave save, Content content, int depth)
   {
     _game = new Game(content, save.clone(), depth);
+
+    isLoading = true;
+    loadingTick = 0f;
+
+    Main.Inst.StartCoroutine(_game.generate(()=>{
+      isLoading = false;
+    }));
   }
 
   public override bool KeyDown(KeyCode keyCode, bool shift, bool alt)
@@ -57,20 +55,17 @@ class LoadingDialog : Screen
 
   public override void Tick(float dt)
   {
-    var stopwatch = new Stopwatch();
-    stopwatch.Start();
-
-    while (stopwatch.ElapsedMilliseconds < 16)
+    if (isLoading == false)
     {
-      if (_steps.MoveNext())
-      {
-        Dirty();
-      }
-      else
-      {
-        terminal.Pop(_game);
-        return;
-      }
+      terminal.Pop(_game);
+      return;
+    }
+
+    loadingTick += dt;
+    if (loadingTick >= 1f / 30)
+    {
+      loadingTick = 0f;
+      Dirty();
     }
     
     _frame = (_frame + 1) % 10;
@@ -89,7 +84,7 @@ class LoadingDialog : Screen
     terminal.WriteAt(2, 2, "Entering dungeon...", UIHue.text);
 
     var offset = _frame / 2;
-    var bar = DartUtils.strConcat("/    ", 6).Substring(offset, offset + 26);
+    var bar = DartUtils.strConcat("/    ", 6).Substring(offset, 26);
     terminal.WriteAt(2, 4, bar, UIHue.primary);
   }
 }

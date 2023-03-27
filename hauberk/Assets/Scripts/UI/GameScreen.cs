@@ -120,20 +120,13 @@ class GameScreen : UnityTerminal.Screen
     Debugger.bindGameScreen(this);
   }
 
-  public static GameScreen town(Storage storage, Content content, HeroSave save)
+  public static void town(Storage storage, Content content, HeroSave save,
+    System.Action<GameScreen> callback)
   {
     var game = new Game(content, save, 0, width: 60, height: 34);
-    // foreach (var _ in game.generate()) { }
-    // CHECK:
-    var tt = game.generate();
-    UnityEngine.Debug.Log("xx-- town 0");
-    while (tt.MoveNext())
-    {
-      UnityEngine.Debug.Log("xx-- town 1");
-    }
-
-    UnityEngine.Debug.Log("xx-- town 2");
-    return new GameScreen(storage, game, null);
+    var tt = Main.Inst.StartCoroutine(game.generate(()=>{
+        callback.Invoke(new GameScreen(storage, game, null));
+    }));
   }
 
   /// Draws [Glyph] at [x], [y] in [Stage] coordinates onto the stage panel.
@@ -400,7 +393,9 @@ class GameScreen : UnityTerminal.Screen
       };
 
       _storage.save();
-      terminal.GoTo(GameScreen.town(_storage, game.content, _storageSave!));
+      GameScreen.town(_storage, game.content, _storageSave!, (scene)=>{
+        terminal.GoTo(scene);
+      });
     }
     else if (popped is SelectDepthPopup && result is int)
     {
@@ -418,7 +413,9 @@ class GameScreen : UnityTerminal.Screen
       {
         // Forfeiting, so return to the town and discard the current hero.
         // TODO: Hero should start next to dungeon entrance.
-        terminal.GoTo(GameScreen.town(_storage, game.content, _storageSave!));
+        GameScreen.town(_storage, game.content, _storageSave!, (scene)=>{
+          terminal.GoTo(scene);
+        });
       }
       else
       {

@@ -77,7 +77,6 @@ class Town
     }
 
     placeHero(stage.bounds.center);
-
-    yield break;
+    yield return null;
   }
 }
