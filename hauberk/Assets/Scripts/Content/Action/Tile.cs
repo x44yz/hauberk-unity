@@ -11,16 +11,16 @@ abstract class _OpenTileAction : Action
     this._pos = _pos;
   }
 
-  string _name;
+  public virtual string _name => "";
 
-  TileType _openTile;
+  public virtual TileType _openTile => TileType.uninitialized;
 
   // TODO: Do something more sophisticated. Take into account the theme where
   // the tile is.
 
-  int _minDepthEmptyChance;
+  public virtual int _minDepthEmptyChance => 0;
 
-  int _maxDepthEmptyChance;
+  public virtual int _maxDepthEmptyChance => 0;
 
   public override ActionResult onPerform()
   {
@@ -54,13 +54,13 @@ class OpenBarrelAction : _OpenTileAction
   {
   }
 
-  string _name => "barrel";
+  public override string _name => "barrel";
 
-  TileType _openTile => Tiles.openBarrel;
+  public override TileType _openTile => Tiles.openBarrel;
 
-  int _minDepthEmptyChance => 40;
+  public override int _minDepthEmptyChance => 40;
 
-  int _maxDepthEmptyChance => 10;
+  public override int _maxDepthEmptyChance => 10;
 
   // TODO: More sophisticated drop.
   public override Drop _createDrop() => DropUtils.parseDrop("food", depth: game.depth);
@@ -74,13 +74,13 @@ class OpenChestAction : _OpenTileAction
 
   }
 
-  string _name => "chest";
+  public override string _name => "chest";
 
-  TileType _openTile => Tiles.openChest;
+  public override TileType _openTile => Tiles.openChest;
 
-  int _minDepthEmptyChance => 20;
+  public override int _minDepthEmptyChance => 20;
 
-  int _maxDepthEmptyChance => 2;
+  public override int _maxDepthEmptyChance => 2;
 
   // TODO: Drop more than one item sometimes.
   public override Drop _createDrop() => DropUtils.dropOneOf(new Dictionary<Drop, double>(){

@@ -111,7 +111,7 @@ abstract class RayActionBase : Action
     return ActionResult.notDone;
   }
 
-  void reachStartTile(Vec pos) { }
+  public virtual void reachStartTile(Vec pos) { }
 
   public abstract void reachTile(Vec pos, num distance);
 }

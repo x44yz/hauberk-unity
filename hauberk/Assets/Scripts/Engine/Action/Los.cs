@@ -65,20 +65,20 @@ abstract class LosAction : Action
   ///
   /// Return `true` if the LOS should stop here or `false` if it should keep
   /// going.
-  bool onHitActor(Vec pos, Actor target) => true;
+  public virtual bool onHitActor(Vec pos, Actor target) => true;
 
   /// Override this to handle the LOS hitting a wall or going out of range.
   ///
   /// [pos] is the position on the path *before* failure. It's the last good
   /// position. It may be the actor's position if the LOS hit a wall directly
   /// adjacent to the actor.
-  void onEnd(Vec pos) { }
+  public virtual void onEnd(Vec pos) { }
 
   /// Override this to handle the LOS reaching the target on an open tile.
   ///
   /// If this returns `true`, the LOS will stop there. Otherwise it will
   /// continue until it reaches the end of its range or hits something.
-  bool onTarget(Vec pos) => false;
+  public virtual bool onTarget(Vec pos) => false;
 
   IEnumerator<Vec> _initIterator()
   {

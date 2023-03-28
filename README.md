@@ -7,5 +7,10 @@
 [+]tile debug render  
 [+]fix shadow bug  
 [x]fix no monster kill effect  
-[+]fix int division cause bug(should be float)  
-[x]change num to float  
+[x]fix int division cause bug(should be float)  
+[+]change num to float  
+[+]fix sometimes no door bug  
+[+]fix virtual/override cause bug  
+[+]rewrite UsableSkill  
+[x]check "a = a ?? xx" cause bug  
+[+]create mixin functions  

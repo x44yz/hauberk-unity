@@ -62,6 +62,7 @@ public partial class ArchitecturalStyle
     var count = Mathf.Min(Rng.rng.taper(1, 10), 5);
     var hasFillable = false;
 
+    // CHECK@dongl1n
     int kk = 0;
 
     while (!hasFillable || result.Count < count)

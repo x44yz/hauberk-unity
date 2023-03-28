@@ -13,7 +13,7 @@ class IlluminateAction : RayActionBase
     this._range = range;
   }
 
-  void reachStartTile(Vec pos)
+  public override void reachStartTile(Vec pos)
   {
     reachTile(pos, 0);
   }

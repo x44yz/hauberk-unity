@@ -9,7 +9,7 @@ using System.Linq;
 /// *kind* of skill.
 public abstract class Skill : System.IComparable<Skill>
 {
-  static int _nextSortOrder = 0;
+  public static int _nextSortOrder = 0;
 
   public int _sortOrder = _nextSortOrder++;
 
@@ -74,7 +74,10 @@ public abstract class Skill : System.IComparable<Skill>
   // TODO: Not currently used.
   //  void modifyDefense(Hit hit) {}
 
-  public virtual int CompareTo(Skill other) => _sortOrder.CompareTo(other._sortOrder);
+  public virtual int compareTo(Skill other) => _sortOrder.CompareTo(other._sortOrder);
+
+  // IComparable
+  public int CompareTo(Skill other) => compareTo(other);
 }
 
 /// Additional interface for active skills that expose a command the player
@@ -86,15 +89,15 @@ public abstract class Skill : System.IComparable<Skill>
 public class UsableSkill : Skill
 {
   /// The focus cost to use the skill, with proficiency applied.
-  int focusCost(HeroSave hero, int level) => 0;
+  public virtual int focusCost(HeroSave hero, int level) => 0;
 
   /// The fury cost to use the skill, with proficiency applied.
-  int furyCost(HeroSave hero, int level) => 0;
+  public virtual int furyCost(HeroSave hero, int level) => 0;
 
   /// If the skill cannot currently be used (for example Archery when a bow is
   /// not equipped), returns the reason why. Otherwise, returns `null` to
   /// indicate the skill is usable.
-  public string unusableReason(Game game) => null;
+  public virtual string unusableReason(Game game) => null;
 
   /// If this skill has a focus or fury cost, wraps [action] in an appropriate
   /// action to spend that.
@@ -219,7 +222,7 @@ public abstract class Discipline : Skill
 ///
 /// Spells do not need to be explicitly trained or learned. As soon as one is
 /// discovered, as long as it's not too complex, the hero can use it.
-abstract class Spell : Skill
+abstract class Spell : UsableSkill
 {
   public override string gainMessage(int level) => $"{1} have learned the spell {name}.";
 
@@ -249,7 +252,7 @@ abstract class Spell : Skill
     return hero.intellect.value >= complexity(hero.heroClass) ? 1 : 0;
   }
 
-  public int focusCost(HeroSave hero, int level)
+  public override int focusCost(HeroSave hero, int level)
   {
     var cost = (double)baseFocusCost;
 

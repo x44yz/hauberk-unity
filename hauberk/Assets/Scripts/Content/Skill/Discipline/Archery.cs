@@ -1,7 +1,7 @@
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
 
-class Archery : Discipline
+class Archery : Discipline 
 {
   // TODO: Tune.
   public override int maxLevel => 20;

@@ -190,7 +190,10 @@ public class Item : Noun, System.IComparable<Item>
     return resistance;
   }
 
-  public int CompareTo(Item other)
+  // IComparable
+  public int CompareTo(Item other) => compareTo(other);
+
+  public int compareTo(Item other)
   {
     if (type.sortIndex != other.type.sortIndex)
     {

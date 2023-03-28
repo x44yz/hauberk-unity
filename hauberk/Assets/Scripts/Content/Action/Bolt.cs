@@ -28,7 +28,7 @@ class BoltAction : LosAction
         dir: (pos - previous).nearestDirection);
   }
 
-  public virtual bool onHitActor(Vec pos, Actor target)
+  public override bool onHitActor(Vec pos, Actor target)
   {
     // TODO: Should range increase odds of missing? If so, do that here. Also
     // need to tweak enemy AI then since they shouldn't always try to maximize

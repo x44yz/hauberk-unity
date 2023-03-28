@@ -67,7 +67,7 @@ class MonsterPathfinder : Pathfinder<Direction>
   ///     ...*...
   ///     s.*.*.g
   ///     .*...*.
-  int heuristic(Vec pos, Vec end)
+  public override int heuristic(Vec pos, Vec end)
   {
     var offset = (end - pos).abs();
     var diagonal = Mathf.Min(offset.x, offset.y);

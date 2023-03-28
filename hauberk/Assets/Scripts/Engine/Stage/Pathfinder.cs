@@ -117,7 +117,7 @@ abstract class Pathfinder<T>
   /// The estimated cost from [pos] to [end].
   ///
   /// By default, uses the king length.
-  int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
+  public virtual int heuristic(Vec pos, Vec end) => (end - pos).kingLength;
 
   /// The cost required to enter [tile] at [pos] from a neighboring tile or
   /// `null` if the tile cannot be entered.

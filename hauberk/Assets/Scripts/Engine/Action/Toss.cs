@@ -66,7 +66,7 @@ class TossLosAction : LosAction
     addEvent(EventType.toss, pos: pos, other: _item);
   }
 
-  bool onHitActor(Vec pos, Actor target)
+  public override bool onHitActor(Vec pos, Actor target)
   {
     // TODO: Range should affect strike.
     if (_hit.perform(this, actor, target) == 0)
@@ -80,12 +80,12 @@ class TossLosAction : LosAction
     return true;
   }
 
-  void onEnd(Vec pos)
+  public override void onEnd(Vec pos)
   {
     _endThrow(pos);
   }
 
-  bool onTarget(Vec pos)
+  public override bool onTarget(Vec pos)
   {
     // If the item failed to make contact with an actor, it's no longer well
     // targeted and just keeps going.
