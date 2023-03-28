@@ -6,4 +6,5 @@
 [x]monster cant move bug  
 [+]tile debug render  
 [+]fix shadow bug  
-[+]fix no monster kill effect  
+[x]fix no monster kill effect  
+[+]fix int division cause bug(should be float)  

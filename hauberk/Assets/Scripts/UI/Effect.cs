@@ -393,8 +393,8 @@ class ParticleEffect : Effect
 
   public static ParticleEffect create(float x, float y, Color color)
   {
-    var theta = Rng.rng.range(628) / 100;
-    var radius = Rng.rng.range(30, 40) / 100;
+    var theta = Rng.rng.range(628) / 100f;
+    var radius = Rng.rng.range(30, 40) / 100f;
 
     var h = Math.Cos(theta) * radius;
     var v = Math.Sin(theta) * radius;
@@ -448,8 +448,8 @@ class TeleportEffect : Effect
     var x = from.x;
     var y = from.y;
 
-    var theta = Rng.rng.range(628) / 100;
-    var radius = Rng.rng.range(10, 80) / 100;
+    var theta = Rng.rng.range(628) / 100f;
+    var radius = Rng.rng.range(10, 80) / 100f;
 
     var h = Math.Cos(theta) * radius;
     var v = Math.Sin(theta) * radius;
@@ -501,7 +501,7 @@ class TeleportEffect : Effect
     var velocity = new Vec((int)(x * 10), (int)(y * 10));
     if (velocity < 5) return CharCode.bullet;
 
-    var angle = Math.Atan2(x, y) / (Math.PI * 2) * 16 + 8;
+    var angle = Math.Atan2(x, y) / (Math.PI * 2) * 16f + 8;
     return "|\\--//||\\--//||"[UnityEngine.Mathf.FloorToInt((float)angle)];
   }
 }
