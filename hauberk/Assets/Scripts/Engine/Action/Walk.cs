@@ -52,8 +52,12 @@ public class WalkAction : Action
     // See if the hero stepped on anything interesting.
     if (actor is Hero)
     {
-      foreach (var item in game.stage.itemsAt(pos))
+      // FIX:@dongl1n
+      // fix error caused by remove item
+      var items = game.stage.itemsAt(pos)._items;
+      for (int i = items.Count - 1; i >= 0; --i)
       {
+        var item = items[i];
         hero.disturb();
 
         // Treasure is immediately, freely acquired.
