@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mathf = UnityEngine.Mathf;
 
 /// Creates a swath of damage that radiates out from a point.
-public class BarrierAction : Action
+public class BarrierAction : Action, ElementActionMixin
 {
   /// The center of the barrier.
   public Vec _center;
@@ -29,8 +29,6 @@ public class BarrierAction : Action
 
   public override bool isImmediate => false;
 
-  public ElementActionMixin _elementMixin = null;
-
   /// Creates a [BarrierAction] radiating from [from] perpendicular to a line
   /// from there to [to]. It applies [hit] to each touched tile.
   public static BarrierAction create(Vec from, Vec to, Hit hit)
@@ -55,8 +53,6 @@ public class BarrierAction : Action
     this._h = _h;
     this._v = _v;
     this._hit = _hit;
-
-    _elementMixin = new ElementActionMixin(this);
   }
 
   public override ActionResult onPerform()
@@ -80,7 +76,7 @@ public class BarrierAction : Action
           {
             _hitTiles.Add(pos);
             // TODO: Tune fuel.
-            _elementMixin.hitTile(_hit, pos, _distance, Rng.rng.range(30, 40));
+            (this as ElementActionMixin).hitTile(_hit, pos, _distance, Rng.rng.range(30, 40));
             madeProgress = true;
           }
 

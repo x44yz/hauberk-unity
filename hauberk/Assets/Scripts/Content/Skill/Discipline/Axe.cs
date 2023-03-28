@@ -36,7 +36,6 @@ class AxeMastery : MasteryDiscipline, UsableSkill, DirectionSkill
 class SweepAction : MasteryAction, GeneratorActionMixin
 {
   public Direction _dir;
-  public GeneratorActionMixin _generatorMixin;
 
   public override bool isImmediate => false;
 
@@ -45,19 +44,14 @@ class SweepAction : MasteryAction, GeneratorActionMixin
   public SweepAction(Direction _dir, double damageScale) : base(damageScale)
   {
     this._dir = _dir;
-    _generatorMixin = new GeneratorActionMixin();
   }
 
-  public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
   public override ActionResult onPerform()
   {
-    // If it reaches the end, it succeeds.
-    if (!_iterator.MoveNext()) return ActionResult.success;
-
-    return _iterator.Current;
+    return (this as GeneratorActionMixin).onPerform();
   }
 
-  IEnumerable<ActionResult> onGenerate()
+  public IEnumerable<ActionResult> onGenerate()
   {
     // Make sure there is room to swing it.
     var rt = new List<ActionResult>();
@@ -85,10 +79,10 @@ class SweepAction : MasteryAction, GeneratorActionMixin
       // ensures the effect gets a chance to be shown before the hit effect
       // covers hit.
       addEvent(EventType.slash, pos: actor!.pos + dir, dir: dir);
-      rt.AddRange(_generatorMixin.wait(2));
+      rt.AddRange((this as GeneratorActionMixin).wait(2));
 
       attack(actor!.pos + dir);
-      rt.AddRange(_generatorMixin.wait(3));
+      rt.AddRange((this as GeneratorActionMixin).wait(3));
     }
     return rt;
   }

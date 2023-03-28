@@ -283,50 +283,24 @@ class UseAction : ItemAction
   }
 }
 
-public class ActionMixin
-{
-  public Action action;
-
-  public ActionMixin(Action action)
-  {
-    this.action = action;
-  }
-
-  public void log(string message, Noun noun1 = null, Noun noun2 = null, Noun noun3 = null)
-  {
-    action.log(message, noun1, noun2, noun3);
-  }
-
-  public Game game => action.game;
-  public Actor actor => action.actor;
-  public Hero hero => action.hero;
-  public void addAction(Action action, Actor actor = null) => action.addAction(action, actor);
-
-  public void addEvent(EventType type,
-      Actor actor = null,
-      Element element = null,
-      object other = null,
-      Vec pos = default(Vec),
-      Direction dir = default(Direction)) => action.addEvent(type, actor, element, other, pos, dir);
-
-}
-
 /// Mixin for actions that permanently destroy items.
-public class DestroyActionMixin : ActionMixin
+public interface DestroyActionMixin
 {
   // TODO: Take damage into account when choosing the odds?
+}
 
-  public DestroyActionMixin(Action action) : base(action)
-  {
-  }
-
+public static class DestroyActionMixinEx
+{
+  
   /// Tries to destroy [items] with [element].
   ///
   /// Handles splitting stacks and logging errors. Returns the total fuel
   /// produced by all destroyed items.
-  int _destroy(Element element, IEnumerable<Item> items, bool isHeld,
+  public static int _destroy(this DestroyActionMixin mixin, Element element, IEnumerable<Item> items, bool isHeld,
       System.Action<Item> removeItem)
   {
+    var a = mixin as Action;
+
     var fuel = 0;
 
     // Copy items to avoid concurrent modification.
@@ -350,14 +324,14 @@ public class DestroyActionMixin : ActionMixin
       if (destroyedCount == item.count)
       {
         // TODO: Effect.
-        log($"{1} {element.destroyMessage}!", item);
+        a.log($"{1} {element.destroyMessage}!", item);
         removeItem(item);
       }
       else if (destroyedCount > 0)
       {
         var destroyedPart = item.splitStack(destroyedCount);
         // TODO: Effect.
-        log($"{1} {element.destroyMessage}!", destroyedPart);
+        a.log($"{1} {element.destroyMessage}!", destroyedPart);
       }
 
       fuel += item.type.fuel * destroyedCount;
@@ -367,11 +341,13 @@ public class DestroyActionMixin : ActionMixin
   }
 
   /// Attempts to destroy items on the floor that can be destroyed by [element].
-  public int destroyFloorItems(Vec pos, Element element)
+  public static int destroyFloorItems(this DestroyActionMixin mixin, Vec pos, Element element)
   {
-    var fuel = _destroy(element, game.stage.itemsAt(pos), false, (item) =>
+    var a = mixin as Action;
+
+    var fuel = mixin._destroy(element, a.game.stage.itemsAt(pos), false, (item) =>
     {
-      game.stage.removeItem(item, pos);
+      a.game.stage.removeItem(item, pos);
       // TODO: If the item takes effect when destroyed, do that here.
     });
 
@@ -380,29 +356,31 @@ public class DestroyActionMixin : ActionMixin
 
   /// Attempts to destroy items the actor is holding that can be destroyed by
   /// [element].
-  public int destroyHeldItems(Element element)
+  public static int destroyHeldItems(this DestroyActionMixin mixin, Element element)
   {
+    var a = mixin as Action;
+
     // TODO: If monsters have inventories, need to handle that here.
-    if ((actor is Hero) == false) return 0;
+    if ((a.actor is Hero) == false) return 0;
 
     // Any resistance prevents destruction.
-    if (actor!.resistance(element) > 0) return 0;
+    if (a.actor!.resistance(element) > 0) return 0;
 
-    var fuel = _destroy(element, hero.inventory, true, (item) =>
+    var fuel = mixin._destroy(element, a.hero.inventory, true, (item) =>
     {
-      hero.inventory.remove(item);
+      a.hero.inventory.remove(item);
       // TODO: If the item takes effect when destroyed, do that here.
     });
 
     var anyEquipmentDestroyed = false;
-    fuel += _destroy(element, hero.equipment, true, (item) =>
+    fuel += mixin._destroy(element, a.hero.equipment, true, (item) =>
     {
-      hero.equipment.remove(item);
+      a.hero.equipment.remove(item);
       // TODO: If the item takes effect when destroyed, do that here.
       anyEquipmentDestroyed = true;
     });
 
-    if (anyEquipmentDestroyed) hero.refreshProperties();
+    if (anyEquipmentDestroyed) a.hero.refreshProperties();
     return fuel;
   }
 }

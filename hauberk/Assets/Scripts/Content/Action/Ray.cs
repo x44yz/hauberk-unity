@@ -117,11 +117,9 @@ abstract class RayActionBase : Action
 }
 
 /// Creates a swath of damage that radiates out from a point.
-class RayAction : RayActionBase
+class RayAction : RayActionBase, ElementActionMixin
 {
   public Hit _hit;
-  public ElementActionMixin _elementMixin;
-
   public override int range => _hit.range;
 
   /// A 45° cone of [hit] centered on the line from [from] to [to].
@@ -136,12 +134,11 @@ class RayAction : RayActionBase
       : base(from, to, fraction)
   {
     this._hit = _hit;
-    _elementMixin = new ElementActionMixin(this);
   }
 
   public override void reachTile(Vec pos, num distance)
   {
-    _elementMixin.hitTile(_hit, pos, distance);
+    (this as ElementActionMixin).hitTile(_hit, pos, distance);
   }
 }
 

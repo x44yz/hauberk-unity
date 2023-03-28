@@ -4,51 +4,46 @@ using num = System.Double;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
 
-public class ElementActionMixin : ActionMixin
+public interface ElementActionMixin
 {
-  public ElementActionMixin(Action action) : base(action)
-  {
-  }
+}
 
-  public void hitTile(Hit hit, Vec pos, num distance, int fuel = 0)
+public static class ElementActionMixinEx
+{
+  public static void hitTile(this ElementActionMixin mixin, Hit hit, Vec pos, num distance, int fuel = 0)
   {
+    var a = mixin as Action;
+
     // Open tiles if the given motility lets us go through them.
-    var tile = game.stage[pos];
+    var tile = a.game.stage[pos];
     if (tile.type.canOpen)
     {
-      addAction(tile.type.onOpen!(pos));
+      a.addAction(tile.type.onOpen!(pos));
     }
 
-    addEvent(EventType.cone, element: hit.element, pos: pos);
+    a.addEvent(EventType.cone, element: hit.element, pos: pos);
 
     // See if there is an actor there.
-    var target = game.stage.actorAt(pos);
-    if (target != null && target != actor)
+    var target = a.game.stage.actorAt(pos);
+    if (target != null && target != a.actor)
     {
       // TODO: Modify damage based on range?
-      hit.perform(this.action, actor, target, canMiss: false);
+      hit.perform(a, a.actor, target, canMiss: false);
     }
 
     // Hit stuff on the floor too.
     var action = hit.element.floorAction(pos, hit, distance, fuel);
-    if (action != null) addAction(action);
+    if (action != null) a.addAction(action);
   }
 }
 
 /// Side-effect action when an actor has been hit with an [Elements.fire]
 /// attack.
-class BurnActorAction : Action
+class BurnActorAction : Action, DestroyActionMixin
 {
-  public DestroyActionMixin _destroyMixin;
-
-  public BurnActorAction()
-  {
-    _destroyMixin = new DestroyActionMixin(this);
-  }
-
   public override ActionResult onPerform()
   {
-    _destroyMixin.destroyHeldItems(Elements.fire);
+    (this as DestroyActionMixin).destroyHeldItems(Elements.fire);
 
     // Being burned "cures" cold.
     if (actor!.cold.isActive)
@@ -62,26 +57,22 @@ class BurnActorAction : Action
 }
 
 /// Side-effect action when an [Elements.fire] area attack sweeps over a tile.
-class BurnFloorAction : Action
+class BurnFloorAction : Action, DestroyActionMixin
 {
   // public Vec _pos;
   public int _damage;
   public int _fuel;
-
-  public DestroyActionMixin _destroyMixin;
 
   public BurnFloorAction(Vec _pos, int _damage, int _fuel)
   {
     this._pos = _pos;
     this._damage = _damage;
     this._fuel = _fuel;
-
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   public override ActionResult onPerform()
   {
-    var fuel = _fuel + _destroyMixin.destroyFloorItems(_pos, Elements.fire);
+    var fuel = _fuel + (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.fire);
 
     // Try to set the tile on fire.
     var tile = game.stage[_pos];
@@ -106,16 +97,13 @@ class BurnFloorAction : Action
 
 /// Action created by the [Elements.fire] substance each turn a tile continues
 /// to burn.
-class BurningFloorAction : Action
+class BurningFloorAction : Action, DestroyActionMixin
 {
   // public Vec _pos;
-
-  public DestroyActionMixin _destroyMixin;
 
   public BurningFloorAction(Vec _pos)
   {
     this._pos = _pos;
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   public override ActionResult onPerform()
@@ -130,27 +118,24 @@ class BurningFloorAction : Action
     }
 
     // Try to burn items.
-    game.stage[_pos].substance += _destroyMixin.destroyFloorItems(_pos, Elements.fire);
+    game.stage[_pos].substance += (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.fire);
     return ActionResult.success;
   }
 }
 
 /// Side-effect action when an [Elements.cold] area attack sweeps over a tile.
-class FreezeFloorAction : Action
+class FreezeFloorAction : Action, DestroyActionMixin
 {
   // public Vec _pos;
-
-  public DestroyActionMixin _destroyMixin;
 
   public FreezeFloorAction(Vec _pos)
   {
     this._pos = _pos;
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   public override ActionResult onPerform()
   {
-    _destroyMixin.destroyFloorItems(_pos, Elements.cold);
+    (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.cold);
 
     // TODO: Put out fire.
 
@@ -159,18 +144,15 @@ class FreezeFloorAction : Action
 }
 
 /// Side-effect action when an [Elements.poison] area attack sweeps over a tile.
-class PoisonFloorAction : Action
+class PoisonFloorAction : Action, DestroyActionMixin
 {
   // public Vec _pos;
   public int _damage;
-
-  public DestroyActionMixin _destroyMixin;
-
+  
   public PoisonFloorAction(Vec _pos, int _damage)
   {
     this._pos = _pos;
     this._damage = _damage;
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   public override ActionResult onPerform()
@@ -196,15 +178,13 @@ class PoisonFloorAction : Action
 
 /// Action created by the [Elements.poison] substance each turn a tile contains
 /// poisonous gas.
-class PoisonedFloorAction : Action
+class PoisonedFloorAction : Action, DestroyActionMixin
 {
   // public Vec _pos;
 
-  public DestroyActionMixin _destroyMixin;
   public PoisonedFloorAction(Vec _pos)
   {
     this._pos = _pos;
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   public override ActionResult onPerform()

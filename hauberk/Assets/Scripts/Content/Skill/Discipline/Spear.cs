@@ -39,27 +39,20 @@ class SpearAction : MasteryAction, GeneratorActionMixin
 {
   public Direction _dir;
 
-  public GeneratorActionMixin _generatorMixin;
-
   public SpearAction(Direction _dir, double damageScale) : base(damageScale)
   {
     this._dir = _dir;
-    _generatorMixin = new GeneratorActionMixin();
   }
 
   public override bool isImmediate => false;
   public override string weaponType => "spear";
 
-  public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
   public override ActionResult onPerform()
   {
-    // If it reaches the end, it succeeds.
-    if (!_iterator.MoveNext()) return ActionResult.success;
-
-    return _iterator.Current;
+    return (this as GeneratorActionMixin).onPerform();
   }
 
-  IEnumerable<ActionResult> onGenerate()
+  public IEnumerable<ActionResult> onGenerate()
   {
     var rt = new List<ActionResult>();
     // Can only do a spear attack if the entire range is clear.
@@ -90,10 +83,10 @@ class SpearAction : MasteryAction, GeneratorActionMixin
       //  covers hit.
       var weapon = hero.equipment.weapons.First().appearance;
       addEvent(EventType.stab, pos: pos, dir: _dir, other: weapon);
-      rt.Add(_generatorMixin.waitOne());
+      rt.Add((this as GeneratorActionMixin).waitOne());
 
       attack(pos);
-      rt.Add(_generatorMixin.waitOne());
+      rt.Add((this as GeneratorActionMixin).waitOne());
     }
     return rt;
   }

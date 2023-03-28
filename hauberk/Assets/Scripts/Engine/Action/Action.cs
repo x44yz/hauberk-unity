@@ -243,11 +243,12 @@ public interface GeneratorActionMixin
   //   return rt;
   // }
 
-  public IEnumerable<ActionResult> onGenerate();
+  IEnumerable<ActionResult> onGenerate();
 }
 
 public static class GeneratorActionMixinEx
 {
+  // Wait [frames] frames.
   public static IEnumerable<ActionResult> wait(this GeneratorActionMixin g, int frames)
   {
     var rt = new List<ActionResult>();
@@ -256,14 +257,21 @@ public static class GeneratorActionMixinEx
     return rt;
   }
 
+  // Wait a single frame.
   public static ActionResult waitOne(this GeneratorActionMixin g) => ActionResult.notDone;
 
-  static ConditionalWeakTable<GeneratorActionMixin, Fields> table;
-  late final Iterator<ActionResult> _iterator = onGenerate().iterator;
+  static ConditionalWeakTable<GeneratorActionMixin, IEnumerator<ActionResult>> _iteratorMap = 
+    new ConditionalWeakTable<GeneratorActionMixin, IEnumerator<ActionResult>>();
 
+  // Start the generator the first time through.
   public static IEnumerator<ActionResult> iterator(this GeneratorActionMixin g)
   {
-
+    IEnumerator<ActionResult> _iterator = null;
+    if (_iteratorMap.TryGetValue(g, out _iterator))
+      return _iterator;
+    _iterator = g.onGenerate().GetEnumerator();
+    _iteratorMap.Add(g, _iterator);
+    return _iterator;
   }
 
   public static ActionResult onPerform(this GeneratorActionMixin g) {

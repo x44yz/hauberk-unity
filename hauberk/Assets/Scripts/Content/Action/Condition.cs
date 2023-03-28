@@ -21,22 +21,20 @@ class HasteAction : ConditionAction
   public override void onIntensify() => log("{1} move[s] even faster.", actor);
 }
 
-class FreezeActorAction : ConditionAction
+class FreezeActorAction : ConditionAction, DestroyActionMixin
 {
   public int _damage;
-  public DestroyActionMixin _destroyMixin;
 
   public FreezeActorAction(int _damage)
   {
     this._damage = _damage;
-    _destroyMixin = new DestroyActionMixin(this);
   }
 
   protected override Condition condition => actor!.cold;
 
   public override ActionResult onPerform()
   {
-    _destroyMixin.destroyHeldItems(Elements.cold);
+    (this as DestroyActionMixin).destroyHeldItems(Elements.cold);
     return base.onPerform();
   }
 

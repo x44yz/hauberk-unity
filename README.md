@@ -13,5 +13,5 @@
 [+]fix virtual/override cause bug  
 [+]rewrite UsableSkill  
 [x]check "a = a ?? xx" cause bug  
-[+]create mixin functions  
+[x]create mixin functions  
 [x]fix error "Collection was modified; enumeration operation may not execute"  

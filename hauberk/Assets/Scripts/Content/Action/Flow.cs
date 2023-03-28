@@ -4,7 +4,7 @@ using System.Linq;
 
 /// Creates a swath of damage that flows out from a point through reachable
 /// tiles.
-class FlowAction : Action
+class FlowAction : Action, ElementActionMixin
 {
   /// The centerpoint that the flow is radiating from.
   public Vec _from;
@@ -21,8 +21,6 @@ class FlowAction : Action
 
   int _frame = 0;
 
-  ElementActionMixin _elementMixin;
-
   // TODO: Support motilities that can flow into closed doors but not out of
   // them. That would let fire flow attacks that can set closed doors on fire.
 
@@ -32,8 +30,6 @@ class FlowAction : Action
     this._hit = _hit;
     this._motility = _motility;
     this._slowness = slowness ?? 1;
-
-    _elementMixin = new ElementActionMixin(this);
   }
 
   public override ActionResult onPerform()
@@ -67,7 +63,7 @@ class FlowAction : Action
 
     foreach (var pos in _tiles!.GetRange(0, end))
     {
-      _elementMixin.hitTile(_hit, pos, distance.Value);
+      (this as ElementActionMixin).hitTile(_hit, pos, distance.Value);
     }
 
     _tiles = _tiles!.GetRange(end, _tiles.Count - end);
