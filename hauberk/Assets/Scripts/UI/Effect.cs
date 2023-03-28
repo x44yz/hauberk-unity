@@ -363,7 +363,7 @@ class DamageEffect : Effect
   {
     this.actor = actor;
     this.element = element;
-    _blinks = (int)Math.Ceiling(Math.Sqrt(damage / 5));
+    _blinks = (int)Math.Ceiling(Math.Sqrt(damage / 5f));
   }
 
   public override bool update(Game game) => ++_frame < _blinks * _framesPerBlink;

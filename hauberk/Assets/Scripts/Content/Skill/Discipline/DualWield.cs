@@ -41,7 +41,7 @@ public class DualWield : Discipline
     // Have to be dual-wielding.
     if (hero.equipment.weapons.Count != 2) return;
 
-    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 100));
+    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 100f));
     hero.refreshSkill(this);
   }
 }

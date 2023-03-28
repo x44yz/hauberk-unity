@@ -48,7 +48,7 @@ abstract class MasteryDiscipline : Discipline
 
     if (!_hasWeapon(hero)) return;
 
-    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 100));
+    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 100f));
     hero.refreshSkill(this);
   }
 

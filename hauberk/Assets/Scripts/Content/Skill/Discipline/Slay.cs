@@ -36,7 +36,7 @@ class SlayDiscipline : Discipline
   {
     if (!Monsters.breeds.hasTag(monster.breed.name, _breedGroup)) return;
 
-    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 1000));
+    hero.skills.earnPoints(this, Mathf.CeilToInt(monster.experience / 1000f));
     // TODO: Having to call this manually every place we call earnPoints()
     // is lame. Fix?
     hero.refreshSkill(this);

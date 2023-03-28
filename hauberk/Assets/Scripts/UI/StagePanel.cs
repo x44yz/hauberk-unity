@@ -166,7 +166,7 @@ class StagePanel : Panel
           }
           else if (tile.element == Elements.poison)
           {
-            var amount = 0.1f + (tile.substance / 255) * 0.9f;
+            var amount = 0.1f + (tile.substance / 255f) * 0.9f;
             back = back.blend(Hues.lima, amount);
           }
         }

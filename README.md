@@ -8,3 +8,4 @@
 [+]fix shadow bug  
 [x]fix no monster kill effect  
 [+]fix int division cause bug(should be float)  
+[x]change num to float  
