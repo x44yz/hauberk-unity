@@ -1,6 +1,6 @@
 using Mathf = UnityEngine.Mathf;
 
-class ClubMastery : MasteryDiscipline
+class ClubMastery : MasteryDiscipline, UsableSkill, DirectionSkill
 {
   // TODO: Tune.
   static double _bashScale(int level) => MathUtils.lerpDouble(level, 1, 10, 1.0, 2.0);
@@ -22,9 +22,11 @@ class ClubMastery : MasteryDiscipline
     return base.levelDescription(level) + " Bashes the enemy away.";
   }
 
-  int furyCost(HeroSave hero, int level) => 20;
+  public int focusCost(HeroSave hero, int level) => 0;
+  public int furyCost(HeroSave hero, int level) => 20;
+  public string unusableReason(Game game) => null;
 
-  Action onGetDirectionAction(Game game, int level, Direction dir)
+  public Action onGetDirectionAction(Game game, int level, Direction dir)
   {
     return new BashAction(dir, ClubMastery._bashScale(level));
   }

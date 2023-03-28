@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-class SpearMastery : MasteryDiscipline
+class SpearMastery : MasteryDiscipline, UsableSkill, DirectionSkill
 {
   // TODO: Tune.
   static double _spearScale(int level) => MathUtils.lerpDouble(level, 1, 10, 1.0, 3.0);
@@ -26,14 +26,16 @@ class SpearMastery : MasteryDiscipline
         $" Distance spear attacks inflict {damage}% of the damage of a regular attack.";
   }
 
-  int furyCost(HeroSave hero, int level) => 20;
+  public int focusCost(HeroSave hero, int level) => 0;
+  public int furyCost(HeroSave hero, int level) => 20;
+  public string unusableReason(Game game) => null;
 
-  Action onGetDirectionAction(Game game, int level, Direction dir) =>
+  public Action onGetDirectionAction(Game game, int level, Direction dir) =>
       new SpearAction(dir, SpearMastery._spearScale(level));
 }
 
 /// A melee attack that penetrates a row of actors.
-class SpearAction : MasteryAction
+class SpearAction : MasteryAction, GeneratorActionMixin
 {
   public Direction _dir;
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-class Flee : Spell
+class Flee : Spell, ActionSkill
 {
   public override string description => "Teleports the hero a short distance away.";
   public override string name => "Flee";
@@ -10,10 +10,10 @@ class Flee : Spell
   public override int baseFocusCost => 16;
   public override int range => 8;
 
-  Action onGetAction(Game game, int level) => new TeleportAction(range);
+  public Action onGetAction(Game game, int level) => new TeleportAction(range);
 }
 
-class Escape : Spell
+class Escape : Spell, ActionSkill
 {
   public override string description => "Teleports the hero away.";
   public override string name => "Escape";
@@ -21,10 +21,10 @@ class Escape : Spell
   public override int baseFocusCost => 25;
   public override int range => 16;
 
-  Action onGetAction(Game game, int level) => new TeleportAction(range);
+  public Action onGetAction(Game game, int level) => new TeleportAction(range);
 }
 
-class Disappear : Spell
+class Disappear : Spell, ActionSkill
 {
   public override string description => "Moves the hero across the dungeon.";
   public override string name => "Disappear";
@@ -32,7 +32,7 @@ class Disappear : Spell
   public override int baseFocusCost => 50;
   public override int range => 100;
 
-  Action onGetAction(Game game, int level) => new TeleportAction(range);
+  public Action onGetAction(Game game, int level) => new TeleportAction(range);
 }
 
 // TODO: These spells are all kind of similar and boring. Might be good if they

@@ -329,7 +329,7 @@ class GameScreen : UnityTerminal.Screen
       {
         var actionSkill = _lastSkill as ActionSkill;
         game.hero.setNextAction(
-            actionSkill.getAction(game, game.hero.skills.level(actionSkill)));
+            actionSkill.getAction(game, game.hero.skills.level(actionSkill as Skill)));
       }
       else
       {
@@ -658,19 +658,19 @@ class GameScreen : UnityTerminal.Screen
 
   void _fireAtTarget(TargetSkill skill)
   {
-    if (currentTarget == game.hero.pos && !skill.canTargetSelf)
+    if (currentTarget == game.hero.pos && !skill.canTargetSelf())
     {
       game.log.error("You can't target yourself.");
       Dirty();
       return;
     }
 
-    _lastSkill = skill;
+    _lastSkill = skill as UsableSkill;
     // TODO: It's kind of annoying that we force the player to select a target
     // or direction for skills that spend focus/fury even when they won't be
     // able to perform it. Should do an early check first.
     game.hero.setNextAction(skill.getTargetAction(
-        game, game.hero.skills.level(skill), currentTarget!));
+        game, game.hero.skills.level(skill as Skill), currentTarget!));
   }
 
   void _fireTowards(Direction dir)
@@ -682,7 +682,7 @@ class GameScreen : UnityTerminal.Screen
     {
       var directionSkill = _lastSkill as DirectionSkill;
       game.hero.setNextAction(directionSkill.getDirectionAction(
-          game, game.hero.skills.level(directionSkill), dir));
+          game, game.hero.skills.level(directionSkill as Skill), dir));
     }
     else if (_lastSkill is TargetSkill)
     {
@@ -721,7 +721,7 @@ class GameScreen : UnityTerminal.Screen
       if (currentTarget != null)
       {
         game.hero.setNextAction(targetSkill.getTargetAction(
-            game, game.hero.skills.level(targetSkill), currentTarget!));
+            game, game.hero.skills.level(targetSkill as Skill), currentTarget!));
       }
       else
       {
@@ -732,7 +732,7 @@ class GameScreen : UnityTerminal.Screen
     }
     else if (_lastSkill is ActionSkill)
     {
-      game.log.error($"{(_lastSkill as ActionSkill).useName} does not take a direction.");
+      game.log.error($"{(_lastSkill as Skill).useName} does not take a direction.");
       Dirty();
     }
     else

@@ -1,7 +1,7 @@
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
 
-class Archery : Discipline 
+class Archery : Discipline, UsableSkill, TargetSkill
 {
   // TODO: Tune.
   public override int maxLevel => 20;
@@ -17,7 +17,7 @@ class Archery : Discipline
   public override string levelDescription(int level) =>
       $"Scales strike by {(int)(_strikeScale(level) * 100)}%.";
 
-  string unusableReason(Game game)
+  public string unusableReason(Game game)
   {
     if (_hasBow(game.hero)) return null;
 
@@ -37,9 +37,11 @@ class Archery : Discipline
   }
 
   /// Focus cost goes down with level.
-  int focusCost(HeroSave hero, int level) => 21 - level;
+  public int focusCost(HeroSave hero, int level) => 21 - level;
+  public int furyCost(HeroSave hero, int level) => 0;
 
-  int getRange(Game game)
+  public bool canTargetSelf() => false;
+  public int getRange(Game game)
   {
     var hit = game.hero.createRangedHit();
     var level = game.hero.skills.level(this);
@@ -47,7 +49,7 @@ class Archery : Discipline
     return hit.range;
   }
 
-  Action onGetTargetAction(Game game, int level, Vec target)
+  public Action onGetTargetAction(Game game, int level, Vec target)
   {
     var hit = game.hero.createRangedHit();
     return new ArrowAction(this, target, hit);

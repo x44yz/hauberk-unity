@@ -1,6 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Runtime.CompilerServices;
 
 public abstract class Action
 {
@@ -218,7 +219,7 @@ class FuryAction : Action
 // TODO: Use this for more actions.
 /// For multi-step actions, lets you define one using a `sync*` function and
 /// `yield` instead of building the state machine manually.
-class GeneratorActionMixin
+public interface GeneratorActionMixin
 {
   /// Start the generator the first time through.
   // public IEnumerator<ActionResult> _iterator => onGenerate().GetEnumerator();
@@ -231,10 +232,23 @@ class GeneratorActionMixin
   // }
 
   /// Wait a single frame.
-  public ActionResult waitOne() => ActionResult.notDone;
+  // public ActionResult waitOne() => ActionResult.notDone;
 
   /// Wait [frames] frames.
-  public IEnumerable<ActionResult> wait(int frames)
+  // public IEnumerable<ActionResult> wait(int frames)
+  // {
+  //   var rt = new List<ActionResult>();
+  //   for (int i = 0; i < frames; ++i)
+  //     rt.Add(ActionResult.notDone);
+  //   return rt;
+  // }
+
+  public IEnumerable<ActionResult> onGenerate();
+}
+
+public static class GeneratorActionMixinEx
+{
+  public static IEnumerable<ActionResult> wait(this GeneratorActionMixin g, int frames)
   {
     var rt = new List<ActionResult>();
     for (int i = 0; i < frames; ++i)
@@ -242,5 +256,20 @@ class GeneratorActionMixin
     return rt;
   }
 
-  // public abstract IEnumerable<ActionResult> onGenerate();
+  public static ActionResult waitOne(this GeneratorActionMixin g) => ActionResult.notDone;
+
+  static ConditionalWeakTable<GeneratorActionMixin, Fields> table;
+  late final Iterator<ActionResult> _iterator = onGenerate().iterator;
+
+  public static IEnumerator<ActionResult> iterator(this GeneratorActionMixin g)
+  {
+
+  }
+
+  public static ActionResult onPerform(this GeneratorActionMixin g) {
+    // If it reaches the end, it succeeds.
+    if (!g.iterator().MoveNext()) return ActionResult.success;
+
+    return g.iterator().Current;
+  }
 }

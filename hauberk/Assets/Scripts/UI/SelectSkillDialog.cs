@@ -116,7 +116,7 @@ class SelectSkillDialog : Screen
 
       terminal.WriteAt(0, y, "( )   ", borderColor);
       terminal.WriteAt(1, y, "abcdefghijklmnopqrstuvwxyz"[y], letterColor);
-      terminal.WriteAt(4, y, skill.useName, textColor);
+      terminal.WriteAt(4, y, (skill as Skill).useName, textColor);
     }
   }
 }

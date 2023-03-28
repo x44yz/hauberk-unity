@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 /// A slashing melee attack that hits a number of adjacent monsters.
-class AxeMastery : MasteryDiscipline
+class AxeMastery : MasteryDiscipline, UsableSkill, DirectionSkill
 {
   // TODO: Tune.
   static double _sweepScale(int level) => MathUtils.lerpDouble(level, 1, 10, 1.0, 3.0);
@@ -22,16 +22,18 @@ class AxeMastery : MasteryDiscipline
         $" Sweep attacks inflict {damage}% of the damage of a regular attack.";
   }
 
-  int furyCost(HeroSave hero, int level) => 20;
+  public int focusCost(HeroSave hero, int level) => 0;
+  public int furyCost(HeroSave hero, int level) => 20;
+  public string unusableReason(Game game) => null;
 
-  Action onGetDirectionAction(Game game, int level, Direction dir)
+  public Action onGetDirectionAction(Game game, int level, Direction dir)
   {
     return new SweepAction(dir, AxeMastery._sweepScale(level));
   }
 }
 
 /// A sweeping melee attack that hits three adjacent tiles.
-class SweepAction : MasteryAction
+class SweepAction : MasteryAction, GeneratorActionMixin
 {
   public Direction _dir;
   public GeneratorActionMixin _generatorMixin;

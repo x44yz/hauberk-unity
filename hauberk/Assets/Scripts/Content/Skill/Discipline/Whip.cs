@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-class WhipMastery : MasteryDiscipline
+class WhipMastery : MasteryDiscipline, UsableSkill, TargetSkill
 {
   // TODO: Tune.
   static double _whipScale(int level) => MathUtils.lerpDouble(level, 1, 10, 1.0, 3.0);
@@ -23,11 +23,14 @@ class WhipMastery : MasteryDiscipline
         $" Ranged whip attacks inflict {damage}% of the damage of a regular attack.";
   }
 
-  int furyCost(HeroSave hero, int level) => 20;
+  public int focusCost(HeroSave hero, int level) => 0;
+  public int furyCost(HeroSave hero, int level) => 20;
+  public string unusableReason(Game game) => null;
 
-  int getRange(Game game) => 3;
+  public bool canTargetSelf() => false;
+  public int getRange(Game game) => 3;
 
-  Action onGetTargetAction(Game game, int level, Vec target)
+  public Action onGetTargetAction(Game game, int level, Vec target)
   {
     var defender = game.stage.actorAt(target);
 

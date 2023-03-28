@@ -86,31 +86,62 @@ public abstract class Skill : System.IComparable<Skill>
 /// Some skills require additional data to be performed -- a target position
 /// or a direction. Those will implement one of the subclasses, [TargetSkill]
 /// or [DirectionSkill].
-public class UsableSkill : Skill
+public interface UsableSkill
+{
+  // /// The focus cost to use the skill, with proficiency applied.
+  public int focusCost(HeroSave hero, int level);
+
+  // /// The fury cost to use the skill, with proficiency applied.
+  public int furyCost(HeroSave hero, int level);
+
+  // /// If the skill cannot currently be used (for example Archery when a bow is
+  // /// not equipped), returns the reason why. Otherwise, returns `null` to
+  // /// indicate the skill is usable.
+  public string unusableReason(Game game);
+
+  // /// If this skill has a focus or fury cost, wraps [action] in an appropriate
+  // /// action to spend that.
+  // protected Action _wrapActionCost(HeroSave hero, int level, Action action)
+  // {
+  //   if (focusCost(hero, level) > 0)
+  //   {
+  //     return new FocusAction(focusCost(hero, level), action);
+  //   }
+
+  //   if (furyCost(hero, level) > 0)
+  //   {
+  //     return new FuryAction(furyCost(hero, level), action);
+  //   }
+
+  //   return action;
+  // }
+}
+
+public static class UsableSkillEx
 {
   /// The focus cost to use the skill, with proficiency applied.
-  public virtual int focusCost(HeroSave hero, int level) => 0;
+  // public static int focusCost(this UsableSkill skill, HeroSave hero, int level) => 0;
 
   /// The fury cost to use the skill, with proficiency applied.
-  public virtual int furyCost(HeroSave hero, int level) => 0;
+  // public static int furyCost(this UsableSkill skill, HeroSave hero, int level) => 0;
 
   /// If the skill cannot currently be used (for example Archery when a bow is
   /// not equipped), returns the reason why. Otherwise, returns `null` to
   /// indicate the skill is usable.
-  public virtual string unusableReason(Game game) => null;
+  // public static string unusableReason(this UsableSkill skill, Game game) => null;
 
   /// If this skill has a focus or fury cost, wraps [action] in an appropriate
   /// action to spend that.
-  protected Action _wrapActionCost(HeroSave hero, int level, Action action)
+  public static Action _wrapActionCost(this UsableSkill skill, HeroSave hero, int level, Action action)
   {
-    if (focusCost(hero, level) > 0)
+    if (skill.focusCost(hero, level) > 0)
     {
-      return new FocusAction(focusCost(hero, level), action);
+      return new FocusAction(skill.focusCost(hero, level), action);
     }
 
-    if (furyCost(hero, level) > 0)
+    if (skill.furyCost(hero, level) > 0)
     {
-      return new FuryAction(furyCost(hero, level), action);
+      return new FuryAction(skill.furyCost(hero, level), action);
     }
 
     return action;
@@ -118,50 +149,80 @@ public class UsableSkill : Skill
 }
 
 /// A skill that can be directly used to perform an action.
-public abstract class ActionSkill : UsableSkill
+public interface ActionSkill
 {
-  public Action getAction(Game game, int level)
-  {
-    return _wrapActionCost(game.hero.save, level, onGetAction(game, level));
-  }
+  // public Action getAction(Game game, int level)
+  // {
+  //   return _wrapActionCost(game.hero.save, level, onGetAction(game, level));
+  // }
 
-  public abstract Action onGetAction(Game game, int level);
+  public Action onGetAction(Game game, int level);
+}
+
+public static class ActionSkillEx
+{
+  public static Action getAction(this ActionSkill skill, Game game, int level)
+  {
+    var usableSkill = skill as UsableSkill;
+    return usableSkill._wrapActionCost(game.hero.save, level, skill.onGetAction(game, level));
+  }
 }
 
 /// A skill that requires a target position to perform.
-public abstract class TargetSkill : UsableSkill
+public interface TargetSkill
 {
-  public bool canTargetSelf => false;
+  public bool canTargetSelf();
 
   /// The maximum range of the target from the hero.
-  public abstract int getRange(Game game);
+  public int getRange(Game game);
 
-  public Action getTargetAction(Game game, int level, Vec target)
-  {
-    return _wrapActionCost(
-        game.hero.save, level, onGetTargetAction(game, level, target));
-  }
+  // public Action getTargetAction(Game game, int level, Vec target)
+  // {
+  //   return _wrapActionCost(
+  //       game.hero.save, level, onGetTargetAction(game, level, target));
+  // }
 
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
-  public abstract Action onGetTargetAction(Game game, int level, Vec target);
+  public Action onGetTargetAction(Game game, int level, Vec target);
+}
+
+public static class TargetSkillEx
+{
+  public static Action getTargetAction(this TargetSkill skill, Game game, int level, Vec target)
+  {
+    var usableSkill = skill as UsableSkill;
+    return usableSkill._wrapActionCost(
+        game.hero.save, level, skill.onGetTargetAction(game, level, target));
+  }
 }
 
 /// A skill that requires a direction to perform.
-public abstract class DirectionSkill : UsableSkill
+public interface DirectionSkill
 {
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
-  public Action getDirectionAction(Game game, int level, Direction dir)
-  {
-    return _wrapActionCost(
-        game.hero.save, level, onGetDirectionAction(game, level, dir));
-  }
+  // public Action getDirectionAction(Game game, int level, Direction dir)
+  // {
+  //   return _wrapActionCost(
+  //       game.hero.save, level, onGetDirectionAction(game, level, dir));
+  // }
 
   /// Override this to create the [Action] that the [Hero] should perform when
   /// using this [Skill].
   public abstract Action onGetDirectionAction(Game game, int level, Direction dir);
 }
+
+public static class DirectionSkillEx
+{
+  public static Action getDirectionAction(this DirectionSkill skill, Game game, int level, Direction dir)
+  {
+    var usableSkill = skill as UsableSkill;
+    return usableSkill._wrapActionCost(
+        game.hero.save, level, skill.onGetDirectionAction(game, level, dir));
+  }
+}
+
 
 /// Disciplines are the primary [Skill]s of warriors.
 ///
@@ -222,7 +283,7 @@ public abstract class Discipline : Skill
 ///
 /// Spells do not need to be explicitly trained or learned. As soon as one is
 /// discovered, as long as it's not too complex, the hero can use it.
-abstract class Spell : UsableSkill
+abstract class Spell : Skill, UsableSkill
 {
   public override string gainMessage(int level) => $"{1} have learned the spell {name}.";
 
@@ -252,7 +313,7 @@ abstract class Spell : UsableSkill
     return hero.intellect.value >= complexity(hero.heroClass) ? 1 : 0;
   }
 
-  public override int focusCost(HeroSave hero, int level)
+  public virtual int focusCost(HeroSave hero, int level)
   {
     var cost = (double)baseFocusCost;
 
@@ -266,10 +327,13 @@ abstract class Spell : UsableSkill
     return Mathf.CeilToInt((float)cost);
   }
 
-  public int complexity(HeroClass heroClass) =>
+  public virtual int furyCost(HeroSave hero, int level) => 0;
+  public virtual string unusableReason(Game game) => null;
+
+  public virtual int complexity(HeroClass heroClass) =>
       ((baseComplexity - 9) / Mathf.RoundToInt((float)heroClass.proficiency(this))) + 9;
 
-  int getRange(Game game) => range;
+  public virtual int getRange(Game game) => range;
 }
 
 /// A collection of [Skill]s and the hero's progress in them.
