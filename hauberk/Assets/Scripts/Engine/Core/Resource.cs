@@ -146,15 +146,16 @@ public class ResourceSet<T> where T : class
   /// If no tag is given, chooses from all resources based only on depth.
   ///
   /// May return `null` if there are no resources with [tag].
-  public T tryChoose(int depth, string tag = null, bool includeParents = true)
+  public T tryChoose(int depth, string tag = null, bool? includeParents = null)
   {
+    includeParents ??= true;
 
     if (tag == null) return _runQuery("", depth, (_) => 1.0);
 
     var goalTag = _tags[tag]!;
 
     var label = goalTag.name;
-    if (!includeParents) label += " (only)";
+    if (!includeParents.Value) label += " (only)";
 
     return _runQuery(label, depth, (_Resource<T> resource) =>
     {
@@ -168,7 +169,7 @@ public class ResourceSet<T> where T : class
           if (resourceTag.contains(thisTag)) return scale;
         }
 
-        if (!includeParents) break;
+        if (!includeParents.Value) break;
 
         // Resources in sibling trees are included with lower probability based
         // on how far their common ancestor is. So if the goal is

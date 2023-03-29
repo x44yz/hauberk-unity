@@ -181,9 +181,9 @@ public class Hero : Actor
     }
   }
 
-  int baseSpeed => Energy.normalSpeed;
+  public override int baseSpeed => Energy.normalSpeed;
 
-  int baseDodge => 20 + agility.dodgeBonus;
+  public override int baseDodge => 20 + agility.dodgeBonus;
 
   public override List<Defense> onGetDefenses()
   {

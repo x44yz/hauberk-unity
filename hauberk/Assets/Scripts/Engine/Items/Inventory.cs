@@ -59,7 +59,7 @@ public abstract class ItemCollection : IEnumerable<Item>
 {
   IEnumerator IEnumerable.GetEnumerator()
   {
-    return null;
+    return (IEnumerator)GetEnumerator();
   }
   public virtual IEnumerator<Item> GetEnumerator()
   {

@@ -121,14 +121,14 @@ class Storage
           // TODO: Remove when no longer needed.
           if (skills[skillName] is int)
           {
-            levels[skill] = (int)skills[skillName];
+            levels[skill] = Convert.ToInt32(skills[skillName]);
             points[skill] = 0;
           }
           else
           {
-            var kk = skills[skillName] as IDictionary<string, int>;
-            levels[skill] = (int)kk["level"];
-            points[skill] = (int)kk["points"];
+            var skillInfo = skills[skillName] as IDictionary<string, object>;
+            levels[skill] = Convert.ToInt32(skillInfo["level"]);
+            points[skill] = Convert.ToInt32(skillInfo["points"]);
           }
         }
       }
@@ -276,10 +276,10 @@ class Storage
         foreach (var kv in seenMap)
         {
           var breedName = kv.Key;
-          var count = kv.Value;
+          var count = Convert.ToInt32(kv.Value);
 
           var breed = content.tryFindBreed(breedName);
-          if (breed != null) seenBreeds[breed] = (int)count;
+          if (breed != null) seenBreeds[breed] = count;
         };
       }
 
@@ -289,10 +289,10 @@ class Storage
         foreach (var kv in slainMap)
         {
           var breedName = kv.Key;
-          var count = kv.Value;
+          var count = Convert.ToInt32(kv.Value);
 
           var breed = content.tryFindBreed(breedName);
-          if (breed != null) slain[breed] = (int)count;
+          if (breed != null) slain[breed] = count;
         };
       }
 
@@ -304,10 +304,10 @@ class Storage
           foreach (var kv in foundItemMap)
           {
             var itemName = kv.Key;
-            var count = kv.Value;
+            var count = Convert.ToInt32(kv.Value);
 
             var itemType = content.tryFindItem(itemName);
-            if (itemType != null) foundItems[itemType] = (int)count;
+            if (itemType != null) foundItems[itemType] = count;
           };
         }
       }
@@ -320,10 +320,10 @@ class Storage
           foreach (var kv in foundAffixMap)
           {
             var affixName = kv.Key;
-            var count = kv.Value;
+            var count = Convert.ToInt32(kv.Value);
 
             var affix = content.findAffix(affixName);
-            if (affix != null) foundAffixes[affix] = (int)count;
+            if (affix != null) foundAffixes[affix] = count;
           };
         }
       }
@@ -336,10 +336,10 @@ class Storage
           foreach (var kv in usedItemMap)
           {
             var itemName = kv.Key;
-            var count = kv.Value;
+            var count = Convert.ToInt32(kv.Value);
 
             var itemType = content.tryFindItem(itemName);
-            if (itemType != null) usedItems[itemType] = (int)count;
+            if (itemType != null) usedItems[itemType] = count;
           };
         }
       }

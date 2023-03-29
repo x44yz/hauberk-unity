@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityTerminal;
@@ -163,9 +164,18 @@ public class Main : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    float dt = Time.deltaTime;
+    try
+    {
+      float dt = Time.deltaTime;
 
-    if (retroTerminal != null)
-      retroTerminal.Tick(dt);
+      if (retroTerminal != null)
+        retroTerminal.Tick(dt);
+    }
+    // TODO:@dongl1n
+    // try to catch exception
+    catch (Exception ex)
+    {
+      Debug.LogError("xx-- exception > " + ex.ToString());
+    }
   }
 }

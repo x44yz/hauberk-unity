@@ -168,9 +168,9 @@ public class Monster : Actor
     throw new System.Exception("Unreachable.");
   }
 
-  int baseSpeed => Energy.normalSpeed + breed.speed;
+  public override int baseSpeed => Energy.normalSpeed + breed.speed;
 
-  int baseDodge => breed.dodge;
+  public override int baseDodge => breed.dodge;
 
   public override List<Defense> onGetDefenses() => breed.defenses;
 

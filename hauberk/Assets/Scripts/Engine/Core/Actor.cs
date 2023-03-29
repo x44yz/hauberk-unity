@@ -175,11 +175,11 @@ public abstract class Actor : Noun
     if (emanationLevel > 0) game.stage.actorEmanationChanged();
   }
 
-  int baseSpeed;
+  public virtual int baseSpeed => 0;
 
   /// The actor's base dodge ability. This is the percentage chance of a melee
   /// attack missing the actor.
-  int baseDodge;
+  public virtual int baseDodge => 0;
 
   public abstract List<Defense> onGetDefenses();
 

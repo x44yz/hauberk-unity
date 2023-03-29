@@ -77,7 +77,7 @@ public abstract class StatBase : Property<int>
   public override int _modify(int _base) =>
       Mathf.Clamp(_base + _statOffset + _hero.statBonus(_stat), 1, Stat.max);
 
-  int _statOffset => 0;
+  public virtual int _statOffset => 0;
 
   public void bindHero(HeroSave hero)
   {
@@ -111,7 +111,7 @@ public class Strength : StatBase
   public override Stat _stat => Stat.strength;
   public override string _gainAdjective => "mighty";
   public override string _loseAdjective => "weak";
-  int _statOffset => -_hero.weight;
+  public override int _statOffset => -_hero.weight;
 
   public int maxFury
   {

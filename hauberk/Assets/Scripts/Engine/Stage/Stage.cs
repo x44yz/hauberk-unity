@@ -67,10 +67,11 @@ public class Stage
 
   public void addActor(Actor actor)
   {
-    DartUtils.assert(_actorsByTile[actor.pos] == null);
+    DartUtils.assert(_actorsByTile[actor.pos] == null, "xx-- add actor failed > " + actor.pos + " - " + actor.ToString());
 
     _actors.Add(actor);
     _actorsByTile[actor.pos] = actor;
+    UnityEngine.Debug.Log("xx-- add actor > " + actor.pos + " - " + actor.ToString());
   }
 
   /// Called when an [Actor]'s position has changed so the stage can track it.
