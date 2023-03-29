@@ -4,9 +4,9 @@ using num = System.Double;
 using System.Text.RegularExpressions;
 using UnityTerminal;
 
-public static class _MBaseBuilderUtils
+public class _MBaseBuilder
 {
-  public static Regex collapseNewlines = new Regex("\n\\s*");
+ public static Regex collapseNewlines = new Regex("\n\\s*");
 
   public static Dictionary<Element, List<string>> _elementText = new Dictionary<Element, List<string>>(){
         {Elements.air, new List<string>{"the wind", "buffets"}},
@@ -91,10 +91,8 @@ public static class _MBaseBuilderUtils
     description = Regex.Replace(description, collapseNewlines.ToString(), " ");
     _builder!._description = description;
   }
-}
 
-public class _MBaseBuilder
-{
+  ///////////////////////////////////////////////
   public double? _frequency;
 
   public int? _tracking;
@@ -316,7 +314,7 @@ public class _BreedBuilder : _MBaseBuilder
   void bolt(Element element,
       num rate, int damage, int range)
   {
-    _bolt(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
+    _bolt(_MBaseBuilder._elementText[element]![0], _MBaseBuilder._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
 
@@ -359,10 +357,10 @@ public class _BreedBuilder : _MBaseBuilder
 
   public void cone(Element element, num? rate = null, int damage = 0, int? range = null)
   {
-    if (_MBaseBuilderUtils._elementText.ContainsKey(element) == false)
+    if (_MBaseBuilder._elementText.ContainsKey(element) == false)
       UnityEngine.Debug.LogError("cant exist key > " + element.ToString());
 
-    _cone(_MBaseBuilderUtils._elementText[element]![0], _MBaseBuilderUtils._elementText[element]![1], element,
+    _cone(_MBaseBuilder._elementText[element]![0], _MBaseBuilder._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);
   }
 
@@ -425,8 +423,6 @@ public class _BreedBuilder : _MBaseBuilder
   {
     _moves.Add(move);
   }
-
-  public _FamilyBuilder _family => _MBaseBuilderUtils._family;
 
   public Breed build()
   {

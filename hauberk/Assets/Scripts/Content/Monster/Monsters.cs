@@ -173,7 +173,7 @@ public partial class Monsters
     // Y?
     serpents();
 
-    _MBaseBuilderUtils.finishBreed();
+    _MBaseBuilder.finishBreed();
 
     // Now that all the breeds are defined, link up the cyclic references.
     BreedRef.resolve(breeds.find);

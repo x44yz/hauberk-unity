@@ -86,6 +86,8 @@ public class Stage
     DartUtils.assert(_actorsByTile[actor.pos] == actor);
 
     var index = _actors.IndexOf(actor);
+    DartUtils.assert(index >= 0 && index < _actors.Count);
+
     if (_currentActorIndex > index) _currentActorIndex--;
     _actors.RemoveAt(index);
 
