@@ -264,7 +264,10 @@ public class Decorator
       // architectures.
       var architecture = _architect.ownerAt(pos)!;
       var group = Rng.rng.item(architecture.style.monsterGroups);
-      var breed = Monsters.breeds.tryChoose(_architect.depth, tag: group)!;
+      // var breed = Monsters.breeds.tryChoose(_architect.depth, tag: group)!;
+      // TODO:@dongl1n
+      // try fix
+      var breed = Monsters.breeds.find("giant cockroach");
 
       // Don't place a breed whose motility doesn't match the tile.
       if (!_stage[pos].canEnter(breed.motility)) continue;
@@ -286,7 +289,7 @@ public class Decorator
     while (true)
     {
       var breed = Monsters.breeds
-          .tryChoose(depth, tag: tag, includeParents: includeParentTags.Value)!;
+          .tryChoose(depth, tag: tag, includeParents: includeParentTags)!;
 
       if (_canSpawn(breed)) return breed;
     }

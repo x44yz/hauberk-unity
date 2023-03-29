@@ -179,7 +179,7 @@ public class Monster : Actor
     // Recharge moves.
     foreach (var move in breed.moves)
     {
-      _recharges[move] = Mathf.Max(0.0f, (float)(_recharges[move]! - 1.0f));
+      _recharges[move] = Math.Max(0.0f, (_recharges[move]! - 1.0f));
     }
 
     // Use the monster's senses to update its mood.

@@ -3,10 +3,12 @@
 [+]fix sometimes no door bug  
 [+]stage.removeActor assert failed  
 [+]SpawnAction stage.addActor assert failed (giant cockroach)  
+[+]check random  
 
 // 2023年3月29日  
 [x]fix shadow bug  
 [x]check "/" (in dart) result is double  
+[x]fix miss ??= cause bug  
 
 // 2023年3月28日  
 [x]fix no monster kill effect  

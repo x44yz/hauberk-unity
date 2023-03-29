@@ -11,8 +11,7 @@ class Affixes
   public static Item createItem(ItemType itemType, int droppedDepth,
       int? affixChance)
   {
-
-    affixChance = affixChance ?? 0;
+    affixChance ??= 0;
 
     // Only equipped items have affixes.
     if (itemType.equipSlot == null)

@@ -398,7 +398,7 @@ public class _BreedBuilder : _MBaseBuilder
       _addMove(new TeleportMove(rate, range));
 
   public void spawn(num rate = 10, bool? preferStraight = null) =>
-      _addMove(new SpawnMove(rate, preferStraight: preferStraight));
+      _addMove(new SpawnMove(rate, preferStraight));
 
   public void amputate(string body, string part, string message) =>
       _addMove(new AmputateMove(new BreedRef(body), new BreedRef(part), message));
