@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mathf = UnityEngine.Mathf;
-using num = System.Int32;
+using num = System.Double;
 
 /// Calculates the hero's field of view of the dungeon, which tiles are occluded
 /// by other tiles and which are not.
@@ -9,16 +10,16 @@ public class Fov
 {
   public const int _maxViewDistance = 24;
 
-  public static Vec[,] _octantCoordinates = new Vec[,]{
+  public static Vec[][] _octantCoordinates = new Vec[][]{
     // y, x
-    {new Vec(0, -1), new Vec(1, 0)},
-    {new Vec(1, 0), new Vec(0, -1)},
-    {new Vec(1, 0), new Vec(0, 1)},
-    {new Vec(0, 1), new Vec(1, 0)},
-    {new Vec(0, 1), new Vec(-1, 0)},
-    {new Vec(-1, 0), new Vec(0, 1)},
-    {new Vec(-1, 0), new Vec(0, -1)},
-    {new Vec(0, -1), new Vec(-1, 0)},
+    new Vec[2]{new Vec(0, -1), new Vec(1, 0)},
+    new Vec[2]{new Vec(1, 0), new Vec(0, -1)},
+    new Vec[2]{new Vec(1, 0), new Vec(0, 1)},
+    new Vec[2]{new Vec(0, 1), new Vec(1, 0)},
+    new Vec[2]{new Vec(0, 1), new Vec(-1, 0)},
+    new Vec[2]{new Vec(-1, 0), new Vec(0, 1)},
+    new Vec[2]{new Vec(-1, 0), new Vec(0, -1)},
+    new Vec[2]{new Vec(0, -1), new Vec(-1, 0)},
 };
 
   public Stage _stage;
@@ -64,8 +65,9 @@ public class Fov
   {
     // Figure out which direction to increment based on the octant. Octant 0
     // starts at 12 - 2 o'clock, and octants proceed clockwise from there.
-    var rowInc = _octantCoordinates[octant, 0];
-    var colInc = _octantCoordinates[octant, 1];
+
+    var rowInc = _octantCoordinates[octant][0];
+    var colInc = _octantCoordinates[octant][1];
 
     _shadows = new List<_Shadow> { };
 
@@ -145,10 +147,10 @@ public class Fov
   static _Shadow getProjection(int col, int row)
   {
     // The top edge of row 0 is 2 wide.
-    var topLeft = col / (row + 2);
+    var topLeft = col * 1f / (row + 2);
 
     // The bottom edge of row 0 is 1 wide.
-    var bottomRight = (col + 1) / (row + 1);
+    var bottomRight = (col + 1) * 1f / (row + 1);
 
     return new _Shadow(topLeft, bottomRight);
   }
@@ -189,13 +191,13 @@ public class Fov
       {
         // Overlaps both, so unify one and delete the other.
         _shadows[index - 1].end =
-            Mathf.Max(_shadows[index - 1].end, _shadows[index].end);
+            Math.Max(_shadows[index - 1].end, _shadows[index].end);
         _shadows.RemoveAt(index);
       }
       else
       {
         // Just overlaps the next shadow, so unify it with that.
-        _shadows[index].start = Mathf.Min(_shadows[index].start, shadow.start);
+        _shadows[index].start = Math.Min(_shadows[index].start, shadow.start);
       }
     }
     else
@@ -203,7 +205,7 @@ public class Fov
       if (overlapsPrev)
       {
         // Just overlaps the previous shadow, so unify it with that.
-        _shadows[index - 1].end = Mathf.Max(_shadows[index - 1].end, shadow.end);
+        _shadows[index - 1].end = Math.Max(_shadows[index - 1].end, shadow.end);
       }
       else
       {
