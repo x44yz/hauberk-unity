@@ -488,7 +488,7 @@ public abstract class Architecture
     get
     {
       var possible = (width - 2) * (height - 2);
-      return _architect._carvedTiles / possible;
+      return _architect._carvedTiles * 1f / possible;
     }
   }
 

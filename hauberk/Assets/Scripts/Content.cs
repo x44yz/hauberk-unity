@@ -222,7 +222,7 @@ class GameContent : Content
     neighbor(0, 1);
 
     // Round down so that poison gradually decays.
-    poison = Mathf.RoundToInt(poison / open);
+    poison = Mathf.RoundToInt(poison * 1f / open);
 
     tile.element = Elements.poison;
     tile.substance = Mathf.Clamp(poison - 1, 0, 255);

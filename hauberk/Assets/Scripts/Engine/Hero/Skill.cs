@@ -271,7 +271,7 @@ public abstract class Discipline : Skill
     var profiency = heroClass.proficiency(this);
     if (profiency == 0.0) return null;
 
-    return Mathf.CeilToInt((float)(baseTrainingNeeded(level) / profiency));
+    return Mathf.CeilToInt((float)(baseTrainingNeeded(level) * 1f / profiency));
   }
 
   /// How much training is needed for to reach [level], ignoring class
@@ -331,7 +331,7 @@ abstract class Spell : Skill, UsableSkill
   public virtual string unusableReason(Game game) => null;
 
   public virtual int complexity(HeroClass heroClass) =>
-      ((baseComplexity - 9) / Mathf.RoundToInt((float)heroClass.proficiency(this))) + 9;
+      (int)((baseComplexity - 9f) / Mathf.RoundToInt((float)heroClass.proficiency(this))) + 9;
 
   public virtual int getRange(Game game) => range;
 }

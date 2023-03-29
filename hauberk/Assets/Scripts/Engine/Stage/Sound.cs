@@ -89,7 +89,7 @@ public class Sound
   double _volume(int auditoryDistance)
   {
     // Normalize.
-    var volume = (Sound.maxDistance - auditoryDistance) / Sound.maxDistance;
+    var volume = (Sound.maxDistance - auditoryDistance) * 1f / Sound.maxDistance;
 
     // Sound attenuates with the square of the distance. This is realistic but
     // also means that even hard-of-hearing monsters will hero the hero once

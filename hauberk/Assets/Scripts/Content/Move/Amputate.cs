@@ -31,11 +31,11 @@ class AmputateMove : Move
   public override bool shouldUseOnDamage(Monster monster, int damage)
   {
     // Doing more damage increases the odds.
-    var odds = damage / monster.maxHealth;
+    var odds = damage * 1f / monster.maxHealth;
     if (Rng.rng.rfloat(2.0) <= odds) return true;
 
     // Getting closer to death increases the odds.
-    odds = monster.health / monster.maxHealth;
+    odds = monster.health * 1f / monster.maxHealth;
     if (Rng.rng.rfloat(2.0) <= odds) return true;
 
     return false;

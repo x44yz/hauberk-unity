@@ -98,10 +98,10 @@ class GameScreen : UnityTerminal.Screen
     get
     {
       var hero = game.hero;
-      if (hero.health < hero.maxHealth / 4) return Hues.red;
+      if (hero.health < hero.maxHealth / 4f) return Hues.red;
       if (hero.poison.isActive) return Hues.peaGreen;
       if (hero.cold.isActive) return Hues.lightBlue;
-      if (hero.health < hero.maxHealth / 2) return Hues.pink;
+      if (hero.health < hero.maxHealth / 2f) return Hues.pink;
       if (hero.stomach == 0 && hero.health < hero.maxHealth) return Hues.sandal;
       return Hues.ash;
     }

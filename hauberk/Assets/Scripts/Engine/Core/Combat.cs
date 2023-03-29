@@ -108,7 +108,7 @@ public class Hit
   {
     get
     {
-      return ((int)(averageDamage * 100) / 100).ToString();
+      return ((int)(averageDamage * 100) / 100f).ToString();
     }
   }
 
@@ -242,7 +242,7 @@ public class Hit
 
     var rolled = (double)Rng.rng.triangleInt(damageCents, damageCents / 2);
     rolled *= Attack.getArmorMultiplier(armor);
-    return (int)Math.Round(rolled / 100);
+    return (int)Math.Round(rolled / 100f);
   }
 }
 

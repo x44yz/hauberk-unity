@@ -88,7 +88,7 @@ public class RaceStats
     {
       double lerp(int from, int to)
       {
-        var t = level / (Hero.maxLevel - 1);
+        var t = level * 1f / (Hero.maxLevel - 1);
         return (1.0 - t) * from + t * to;
       }
 

@@ -298,17 +298,17 @@ public class Hero : Actor
   public override void onGiveDamage(Action action, Actor defender, int damage)
   {
     // Hitting increases fury.
-    _gainFury(damage / defender.maxHealth * maxHealth / 100);
+    _gainFury(damage * 1f / defender.maxHealth * maxHealth / 100f);
   }
 
   public override void onTakeDamage(Action action, Actor attacker, int damage)
   {
     // Getting hit loses focus and gains fury.
     // TODO: Lose less focus for ranged attacks?
-    var focus = Mathf.CeilToInt((float)(damage / maxHealth * will.damageFocusScale));
+    var focus = Mathf.CeilToInt((float)(damage * 1f / maxHealth * will.damageFocusScale));
     _focus = Mathf.Clamp(_focus - focus, 0, intellect.maxFocus);
 
-    _gainFury(damage / maxHealth * 50);
+    _gainFury(damage * 1f / maxHealth * 50);
     _turnsSinceLostFocus = 0;
 
     // TODO: Would be better to do skills.discovered, but right now this also
@@ -327,7 +327,7 @@ public class Hero : Actor
     if (!_seenMonsters.Contains(monster)) return;
 
     // Gain some fury.
-    _gainFury(defender.maxHealth / maxHealth * 50);
+    _gainFury(defender.maxHealth * 1f / maxHealth * 50);
 
     lore.slay(monster.breed);
 
@@ -462,7 +462,7 @@ public class Hero : Actor
   {
     // The longer the hero goes without losing focus, the more quickly it
     // regenerates.
-    var scale = Mathf.Clamp(_turnsSinceLostFocus + 1, 1, 8) / 4;
+    var scale = Mathf.Clamp(_turnsSinceLostFocus + 1, 1, 8) / 4f;
     _focus = (int)Mathf.Clamp(Mathf.Ceil(_focus + focus * scale), 0, intellect.maxFocus);
 
     _fury = Mathf.Clamp(Mathf.CeilToInt((float)(_fury - focus * scale * will.restFuryScale)), 0, strength.maxFury);

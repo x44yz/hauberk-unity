@@ -13,7 +13,7 @@ public class BattleHardening : Discipline
     hero.discoverSkill(this);
 
     // A point is one tenth of the hero's health.
-    var points = Mathf.CeilToInt(10 * damage / hero.maxHealth);
+    var points = Mathf.CeilToInt(10f * damage / hero.maxHealth);
 
     hero.skills.earnPoints(this, points);
     hero.refreshSkill(this);

@@ -590,8 +590,8 @@ class MapEffect : Effect
 
     glyph = new Glyph(
         glyph.ch,
-        glyph.fore.blend(Hues.gold, life / _maxLife),
-        glyph.back.blend(Hues.tan, life / _maxLife));
+        glyph.fore.blend(Hues.gold, life * 1f / _maxLife),
+        glyph.back.blend(Hues.tan, life * 1f / _maxLife));
 
     drawGlyph(pos.x, pos.y, glyph);
   }

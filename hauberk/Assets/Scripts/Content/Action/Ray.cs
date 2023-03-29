@@ -57,7 +57,7 @@ abstract class RayActionBase : Action
       // Create the rays centered on the line from [_from] to [_to].
       for (var i = 0; i < numRays; i++)
       {
-        var theta = (i / (numRays - 1)) - 0.5;
+        var theta = (i * 1f / (numRays - 1)) - 0.5;
         _rays.Add(centerTheta + theta * (Mathf.PI * 2.0 * fraction));
       }
     }

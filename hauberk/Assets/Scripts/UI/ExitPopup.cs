@@ -138,7 +138,7 @@ class _AnimatedValue
 
     if (value > 200)
     {
-      current += Rng.rng.round(value / 200);
+      current += Rng.rng.round(value / 200f);
       if (current > value) current = value;
     }
     else

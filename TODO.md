@@ -1,11 +1,11 @@
 [+]tile debug render  
 [+]change num to float  
 [+]fix sometimes no door bug  
-[+]check "/" (in dart) result is double  
 [+]stage.removeActor assert failed  
 
 // 2023年3月29日  
 [x]fix shadow bug  
+[x]check "/" (in dart) result is double  
 
 // 2023年3月28日  
 [x]fix no monster kill effect  

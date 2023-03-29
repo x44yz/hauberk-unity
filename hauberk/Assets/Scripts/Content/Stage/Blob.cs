@@ -71,7 +71,7 @@ class Blob
       var maxLength = (cells.bounds.topLeft - cells.bounds.center).length;
       foreach (var pos in cells.bounds.inflate(-1))
       {
-        var distance = (pos - center).length / maxLength;
+        var distance = (pos - center).length * 1f / maxLength;
 
         cells[pos] = Rng.rng.rfloat(1.0) > distance;
       }

@@ -99,7 +99,7 @@ public class Monster : Actor
     {
       var senses = breed.vision + breed.hearing;
       if (senses == 0) return 0.0;
-      return breed.vision / senses;
+      return breed.vision * 1f / senses;
     }
   }
 

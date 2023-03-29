@@ -222,7 +222,7 @@ class AwakeState : MonsterState
       caution += monster.fear;
 
       // Being close to death makes the monster more cautious.
-      var nearDeath = 100 * (1 - monster.health / monster.maxHealth);
+      var nearDeath = 100 * (1 - monster.health * 1f / monster.maxHealth);
       caution += nearDeath;
 
       // TODO: Breed-specific "aggression" modifier to caution.

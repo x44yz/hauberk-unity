@@ -73,7 +73,7 @@ class ArrowAction : BoltAction
     base.onHitActor(pos, target);
 
     var monster = target as Monster;
-    hero.skills.earnPoints(_skill, Mathf.CeilToInt(monster.experience / 1000f));
+    hero.skills.earnPoints(_skill, Mathf.CeilToInt(monster.experience * 1f / 1000f));
     hero.refreshSkill(_skill);
     return true;
   }

@@ -15,7 +15,7 @@ class HealMove : Move
   public override bool shouldUse(Monster monster)
   {
     // Heal if it could heal the full amount, or it's getting close to death.
-    return (monster.health / monster.maxHealth < 0.25) ||
+    return (monster.health * 1f / monster.maxHealth < 0.25) ||
         (monster.maxHealth - monster.health >= _amount);
   }
 
