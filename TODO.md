@@ -8,6 +8,7 @@
 // 2023年3月30日
 [x]action subclass new pos  
 [x]SpawnAction stage.addActor assert failed (giant cockroach) 
+[x]add make fog visible/hide debugger function  
 
 // 2023年3月29日  
 [x]fix shadow bug  
