@@ -5,6 +5,10 @@
 [+]check random  
 [+]fix sometimes light not right bug
 [+]create weird rooms  
+[+]action onGenerate is sync  
+[+]actor defenses is sync  
+[+]stage allItems is sync  
+[+]respawn a same stage(random seed)  
 
 // 2023年3月30日
 [x]action subclass new pos  
