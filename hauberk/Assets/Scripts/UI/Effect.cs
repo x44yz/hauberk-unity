@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Input = UnityEngine.Input;
 using KeyCode = UnityEngine.KeyCode;
+using Mathf = UnityEngine.Mathf;
 using UnityTerminal;
 
 // typedef DrawGlyph = void Function(int x, int y, Glyph glyph);
@@ -501,8 +502,8 @@ class TeleportEffect : Effect
     var velocity = new Vec((int)(x * 10), (int)(y * 10));
     if (velocity < 5) return CharCode.bullet;
 
-    var angle = Math.Atan2(x, y) / (Math.PI * 2) * 16f + 8;
-    return "|\\--//||\\--//||"[UnityEngine.Mathf.FloorToInt((float)angle)];
+    var angle = (int)Math.Floor(Math.Atan2(x, y) / (Math.PI * 2) * 16f + 8);
+    return "|\\\\--//||\\\\--//||"[angle];
   }
 }
 

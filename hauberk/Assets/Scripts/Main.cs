@@ -164,7 +164,7 @@ public class Main : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    try
+    // try
     {
       float dt = Time.deltaTime;
 
@@ -173,9 +173,9 @@ public class Main : MonoBehaviour
     }
     // TODO:@dongl1n
     // try to catch exception
-    catch (Exception ex)
-    {
-      Debugger.logError("xx-- exception > " + ex.ToString());
-    }
+    // catch (Exception ex)
+    // {
+    //   Debugger.logError("xx-- exception > " + ex.ToString());
+    // }
   }
 }

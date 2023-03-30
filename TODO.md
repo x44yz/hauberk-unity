@@ -4,11 +4,13 @@
 [+]stage.removeActor assert failed   
 [+]check random  
 [+]fix sometimes light not right bug
+[+]create weird rooms  
 
 // 2023年3月30日
 [x]action subclass new pos  
 [x]SpawnAction stage.addActor assert failed (giant cockroach) 
 [x]add make fog visible/hide debugger function  
+[+]some rooms dont connect any other rooms  
 
 // 2023年3月29日  
 [x]fix shadow bug  

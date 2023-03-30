@@ -57,10 +57,10 @@ public class GameDebuggerEditor : Editor
             }
         }
 
-        string btnTex = Debugger.debugHideFov ? "Make fog visible" : "Make fog hide";
+        string btnTex = Debugger.debugHideFog ? "Make fog visible" : "Make fog hide";
         if (GUILayout.Button(btnTex))
         {
-            Debugger.debugHideFov = !Debugger.debugHideFov;
+            Debugger.debugHideFog = !Debugger.debugHideFog;
             gd.game.stage.heroVisibilityChanged();
             foreach (var pos in gd.game.stage.bounds)
             {
