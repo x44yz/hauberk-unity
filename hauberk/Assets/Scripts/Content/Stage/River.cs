@@ -111,5 +111,5 @@ class _RiverPoint
     this.radius = radius ?? Rng.rng.rfloat(1.0, 3.0);
   }
 
-  string toString() => $"{x},{y} ({radius})";
+  public override string ToString() => $"{x},{y} ({radius})";
 }

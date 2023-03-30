@@ -264,10 +264,7 @@ public class Decorator
       // architectures.
       var architecture = _architect.ownerAt(pos)!;
       var group = Rng.rng.item(architecture.style.monsterGroups);
-      // var breed = Monsters.breeds.tryChoose(_architect.depth, tag: group)!;
-      // TODO:@dongl1n
-      // try fix
-      var breed = Monsters.breeds.find("giant cockroach");
+      var breed = Monsters.breeds.tryChoose(_architect.depth, tag: group)!;
 
       // Don't place a breed whose motility doesn't match the tile.
       if (!_stage[pos].canEnter(breed.motility)) continue;

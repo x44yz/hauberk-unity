@@ -67,13 +67,10 @@ public class Stage
 
   public void addActor(Actor actor)
   {
-    if (_actorsByTile[actor.pos] != null)
-    // DartUtils.assert(_actorsByTile[actor.pos] == null, "xx-- actor add failed > " + _actorsByTile[actor.pos].pos + " - " + _actorsByTile[actor.pos].ToString());
-      UnityEngine.Debug.LogError($"xx-- actor add failed {UnityEngine.Time.frameCount} > " + _actorsByTile[actor.pos].pos + " - " + _actorsByTile[actor.pos].ToString());
+    DartUtils.assert(_actorsByTile[actor.pos] == null);
 
     _actors.Add(actor);
     _actorsByTile[actor.pos] = actor;
-    UnityEngine.Debug.Log($"xx-- actor add {UnityEngine.Time.frameCount} > " + actor.pos + " - " + actor.ToString());
   }
 
   /// Called when an [Actor]'s position has changed so the stage can track it.
@@ -82,7 +79,6 @@ public class Stage
     var actor = _actorsByTile[from];
     _actorsByTile[from] = null;
     _actorsByTile[to] = actor;
-    UnityEngine.Debug.Log($"xx-- actor move {UnityEngine.Time.frameCount} > " + from + " -> " + to + " - " + actor.ToString());
   }
 
   public void removeActor(Actor actor)
@@ -96,9 +92,7 @@ public class Stage
     _actors.RemoveAt(index);
 
     if (_currentActorIndex >= _actors.Count) _currentActorIndex = 0;
-
     _actorsByTile[actor.pos] = null;
-    UnityEngine.Debug.Log($"xx-- actor remove {UnityEngine.Time.frameCount} > " + actor.pos + " - " + actor.ToString());
   }
 
   public void advanceActor()

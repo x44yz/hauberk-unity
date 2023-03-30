@@ -96,18 +96,18 @@ class FlowSelfAction : Action
 class FlowFromAction : Action
 {
   public Attack _attack;
-  // public Vec _pos;
+  public Vec m_pos;
   public Motility _motility;
 
   public FlowFromAction(Attack _attack, Vec _pos, Motility _motility)
   {
     this._attack = _attack;
-    this._pos = _pos;
+    this.m_pos = _pos;
     this._motility = _motility;
   }
 
   public override ActionResult onPerform()
   {
-    return alternate(new FlowAction(_pos, _attack.createHit(), _motility));
+    return alternate(new FlowAction(m_pos, _attack.createHit(), _motility));
   }
 }

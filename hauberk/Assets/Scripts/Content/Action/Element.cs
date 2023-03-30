@@ -59,23 +59,23 @@ class BurnActorAction : Action, DestroyActionMixin
 /// Side-effect action when an [Elements.fire] area attack sweeps over a tile.
 class BurnFloorAction : Action, DestroyActionMixin
 {
-  // public Vec _pos;
+  public Vec m_pos;
   public int _damage;
   public int _fuel;
 
   public BurnFloorAction(Vec _pos, int _damage, int _fuel)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
     this._damage = _damage;
     this._fuel = _fuel;
   }
 
   public override ActionResult onPerform()
   {
-    var fuel = _fuel + (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.fire);
+    var fuel = _fuel + (this as DestroyActionMixin).destroyFloorItems(m_pos, Elements.fire);
 
     // Try to set the tile on fire.
-    var tile = game.stage[_pos];
+    var tile = game.stage[m_pos];
     var ignition = Tiles.ignition(tile.type);
     if (fuel > 0 || ignition > 0 && _damage > Rng.rng.range(ignition))
     {
@@ -99,17 +99,17 @@ class BurnFloorAction : Action, DestroyActionMixin
 /// to burn.
 class BurningFloorAction : Action, DestroyActionMixin
 {
-  // public Vec _pos;
+  public Vec m_pos;
 
   public BurningFloorAction(Vec _pos)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
   }
 
   public override ActionResult onPerform()
   {
     // See if there is an actor there.
-    var target = game.stage.actorAt(_pos);
+    var target = game.stage.actorAt(m_pos);
     if (target != null)
     {
       // TODO: What should the damage be?
@@ -118,7 +118,7 @@ class BurningFloorAction : Action, DestroyActionMixin
     }
 
     // Try to burn items.
-    game.stage[_pos].substance += (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.fire);
+    game.stage[m_pos].substance += (this as DestroyActionMixin).destroyFloorItems(m_pos, Elements.fire);
     return ActionResult.success;
   }
 }
@@ -126,16 +126,16 @@ class BurningFloorAction : Action, DestroyActionMixin
 /// Side-effect action when an [Elements.cold] area attack sweeps over a tile.
 class FreezeFloorAction : Action, DestroyActionMixin
 {
-  // public Vec _pos;
+  public Vec m_pos;
 
   public FreezeFloorAction(Vec _pos)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
   }
 
   public override ActionResult onPerform()
   {
-    (this as DestroyActionMixin).destroyFloorItems(_pos, Elements.cold);
+    (this as DestroyActionMixin).destroyFloorItems(m_pos, Elements.cold);
 
     // TODO: Put out fire.
 
@@ -146,18 +146,18 @@ class FreezeFloorAction : Action, DestroyActionMixin
 /// Side-effect action when an [Elements.poison] area attack sweeps over a tile.
 class PoisonFloorAction : Action, DestroyActionMixin
 {
-  // public Vec _pos;
+  public Vec m_pos;
   public int _damage;
   
   public PoisonFloorAction(Vec _pos, int _damage)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
     this._damage = _damage;
   }
 
   public override ActionResult onPerform()
   {
-    var tile = game.stage[_pos];
+    var tile = game.stage[m_pos];
 
     // Fire beats poison.
     if (tile.element == Elements.fire && tile.substance > 0)
@@ -180,17 +180,17 @@ class PoisonFloorAction : Action, DestroyActionMixin
 /// poisonous gas.
 class PoisonedFloorAction : Action, DestroyActionMixin
 {
-  // public Vec _pos;
+  public Vec m_pos;
 
   public PoisonedFloorAction(Vec _pos)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
   }
 
   public override ActionResult onPerform()
   {
     // See if there is an actor there.
-    var target = game.stage.actorAt(_pos);
+    var target = game.stage.actorAt(m_pos);
     if (target != null)
     {
       // TODO: What should the damage be?
@@ -234,7 +234,7 @@ class WindAction : Action
 /// Permanently illuminates the given tile.
 class LightFloorAction : Action
 {
-  // public Vec _pos;
+  public Vec m_pos;
   int _emanation;
 
   public LightFloorAction(Vec pos, Hit hit, num distance)
@@ -244,19 +244,19 @@ class LightFloorAction : Action
     var min = Mathf.Clamp((float)(1.0 + (int)hit.averageDamage * 4.0), 0.0f, Lighting.max);
     var max = Mathf.Clamp((float)(128.0 + hit.averageDamage * 16.0), 0.0f, Lighting.max);
 
-    this._pos = pos;
+    this.m_pos = pos;
     this._emanation = (int)MathUtils.lerpDouble((float)(hit.range - distance), 0.0f, hit.range, min, max);
   }
 
   public LightFloorAction(Vec _pos, int _emanation)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
     this._emanation = _emanation;
   }
 
   public override ActionResult onPerform()
   {
-    game.stage[_pos].addEmanation(_emanation);
+    game.stage[m_pos].addEmanation(_emanation);
     game.stage.floorEmanationChanged();
 
     return ActionResult.success;

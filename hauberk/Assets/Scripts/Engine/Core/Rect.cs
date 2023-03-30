@@ -277,8 +277,8 @@ public class RectIterator : IEnumerator<Vec>
   public bool MoveNext() => moveNext();
   public void Reset()
   {
-    _x = 0;
-    _y = 0;
+    _x = _rect.x - 1;
+    _y = _rect.y;
   }
   public void Dispose()
   {

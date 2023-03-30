@@ -165,19 +165,19 @@ class RingSelfAction : Action
 class RingFromAction : Action
 {
   public Attack _attack;
-  // public Vec _pos;
+  public Vec m_pos;
 
   public RingFromAction(Attack _attack, Vec _pos)
   {
     this._attack = _attack;
-    this._pos = _pos;
+    this.m_pos = _pos;
   }
 
   public override bool isImmediate => false;
 
   public override ActionResult onPerform()
   {
-    return alternate(RayAction.ring(_pos, _attack.createHit()));
+    return alternate(RayAction.ring(m_pos, _attack.createHit()));
   }
 }
 

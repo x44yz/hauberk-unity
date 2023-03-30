@@ -4,11 +4,11 @@ using System.Collections.Generic;
 /// Base class for actions that open a container tile.
 abstract class _OpenTileAction : Action
 {
-  // public Vec _pos;
+  public Vec m_pos;
 
   public _OpenTileAction(Vec _pos)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
   }
 
   public virtual string _name => "";
@@ -24,8 +24,8 @@ abstract class _OpenTileAction : Action
 
   public override ActionResult onPerform()
   {
-    game.stage[_pos].type = _openTile;
-    addEvent(EventType.openBarrel, pos: _pos);
+    game.stage[m_pos].type = _openTile;
+    addEvent(EventType.openBarrel, pos: m_pos);
 
     // TODO: Chance of monster in it?
     // TODO: Traps. Locks.
@@ -36,7 +36,7 @@ abstract class _OpenTileAction : Action
     }
     else
     {
-      game.stage.placeDrops(_pos, Motility.walk, _createDrop());
+      game.stage.placeDrops(m_pos, Motility.walk, _createDrop());
 
       log($"{1} open[s] the {_name}.", actor);
     }

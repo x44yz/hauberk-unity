@@ -1,9 +1,12 @@
 [+]tile debug render  
 [+]change num to float  
 [+]fix sometimes no door bug  
-[+]stage.removeActor assert failed  
-[+]SpawnAction stage.addActor assert failed (giant cockroach)  
+[+]stage.removeActor assert failed   
 [+]check random  
+
+// 2023年3月30日
+[x]action subclass new pos  
+[x]SpawnAction stage.addActor assert failed (giant cockroach) 
 
 // 2023年3月29日  
 [x]fix shadow bug  

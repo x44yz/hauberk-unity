@@ -43,10 +43,6 @@ class _LineIterator : IEnumerator<Vec>
   {
     this._current = Vec.zero;
     this._error = 0;
-    this._primary = 0;
-    this._secondary = 0;
-    this._primaryStep = Vec.zero;
-    this._secondaryStep = Vec.zero;
   }
   public void Dispose()
   {

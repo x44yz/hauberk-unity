@@ -62,9 +62,6 @@ public partial class ArchitecturalStyle
     var count = Mathf.Min(Rng.rng.taper(1, 10), 5);
     var hasFillable = false;
 
-    // CHECK@dongl1n
-    int kk = 0;
-
     while (!hasFillable || result.Count < count)
     {
       var style = styles.tryChoose(depth)!;
@@ -74,13 +71,6 @@ public partial class ArchitecturalStyle
       if (style.canFill) hasFillable = true;
 
       if (!result.Contains(style)) result.Add(style);
-
-      kk += 1;
-      if (kk == 20)
-      {
-        Debug.LogError("cant fill");
-        break;
-      }
     }
 
     return result;

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 /// Spawns a new [Monster] of a given [Breed].
 class SpawnAction : Action
 {
-  // public Vec _pos;
+  public Vec m_pos;
   public Breed _breed;
 
   public SpawnAction(Vec _pos, Breed _breed)
   {
-    this._pos = _pos;
+    this.m_pos = _pos;
     this._breed = _breed;
   }
 
@@ -24,7 +24,7 @@ class SpawnAction : Action
     // over time.
     monster.generation++;
 
-    var spawned = _breed.spawn(game, _pos, monster);
+    var spawned = _breed.spawn(game, m_pos, monster);
     game.stage.addActor(spawned);
 
     addEvent(EventType.spawn, actor: spawned);
