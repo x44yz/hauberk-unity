@@ -10,7 +10,14 @@ using System.Linq;
 /// The Random Number God: deliverer of good and ill fortune alike.
 public class Rng
 {
-  public static Rng rng = new Rng(System.DateTime.Now.Millisecond);
+  public static Rng _rng;
+  public static Rng rng {
+    get {
+      if (_rng == null)
+        _rng = new Rng(System.DateTime.Now.Millisecond);
+      return _rng;
+    }
+  }
 
   System.Random _random;
 
@@ -22,6 +29,7 @@ public class Rng
   /// Resets the random number generator's internal state to [seed].
   void setSeed(int seed)
   {
+    Debugger.log($"rng set seed > {seed}");
     _random = new System.Random(seed);
   }
 

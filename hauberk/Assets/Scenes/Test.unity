@@ -332,6 +332,8 @@ MonoBehaviour:
   retroCanvas: {fileID: 1212139115}
   width: 100
   height: 40
+  debugRand: 0
+  seed: 100
 --- !u!4 &789946401
 Transform:
   m_ObjectHideFlags: 0
@@ -375,7 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dd5dd129dc2554f979ca679f7f7c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: {fileID: 0}
 --- !u!4 &878713338
 Transform:
   m_ObjectHideFlags: 0

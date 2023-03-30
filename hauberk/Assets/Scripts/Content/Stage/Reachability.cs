@@ -56,7 +56,7 @@ class Reachability
     {
       var pos2 = queue.Dequeue();
       var distance = _distances[pos2];
-      foreach (var neighbor in pos.cardinalNeighbors)
+      foreach (var neighbor in pos2.cardinalNeighbors)
       {
         var neighborDistance = _distances[neighbor];
         if (neighborDistance == _unreachable) continue;
