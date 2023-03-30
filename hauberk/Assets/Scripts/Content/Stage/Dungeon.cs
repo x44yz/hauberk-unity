@@ -37,14 +37,13 @@ class Dungeon : RoomArchitecture
         var yMax = height - room.height;
 
         if (region == Region.everywhere)
-        // Do nothing.
         {
+          // Do nothing.
         }
         else if (region == Region.n)
         {
           yMax = height / 2 - room.height;
         }
-
         else if (region == Region.ne)
         {
           xMin = width / 2;
