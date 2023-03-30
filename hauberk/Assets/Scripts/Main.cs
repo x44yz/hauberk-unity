@@ -175,7 +175,7 @@ public class Main : MonoBehaviour
     // try to catch exception
     catch (Exception ex)
     {
-      Debug.LogError("xx-- exception > " + ex.ToString());
+      Debugger.logError("xx-- exception > " + ex.ToString());
     }
   }
 }

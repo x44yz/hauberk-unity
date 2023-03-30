@@ -250,7 +250,7 @@ public class Hero : Actor
   {
     var weapons = equipment.weapons;
     var i = weapons.FindIndex((weapon) => weapon.attack!.isRanged);
-    DartUtils.assert(i != -1, "Should have ranged weapon equipped.");
+    Debugger.assert(i != -1, "Should have ranged weapon equipped.");
 
     var hit = weapons[i].attack!.createHit();
 
@@ -443,7 +443,7 @@ public class Hero : Actor
   /// Does not reset [_turnsSinceLostFocus].
   public void spendFocus(int focus)
   {
-    DartUtils.assert(focus >= _focus);
+    Debugger.assert(focus >= _focus);
 
     _focus -= focus;
   }
@@ -453,7 +453,7 @@ public class Hero : Actor
   /// Does not reset [_turnsSinceLostFocus].
   public void spendFury(int fury)
   {
-    DartUtils.assert(fury >= _fury);
+    Debugger.assert(fury >= _fury);
 
     _fury -= fury;
   }

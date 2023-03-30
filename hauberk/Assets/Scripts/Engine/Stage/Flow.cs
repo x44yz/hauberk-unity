@@ -186,7 +186,7 @@ public abstract class Flow
       var cost = _costs[pos];
 
       // Since pos was from _found, it should be reachable.
-      DartUtils.assert(cost >= 0);
+      Debugger.assert(cost >= 0);
 
       if (lowestCost == null || cost == lowestCost)
       {

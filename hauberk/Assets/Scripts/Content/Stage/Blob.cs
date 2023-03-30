@@ -55,7 +55,7 @@ class Blob
       // otherwise.
 
       // Must scale from exactly a half size.
-      DartUtils.assert(input.width == size / 2);
+      Debugger.assert(input.width == size / 2);
 
       foreach (var pos in cells.bounds.inflate(-1))
       {

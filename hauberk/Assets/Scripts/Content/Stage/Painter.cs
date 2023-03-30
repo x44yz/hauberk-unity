@@ -35,7 +35,7 @@ public class Painter
 
   public void setTile(Vec pos, TileType type)
   {
-    DartUtils.assert(_architect.ownerAt(pos) == _architecture);
+    Debugger.assert(_architect.ownerAt(pos) == _architecture);
     _architect.stage[pos].type = type;
     _painted++;
   }

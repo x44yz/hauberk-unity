@@ -85,7 +85,7 @@ abstract class MasteryAction : Action
     // If dual-wielding two weapons of the mastered type, both are used.
     var weapons = hero.equipment.weapons.ToList();
     var hits = hero.createMeleeHits(defender);
-    DartUtils.assert(weapons.Count == hits.Count);
+    Debugger.assert(weapons.Count == hits.Count);
 
     var damage = 0;
     for (var i = 0; i < weapons.Count; i++)

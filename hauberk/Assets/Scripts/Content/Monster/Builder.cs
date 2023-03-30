@@ -358,7 +358,7 @@ public class _BreedBuilder : _MBaseBuilder
   public void cone(Element element, num? rate = null, int damage = 0, int? range = null)
   {
     if (_MBaseBuilder._elementText.ContainsKey(element) == false)
-      UnityEngine.Debug.LogError("cant exist key > " + element.ToString());
+      Debugger.logError("cant exist key > " + element.ToString());
 
     _cone(_MBaseBuilder._elementText[element]![0], _MBaseBuilder._elementText[element]![1], element,
         rate: rate, damage: damage, range: range);

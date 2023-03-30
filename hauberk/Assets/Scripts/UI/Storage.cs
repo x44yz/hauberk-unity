@@ -39,7 +39,6 @@ class Storage
     var heros = data["heroes"] as IList<object>;
     foreach (var hero_ in heros)
     {
-      // try {
       var hero = hero_ as IDictionary<string, object>;
 
       var name = hero["name"] as string;
@@ -93,7 +92,7 @@ class Storage
           }
           else
           {
-            Debug.LogError($"No data for {shopName}, so regenerating.");
+            Debugger.logError($"No data for {shopName}, so regenerating.");
             shops[shop] = shop.create();
           }
         };
@@ -157,11 +156,6 @@ class Storage
           gold,
           maxDepth);
       heroes.Add(heroSave);
-      // } catch (Exception ex) {
-      //   Debug.LogError("Could not load hero. Data:");
-      //   // Debug.Log(heroStr);
-      //   Debug.LogError($"Error:{ex}");
-      // }
     }
   }
 
@@ -215,7 +209,7 @@ class Storage
     var type = content.tryFindItem(data["type"] as string);
     if (type == null)
     {
-      Debug.LogError($"Couldn't find item type {data["type"]}, discarding item.");
+      Debugger.logError($"Couldn't find item type {data["type"]}, discarding item.");
       return null;
     }
 
@@ -427,7 +421,7 @@ class Storage
     var edata = SimpleJson.SimpleJson.SerializeObject(data);
     PlayerPrefs.SetString("heroes", edata);
     PlayerPrefs.Save();
-    Debug.Log("Saved.");
+    Debugger.log("Saved.");
   }
 
   List<Dictionary<string, object>> _saveItems(IEnumerable<Item> items)

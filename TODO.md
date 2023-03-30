@@ -1,8 +1,9 @@
 [+]tile debug render  
 [+]change num to float  
-[+]fix sometimes no door bug  
+[+]fix sometimes no exit door bug  
 [+]stage.removeActor assert failed   
 [+]check random  
+[+]fix sometimes light not right bug
 
 // 2023年3月30日
 [x]action subclass new pos  

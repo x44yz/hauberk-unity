@@ -192,7 +192,7 @@ class _ItemBuilder : _BaseBuilder
 
   public void defense(int amount, string message)
   {
-    DartUtils.assert(_defense == null);
+    Debugger.assert(_defense == null);
     _defense = new Defense(amount, message);
   }
 
@@ -353,7 +353,7 @@ class _ItemBuilder : _BaseBuilder
       }
 
       var range = builder._tossRange ?? _category._tossRange;
-      DartUtils.assert(range != null);
+      Debugger.assert(range != null);
       var element =
           builder._tossElement ?? _category._tossElement ?? Element.none;
       var use = builder._tossUse ?? _category._tossUse;

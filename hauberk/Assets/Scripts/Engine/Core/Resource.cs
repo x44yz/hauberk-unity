@@ -471,14 +471,14 @@ public class _ResourceQuery<T> where T : class
 
   void dump(_QueryKey key)
   {
-    DartUtils.print(key.ToString());
+    Debugger.log(key.ToString());
     for (var i = 0; i < resources.Count; i++)
     {
       var chance = chances[i];
       if (i > 0) chance -= chances[i - 1];
       var percent =
           (100.0 * chance / totalChance).ToString("F5").PadLeft(8);
-      DartUtils.print($"{percent}% {resources[i].obj}");
+      Debugger.log($"{percent}% {resources[i].obj}");
     }
   }
 }

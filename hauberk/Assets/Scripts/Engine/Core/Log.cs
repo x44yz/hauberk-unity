@@ -252,7 +252,7 @@ public class Log
   static string _categorize(string text,
       bool isFirst, bool force = false)
   {
-    UnityEngine.Debug.Log($"_categorize:{text} - {isFirst} - {force}");
+    Debugger.log($"_categorize:{text} - {isFirst} - {force}");
 
     var optionalSuffix = new Regex("\\[(\\w+?)\\]");
     var irregular = new Regex("\\[([^|]+)\\|([^\\]]+)\\]");
@@ -303,7 +303,7 @@ public class Log
       }
     }
 
-    UnityEngine.Debug.Log($"_categorize:{text} done");
+    Debugger.log($"_categorize:{text} done");
     return text;
   }
 }

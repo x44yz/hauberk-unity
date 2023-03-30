@@ -65,7 +65,7 @@ public partial class ArchitecturalStyle
     while (!hasFillable || result.Count < count)
     {
       var style = styles.tryChoose(depth)!;
-      Debug.Log("xx-- style > " + style.name + " - " + style.canFill);
+      Debugger.log("xx-- style > " + style.name + " - " + style.canFill);
 
       // Make sure there's at least one style that can fill the entire stage.
       if (style.canFill) hasFillable = true;

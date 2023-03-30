@@ -238,7 +238,7 @@ public class Item : Noun, System.IComparable<Item>
     // If we here, we are trying to stack. We don't support stacking
     // items with affixes, and we should avoid that by not having any affixes
     // defined for stackable items. Validate that invariant here.
-    DartUtils.assert(prefix == null &&
+    Debugger.assert(prefix == null &&
         suffix == null &&
         item.prefix == null &&
         item.suffix == null);
@@ -262,7 +262,7 @@ public class Item : Noun, System.IComparable<Item>
   /// reduces this stack by that amount.
   public Item splitStack(int count)
   {
-    DartUtils.assert(count < _count);
+    Debugger.assert(count < _count);
 
     _count -= count;
     return clone(count);

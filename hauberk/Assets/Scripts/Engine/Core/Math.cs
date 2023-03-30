@@ -9,7 +9,7 @@ public static class MathUtils
   /// [outMin]-[outMax].
   public static double lerpDouble(float value, float min, float max, double outMin, double outMax)
   {
-    DartUtils.assert(min < max);
+    Debugger.assert(min < max);
 
     if (value <= min) return outMin;
     if (value >= max) return outMax;

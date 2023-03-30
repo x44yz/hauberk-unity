@@ -67,7 +67,7 @@ public class Stage
 
   public void addActor(Actor actor)
   {
-    DartUtils.assert(_actorsByTile[actor.pos] == null);
+    Debugger.assert(_actorsByTile[actor.pos] == null);
 
     _actors.Add(actor);
     _actorsByTile[actor.pos] = actor;
@@ -83,10 +83,10 @@ public class Stage
 
   public void removeActor(Actor actor)
   {
-    DartUtils.assert(_actorsByTile[actor.pos] == actor);
+    Debugger.assert(_actorsByTile[actor.pos] == actor);
 
     var index = _actors.IndexOf(actor);
-    DartUtils.assert(index >= 0 && index < _actors.Count);
+    Debugger.assert(index >= 0 && index < _actors.Count);
 
     if (_currentActorIndex > index) _currentActorIndex--;
     _actors.RemoveAt(index);
@@ -158,7 +158,7 @@ public class Stage
     }
     var result = inventory.tryAdd(item);
     // Inventory is unlimited, so should always succeed.
-    DartUtils.assert(result.remaining == 0);
+    Debugger.assert(result.remaining == 0);
 
     // If a light source is dropped, we need to light the floor.
     if (item.emanationLevel > 0) floorEmanationChanged();

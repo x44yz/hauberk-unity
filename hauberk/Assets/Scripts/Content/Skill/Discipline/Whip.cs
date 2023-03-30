@@ -38,7 +38,7 @@ class WhipMastery : MasteryDiscipline, UsableSkill, TargetSkill
     // TODO: Is this the best way to handle dual-wielded whips?
     var weapons = game.hero.equipment.weapons.ToList();
     var hits = game.hero.createMeleeHits(defender);
-    DartUtils.assert(weapons.Count == hits.Count);
+    Debugger.assert(weapons.Count == hits.Count);
 
     // Should have at least one whip wielded.
     Hit hit = null;

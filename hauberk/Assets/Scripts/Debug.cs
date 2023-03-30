@@ -111,6 +111,29 @@ class Debugger
     if (log == null) return null;
     return log.ToString();
   }
+
+  public static void log(object message)
+  {
+    UnityEngine.Debug.Log(message);
+  }
+
+  public static void logWarning(object message)
+  {
+    UnityEngine.Debug.LogWarning(message);
+  }
+
+  public static void logError(object message)
+  {
+    UnityEngine.Debug.LogError(message);
+  }
+
+  public static void assert(bool v, string msg = null)
+  {
+    if (msg != null)
+      UnityEngine.Debug.Assert(v, msg);
+    else
+      UnityEngine.Debug.Assert(v);
+  }
 }
 
 class _MonsterLog

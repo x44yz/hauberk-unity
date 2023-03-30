@@ -239,7 +239,7 @@ public class Inventory : ItemCollection
     foreach (var item in items)
     {
       var result = tryAdd(item);
-      DartUtils.assert(result.remaining == 0);
+      Debugger.assert(result.remaining == 0);
     }
   }
 

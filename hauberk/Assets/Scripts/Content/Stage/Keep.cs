@@ -293,8 +293,8 @@ class JunctionSet
   public void add(Junction junction)
   {
     if (_byPosition.ContainsKey(junction.position))
-      // DartUtils.assert(_byPosition[junction.position] == null);
-      UnityEngine.Debug.LogError("xx-- had contain vec > " + junction.position.ToString());
+      // Debugger.assert(_byPosition[junction.position] == null);
+      Debugger.logError("xx-- had contain vec > " + junction.position.ToString());
 
     _byPosition[junction.position] = junction;
     _junctions.Add(junction);

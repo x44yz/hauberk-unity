@@ -114,8 +114,8 @@ public class Architect
   /// Marks the tile at [x], [y] as open floor for [architecture].
   public void _carve(Architecture architecture, int x, int y, TileType tile)
   {
-    DartUtils.assert(_owners._get(x, y) == null || _owners._get(x, y) == architecture);
-    DartUtils.assert(stage.get(x, y).type == Tiles.unformed);
+    Debugger.assert(_owners._get(x, y) == null || _owners._get(x, y) == architecture);
+    Debugger.assert(stage.get(x, y).type == Tiles.unformed);
 
     stage.get(x, y).type = tile ?? Tiles.open;
     _carvedTiles++;
@@ -216,7 +216,7 @@ public class Architect
       }
       else
       {
-        DartUtils.assert(tile.type == Tiles.solid || tile.type == Tiles.solidWet,
+        Debugger.assert(tile.type == Tiles.solid || tile.type == Tiles.solidWet,
             "Unexpected tile type.");
       }
 
@@ -364,7 +364,7 @@ public class Architect
     }
     else
     {
-      DartUtils.assert(false, "Unexpected tile type.");
+      Debugger.assert(false, "Unexpected tile type.");
     }
 
     var owner = _owners[pos];
@@ -525,7 +525,7 @@ public abstract class Architecture
   /// Marks the tile at [pos] as not allowing a passage to be dug through it.
   public void preventPassage(Vec pos)
   {
-    DartUtils.assert(_architect._owners[pos] == null ||
+    Debugger.assert(_architect._owners[pos] == null ||
         _architect._owners[pos] == this ||
         _architect.stage[pos].type == Tiles.unformedWet);
 

@@ -345,7 +345,7 @@ class _TileBuilder
   {
     try
     {
-      UnityEngine.Debug.Log("xx-- tb > " + name + "- " + ch.ToString());
+      Debugger.log("xx-- tb > " + name + "- " + ch.ToString());
       back ??= Hues.darkerCoolGray;
       var charCode = ch is int ? ch : (ch as string)[0];
 
@@ -354,7 +354,7 @@ class _TileBuilder
     }
     catch (System.Exception ex)
     {
-      UnityEngine.Debug.Log("xx-- ex > " + ex.ToString());
+      Debugger.logError("xx-- ex > " + ex.ToString());
     }
   }
 

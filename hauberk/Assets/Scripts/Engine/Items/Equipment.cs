@@ -117,7 +117,7 @@ public class Equipment : ItemCollection
   {
     // Should not be able to equip stackable items. If we want to make, say,
     // knives stackable, we'll have to add support for splitting stacks here.
-    DartUtils.assert(item.count == 1);
+    Debugger.assert(item.count == 1);
 
     for (var i = 0; i < slotTypes.Count; i++)
     {
@@ -143,7 +143,7 @@ public class Equipment : ItemCollection
   /// a two-handed item.
   public List<Item> equip(Item item)
   {
-    DartUtils.assert(item.count == 1, "Must split the stack before equipping.");
+    Debugger.assert(item.count == 1, "Must split the stack before equipping.");
 
     // Handle hands and two-handed items specially. We need to preserve the
     // invariant that you can never get into a state where you are holding a
@@ -230,7 +230,7 @@ public class Equipment : ItemCollection
     }
 
     // If we get here, all matching slots were already full. Swap out an item.
-    DartUtils.assert(usedSlot != -1, "Should have at least one of every slot.");
+    Debugger.assert(usedSlot != -1, "Should have at least one of every slot.");
     var unequipped = new List<Item>() { slots[usedSlot]! };
     slots[usedSlot] = item;
     return unequipped;

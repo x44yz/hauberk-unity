@@ -107,7 +107,7 @@ public class Game
             rt = reaction.perform();
           }
 
-          DartUtils.assert(rt.succeeded, "Reactions should never fail.");
+          Debugger.assert(rt.succeeded, "Reactions should never fail.");
         }
 
         stage.refreshView();

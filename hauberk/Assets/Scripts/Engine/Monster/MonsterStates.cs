@@ -203,7 +203,7 @@ class AwakeState : MonsterState
       foreach (var attack in breed.attacks)
       {
         // Monsters don't have any raw ranged attacks, just ranged moves.
-        DartUtils.assert(!attack.isRanged);
+        Debugger.assert(!attack.isRanged);
         meleeDamage += attack.damage;
         meleeAttacks++;
 

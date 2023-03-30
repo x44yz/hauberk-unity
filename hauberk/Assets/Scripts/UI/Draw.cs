@@ -136,7 +136,7 @@ public static class Draw
       Terminal terminal, int x, int y, int width, int value, int max,
       Color? fore = null, Color? back = null)
   {
-    UnityEngine.Debug.Assert(max != 0);
+    Debugger.assert(max != 0);
 
     fore ??= Hues.red;
     back ??= Hues.maroon;
@@ -172,7 +172,7 @@ public static class Draw
       Terminal terminal, int x, int y, int width, int value, int max,
       Color? fore = null, Color? back = null)
   {
-    UnityEngine.Debug.Assert(max != 0);
+    Debugger.assert(max != 0);
 
     fore ??= Hues.red;
     back ??= Hues.maroon;
