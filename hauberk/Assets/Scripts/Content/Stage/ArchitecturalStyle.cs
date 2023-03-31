@@ -62,9 +62,6 @@ public partial class ArchitecturalStyle
     var count = Mathf.Min(Rng.rng.taper(1, 10), 5);
     var hasFillable = false;
 
-    // HACK:@dongl1n
-    count = 1;
-
     while (!hasFillable || result.Count < count)
     {
       var style = styles.tryChoose(depth)!;

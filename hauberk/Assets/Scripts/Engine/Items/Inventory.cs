@@ -233,7 +233,7 @@ public class Inventory : ItemCollection
   public override void countChanged()
   {
     // Hacky. Just re-add everything from scratch.
-    var items = _items;
+    var items = _items.ToList();
     _items.Clear();
 
     foreach (var item in items)

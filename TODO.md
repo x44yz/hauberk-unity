@@ -8,11 +8,11 @@
 [+]action onGenerate is sync  
 [+]actor defenses is sync  
 [+]stage allItems is sync  
-[+]bug: after buy item, shop ui dont show  
-[+]bug: when resart, lose items in inventory  
 
 // 2023年3月31日
-[+]bug: buy item dont cost gold  
+[x]bug: buy item dont cost gold  
+[x]bug: after buy item, shop ui dont show  
+[-]bug: when resart, lose items in inventory -> dont appear again  
 
 // 2023年3月30日
 [x]action subclass new pos  

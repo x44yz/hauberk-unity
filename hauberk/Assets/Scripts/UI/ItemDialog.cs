@@ -405,7 +405,7 @@ abstract class _ItemCommand
     dialog.terminal.Pop();
   }
 
-  void afterTransfer(ItemDialog dialog, Item item, int count) { }
+  protected virtual void afterTransfer(ItemDialog dialog, Item item, int count) { }
 }
 
 class _DropItemCommand : _ItemCommand
@@ -570,7 +570,7 @@ class _PutItemCommand : _ItemCommand
     transfer(dialog, item, count, dialog._gameScreen.game.hero.save.home);
   }
 
-  void afterTransfer(ItemDialog dialog, Item item, int count)
+  protected override void afterTransfer(ItemDialog dialog, Item item, int count)
   {
     dialog._gameScreen.game.log
         .message($"You put {item.clone(count)} safely into your home.");
@@ -608,7 +608,7 @@ class _SellItemCommand : _ItemCommand
     transfer(dialog, item, count, _shop);
   }
 
-  void afterTransfer(ItemDialog dialog, Item item, int count)
+  protected override void afterTransfer(ItemDialog dialog, Item item, int count)
   {
     var itemText = item.clone(count).ToString();
     var price = getPrice(item) * count;

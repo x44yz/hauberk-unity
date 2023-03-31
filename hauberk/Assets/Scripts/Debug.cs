@@ -24,7 +24,7 @@ class Debugger
   public static bool showHeroVolume = false;
 
   // for debug
-  public static bool debugHideFog = true;
+  public static bool debugHideFog = false;
   public static bool debugSelectDepth = true;
 
   /// The current density map being used.
