@@ -257,7 +257,7 @@ abstract class ItemScreen : Screen
   }
 
   /// Called after [count] of [item] has been transferred out of [_items].
-  void _afterTransfer(Item item, int count) { }
+  protected virtual void _afterTransfer(Item item, int count) { }
 }
 
 /// Base class for item views where the player is performing an action.
@@ -368,7 +368,7 @@ class _HomeGetScreen : _ItemVerbScreen
 
   public override bool canSelect(Item item) => true;
 
-  void _afterTransfer(Item item, int count)
+  protected override void _afterTransfer(Item item, int count)
   {
     _gameScreen.game.log.message($"You {item.clone(count)}.");
     _gameScreen.game.hero.pickUp(item);
@@ -461,7 +461,7 @@ class _ShopBuyScreen : _ItemVerbScreen
   public override int? _itemPrice(Item item) => item.price;
 
   /// Pay for purchased item.
-  void _afterTransfer(Item item, int count)
+  protected override void _afterTransfer(Item item, int count)
   {
     var price = item.price * count;
     _gameScreen.game.log
