@@ -50,7 +50,7 @@ class LogPanel : Panel
 
       if (i != _log.messages.Count - 1)
       {
-        color = color.blend(Color.black, 0.5f);
+        color = color.Blend(Color.black, 0.5f);
       }
 
       terminal.WriteAt(1, y, message.text, color);

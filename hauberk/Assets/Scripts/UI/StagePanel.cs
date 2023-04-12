@@ -167,7 +167,7 @@ class StagePanel : Panel
           else if (tile.element == Elements.poison)
           {
             var amount = 0.1f + (tile.substance / 255f) * 0.9f;
-            back = back.blend(Hues.lima, amount);
+            back = back.Blend(Hues.lima, amount);
           }
         }
       }
@@ -243,17 +243,17 @@ class StagePanel : Panel
             // Only blend up to 50% of the shadow color so that there is a
             // clear line between hidden and visible tiles.
             color =
-                color.blend(shadow, (float)MathUtils.lerpDouble(visibility, 0, 64, 0.5, 0.0));
+                color.Blend(shadow, (float)MathUtils.lerpDouble(visibility, 0, 64, 0.5, 0.0));
           }
           else if (visibility > 128)
           {
-            color = color.add(Hues.ash, (float)MathUtils.lerpDouble(visibility, 128, 255, 0.0, 0.2));
+            color = color.Add(Hues.ash, (float)MathUtils.lerpDouble(visibility, 128, 255, 0.0, 0.2));
           }
 
           if (tile.actorIllumination > 0)
           {
             Color glow = new Color(200, 130, 0);
-            color = color.add(
+            color = color.Add(
                 glow, (float)MathUtils.lerpDouble(tile.actorIllumination, 0, 255, 0.05, 0.1));
           }
 
@@ -272,12 +272,12 @@ class StagePanel : Panel
       if (Debugger.showHeroVolume)
       {
         var volume = game.stage.heroVolume(pos);
-        if (volume > 0.0) back = back.blend(Hues.peaGreen, (float)volume);
+        if (volume > 0.0) back = back.Blend(Hues.peaGreen, (float)volume);
       }
 
       if (Debugger.showMonsterAlertness && actor is Monster)
       {
-        back = Color.blue.blend(Color.red, (float)(actor as Monster).alertness);
+        back = Color.blue.Blend(Color.red, (float)(actor as Monster).alertness);
       }
 
       if (ch != null)

@@ -42,18 +42,9 @@ public class Main : MonoBehaviour
 
   void Update()
   {
-    // try
-    {
-      float dt = Time.deltaTime;
+    float dt = Time.deltaTime;
 
-      if (retroTerminal != null)
-        retroTerminal.Tick(dt);
-    }
-    // TODO:@dongl1n
-    // try to catch exception
-    // catch (Exception ex)
-    // {
-    //   Debugger.logError("xx-- exception > " + ex.ToString());
-    // }
+    if (retroTerminal != null)
+      retroTerminal.Tick(dt);
   }
 }

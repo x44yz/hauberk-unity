@@ -369,8 +369,8 @@ class _TileBuilder
     for (var i = 0; i < glyphs.Count; i++)
     {
       var glyph = glyphs[i];
-      glyphs[i] = new Glyph(glyph.ch, glyph.fore.blend(fore, (float)amount),
-          glyph.back.blend(back, (float)amount));
+      glyphs[i] = new Glyph(glyph.ch, glyph.fore.Blend(fore, (float)amount),
+          glyph.back.Blend(back, (float)amount));
     }
 
     return this;
@@ -382,9 +382,9 @@ class _TileBuilder
     for (var i = 1; i < count; i++)
     {
       var mixedFore =
-          glyph.fore.blend(fore, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.fore.Blend(fore, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
       var mixedBack =
-          glyph.back.blend(back, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
+          glyph.back.Blend(back, (float)MathUtils.lerpDouble(i, 0, count, 0.0, maxMix));
 
       glyphs.Add(new Glyph(glyph.ch, mixedFore, mixedBack));
     }

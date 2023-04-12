@@ -591,8 +591,8 @@ class MapEffect : Effect
 
     glyph = new Glyph(
         glyph.ch,
-        glyph.fore.blend(Hues.gold, life * 1f / _maxLife),
-        glyph.back.blend(Hues.tan, life * 1f / _maxLife));
+        glyph.fore.Blend(Hues.gold, life * 1f / _maxLife),
+        glyph.back.Blend(Hues.tan, life * 1f / _maxLife));
 
     drawGlyph(pos.x, pos.y, glyph);
   }
