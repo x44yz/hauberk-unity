@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Mathf = UnityEngine.Mathf;
+using System.Linq;
 
 /// Base class for an [Action] that works with an existing [Item] in the game.
 public abstract class ItemAction : Action
@@ -304,8 +305,9 @@ public static class DestroyActionMixinEx
     var fuel = 0;
 
     // Copy items to avoid concurrent modification.
-    foreach (var item in items)
+    for (int m = items.Count() - 1; m >= 0; --m)
     {
+      var item = items.ElementAt(m);
       // TODO: Having to handle missing keys here is lame.
       var chance = item.type.destroyChance.ContainsKey(element) ? item.type.destroyChance[element] : 0;
 
