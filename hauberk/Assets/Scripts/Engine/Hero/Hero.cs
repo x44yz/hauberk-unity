@@ -443,7 +443,7 @@ public class Hero : Actor
   /// Does not reset [_turnsSinceLostFocus].
   public void spendFocus(int focus)
   {
-    Debugger.assert(focus >= _focus);
+    Debugger.assert(_focus >= focus);
 
     _focus -= focus;
   }
@@ -453,7 +453,7 @@ public class Hero : Actor
   /// Does not reset [_turnsSinceLostFocus].
   public void spendFury(int fury)
   {
-    Debugger.assert(fury >= _fury);
+    Debugger.assert(_fury >= fury);
 
     _fury -= fury;
   }
