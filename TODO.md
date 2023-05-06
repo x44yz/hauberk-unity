@@ -1,12 +1,8 @@
 [+]tile debug render  
-[+]change num to float  
 [+]fix sometimes no exit door bug  
 [+]stage.removeActor assert failed   
 [+]check random  
 [+]create weird rooms  
-[+]action onGenerate is sync  
-[+]actor defenses is sync  
-[+]stage allItems is sync  
 
 // 2023年3月31日
 [x]bug: buy item dont cost gold  
