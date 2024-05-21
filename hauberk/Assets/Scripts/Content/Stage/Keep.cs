@@ -294,7 +294,7 @@ class JunctionSet
   {
     if (_byPosition.ContainsKey(junction.position))
       // Debugger.assert(_byPosition[junction.position] == null);
-      Debugger.logError("xx-- had contain vec > " + junction.position.ToString());
+      Debugger.logError("had contain vec > " + junction.position.ToString());
 
     _byPosition[junction.position] = junction;
     _junctions.Add(junction);

@@ -69,6 +69,15 @@ public class GameDebuggerEditor : Editor
             gd.game.stage._lighting.refresh();
             gd.main.retroTerminal.Dirty();
         }
+
+        if (GUILayout.Button("Add Gold"))
+        {
+            if (gd.game != null && gd.game.stage != null)
+            {
+                Debug.Log("Add Gold.");
+                gd.game.hero.gold += 100;
+            }
+        }
     }
 } 
 #endif
